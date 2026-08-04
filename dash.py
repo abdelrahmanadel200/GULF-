@@ -23,7 +23,7 @@ import pandas as pd
 # Static configuration
 # ---------------------------------------------------------------------------
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).parent 
 
 COUNTRY_FILES = {
     "Saudi Arabia": "AMECATH_Saudi_Arabia_Executive_Dashboard.xlsx",
