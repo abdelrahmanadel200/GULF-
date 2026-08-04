@@ -178,8 +178,8 @@ def get_image_base64(image_path):
 
 # تجهيز مسارات الصور بناءً على الدولة المختارة (مثلاً: kuwait_landscape.jpg و kuwait_flag.jpg)
 country_key = selected_country.lower().replace(" ", "_")
-flag_path = f"{country_key}_flag.jpg"
-landscape_path = f"{country_key}_landscape.jpg"
+flag_path = f"{country_key}_flag.jpeg"
+landscape_path = f"{country_key}_landscape.jpeg"
 
 bg_base64 = get_image_base64(landscape_path)
 flag_base64 = get_image_base64(flag_path)
