@@ -1,4 +1,5 @@
 import base64
+import glob
 import os
 import pandas as pd
 import streamlit as st
@@ -15,18 +16,18 @@ st.set_page_config(
 COUNTRY_THEMES = {
     "Saudi Arabia": {
         "flag": "🇸🇦",
-        "primary": "#006C35",  # Emerald Green
-        "accent": "#C5A059",  # Gold
+        "primary": "#006C35",
+        "accent": "#C5A059",
         "bg": "#0D1B1E",
-        "card_bg": "rgba(19, 42, 47, 0.85)",  # Translucent card background
+        "card_bg": "rgba(19, 42, 47, 0.85)",
         "text": "#E6F1FF",
         "landmark": "Kingdom Centre & Riyadh Skyline",
         "file": "AMECATH_Saudi_Arabia_Executive_Dashboard.xlsx",
     },
     "UAE": {
         "flag": "🇦🇪",
-        "primary": "#CE1126",  # Deep Red/Crimson
-        "accent": "#00732F",  # Emerald
+        "primary": "#CE1126",
+        "accent": "#00732F",
         "bg": "#1A0F10",
         "card_bg": "rgba(42, 22, 24, 0.85)",
         "text": "#FFFFFF",
@@ -35,8 +36,8 @@ COUNTRY_THEMES = {
     },
     "Qatar": {
         "flag": "🇶🇦",
-        "primary": "#8A1538",  # Maroon/Burgundy
-        "accent": "#E0A96D",  # Warm Gold
+        "primary": "#8A1538",
+        "accent": "#E0A96D",
         "bg": "#1C0D12",
         "card_bg": "rgba(46, 21, 30, 0.85)",
         "text": "#FFF5F5",
@@ -45,8 +46,8 @@ COUNTRY_THEMES = {
     },
     "Kuwait": {
         "flag": "🇰🇼",
-        "primary": "#007A3D",  # Vibrant Green
-        "accent": "#CE1126",  # Rich Red
+        "primary": "#007A3D",
+        "accent": "#CE1126",
         "bg": "#0A1816",
         "card_bg": "rgba(17, 41, 37, 0.85)",
         "text": "#E6FFFA",
@@ -55,8 +56,8 @@ COUNTRY_THEMES = {
     },
     "Oman": {
         "flag": "🇴🇲",
-        "primary": "#DB162F",  # Omani Red
-        "accent": "#008000",  # Green accent
+        "primary": "#DB162F",
+        "accent": "#008000",
         "bg": "#1C0D10",
         "card_bg": "rgba(46, 22, 26, 0.85)",
         "text": "#FFF0F0",
@@ -65,8 +66,8 @@ COUNTRY_THEMES = {
     },
     "Bahrain": {
         "flag": "🇧🇭",
-        "primary": "#CE1126",  # Bahraini Red
-        "accent": "#FFFFFF",  # White
+        "primary": "#CE1126",
+        "accent": "#FFFFFF",
         "bg": "#1A0F10",
         "card_bg": "rgba(42, 22, 24, 0.85)",
         "text": "#FFFFFF",
@@ -75,8 +76,8 @@ COUNTRY_THEMES = {
     },
     "Jordan": {
         "flag": "🇯🇴",
-        "primary": "#000000",  # Black & Cedar accents
-        "accent": "#CE1126",  # Red
+        "primary": "#000000",
+        "accent": "#CE1126",
         "bg": "#121212",
         "card_bg": "rgba(31, 31, 31, 0.85)",
         "text": "#F5F5F5",
@@ -85,8 +86,8 @@ COUNTRY_THEMES = {
     },
     "Lebanon": {
         "flag": "🇱🇧",
-        "primary": "#CE1126",  # Cedar Red
-        "accent": "#007A3D",  # Cedar Green
+        "primary": "#CE1126",
+        "accent": "#007A3D",
         "bg": "#1A0D0D",
         "card_bg": "rgba(43, 22, 22, 0.85)",
         "text": "#FFF0F0",
@@ -120,40 +121,53 @@ nav_mode = st.sidebar.radio(
 )
 
 
-# --- دالة تحويل الصورة لـ Base64 ---
-def get_image_base64(image_path):
-  if os.path.exists(image_path):
-    with open(image_path, "rb") as f:
-      return base64.b64encode(f.read()).decode()
+# --- دالة مرنة للبحث عن الملف وتحويله إلى Base64 بغض النظر عن امتداد الصورة ---
+def find_and_get_base64(prefix):
+  # تدعم البحث عن .jpeg, .jpg, .png وبأشكال الحروف المختلفة
+  patterns = [
+      f"{prefix}*.jpeg",
+      f"{prefix}*.jpg",
+      f"{prefix}*.png",
+      f"{prefix.lower()}*.jpeg",
+      f"{prefix.lower()}*.jpg",
+  ]
+  for pattern in patterns:
+    matches = glob.glob(pattern)
+    if matches:
+      with open(matches[0], "rb") as f:
+        return base64.b64encode(f.read()).decode()
   return ""
 
 
-flag_path = f"{selected_country} flag.jpeg"
-landscape_path = f"{selected_country} landscape.jpeg"
+bg_base64 = find_and_get_base64(f"{selected_country} landscape")
+flag_base64 = find_and_get_base64(f"{selected_country} flag")
 
-bg_base64 = get_image_base64(landscape_path)
-flag_base64 = get_image_base64(flag_path)
+# إجبار Streamlit على إظهار الصورة كخلفية للتطبيق بالكامل
+if bg_base64:
+  bg_css = f"""
+    .stApp {{
+        background: linear-gradient(rgba(10, 15, 20, 0.75), rgba(10, 15, 20, 0.88)), 
+                    url("data:image/jpeg;base64,{bg_base64}") no-repeat center center fixed !important;
+        background-size: cover !important;
+    }}
+    """
+else:
+  bg_css = f"""
+    .stApp {{
+        background-color: {theme['bg']} !important;
+    }}
+    """
 
-# صياغة خلفية الصفحة: إذا كانت صورة الـ landscape موجودة نستخدمها خلفية كاملة للتطبيق مع Dark Overlay، وإلا نستخدم اللون الأساسي
-bg_css_rule = (
-    f"""
-    background-image: linear-gradient(rgba(13, 27, 30, 0.82), rgba(13, 27, 30, 0.92)), url("data:image/jpeg;base64,{bg_base64}");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-"""
-    if bg_base64
-    else f"background-color: {theme['bg']};"
-)
-
-# Inject Dynamic CSS based on Selected Country Theme
+# Inject Dynamic CSS
 st.markdown(
     f"""
     <style>
-    .stApp {{
-        {bg_css_rule}
+    {bg_css}
+    
+    body, .stApp {{
         color: {theme['text']};
     }}
+    
     .metric-card {{
         background-color: {theme['card_bg']};
         border: 1px solid {theme['primary']};
@@ -161,50 +175,55 @@ st.markdown(
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         text-align: center;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
     }}
+    
     .hero-banner {{
-        background: linear-gradient(135deg, {theme['primary']}D9, {theme['card_bg']});
+        background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
         padding: 20px 25px;
         border-radius: 15px;
         border-left: 6px solid {theme['accent']};
         margin-bottom: 25px;
         backdrop-filter: blur(8px);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.4);
     }}
+    
     .header-container {{
         display: flex;
         align-items: center;
         gap: 15px;
     }}
+    
     .header-flag {{
         width: 60px;
         height: 40px;
         object-fit: cover;
         border-radius: 6px;
         border: 2px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.6);
     }}
+    
     .header-title {{
         color: white;
         margin: 0;
         font-size: 26px;
         font-weight: bold;
     }}
+    
     .competitor-card {{
         background-color: {theme['card_bg']};
         border-left: 4px solid {theme['accent']};
         padding: 15px;
         border-radius: 8px;
         margin-bottom: 10px;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
     }}
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-# Banner الهيدر المناسب: العلم يظهر بجانب اسم الدولة مباشرة في سطر واحد
+# هيدر التطبيق الرئيسي: العلم بجانب اسم الدولة في سطر واحد
 flag_html = (
     f'<img src="data:image/jpeg;base64,{flag_base64}" class="header-flag">'
     if flag_base64
