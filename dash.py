@@ -18,7 +18,7 @@ COUNTRY_THEMES = {
         "primary": "#006C35",  # Emerald Green
         "accent": "#C5A059",  # Gold
         "bg": "#0D1B1E",
-        "card_bg": "#132A2F",
+        "card_bg": "rgba(19, 42, 47, 0.85)",  # Translucent card background
         "text": "#E6F1FF",
         "landmark": "Kingdom Centre & Riyadh Skyline",
         "file": "AMECATH_Saudi_Arabia_Executive_Dashboard.xlsx",
@@ -28,7 +28,7 @@ COUNTRY_THEMES = {
         "primary": "#CE1126",  # Deep Red/Crimson
         "accent": "#00732F",  # Emerald
         "bg": "#1A0F10",
-        "card_bg": "#2A1618",
+        "card_bg": "rgba(42, 22, 24, 0.85)",
         "text": "#FFFFFF",
         "landmark": "Burj Khalifa & Dubai Skyline",
         "file": "AMECATH_UAE_Executive_Dashboard.xlsx",
@@ -38,17 +38,17 @@ COUNTRY_THEMES = {
         "primary": "#8A1538",  # Maroon/Burgundy
         "accent": "#E0A96D",  # Warm Gold
         "bg": "#1C0D12",
-        "card_bg": "#2E151E",
+        "card_bg": "rgba(46, 21, 30, 0.85)",
         "text": "#FFF5F5",
         "landmark": "Doha Corniche & Museum of Islamic Art",
         "file": "AMECATH_Qatar_Executive_Dashboard.xlsx",
     },
     "Kuwait": {
         "flag": "🇰🇼",
-        "primary": "#007A3D",  # Vibrant Green/Sky Blue mix
+        "primary": "#007A3D",  # Vibrant Green
         "accent": "#CE1126",  # Rich Red
         "bg": "#0A1816",
-        "card_bg": "#112925",
+        "card_bg": "rgba(17, 41, 37, 0.85)",
         "text": "#E6FFFA",
         "landmark": "Kuwait Towers",
         "file": "AMECATH_Kuwait_Executive_Dashboard.xlsx",
@@ -58,7 +58,7 @@ COUNTRY_THEMES = {
         "primary": "#DB162F",  # Omani Red
         "accent": "#008000",  # Green accent
         "bg": "#1C0D10",
-        "card_bg": "#2E161A",
+        "card_bg": "rgba(46, 22, 26, 0.85)",
         "text": "#FFF0F0",
         "landmark": "Al Alam Palace & Muscat Forts",
         "file": "AMECATH_Oman_Executive_Dashboard.xlsx",
@@ -68,7 +68,7 @@ COUNTRY_THEMES = {
         "primary": "#CE1126",  # Bahraini Red
         "accent": "#FFFFFF",  # White
         "bg": "#1A0F10",
-        "card_bg": "#2A1618",
+        "card_bg": "rgba(42, 22, 24, 0.85)",
         "text": "#FFFFFF",
         "landmark": "Bahrain World Trade Center",
         "file": "AMECATH_Bahrain_Executive_Dashboard.xlsx",
@@ -78,7 +78,7 @@ COUNTRY_THEMES = {
         "primary": "#000000",  # Black & Cedar accents
         "accent": "#CE1126",  # Red
         "bg": "#121212",
-        "card_bg": "#1F1F1F",
+        "card_bg": "rgba(31, 31, 31, 0.85)",
         "text": "#F5F5F5",
         "landmark": "Petra & Amman Citadel",
         "file": "AMECATH_Jordan_Executive_Dashboard.xlsx",
@@ -88,7 +88,7 @@ COUNTRY_THEMES = {
         "primary": "#CE1126",  # Cedar Red
         "accent": "#007A3D",  # Cedar Green
         "bg": "#1A0D0D",
-        "card_bg": "#2B1616",
+        "card_bg": "rgba(43, 22, 22, 0.85)",
         "text": "#FFF0F0",
         "landmark": "Jeita Grotto & Beirut Skyline",
         "file": "AMECATH_Lebanon_Executive_Dashboard.xlsx",
@@ -119,56 +119,8 @@ nav_mode = st.sidebar.radio(
     ],
 )
 
-# Inject Dynamic CSS based on Selected Country Theme
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-color: {theme['bg']};
-        color: {theme['text']};
-    }}
-    .metric-card {{
-        background-color: {theme['card_bg']};
-        border: 1px solid {theme['primary']};
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        text-align: center;
-    }}
-    .hero-banner {{
-        background: linear-gradient(135deg, {theme['primary']}, {theme['card_bg']});
-        padding: 25px;
-        border-radius: 15px;
-        border-left: 6px solid {theme['accent']};
-        margin-bottom: 25px;
-    }}
-    .competitor-card {{
-        background-color: {theme['card_bg']};
-        border-left: 4px solid {theme['accent']};
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }}
-    </style>
-""",
-    unsafe_allow_html=True,
-)
 
-# Header Banner
-st.markdown(
-    f"""
-    <div class="hero-banner">
-        <h1 style="color: white; margin: 0;">{theme['flag']} {selected_country.upper()} — EXECUTIVE MARKET DOSSIER</h1>
-        <p style="color: {theme['accent']}; font-size: 16px; margin-top: 5px; margin-bottom: 0;">
-            Strategic Landmark Focus: <b>{theme['landmark']}</b> | Active Theme Accent: <b>{theme['primary']}</b>
-        </p>
-    </div>
-""",
-    unsafe_allow_html=True,
-)
-
-
-# --- دالة تحويل الصورة لـ Base64 للخلفية ---
+# --- دالة تحويل الصورة لـ Base64 ---
 def get_image_base64(image_path):
   if os.path.exists(image_path):
     with open(image_path, "rb") as f:
@@ -176,53 +128,101 @@ def get_image_base64(image_path):
   return ""
 
 
-# تجهيز مسارات الصور بناءً على الدولة المختارة (مثلاً: kuwait_landscape.jpg و kuwait_flag.jpg)
-country_key = selected_country.lower().replace(" ", "_")
-flag_path = f"{country_key}_flag.jpeg"
-landscape_path = f"{country_key}_landscape.jpeg"
+flag_path = f"{selected_country} flag.jpeg"
+landscape_path = f"{selected_country} landscape.jpeg"
 
 bg_base64 = get_image_base64(landscape_path)
 flag_base64 = get_image_base64(flag_path)
 
-# عرض كارد الخلفية مع العلم واسم الدولة
+# صياغة خلفية الصفحة: إذا كانت صورة الـ landscape موجودة نستخدمها خلفية كاملة للتطبيق مع Dark Overlay، وإلا نستخدم اللون الأساسي
+bg_css_rule = (
+    f"""
+    background-image: linear-gradient(rgba(13, 27, 30, 0.82), rgba(13, 27, 30, 0.92)), url("data:image/jpeg;base64,{bg_base64}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+"""
+    if bg_base64
+    else f"background-color: {theme['bg']};"
+)
+
+# Inject Dynamic CSS based on Selected Country Theme
 st.markdown(
     f"""
     <style>
-    .country-card {{
-        position: relative;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("data:image/jpeg;base64,{bg_base64}");
-        background-size: cover;
-        background-position: center;
-        border-radius: 15px;
-        padding: 30px 20px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+    .stApp {{
+        {bg_css_rule}
+        color: {theme['text']};
     }}
-    .country-flag {{
-        width: 80px;
-        height: 55px;
+    .metric-card {{
+        background-color: {theme['card_bg']};
+        border: 1px solid {theme['primary']};
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        text-align: center;
+        backdrop-filter: blur(5px);
+    }}
+    .hero-banner {{
+        background: linear-gradient(135deg, {theme['primary']}D9, {theme['card_bg']});
+        padding: 20px 25px;
+        border-radius: 15px;
+        border-left: 6px solid {theme['accent']};
+        margin-bottom: 25px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }}
+    .header-container {{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }}
+    .header-flag {{
+        width: 60px;
+        height: 40px;
         object-fit: cover;
         border-radius: 6px;
         border: 2px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }}
-    .country-title {{
-        font-size: 24px;
-        font-weight: bold;
+    .header-title {{
+        color: white;
         margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        font-size: 26px;
+        font-weight: bold;
+    }}
+    .competitor-card {{
+        background-color: {theme['card_bg']};
+        border-left: 4px solid {theme['accent']};
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        backdrop-filter: blur(5px);
     }}
     </style>
+""",
+    unsafe_allow_html=True,
+)
 
-    <div class="country-card">
-        <img src="data:image/jpeg;base64,{flag_base64}" class="country-flag">
-        <div class="country-title">{selected_country}</div>
+# Banner الهيدر المناسب: العلم يظهر بجانب اسم الدولة مباشرة في سطر واحد
+flag_html = (
+    f'<img src="data:image/jpeg;base64,{flag_base64}" class="header-flag">'
+    if flag_base64
+    else f'<span style="font-size:32px;">{theme["flag"]}</span>'
+)
+
+st.markdown(
+    f"""
+    <div class="hero-banner">
+        <div class="header-container">
+            {flag_html}
+            <h1 class="header-title">{selected_country.upper()} — EXECUTIVE MARKET DOSSIER</h1>
+        </div>
+        <p style="color: {theme['accent']}; font-size: 15px; margin-top: 10px; margin-bottom: 0;">
+            Strategic Landmark Focus: <b>{theme['landmark']}</b> | Active Theme Accent: <b>{theme['primary']}</b>
+        </p>
     </div>
-    """,
+""",
     unsafe_allow_html=True,
 )
 
