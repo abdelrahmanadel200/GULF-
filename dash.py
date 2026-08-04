@@ -1,3 +1,4 @@
+import base64
 import os
 import pandas as pd
 import streamlit as st
@@ -167,6 +168,65 @@ st.markdown(
 )
 
 
+# --- دالة تحويل الصورة لـ Base64 للخلفية ---
+def get_image_base64(image_path):
+  if os.path.exists(image_path):
+    with open(image_path, "rb") as f:
+      return base64.b64encode(f.read()).decode()
+  return ""
+
+
+# تجهيز مسارات الصور بناءً على الدولة المختارة (مثلاً: kuwait_landscape.jpg و kuwait_flag.jpg)
+country_key = selected_country.lower().replace(" ", "_")
+flag_path = f"{country_key}_flag.jpg"
+landscape_path = f"{country_key}_landscape.jpg"
+
+bg_base64 = get_image_base64(landscape_path)
+flag_base64 = get_image_base64(flag_path)
+
+# عرض كارد الخلفية مع العلم واسم الدولة
+st.markdown(
+    f"""
+    <style>
+    .country-card {{
+        position: relative;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("data:image/jpeg;base64,{bg_base64}");
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        padding: 30px 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }}
+    .country-flag {{
+        width: 80px;
+        height: 55px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 2px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        margin-bottom: 15px;
+    }}
+    .country-title {{
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }}
+    </style>
+
+    <div class="country-card">
+        <img src="data:image/jpeg;base64,{flag_base64}" class="country-flag">
+        <div class="country-title">{selected_country}</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 # --- 3. DATA LOADING FUNCTION ---
 @st.cache_data
 def load_country_data(file_name):
@@ -228,13 +288,10 @@ elif nav_mode == "⚔️ Competitors & Pricing":
 
   if comp_sheet:
     df_comp = data_sheets[comp_sheet[0]]
-    # Clean and parse competitors table
     st.markdown(
         "### 🏢 Market Competitors (Click a card or select for Deep-Dive)"
     )
 
-    # Extract competitors assuming standard structure
-    # Let's show interactive cards grid using columns
     competitors_list = [
         "BD / Bard",
         "Teleflex / Arrow",
@@ -303,7 +360,6 @@ elif nav_mode == "📈 Financials & Tenders":
     """,
       unsafe_allow_html=True,
   )
-  # Show master or summary sheet if available
   if "7_Questions_Summary" in data_sheets:
     st.dataframe(
         data_sheets["7_Questions_Summary"].dropna(how="all"),
