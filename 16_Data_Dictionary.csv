@@ -1,0 +1,9 @@
+﻿Field,Definition,Evidence_Standard
+KRT_ESRD_Population,All patients on kidney replacement therapy (dialysis + functioning transplant),OBSERVED only
+HD_Population,Patients on chronic (maintenance) hemodialysis specifically,OBSERVED / PUBLISHED_FORECAST / DERIVED
+Dialysis_Centers / HD_Units / Transplant_Centers,Independent facility-type counts — never summed or substituted for one another,"OBSERVED only, else blank"
+KOL fields,"Verified named individuals with institution, role and evidence URL",Minimum target 8/country; fewer reported honestly if fewer verified
+Tunneled/NonTunneled Demand,Scenario-based catheter-unit demand (Low/Base/High),ANALYST_SCENARIO — requires a verified patient base to compute at all
+ASP / TAM / SAM / SOM,Commercial sizing fields,"Blank unless a country-specific, publicly disclosed price exists"
+Investment_Score,0-100 weighted country attractiveness score per Part 17,Blank unless every weighted sub-category has a real input — never partially estimated
+Price_Status = NOT_PUBLICLY_DISCLOSED,Used specifically for tender/procurement prices that exist but are not published,"Distinct from NOT_AVAILABLE, which means no tender/price data was found at all"

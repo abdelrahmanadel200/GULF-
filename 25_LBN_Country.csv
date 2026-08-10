@@ -1,0 +1,22 @@
+﻿Country,Country_Code,Section,Field,Value,Evidence_Level,Note
+Lebanon,LBN,Market & Demand,2026 HD Patients,,NOT_AVAILABLE,Projection not made — no verified growth-rate model exists to roll 2021/2022 figures forward to 2026 without fabricating a trend
+Lebanon,LBN,Market & Demand,2026 Total Dialysis,,NOT_AVAILABLE,Same as above
+Lebanon,LBN,Market & Demand,Base Catheter Demand,,NOT_AVAILABLE,"40% catheter prevalence x 1.5 annual replacement — generic scenario assumption, not country-specific"
+Lebanon,LBN,Market & Demand,Tunneled Demand,,NOT_AVAILABLE,"70% tunneled share — ANALYST_SCENARIO, not country-specific evidence"
+Lebanon,LBN,Market & Demand,Non-Tunneled Demand,,NOT_AVAILABLE,30% non-tunneled share — ANALYST_SCENARIO
+Lebanon,LBN,Clinical / Infrastructure,KRT,,NOT_AVAILABLE,Reference year: 
+Lebanon,LBN,Clinical / Infrastructure,Chronic HD,,NOT_AVAILABLE,Reference year: 
+Lebanon,LBN,Clinical / Infrastructure,Dialysis Centers,,NOT_AVAILABLE,Reference year: 
+Lebanon,LBN,Clinical / Infrastructure,HD Units,,NOT_AVAILABLE,
+Lebanon,LBN,Clinical / Infrastructure,Major Hospitals,,NOT_AVAILABLE,"Count of named, individually verified hospitals in Major_Hospitals sheet"
+Lebanon,LBN,Clinical / Infrastructure,Transplant Centers,,NOT_AVAILABLE,
+Lebanon,LBN,Commercial,ASP,,NOT_AVAILABLE,No publicly disclosed unit price found
+Lebanon,LBN,Commercial,TAM,,NOT_AVAILABLE,Blocked by missing ASP
+Lebanon,LBN,Commercial,SAM,,NOT_AVAILABLE,Blocked by missing TAM
+Lebanon,LBN,Commercial,SOM,,NOT_AVAILABLE,Blocked by missing SAM
+Lebanon,LBN,Commercial,Investment Score,,NOT_AVAILABLE,Would require fabricating sub-category scores
+Lebanon,LBN,Commercial,Investment Grade,,NOT_AVAILABLE,Depends on Investment Score
+Lebanon,LBN,Research Coverage,KOL Coverage,0 of 8 verified,OBSERVED,
+Lebanon,LBN,Research Coverage,Distributor Coverage,0 of 10,OBSERVED,
+Lebanon,LBN,Research Coverage,Tender Coverage,0 tenders located,OBSERVED,
+Lebanon,LBN,Research Coverage,Data Gap Status,CRITICAL — country not yet researched,,

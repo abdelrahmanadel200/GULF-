@@ -1,0 +1,22 @@
+﻿Country,Country_Code,Section,Field,Value,Evidence_Level,Note
+UAE,ARE,Market & Demand,2026 HD Patients,,NOT_AVAILABLE,Projection not made — no verified growth-rate model exists to roll 2021/2022 figures forward to 2026 without fabricating a trend
+UAE,ARE,Market & Demand,2026 Total Dialysis,,NOT_AVAILABLE,Same as above
+UAE,ARE,Market & Demand,Base Catheter Demand,,NOT_AVAILABLE,"40% catheter prevalence x 1.5 annual replacement — generic scenario assumption, not country-specific"
+UAE,ARE,Market & Demand,Tunneled Demand,,NOT_AVAILABLE,"70% tunneled share — ANALYST_SCENARIO, not country-specific evidence"
+UAE,ARE,Market & Demand,Non-Tunneled Demand,,NOT_AVAILABLE,30% non-tunneled share — ANALYST_SCENARIO
+UAE,ARE,Clinical / Infrastructure,KRT,,NOT_AVAILABLE,Reference year: 
+UAE,ARE,Clinical / Infrastructure,Chronic HD,,NOT_AVAILABLE,Reference year: 
+UAE,ARE,Clinical / Infrastructure,Dialysis Centers,,NOT_AVAILABLE,Reference year: 
+UAE,ARE,Clinical / Infrastructure,HD Units,,NOT_AVAILABLE,
+UAE,ARE,Clinical / Infrastructure,Major Hospitals,6,OBSERVED,"Count of named, individually verified hospitals in Major_Hospitals sheet"
+UAE,ARE,Clinical / Infrastructure,Transplant Centers,,NOT_AVAILABLE,
+UAE,ARE,Commercial,ASP,,NOT_AVAILABLE,No publicly disclosed unit price found
+UAE,ARE,Commercial,TAM,,NOT_AVAILABLE,Blocked by missing ASP
+UAE,ARE,Commercial,SAM,,NOT_AVAILABLE,Blocked by missing TAM
+UAE,ARE,Commercial,SOM,,NOT_AVAILABLE,Blocked by missing SAM
+UAE,ARE,Commercial,Investment Score,,NOT_AVAILABLE,Would require fabricating sub-category scores
+UAE,ARE,Commercial,Investment Grade,,NOT_AVAILABLE,Depends on Investment Score
+UAE,ARE,Research Coverage,KOL Coverage,8 of 8 verified,OBSERVED,
+UAE,ARE,Research Coverage,Distributor Coverage,2 of 10 (self-reported only),OBSERVED,
+UAE,ARE,Research Coverage,Tender Coverage,0 tenders located,OBSERVED,
+UAE,ARE,Research Coverage,Data Gap Status,HIGH — see Data_Gaps,,

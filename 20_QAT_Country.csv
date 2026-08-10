@@ -1,0 +1,22 @@
+﻿Country,Country_Code,Section,Field,Value,Evidence_Level,Note
+Qatar,QAT,Market & Demand,2026 HD Patients,,NOT_AVAILABLE,Projection not made — no verified growth-rate model exists to roll 2021/2022 figures forward to 2026 without fabricating a trend
+Qatar,QAT,Market & Demand,2026 Total Dialysis,,NOT_AVAILABLE,Same as above
+Qatar,QAT,Market & Demand,Base Catheter Demand,540,ANALYST_SCENARIO,"40% catheter prevalence x 1.5 annual replacement — generic scenario assumption, not country-specific"
+Qatar,QAT,Market & Demand,Tunneled Demand,378,ANALYST_SCENARIO,"70% tunneled share — ANALYST_SCENARIO, not country-specific evidence"
+Qatar,QAT,Market & Demand,Non-Tunneled Demand,162,ANALYST_SCENARIO,30% non-tunneled share — ANALYST_SCENARIO
+Qatar,QAT,Clinical / Infrastructure,KRT,,NOT_AVAILABLE,Reference year: 
+Qatar,QAT,Clinical / Infrastructure,Chronic HD,900,OBSERVED,Reference year: 2022
+Qatar,QAT,Clinical / Infrastructure,Dialysis Centers,7,OBSERVED,Reference year: 2022
+Qatar,QAT,Clinical / Infrastructure,HD Units,197,OBSERVED,"Qatar figure = HD stations, not hospital departments"
+Qatar,QAT,Clinical / Infrastructure,Major Hospitals,1,OBSERVED,"Count of named, individually verified hospitals in Major_Hospitals sheet"
+Qatar,QAT,Clinical / Infrastructure,Transplant Centers,,NOT_AVAILABLE,
+Qatar,QAT,Commercial,ASP,,NOT_AVAILABLE,No publicly disclosed unit price found
+Qatar,QAT,Commercial,TAM,,NOT_AVAILABLE,Blocked by missing ASP
+Qatar,QAT,Commercial,SAM,,NOT_AVAILABLE,Blocked by missing TAM
+Qatar,QAT,Commercial,SOM,,NOT_AVAILABLE,Blocked by missing SAM
+Qatar,QAT,Commercial,Investment Score,,NOT_AVAILABLE,Would require fabricating sub-category scores
+Qatar,QAT,Commercial,Investment Grade,,NOT_AVAILABLE,Depends on Investment Score
+Qatar,QAT,Research Coverage,KOL Coverage,3 of 8 verified (clinical nephrology only),OBSERVED,
+Qatar,QAT,Research Coverage,Distributor Coverage,0 of 10,OBSERVED,
+Qatar,QAT,Research Coverage,Tender Coverage,0 tenders located,OBSERVED,
+Qatar,QAT,Research Coverage,Data Gap Status,MEDIUM-HIGH — see Data_Gaps,,

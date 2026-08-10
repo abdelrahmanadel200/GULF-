@@ -1,0 +1,22 @@
+﻿Country,Country_Code,Section,Field,Value,Evidence_Level,Note
+Oman,OMN,Market & Demand,2026 HD Patients,,NOT_AVAILABLE,Projection not made — no verified growth-rate model exists to roll 2021/2022 figures forward to 2026 without fabricating a trend
+Oman,OMN,Market & Demand,2026 Total Dialysis,,NOT_AVAILABLE,Same as above
+Oman,OMN,Market & Demand,Base Catheter Demand,,NOT_AVAILABLE,"40% catheter prevalence x 1.5 annual replacement — generic scenario assumption, not country-specific"
+Oman,OMN,Market & Demand,Tunneled Demand,,NOT_AVAILABLE,"70% tunneled share — ANALYST_SCENARIO, not country-specific evidence"
+Oman,OMN,Market & Demand,Non-Tunneled Demand,,NOT_AVAILABLE,30% non-tunneled share — ANALYST_SCENARIO
+Oman,OMN,Clinical / Infrastructure,KRT,,NOT_AVAILABLE,Reference year: 
+Oman,OMN,Clinical / Infrastructure,Chronic HD,,NOT_AVAILABLE,Reference year: 
+Oman,OMN,Clinical / Infrastructure,Dialysis Centers,,NOT_AVAILABLE,Reference year: 
+Oman,OMN,Clinical / Infrastructure,HD Units,,NOT_AVAILABLE,
+Oman,OMN,Clinical / Infrastructure,Major Hospitals,,NOT_AVAILABLE,"Count of named, individually verified hospitals in Major_Hospitals sheet"
+Oman,OMN,Clinical / Infrastructure,Transplant Centers,,NOT_AVAILABLE,
+Oman,OMN,Commercial,ASP,,NOT_AVAILABLE,No publicly disclosed unit price found
+Oman,OMN,Commercial,TAM,,NOT_AVAILABLE,Blocked by missing ASP
+Oman,OMN,Commercial,SAM,,NOT_AVAILABLE,Blocked by missing TAM
+Oman,OMN,Commercial,SOM,,NOT_AVAILABLE,Blocked by missing SAM
+Oman,OMN,Commercial,Investment Score,,NOT_AVAILABLE,Would require fabricating sub-category scores
+Oman,OMN,Commercial,Investment Grade,,NOT_AVAILABLE,Depends on Investment Score
+Oman,OMN,Research Coverage,KOL Coverage,0 of 8 verified,OBSERVED,
+Oman,OMN,Research Coverage,Distributor Coverage,0 of 10,OBSERVED,
+Oman,OMN,Research Coverage,Tender Coverage,0 tenders located,OBSERVED,
+Oman,OMN,Research Coverage,Data Gap Status,CRITICAL — country not yet researched,,

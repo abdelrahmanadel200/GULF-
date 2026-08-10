@@ -1,0 +1,22 @@
+﻿Country,Country_Code,Section,Field,Value,Evidence_Level,Note
+Iraq,IRQ,Market & Demand,2026 HD Patients,,NOT_AVAILABLE,Projection not made — no verified growth-rate model exists to roll 2021/2022 figures forward to 2026 without fabricating a trend
+Iraq,IRQ,Market & Demand,2026 Total Dialysis,,NOT_AVAILABLE,Same as above
+Iraq,IRQ,Market & Demand,Base Catheter Demand,,NOT_AVAILABLE,"40% catheter prevalence x 1.5 annual replacement — generic scenario assumption, not country-specific"
+Iraq,IRQ,Market & Demand,Tunneled Demand,,NOT_AVAILABLE,"70% tunneled share — ANALYST_SCENARIO, not country-specific evidence"
+Iraq,IRQ,Market & Demand,Non-Tunneled Demand,,NOT_AVAILABLE,30% non-tunneled share — ANALYST_SCENARIO
+Iraq,IRQ,Clinical / Infrastructure,KRT,,NOT_AVAILABLE,Reference year: 
+Iraq,IRQ,Clinical / Infrastructure,Chronic HD,,NOT_AVAILABLE,Reference year: 
+Iraq,IRQ,Clinical / Infrastructure,Dialysis Centers,,NOT_AVAILABLE,Reference year: 
+Iraq,IRQ,Clinical / Infrastructure,HD Units,,NOT_AVAILABLE,
+Iraq,IRQ,Clinical / Infrastructure,Major Hospitals,,NOT_AVAILABLE,"Count of named, individually verified hospitals in Major_Hospitals sheet"
+Iraq,IRQ,Clinical / Infrastructure,Transplant Centers,,NOT_AVAILABLE,
+Iraq,IRQ,Commercial,ASP,,NOT_AVAILABLE,No publicly disclosed unit price found
+Iraq,IRQ,Commercial,TAM,,NOT_AVAILABLE,Blocked by missing ASP
+Iraq,IRQ,Commercial,SAM,,NOT_AVAILABLE,Blocked by missing TAM
+Iraq,IRQ,Commercial,SOM,,NOT_AVAILABLE,Blocked by missing SAM
+Iraq,IRQ,Commercial,Investment Score,,NOT_AVAILABLE,Would require fabricating sub-category scores
+Iraq,IRQ,Commercial,Investment Grade,,NOT_AVAILABLE,Depends on Investment Score
+Iraq,IRQ,Research Coverage,KOL Coverage,0 of 8 verified,OBSERVED,
+Iraq,IRQ,Research Coverage,Distributor Coverage,0 of 10,OBSERVED,
+Iraq,IRQ,Research Coverage,Tender Coverage,0 tenders located,OBSERVED,
+Iraq,IRQ,Research Coverage,Data Gap Status,CRITICAL — country not yet researched,,

@@ -1,0 +1,10 @@
+﻿Country,Country_Code,HD_Patients_2026,Total_Dialysis_2026,KRT,Dialysis_Centers,Base_Catheter_Demand,Tunneled_Demand,Non_Tunneled_Demand,ASP,TAM,SAM,SOM,Investment_Score,Investment_Grade,Key_Strength,Key_Risk,Data_Confidence
+Saudi Arabia,SAU,,,30000,275,,,,,,,,,,"Deepest verified data of the 9 markets; one real, evidenced NUPCO catheter tender (NPT0003-24) with 6 named awardees.","No hospital/unit-level facility breakdown yet; no publicly disclosed catheter ASP found, so TAM cannot be computed.","Medium — strong clinical/tender evidence, but commercial sizing inputs missing"
+UAE,ARE,,,,,,,,,,,,,,8 of 8 target KOLs verified across SEHA and private-sector hospitals; a third-party estimate pegs the catheter market at ~USD 14M (not independently verified).,"No official patient headcount located, only conflicting prevalence rates (152 vs 370 per million from different years); no tender-verified distributor list.","Low-Medium — good KOL coverage, weak patient-count and commercial evidence"
+Qatar,QAT,,,,7,,,,,,,,,,"Single-payer system (Hamad Medical Corporation) gives a clean, well-documented 2022 patient/facility count (900 HD, 7 units, 197 stations).",Centralized procurement likely runs through HMC's own supply chain rather than a diversified distributor market — no distributor evidence found; only 3 of 8 target KOLs verified as clinical nephrologists.,"Medium — solid clinical data, minimal commercial/distributor evidence"
+Kuwait,KWT,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
+Oman,OMN,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
+Bahrain,BHR,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
+Jordan,JOR,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
+Lebanon,LBN,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
+Iraq,IRQ,,,,,,,,,,,,,,NOT_AVAILABLE,Not yet researched,Not Rated — country not yet researched
