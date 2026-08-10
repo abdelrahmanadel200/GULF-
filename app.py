@@ -1,16 +1,13 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-
 from pathlib import Path
-from PIL import Image
+import base64
+import html
 
 
-# ============================================================
+# =========================================================
 # PAGE CONFIG
-# ============================================================
+# =========================================================
 
 st.set_page_config(
     page_title="MEA Hemodialysis Catheter Intelligence",
@@ -20,632 +17,609 @@ st.set_page_config(
 )
 
 
-# ============================================================
-# PATHS
-# ============================================================
+# =========================================================
+# ROOT
+# =========================================================
 
-BASE_DIR = Path(__file__).resolve().parent
-
-DATA_DIR = BASE_DIR / "data"
-FLAGS_DIR = BASE_DIR / "assets" / "flags"
-LANDSCAPE_DIR = BASE_DIR / "assets" / "landscapes"
+ROOT = Path(__file__).resolve().parent
 
 
-# ============================================================
-# COUNTRY CONFIGURATION
-# ============================================================
+# =========================================================
+# COUNTRY CONFIG
+# EXACT FILENAMES FROM YOUR GITHUB REPOSITORY
+# =========================================================
 
 COUNTRIES = {
+
     "Saudi Arabia": {
         "code": "SAU",
-        "flag": "SAU.png",
-        "landscape": "SAU.jpg",
-        "currency": "SAR"
+        "flag": "saudi_arabia_flag.jpeg",
+        "landscape": "saudi_landscape.jpeg",
+        "csv": "18_SAU_Country.csv"
     },
-    "United Arab Emirates": {
+
+    "UAE": {
         "code": "ARE",
-        "flag": "ARE.png",
-        "landscape": "ARE.jpg",
-        "currency": "AED"
+        "flag": "uae_flag.jpeg",
+        "landscape": "uae_landscape.jpeg",
+        "csv": "19_ARE_Country.csv"
     },
+
     "Qatar": {
         "code": "QAT",
-        "flag": "QAT.png",
-        "landscape": "QAT.jpg",
-        "currency": "QAR"
+        "flag": "qatar_flag.jpeg",
+        "landscape": "qatar_landscape.jpeg",
+        "csv": "20_QAT_Country.csv"
     },
+
     "Kuwait": {
         "code": "KWT",
-        "flag": "KWT.png",
-        "landscape": "KWT.jpg",
-        "currency": "KWD"
+        "flag": "kuwait_flag.jpeg",
+        "landscape": "kuwait_landscape.jpeg",
+        "csv": "21_KWT_Country.csv"
     },
+
     "Oman": {
         "code": "OMN",
-        "flag": "OMN.png",
-        "landscape": "OMN.jpg",
-        "currency": "OMR"
+        "flag": "oman_flag.jpeg",
+        "landscape": "oman_landscape.jpeg",
+        "csv": "22_OMN_Country.csv"
     },
+
     "Bahrain": {
         "code": "BHR",
-        "flag": "BHR.png",
-        "landscape": "BHR.jpg",
-        "currency": "BHD"
+        "flag": "bahraien_flag.jpeg",
+        "landscape": "bahrain_landscape.jpg",
+        "csv": "23_BHR_Country.csv"
     },
+
     "Jordan": {
         "code": "JOR",
-        "flag": "JOR.png",
-        "landscape": "JOR.jpg",
-        "currency": "JOD"
+        "flag": "jordon_flag.jpeg",
+        "landscape": "jordon_landscape.jpeg",
+        "csv": "24_JOR_Country.csv"
     },
+
     "Lebanon": {
         "code": "LBN",
-        "flag": "LBN.png",
-        "landscape": "LBN.jpg",
-        "currency": "LBP"
+        "flag": "lebanon_flag.jpeg",
+        "landscape": "lebanon_landscape.jpeg",
+        "csv": "25_LBN_Country.csv"
     },
+
     "Iraq": {
         "code": "IRQ",
-        "flag": "IRQ.png",
-        "landscape": "IRQ.jpg",
-        "currency": "IQD"
+        "flag": None,
+        "landscape": None,
+        "csv": "26_IRQ_Country.csv"
     }
 }
 
 
-# ============================================================
-# CSS
-# ============================================================
+# =========================================================
+# DATA FILES
+# =========================================================
 
-st.markdown(
-    """
-    <style>
+DATASETS = {
 
-    /* Main background */
-    .stApp {
-        background: #f4f7fb;
-    }
-
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background: #111827;
-    }
-
-    section[data-testid="stSidebar"] * {
-        color: white;
-    }
-
-    /* KPI cards */
-    .kpi-card {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-        border: 1px solid #e5e7eb;
-        min-height: 120px;
-    }
-
-    .kpi-title {
-        font-size: 13px;
-        color: #6b7280;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .kpi-value {
-        font-size: 30px;
-        font-weight: 800;
-        color: #111827;
-        margin-top: 5px;
-    }
-
-    .hero {
-        border-radius: 20px;
-        padding: 35px;
-        min-height: 260px;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 25px;
-    }
-
-    .hero-overlay {
-        background: rgba(0,0,0,0.48);
-        position: absolute;
-        inset: 0;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        color: white;
-    }
-
-    .hero-title {
-        font-size: 38px;
-        font-weight: 800;
-        margin-bottom: 5px;
-    }
-
-    .hero-subtitle {
-        font-size: 17px;
-        opacity: 0.9;
-    }
-
-    .section-title {
-        font-size: 24px;
-        font-weight: 800;
-        color: #111827;
-        margin-top: 25px;
-        margin-bottom: 15px;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        background: rgba(255,255,255,0.18);
-        margin-top: 12px;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    "Executive Summary": "01_Executive_Summary.csv",
+    "Country Master": "02_Country_Master.csv",
+    "Market Sizing": "03_Market_Sizing.csv",
+    "Demand Model": "04_Demand_Model.csv",
+    "KOL Master": "05_KOL_Master.csv",
+    "Major Hospitals": "06_Major_Hospitals.csv",
+    "Hot Areas": "07_Hot_Areas.csv",
+    "Top Distributors": "08_Top_Distributors.csv",
+    "Competitors": "09_Competitor_Master.csv",
+    "Tender SKU Detail": "10_Tender_SKU_Detail.csv",
+    "NUPCO Tenders": "11_NUPCO_Tenders.csv",
+    "Tender Master": "12_Tender_Master.csv",
+    "Data Gaps": "13_Data_Gaps.csv",
+    "Audit Checks": "14_Audit_Checks.csv",
+    "QA Summary": "15_QA_Summary.csv",
+    "Data Dictionary": "16_Data_Dictionary.csv",
+    "Source Register": "17_Source_Register.csv"
+}
 
 
-# ============================================================
-# LOAD DATA
-# ============================================================
+# =========================================================
+# HELPERS
+# =========================================================
 
-@st.cache_data
-def load_csv(filename):
+def read_csv(filename):
 
-    path = DATA_DIR / filename
+    path = ROOT / filename
 
     if not path.exists():
         return pd.DataFrame()
 
     try:
-        return pd.read_csv(path)
+        return pd.read_csv(
+            path,
+            encoding="utf-8-sig"
+        )
+
     except Exception:
-        return pd.DataFrame()
+
+        try:
+            return pd.read_csv(
+                path,
+                encoding="utf-8"
+            )
+
+        except Exception:
+            return pd.DataFrame()
 
 
-executive = load_csv("01_Executive_Summary.csv")
-country_master = load_csv("02_Country_Master.csv")
-market_sizing = load_csv("03_Market_Sizing.csv")
-demand_model = load_csv("04_Demand_Model.csv")
-kol_master = load_csv("05_KOL_Master.csv")
-hospitals = load_csv("06_Major_Hospitals.csv")
-facilities = load_csv("07_HD_Facility_Master.csv")
-facility_summary = load_csv("08_HD_Facility_Summary.csv")
-hot_areas = load_csv("09_Hot_Areas.csv")
-distributors = load_csv("10_Top_Distributors.csv")
-competitors = load_csv("11_Competitor_Master.csv")
-tenders = load_csv("12_Tender_Master.csv")
-tender_sku = load_csv("13_Tender_SKU_Detail.csv")
-nupco = load_csv("14_NUPCO_Tenders.csv")
-data_gaps = load_csv("15_Data_Gaps.csv")
-facility_gaps = load_csv("16_HD_Facility_Data_Gaps.csv")
-audit = load_csv("17_Audit_Checks.csv")
-qa = load_csv("18_QA_Summary.csv")
-dictionary = load_csv("19_Data_Dictionary.csv")
-sources = load_csv("20_Source_Register.csv")
-facility_sources = load_csv("21_HD_Facility_Source_Register.csv")
+def image_base64(filename):
 
-
-# ============================================================
-# HELPERS
-# ============================================================
-
-def find_column(df, names):
-
-    if df.empty:
+    if not filename:
         return None
 
-    normalized = {
-        str(col).strip().lower(): col
-        for col in df.columns
-    }
+    path = ROOT / filename
 
-    for name in names:
-        if name.lower() in normalized:
-            return normalized[name.lower()]
+    if not path.exists():
+        return None
 
-    return None
+    try:
+
+        encoded = base64.b64encode(
+            path.read_bytes()
+        ).decode()
+
+        extension = path.suffix.lower()
+
+        if extension in [".jpg", ".jpeg"]:
+            mime = "image/jpeg"
+
+        elif extension == ".png":
+            mime = "image/png"
+
+        elif extension == ".webp":
+            mime = "image/webp"
+
+        else:
+            mime = "image/jpeg"
+
+        return f"data:{mime};base64,{encoded}"
+
+    except Exception:
+        return None
 
 
-def country_filter(df, country, code):
+def country_filter(df, country):
 
     if df.empty:
         return df
 
-    country_col = find_column(df, ["Country"])
+    possible = [
+        "Country",
+        "country",
+        "Country_Name"
+    ]
 
-    if country_col:
-        result = df[
-            df[country_col].astype(str).str.strip().str.lower()
-            == country.lower()
-        ]
+    column = None
 
-        if not result.empty:
-            return result
+    for c in possible:
 
-    code_col = find_column(df, ["Country_Code"])
+        if c in df.columns:
+            column = c
+            break
 
-    if code_col:
-        return df[
-            df[code_col].astype(str).str.strip().str.upper()
-            == code.upper()
-        ]
+    if column is None:
+        return df
 
-    return pd.DataFrame()
+    return df[
+        df[column]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        == country.lower()
+    ]
 
 
-def safe_number(df, column_names):
+def find_column(df, names):
 
-    col = find_column(df, column_names)
+    for name in names:
 
-    if col is None:
-        return None
+        for column in df.columns:
 
-    values = pd.to_numeric(df[col], errors="coerce")
-
-    if values.notna().any():
-        return values.sum()
+            if str(column).strip().lower() == name.lower():
+                return column
 
     return None
 
 
-def display_kpi(title, value):
+def get_value(row, names):
 
-    if value is None or pd.isna(value):
-        value = "N/A"
+    if row is None:
+        return "—"
 
-    elif isinstance(value, (int, float, np.integer, np.floating)):
-        if float(value).is_integer():
-            value = f"{int(value):,}"
-        else:
-            value = f"{float(value):,.1f}"
+    for name in names:
+
+        if name in row.index:
+
+            value = row[name]
+
+            if pd.notna(value) and str(value).strip() != "":
+                return value
+
+    return "—"
+
+
+# =========================================================
+# CSS
+# =========================================================
+
+st.markdown(
+    """
+<style>
+
+.stApp {
+    background-color: #f4f7fb;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #0b1220;
+}
+
+[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+.hero {
+
+    height: 340px;
+
+    border-radius: 25px;
+
+    background-size: cover;
+
+    background-position: center;
+
+    overflow: hidden;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.20);
+}
+
+.hero-overlay {
+
+    height: 100%;
+
+    padding: 50px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-end;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.82),
+            rgba(0,0,0,.42),
+            rgba(0,0,0,.10)
+        );
+}
+
+.hero-title {
+
+    color: white;
+
+    font-size: 40px;
+
+    font-weight: 800;
+
+    line-height: 1.1;
+
+}
+
+.hero-subtitle {
+
+    color: #e5e7eb;
+
+    font-size: 18px;
+
+    margin-top: 8px;
+
+}
+
+.flag {
+
+    width: 85px;
+
+    height: 55px;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.35);
+}
+
+.card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.05);
+
+    min-height: 125px;
+
+}
+
+.card-title {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #64748b;
+
+    text-transform: uppercase;
+
+}
+
+.card-value {
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+    margin-top: 8px;
+
+}
+
+.section {
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+    margin-top: 30px;
+
+    margin-bottom: 15px;
+
+}
+
+</style>
+""",
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
+# SIDEBAR
+# =========================================================
+
+with st.sidebar:
 
     st.markdown(
-        f"""
-        <div class="kpi-card">
-            <div class="kpi-title">{title}</div>
-            <div class="kpi-value">{value}</div>
+        """
+        <div style="
+            font-size:24px;
+            font-weight:800;
+            margin-bottom:25px;">
+            🩺 MEA HD Intelligence
         </div>
         """,
         unsafe_allow_html=True
     )
 
+    page = st.radio(
+        "Dashboard",
+        [
+            "Executive Dashboard",
+            "Country Intelligence",
+            "HD Facility Intelligence",
+            "Market Sizing",
+            "Demand Model",
+            "KOL Intelligence",
+            "Hospital Intelligence",
+            "Hot Areas",
+            "Distributor Intelligence",
+            "Competitor Intelligence",
+            "Tender Intelligence",
+            "Data Quality"
+        ]
+    )
 
-def get_image(path):
+    st.markdown("---")
 
-    if path.exists():
-        return str(path)
+    country_name = st.selectbox(
+        "🌍 Country",
+        list(COUNTRIES.keys())
+    )
 
-    return None
+
+country = COUNTRIES[country_name]
 
 
-# ============================================================
-# SIDEBAR
-# ============================================================
+# =========================================================
+# HERO IMAGE
+# =========================================================
 
-st.sidebar.markdown(
-    """
-    <h2 style="color:white;">
-    🩺 MEA HD Intelligence
-    </h2>
+landscape = image_base64(
+    country["landscape"]
+)
+
+
+flag = image_base64(
+    country["flag"]
+)
+
+
+if landscape:
+
+    background = (
+        f"background-image:url('{landscape}');"
+    )
+
+else:
+
+    background = (
+        "background:linear-gradient("
+        "135deg,#0f172a,#1d4ed8);"
+    )
+
+
+flag_html = ""
+
+if flag:
+
+    flag_html = (
+        f"<img class='flag' src='{flag}'>"
+    )
+
+
+st.markdown(
+    f"""
+    <div class="hero" style="{background}">
+
+        <div class="hero-overlay">
+
+            {flag_html}
+
+            <div class="hero-title">
+                MEA Hemodialysis Catheter
+                Market Intelligence
+            </div>
+
+            <div class="hero-subtitle">
+                {country_name}
+                ({country["code"]})
+                • 2026 Market Intelligence Dashboard
+            </div>
+
+        </div>
+
+    </div>
     """,
     unsafe_allow_html=True
 )
 
-page = st.sidebar.radio(
-    "Dashboard",
-    [
-        "Executive Overview",
-        "Country Intelligence",
-        "HD Facilities",
-        "Market Sizing",
-        "Demand Model",
-        "KOL Intelligence",
-        "Hospitals",
-        "Hot Areas",
-        "Distributors",
-        "Competitors",
-        "Tenders",
-        "Data Quality"
-    ]
-)
 
+# =========================================================
+# EXECUTIVE DASHBOARD
+# =========================================================
 
-selected_country = st.sidebar.selectbox(
-    "Select Country",
-    list(COUNTRIES.keys())
-)
-
-country_info = COUNTRIES[selected_country]
-country_code = country_info["code"]
-
-
-# ============================================================
-# COUNTRY HERO
-# ============================================================
-
-def country_hero(country):
-
-    info = COUNTRIES[country]
-
-    landscape = LANDSCAPE_DIR / info["landscape"]
-    flag = FLAGS_DIR / info["flag"]
-
-    if landscape.exists():
-
-        background = landscape.as_posix()
-
-        flag_html = ""
-
-        if flag.exists():
-            flag_html = f"""
-            <img
-                src="data:image/png;base64,{__import__('base64').b64encode(flag.read_bytes()).decode()}"
-                width="80"
-                style="border-radius:8px;margin-bottom:15px;"
-            >
-            """
-
-        st.markdown(
-            f"""
-            <div class="hero"
-                 style="background-image:url('data:image/jpeg;base64,{__import__('base64').b64encode(landscape.read_bytes()).decode()}');">
-
-                <div class="hero-overlay"></div>
-
-                <div class="hero-content">
-
-                    {flag_html}
-
-                    <div class="hero-title">
-                        {country}
-                    </div>
-
-                    <div class="hero-subtitle">
-                        Hemodialysis Catheter Market Intelligence
-                    </div>
-
-                    <div class="badge">
-                        Country Code: {info['code']}
-                    </div>
-
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-
-# ============================================================
-# EXECUTIVE OVERVIEW
-# ============================================================
-
-if page == "Executive Overview":
-
-    st.title("MEA Hemodialysis Catheter Market Intelligence")
+if page == "Executive Dashboard":
 
     st.markdown(
-        """
-        ### Regional Commercial Intelligence Dashboard
-
-        **9-country Middle East & Africa hemodialysis catheter market**
-        """
+        '<div class="section">Executive Dashboard</div>',
+        unsafe_allow_html=True
     )
 
-    if not executive.empty:
+    df = read_csv(
+        DATASETS["Executive Summary"]
+    )
 
-        st.dataframe(
-            executive,
-            use_container_width=True,
-            hide_index=True
+    filtered = country_filter(
+        df,
+        country_name
+    )
+
+    if filtered.empty:
+
+        st.warning(
+            "No country-specific Executive Summary record found."
         )
 
     else:
 
-        st.warning(
-            "Executive_Summary.csv was not found or contains no data."
-        )
+        row = filtered.iloc[0]
 
+        c1, c2, c3, c4 = st.columns(4)
 
-# ============================================================
-# COUNTRY INTELLIGENCE
-# ============================================================
+        cards = [
 
-elif page == "Country Intelligence":
+            (
+                "2026 HD Patients",
+                [
+                    "2026 HD Patients",
+                    "HD Patients 2026",
+                    "HD_Patients_2026"
+                ]
+            ),
 
-    country_hero(selected_country)
+            (
+                "Total Dialysis",
+                [
+                    "2026 Total Dialysis",
+                    "Total Dialysis",
+                    "Total_Dialysis"
+                ]
+            ),
 
-    st.markdown(
-        '<div class="section-title">Country Snapshot</div>',
-        unsafe_allow_html=True
-    )
+            (
+                "Base Catheter Demand",
+                [
+                    "Base Catheter Demand",
+                    "Catheter Demand",
+                    "Base_Catheter_Demand"
+                ]
+            ),
 
-    c_country = country_filter(
-        country_master,
-        selected_country,
-        country_code
-    )
-
-    c_exec = country_filter(
-        executive,
-        selected_country,
-        country_code
-    )
-
-    c_facilities = country_filter(
-        facilities,
-        selected_country,
-        country_code
-    )
-
-    c_hot = country_filter(
-        hot_areas,
-        selected_country,
-        country_code
-    )
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        display_kpi(
-            "HD Facilities",
-            len(c_facilities) if not c_facilities.empty else None
-        )
-
-    with col2:
-        display_kpi(
-            "HD Patients",
-            safe_number(
-                c_exec,
-                ["2026 HD Patients", "HD Patients"]
-            )
-        )
-
-    with col3:
-        display_kpi(
-            "Dialysis Centers",
-            safe_number(
-                c_country,
-                ["Dialysis centers", "Dialysis Centers"]
-            )
-        )
-
-    with col4:
-        display_kpi(
-            "KRT Population",
-            safe_number(
-                c_country,
-                ["KRT / ESRD population", "KRT"]
-            )
-        )
-
-    st.markdown(
-        '<div class="section-title">Country Data</div>',
-        unsafe_allow_html=True
-    )
-
-    if not c_country.empty:
-        st.dataframe(
-            c_country,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# HD FACILITIES
-# ============================================================
-
-elif page == "HD Facilities":
-
-    country_hero(selected_country)
-
-    st.title("Verified HD Facility Intelligence")
-
-    c_facilities = country_filter(
-        facilities,
-        selected_country,
-        country_code
-    )
-
-    if c_facilities.empty:
-
-        st.warning(
-            "No facility records were found for this country."
-        )
-
-    else:
-
-        col1, col2, col3 = st.columns(3)
-
-        with col1:
-            display_kpi(
-                "Verified Facilities",
-                len(c_facilities)
+            (
+                "Investment Grade",
+                [
+                    "Investment Grade",
+                    "Investment_Grade"
+                ]
             )
 
-        station_col = find_column(
-            c_facilities,
-            ["HD_Stations", "HD Stations"]
-        )
+        ]
 
-        with col2:
-            if station_col:
-                stations = pd.to_numeric(
-                    c_facilities[station_col],
-                    errors="coerce"
-                ).sum()
-            else:
-                stations = None
+        for col, (title, candidates) in zip(
+            [c1,c2,c3,c4],
+            cards
+        ):
 
-            display_kpi(
-                "Known HD Stations",
-                stations
+            value = get_value(
+                row,
+                candidates
             )
 
-        type_col = find_column(
-            c_facilities,
-            ["Facility_Type", "Facility Type"]
-        )
+            with col:
 
-        with col3:
+                st.markdown(
+                    f"""
+                    <div class="card">
 
-            if type_col:
-                hospital_count = (
-                    c_facilities[type_col]
-                    .astype(str)
-                    .str.contains(
-                        "hospital",
-                        case=False,
-                        na=False
-                    )
-                    .sum()
+                        <div class="card-title">
+                            {title}
+                        </div>
+
+                        <div class="card-value">
+                            {html.escape(str(value))}
+                        </div>
+
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
-            else:
-                hospital_count = None
-
-            display_kpi(
-                "Hospitals / Hospital Units",
-                hospital_count
-            )
 
         st.markdown(
-            '<div class="section-title">Facility Database</div>',
+            '<div class="section">Country Executive Data</div>',
             unsafe_allow_html=True
         )
-
-        search = st.text_input(
-            "Search facility, city, region or hospital"
-        )
-
-        filtered = c_facilities.copy()
-
-        if search:
-
-            mask = filtered.astype(str).apply(
-                lambda row: row.str.contains(
-                    search,
-                    case=False,
-                    na=False
-                ).any(),
-                axis=1
-            )
-
-            filtered = filtered[mask]
 
         st.dataframe(
             filtered,
@@ -653,327 +627,178 @@ elif page == "HD Facilities":
             hide_index=True
         )
 
-        csv = filtered.to_csv(
-            index=False
-        ).encode("utf-8-sig")
 
-        st.download_button(
-            "Download Country Facility Data",
-            csv,
-            file_name=f"{country_code}_HD_Facilities.csv",
-            mime="text/csv"
-        )
+# =========================================================
+# COUNTRY INTELLIGENCE
+# =========================================================
 
+elif page == "Country Intelligence":
 
-# ============================================================
-# MARKET SIZING
-# ============================================================
-
-elif page == "Market Sizing":
-
-    country_hero(selected_country)
-
-    st.title("Market Sizing")
-
-    c_market = country_filter(
-        market_sizing,
-        selected_country,
-        country_code
+    st.markdown(
+        '<div class="section">Country Intelligence</div>',
+        unsafe_allow_html=True
     )
 
-    if c_market.empty:
+    df = read_csv(
+        country["csv"]
+    )
 
-        st.warning(
-            "No market sizing data available."
+    if df.empty:
+
+        st.error(
+            f"Could not load {country['csv']}"
         )
 
     else:
 
         st.dataframe(
-            c_market,
+            df,
             use_container_width=True,
             hide_index=True
         )
+
+
+# =========================================================
+# HD FACILITY INTELLIGENCE
+# =========================================================
+
+elif page == "HD Facility Intelligence":
+
+    st.markdown(
+        '<div class="section">HD Facility Intelligence</div>',
+        unsafe_allow_html=True
+    )
+
+    df = read_csv(
+        "06_Major_Hospitals.csv"
+    )
+
+    filtered = country_filter(
+        df,
+        country_name
+    )
+
+    st.metric(
+        "Verified Facility / Hospital Records",
+        len(filtered)
+    )
+
+    if filtered.empty:
 
         st.info(
-            "Blank TAM/SAM/SOM values are intentionally preserved "
-            "when ASP or addressable-unit evidence is unavailable."
-        )
-
-
-# ============================================================
-# DEMAND MODEL
-# ============================================================
-
-elif page == "Demand Model":
-
-    country_hero(selected_country)
-
-    st.title("Hemodialysis Catheter Demand Model")
-
-    c_demand = country_filter(
-        demand_model,
-        selected_country,
-        country_code
-    )
-
-    if c_demand.empty:
-
-        st.warning(
-            "No demand-model data available."
+            "No facility records were found for this country "
+            "in the current dataset."
         )
 
     else:
 
         st.dataframe(
-            c_demand,
+            filtered,
             use_container_width=True,
             hide_index=True
         )
 
 
-# ============================================================
-# KOL INTELLIGENCE
-# ============================================================
+# =========================================================
+# OTHER DATA PAGES
+# =========================================================
 
-elif page == "KOL Intelligence":
+PAGE_MAP = {
 
-    country_hero(selected_country)
+    "Market Sizing":
+        "Market Sizing",
 
-    st.title("Key Opinion Leader Intelligence")
+    "Demand Model":
+        "Demand Model",
 
-    c_kol = country_filter(
-        kol_master,
-        selected_country,
-        country_code
-    )
+    "KOL Intelligence":
+        "KOL Master",
 
-    if c_kol.empty:
+    "Hospital Intelligence":
+        "Major Hospitals",
 
-        st.warning(
-            "No verified KOL records available."
-        )
+    "Hot Areas":
+        "Hot Areas",
 
-    else:
+    "Distributor Intelligence":
+        "Top Distributors",
 
-        st.dataframe(
-            c_kol,
-            use_container_width=True,
-            hide_index=True
-        )
+    "Competitor Intelligence":
+        "Competitors",
 
+    "Tender Intelligence":
+        "Tender Master",
 
-# ============================================================
-# HOSPITALS
-# ============================================================
+    "Data Quality":
+        "QA Summary"
+}
 
-elif page == "Hospitals":
 
-    country_hero(selected_country)
+if page in PAGE_MAP:
 
-    st.title("Major Hospitals")
+    dataset_name = PAGE_MAP[page]
 
-    c_hospitals = country_filter(
-        hospitals,
-        selected_country,
-        country_code
-    )
+    filename = DATASETS[dataset_name]
 
-    if c_hospitals.empty:
-
-        st.warning(
-            "No hospital records available."
-        )
-
-    else:
-
-        st.dataframe(
-            c_hospitals,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# HOT AREAS
-# ============================================================
-
-elif page == "Hot Areas":
-
-    country_hero(selected_country)
-
-    st.title("HD Commercial Hot Areas")
-
-    c_hot = country_filter(
-        hot_areas,
-        selected_country,
-        country_code
-    )
-
-    if c_hot.empty:
-
-        st.warning(
-            "No hot-area data available."
-        )
-
-    else:
-
-        st.dataframe(
-            c_hot,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# DISTRIBUTORS
-# ============================================================
-
-elif page == "Distributors":
-
-    country_hero(selected_country)
-
-    st.title("Distributor Intelligence")
-
-    c_dist = country_filter(
-        distributors,
-        selected_country,
-        country_code
-    )
-
-    if c_dist.empty:
-
-        st.warning(
-            "No verified distributor records available."
-        )
-
-    else:
-
-        st.dataframe(
-            c_dist,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# COMPETITORS
-# ============================================================
-
-elif page == "Competitors":
-
-    country_hero(selected_country)
-
-    st.title("Competitor & Manufacturer Intelligence")
-
-    c_comp = country_filter(
-        competitors,
-        selected_country,
-        country_code
-    )
-
-    if c_comp.empty:
-
-        st.warning(
-            "No competitor data available."
-        )
-
-    else:
-
-        st.dataframe(
-            c_comp,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# TENDERS
-# ============================================================
-
-elif page == "Tenders":
-
-    country_hero(selected_country)
-
-    st.title("Tender Intelligence")
-
-    c_tenders = country_filter(
-        tenders,
-        selected_country,
-        country_code
-    )
-
-    if c_tenders.empty:
-
-        st.warning(
-            "No tender records available."
-        )
-
-    else:
-
-        st.dataframe(
-            c_tenders,
-            use_container_width=True,
-            hide_index=True
-        )
-
-
-# ============================================================
-# DATA QUALITY
-# ============================================================
-
-elif page == "Data Quality":
-
-    st.title("Research Integrity & QA")
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        display_kpi(
-            "Countries",
-            9
-        )
-
-    with col2:
-        display_kpi(
-            "Facility Records",
-            len(facilities)
-        )
-
-    with col3:
-        display_kpi(
-            "Sources",
-            len(sources)
-        )
-
-    with col4:
-        display_kpi(
-            "Data Gaps",
-            len(data_gaps)
-        )
+    df = read_csv(filename)
 
     st.markdown(
-        '<div class="section-title">QA Summary</div>',
+        f'<div class="section">{page}</div>',
         unsafe_allow_html=True
     )
 
-    if not qa.empty:
-
-        st.dataframe(
-            qa,
-            use_container_width=True,
-            hide_index=True
-        )
-
-    st.markdown(
-        '<div class="section-title">Audit Checks</div>',
-        unsafe_allow_html=True
+    filtered = country_filter(
+        df,
+        country_name
     )
 
-    if not audit.empty:
+    if not filtered.empty:
 
         st.dataframe(
-            audit,
+            filtered,
             use_container_width=True,
             hide_index=True
         )
+
+    elif not df.empty:
+
+        st.info(
+            "This table does not contain a Country column "
+            "or no country-specific record was found. "
+            "Showing available data."
+        )
+
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    else:
+
+        st.error(
+            f"Could not load {filename}"
+        )
+
+
+# =========================================================
+# FOOTER
+# =========================================================
+
+st.markdown(
+    """
+    <br>
+
+    <div style="
+        text-align:center;
+        color:#64748b;
+        padding:25px;
+        font-size:12px;">
+
+        MEA Hemodialysis Catheter Market Intelligence
+        • 2026
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
