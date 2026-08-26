@@ -84,7 +84,6 @@ REQUIRED_SHEETS = {
     # 9) Revenue / market forecast
     "forecast": "Forecast_Data",
 }
-}
 
 # Expected columns in Overview_KPIs sheet
 OVERVIEW_SCHEMA = {
