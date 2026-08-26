@@ -2,7 +2,7 @@
 AMECATH Executive Intelligence Hub — v2
 ========================================
 Single-file Streamlit dashboard with:
-  - Single-file data source (AMECATH_Master_Data.xlsx)
+  - Single-file data source (AMECATH_Dash.xlsx)
   - Overview tab (9-country consolidated KPI panel + mini-cards)
   - Forecast tab (trend projections per country)
   - All original tabs preserved
