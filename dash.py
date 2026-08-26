@@ -1,15 +1,11 @@
 """
-AMECATH Executive Intelligence Hub — v2
+AMECATH Executive Intelligence Hub — v2.1
 ========================================
-Single-file Streamlit dashboard with:
-  - Single-file data source (Amecath Dash_5.xlsx)
-  - Overview tab (9-country consolidated KPI panel + mini-cards)
-  - Forecast tab (trend projections per country)
-  - All original tabs preserved
+Single-file Streamlit dashboard with updated structured navigation & key mapping.
+Data source: Amecath Dash_5.xlsx
 """
 
 import base64
-import glob
 import os
 from pathlib import Path
 from typing import Optional
@@ -18,31 +14,41 @@ import pandas as pd
 import streamlit as st
 
 # ─────────────────────────────────────────────
-# 0. CONFIGURATION
+# 0. CONFIGURATION & MAPPING
 # ─────────────────────────────────────────────
 
-# Single master data file — all countries in one workbook
 MASTER_FILE = "Amecath Dash_5.xlsx"
 
-# Assets directory (images committed to the repo)
 ASSETS_DIR = Path("assets")
 LANDSCAPE_DIR = ASSETS_DIR / "landscapes"
 LOGO_DIR = ASSETS_DIR / "logos"
 
-# Required sheets and their canonical names in the master file
+# Ordered Required Sheets Mapping
 REQUIRED_SHEETS = {
-    "competitors": "Competitor_Matrix",
-    "kol": "KOL_Catalog",
-    "macro": "Macro_Summary",
     "overview": "Overview_KPIs",
+    "macro": "Macro_Summary",
     "tenders": "Financials_Tenders",
     "hot_areas": "Hot_Areas",
-    "sources": "Sources",
+    "competitors": "Competitor_Matrix",
     "competitors_asp": "Competitor_Aspiration",
+    "kol": "KOL_Catalog",
     "forecast": "Forecast_Data",
+    "sources": "Sources",
 }
 
-# Expected columns in Overview_KPIs sheet
+# Sidebar Navigation Order & Icon Mapping
+NAV_MAP = {
+    "🌐 Executive Overview": "overview",
+    "📊 Macro Environment": "macro",
+    "📈 Financials & Tenders": "tenders",
+    "🔥 Hot Market Areas": "hot_areas",
+    "⚔️ Competitor Matrix": "competitors",
+    "🏷️ Competitor ASP & Pricing": "competitors_asp",
+    "👨‍⚕️ Key Opinion Leaders": "kol",
+    "🔮 Market Forecast": "forecast",
+    "📚 Data Sources & Audit": "sources",
+}
+
 OVERVIEW_SCHEMA = {
     "country":           str,
     "dialysis_patients": (int, float),
@@ -50,8 +56,8 @@ OVERVIEW_SCHEMA = {
     "cagr_pct":          (int, float),
     "top_competitor":    str,
     "amecath_share_pct": (int, float),
-    "confidence_score":  (int, float),   # 0–100
-    "trend":             str,            # "up" | "down" | "stable"
+    "confidence_score":  (int, float),
+    "trend":             str,
     "last_updated":      str,
 }
 
@@ -89,7 +95,7 @@ TREND_ICONS = {"up": "▲", "down": "▼", "stable": "◆"}
 TREND_COLORS = {"up": "#00C853", "down": "#FF1744", "stable": "#FFD600"}
 
 # ─────────────────────────────────────────────
-# 1. STREAMLIT PAGE CONFIG
+# 1. STREAMLIT CONFIG & HELPERS
 # ─────────────────────────────────────────────
 
 st.set_page_config(
@@ -98,10 +104,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-# ─────────────────────────────────────────────
-# 2. IMAGE HELPERS
-# ─────────────────────────────────────────────
 
 def _image_to_b64(path: Path) -> str:
     if path.exists():
@@ -126,16 +128,12 @@ def logo_b64() -> str:
             return b64
     return ""
 
-# ─────────────────────────────────────────────
-# 3. DATA LOADING — SINGLE FILE
-# ─────────────────────────────────────────────
-
 @st.cache_data(ttl=300)
 def load_master_data(filepath: str) -> dict[str, pd.DataFrame]:
     if not os.path.exists(filepath):
         raise FileNotFoundError(
             f"Master data file '{filepath}' not found. "
-            "Place Amecath Dash_5.xlsx in the project root."
+            f"Place {MASTER_FILE} in the project root."
         )
 
     xls = pd.ExcelFile(filepath)
@@ -147,54 +145,33 @@ def load_master_data(filepath: str) -> dict[str, pd.DataFrame]:
     missing = [v for v in REQUIRED_SHEETS.values() if v not in sheets]
     if missing:
         st.warning(
-            f"⚠️ Expected sheet(s) not found in master file: {missing}. "
-            "Some sections may be unavailable."
+            f"⚠️ Missing sheet(s) in master file: {missing}. "
+            "Some sections may display placeholder data or empty views."
         )
     return sheets
-
-def validate_overview_schema(df: pd.DataFrame) -> tuple[bool, list[str]]:
-    issues = []
-    for col, expected_type in OVERVIEW_SCHEMA.items():
-        if col not in df.columns:
-            issues.append(f"Missing column: '{col}'")
-    return (len(issues) == 0, issues)
 
 def get_sheet(data: dict, key: str) -> Optional[pd.DataFrame]:
     sheet_name = REQUIRED_SHEETS.get(key)
     return data.get(sheet_name)
 
-# ─────────────────────────────────────────────
-# 4. CSS INJECTION
-# ─────────────────────────────────────────────
-
 def inject_css(theme: dict, bg_b64: str = "") -> None:
-    if bg_b64:
-        bg_css = f"""
-        .stApp {{
-            background: linear-gradient(rgba(10,15,20,0.78), rgba(10,15,20,0.90)),
-                        url("data:image/jpeg;base64,{bg_b64}") no-repeat center center fixed !important;
-            background-size: cover !important;
-        }}"""
-    else:
-        bg_css = f".stApp {{ background-color: {theme['bg']} !important; }}"
+    bg_css = f"""
+    .stApp {{
+        background: linear-gradient(rgba(10,15,20,0.78), rgba(10,15,20,0.90)),
+                    url("data:image/jpeg;base64,{bg_b64}") no-repeat center center fixed !important;
+        background-size: cover !important;
+    }}""" if bg_b64 else f".stApp {{ background-color: {theme['bg']} !important; }}"
 
     st.markdown(f"""
     <style>
     {bg_css}
     body, .stApp {{ color: {theme['text']}; }}
-    .metric-card {{
-        background: {theme['card_bg']};
-        border: 1px solid {theme['primary']};
-        padding: 20px; border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4); text-align: center; backdrop-filter: blur(6px);
-    }}
     .country-mini-card {{
         background: {theme['card_bg']};
         border-left: 5px solid {theme['primary']}; border-radius: 10px;
         padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(6px);
-        box-shadow: 0 3px 10px rgba(0,0,0,0.35); transition: border-color 0.2s;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.35);
     }}
-    .country-mini-card:hover {{ border-left-color: {theme['accent']}; }}
     .hero-banner {{
         background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
         padding: 20px 25px; border-radius: 15px; border-left: 6px solid {theme['accent']};
@@ -202,20 +179,12 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     }}
     .header-container {{ display: flex; align-items: center; gap: 15px; }}
     .header-title {{ color: white; margin: 0; font-size: 26px; font-weight: bold; }}
-    .competitor-card {{
-        background: {theme['card_bg']}; border-left: 4px solid {theme['accent']};
-        padding: 15px; border-radius: 8px; margin-bottom: 10px; backdrop-filter: blur(6px);
-    }}
     .forecast-frame {{
         background: {theme['card_bg']}; border: 1px solid {theme['accent']};
         border-radius: 12px; padding: 18px; backdrop-filter: blur(6px);
     }}
     </style>
     """, unsafe_allow_html=True)
-
-# ─────────────────────────────────────────────
-# 5. HERO HEADER
-# ─────────────────────────────────────────────
 
 def render_hero(country: str, theme: dict) -> None:
     flag_html = f'<span style="font-size:36px;">{theme["flag"]}</span>'
@@ -237,36 +206,39 @@ def render_hero(country: str, theme: dict) -> None:
     </div>""", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# 6. OVERVIEW TAB
+# 2. SECTION RENDERERS
 # ─────────────────────────────────────────────
 
+def render_generic_table(data: dict, key: str, title: str, country: str) -> None:
+    st.subheader(f"{title} — {country}")
+    df = get_sheet(data, key)
+    if df is not None and not df.empty:
+        if "country" in df.columns:
+            df = df[df["country"].str.strip().str.lower() == country.lower()]
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.info(f"No data available in sheet '{REQUIRED_SHEETS.get(key)}' for {country}.")
+
 def render_overview(data: dict, theme: dict) -> None:
-    st.subheader("🌍 Regional Overview — All Markets at a Glance")
+    st.subheader("🌐 Regional Overview — All Markets at a Glance")
     df_ov = get_sheet(data, "overview")
-    
-    if df_ov is None:
-        st.info("Overview data not found. Ensure the master file contains the correct sheet.")
+    if df_ov is None or df_ov.empty:
+        st.info("Overview data not available.")
         return
 
-    valid, issues = validate_overview_schema(df_ov)
-    if not valid:
-        st.error("Overview schema issues:\n" + "\n".join(issues))
-        return
-
-    total_patients  = df_ov["dialysis_patients"].sum()
-    total_market    = df_ov["market_size_usd_m"].sum()
-    avg_cagr        = df_ov["cagr_pct"].mean()
-    avg_share       = df_ov["amecath_share_pct"].mean()
-    n_countries     = len(df_ov)
+    total_patients = df_ov["dialysis_patients"].sum() if "dialysis_patients" in df_ov.columns else 0
+    total_market = df_ov["market_size_usd_m"].sum() if "market_size_usd_m" in df_ov.columns else 0
+    avg_cagr = df_ov["cagr_pct"].mean() if "cagr_pct" in df_ov.columns else 0
+    avg_share = df_ov["amecath_share_pct"].mean() if "amecath_share_pct" in df_ov.columns else 0
 
     k1, k2, k3, k4, k5 = st.columns(5)
     kpi_style = f"background:{theme['card_bg']};border:1px solid {theme['primary']}; border-radius:10px;padding:14px;text-align:center;"
     for col, label, value in [
-        (k1, "Markets Covered",       f"{n_countries}"),
+        (k1, "Markets Covered", f"{len(df_ov)}"),
         (k2, "Total Dialysis Patients", f"{total_patients:,.0f}"),
         (k3, "Total Addressable Market", f"${total_market:,.1f}M"),
-        (k4, "Avg. Market CAGR",       f"{avg_cagr:.1f}%"),
-        (k5, "Avg. AMECATH Share",     f"{avg_share:.1f}%"),
+        (k4, "Avg. Market CAGR", f"{avg_cagr:.1f}%"),
+        (k5, "Avg. AMECATH Share", f"{avg_share:.1f}%"),
     ]:
         col.markdown(
             f'<div style="{kpi_style}">'
@@ -282,20 +254,18 @@ def render_overview(data: dict, theme: dict) -> None:
     for row_group in rows:
         cols = st.columns(3)
         for col, (_, row) in zip(cols, row_group.iterrows()):
-            country    = row.get("country", "—")
-            patients   = row.get("dialysis_patients", 0)
-            mkt        = row.get("market_size_usd_m", 0)
-            cagr       = row.get("cagr_pct", 0)
-            share      = row.get("amecath_share_pct", 0)
-            confidence = row.get("confidence_score", 0)
-            trend      = str(row.get("trend", "stable")).lower()
-            updated    = row.get("last_updated", "—")
-            top_comp   = row.get("top_competitor", "—")
+            country = row.get("country", "—")
+            patients = row.get("dialysis_patients", 0)
+            mkt = row.get("market_size_usd_m", 0)
+            cagr = row.get("cagr_pct", 0)
+            share = row.get("amecath_share_pct", 0)
+            trend = str(row.get("trend", "stable")).lower()
+            top_comp = row.get("top_competitor", "—")
             
-            c_theme    = COUNTRY_THEMES.get(country, COUNTRY_THEMES["Saudi Arabia"])
-            flag       = c_theme["flag"]
-            t_icon     = TREND_ICONS.get(trend, "◆")
-            t_color    = TREND_COLORS.get(trend, "#FFD600")
+            c_theme = COUNTRY_THEMES.get(country, COUNTRY_THEMES["Saudi Arabia"])
+            flag = c_theme["flag"]
+            t_icon = TREND_ICONS.get(trend, "◆")
+            t_color = TREND_COLORS.get(trend, "#FFD600")
 
             col.markdown(f"""
             <div class="country-mini-card" style="border-left-color:{c_theme['primary']};">
@@ -313,109 +283,45 @@ def render_overview(data: dict, theme: dict) -> None:
               </table>
             </div>""", unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
-# 7. FORECAST TAB
-# ─────────────────────────────────────────────
-
 def render_forecast(data: dict, selected_country: str, theme: dict) -> None:
-    st.subheader(f"📈 Market Forecast — {selected_country}")
+    st.subheader(f"🔮 Market Forecast — {selected_country}")
     df_fc = get_sheet(data, "forecast")
-    
-    if df_fc is None:
-        st.info("Forecast data not available.")
+    if df_fc is None or df_fc.empty:
+        st.info("Forecast data sheet not available.")
         return
 
-    df_c = df_fc[df_fc["country"].str.strip() == selected_country].copy()
+    df_c = df_fc[df_fc["country"].str.strip().str.lower() == selected_country.lower()].copy()
     if df_c.empty:
-        st.warning(f"No forecast data found for {selected_country}.")
+        st.warning(f"No forecast records found for {selected_country}.")
         return
 
     metrics = df_c["metric"].unique().tolist() if "metric" in df_c.columns else []
     scenarios = df_c["scenario"].unique().tolist() if "scenario" in df_c.columns else []
 
     col_m, col_s = st.columns([2, 1])
-    selected_metric   = col_m.selectbox("📊 Metric", metrics, key="fc_metric")
-    selected_scenario = col_s.selectbox("🎯 Scenario", scenarios, key="fc_scenario")
+    selected_metric = col_m.selectbox("📊 Metric", metrics, key="fc_metric") if metrics else None
+    selected_scenario = col_s.selectbox("🎯 Scenario", scenarios, key="fc_scenario") if scenarios else None
 
-    df_plot = df_c[(df_c["metric"] == selected_metric) & (df_c["scenario"] == selected_scenario)].sort_values("year")
+    df_plot = df_c
+    if selected_metric:
+        df_plot = df_plot[df_plot["metric"] == selected_metric]
+    if selected_scenario:
+        df_plot = df_plot[df_plot["scenario"] == selected_scenario]
 
     if df_plot.empty:
-        st.info("No data for this metric / scenario combination.")
+        st.info("No forecast values available for selected parameters.")
         return
 
+    df_plot = df_plot.sort_values("year")
     st.markdown('<div class="forecast-frame">', unsafe_allow_html=True)
     st.line_chart(df_plot.set_index("year")["value"], use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# 8. ORIGINAL SECTION RENDERERS
+# 3. SIDEBAR NAVIGATION & ROUTING
 # ─────────────────────────────────────────────
 
-def render_macro(data: dict, country: str) -> None:
-    st.subheader(f"📊 Macro & Executive Summary — {country}")
-    df = get_sheet(data, "macro")
-    if df is not None:
-        if "country" in df.columns:
-            df = df[df["country"].str.strip() == country]
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("Macro summary data not available.")
-
-def render_questions(data: dict, country: str) -> None:
-    st.subheader(f"📋 Strategic 7 Questions Summary — {country}")
-    df = get_sheet(data, "questions")
-    if df is not None:
-        if "country" in df.columns:
-            df = df[df["country"].str.strip() == country]
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("7 Questions data not available.")
-
-def render_hospitals(data: dict, country: str) -> None:
-    st.subheader(f"🏥 Hospitals & Renal Infrastructure — {country}")
-    df = get_sheet(data, "hospitals")
-    if df is not None:
-        if "country" in df.columns:
-            df = df[df["country"].str.strip() == country]
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("Infrastructure data not available.")
-
-def render_competitors(data: dict, country: str, theme: dict) -> None:
-    st.subheader(f"⚔️ Competitor Matrix — {country}")
-    df = get_sheet(data, "competitors")
-
-    competitors_list = ["BD / Bard", "Teleflex / Arrow", "Medtronic / Covidien", "AngioDynamics", "Merit Medical"]
-    if "selected_competitor" not in st.session_state:
-        st.session_state.selected_competitor = competitors_list[0]
-
-    cols = st.columns(len(competitors_list))
-    for idx, comp_name in enumerate(competitors_list):
-        if cols[idx].button(comp_name, key=f"btn_{idx}", use_container_width=True):
-            st.session_state.selected_competitor = comp_name
-
-    if df is not None:
-        st.markdown("---")
-        st.markdown("### Full Competitor Matrix")
-        if "country" in df.columns:
-            df = df[df["country"].str.strip() == country]
-        st.dataframe(df, use_container_width=True)
-
-def render_financials(data: dict, country: str, theme: dict) -> None:
-    st.subheader(f"📈 Financial Projections & Tenders — {country}")
-    df = get_sheet(data, "financials")
-    if df is not None:
-        if "country" in df.columns:
-            df = df[df["country"].str.strip() == country]
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("Financial / tenders data not available.")
-
-# ─────────────────────────────────────────────
-# 9. SIDEBAR
-# ─────────────────────────────────────────────
-
-st.sidebar.markdown("## 🩺 AMECATH Executive Intelligence")
+st.sidebar.markdown("## 🩺 AMECATH Intelligence")
 st.sidebar.markdown("---")
 
 selected_country = st.sidebar.selectbox("🌍 Select Target Country / Market", list(COUNTRY_THEMES.keys()))
@@ -423,21 +329,18 @@ theme = COUNTRY_THEMES[selected_country]
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🧭 Navigation")
-nav_mode = st.sidebar.radio("Go to Section", [
-    "🌐 Overview", "📊 Macro & Exec Summary", "📋 7 Questions Summary",
-    "🏥 Hospitals & Infrastructure", "⚔️ Competitors & Pricing",
-    "📈 Financials & Tenders", "🔮 Forecast"
-])
+selected_nav_label = st.sidebar.radio("Go to Section", list(NAV_MAP.keys()))
+nav_mode = NAV_MAP[selected_nav_label]
 
 st.sidebar.markdown("---")
 st.sidebar.caption(
-    f"Data source: `{MASTER_FILE}`  \n"
-    f"Cache TTL: 5 min  \n"
-    f"Version: 2.0"
+    f"Data File: `{MASTER_FILE}`  \n"
+    f"Active Mode: `{nav_mode}`  \n"
+    f"Version: 2.1"
 )
 
 # ─────────────────────────────────────────────
-# 10. APPLY THEMING & LOAD DATA
+# 4. APP ENTRY & ROUTING
 # ─────────────────────────────────────────────
 
 bg_b64 = find_landscape_b64(selected_country)
@@ -448,27 +351,24 @@ try:
     data_sheets = load_master_data(MASTER_FILE)
 except FileNotFoundError as exc:
     st.error(str(exc))
-    st.info(
-        "**Quick fix:** Place `Amecath Dash_5.xlsx` in the same directory "
-        "as your streamit script, then refresh the page."
-    )
     st.stop()
 
-# ─────────────────────────────────────────────
-# 11. SECTION ROUTING
-# ─────────────────────────────────────────────
-
-if nav_mode == "🌐 Overview":
+# Execution Routing Map
+if nav_mode == "overview":
     render_overview(data_sheets, theme)
-elif nav_mode == "📊 Macro & Exec Summary":
-    render_macro(data_sheets, selected_country)
-elif nav_mode == "📋 7 Questions Summary":
-    render_questions(data_sheets, selected_country)
-elif nav_mode == "🏥 Hospitals & Infrastructure":
-    render_hospitals(data_sheets, selected_country)
-elif nav_mode == "⚔️ Competitors & Pricing":
-    render_competitors(data_sheets, selected_country, theme)
-elif nav_mode == "📈 Financials & Tenders":
-    render_financials(data_sheets, selected_country, theme)
-elif nav_mode == "🔮 Forecast":
+elif nav_mode == "macro":
+    render_generic_table(data_sheets, "macro", "📊 Macro Environment", selected_country)
+elif nav_mode == "tenders":
+    render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", selected_country)
+elif nav_mode == "hot_areas":
+    render_generic_table(data_sheets, "hot_areas", "🔥 Hot Market Areas", selected_country)
+elif nav_mode == "competitors":
+    render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", selected_country)
+elif nav_mode == "competitors_asp":
+    render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP & Pricing", selected_country)
+elif nav_mode == "kol":
+    render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", selected_country)
+elif nav_mode == "forecast":
     render_forecast(data_sheets, selected_country, theme)
+elif nav_mode == "sources":
+    render_generic_table(data_sheets, "sources", "📚 Data Sources & Audit", selected_country)
