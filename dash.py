@@ -29,6 +29,7 @@ REQUIRED_SHEETS = {
     "macro": "Macro_Summary",
     "tenders": "Financials_Tenders",
     "hot_areas": "Hot_Areas",
+    "distributors": "Local_Distributors",  # شيت الموزعين المحليين
     "competitors": "Competitor_Matrix",
     "competitors_asp": "Competitor_Aspiration",
     "kol": "KOL_Catalog",
@@ -42,6 +43,7 @@ NAV_MAP = {
     "📊 Macro Environment": "macro",
     "📈 Financials & Tenders": "tenders",
     "🔥 Hot Market Areas": "hot_areas",
+    "🤝 Local Distributors": "distributors",  # إضافة زر الموزعين
     "⚔️ Competitor Matrix": "competitors",
     "🏷️ Competitor ASP & Pricing": "competitors_asp",
     "👨‍⚕️ Key Opinion Leaders": "kol",
@@ -353,7 +355,7 @@ except FileNotFoundError as exc:
     st.error(str(exc))
     st.stop()
 
-# Execution Routing Map
+# Execution Routing Map (التوجيه والتنقل بين الشاشات)
 if nav_mode == "overview":
     render_overview(data_sheets, theme)
 elif nav_mode == "macro":
@@ -362,6 +364,8 @@ elif nav_mode == "tenders":
     render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", selected_country)
 elif nav_mode == "hot_areas":
     render_generic_table(data_sheets, "hot_areas", "🔥 Hot Market Areas", selected_country)
+elif nav_mode == "distributors":
+    render_generic_table(data_sheets, "distributors", "🤝 Local Distributors Network", selected_country)
 elif nav_mode == "competitors":
     render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", selected_country)
 elif nav_mode == "competitors_asp":
