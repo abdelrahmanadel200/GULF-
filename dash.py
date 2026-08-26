@@ -49,13 +49,41 @@ LOGO_DIR = ASSETS_DIR / "logos"
 
 # Required sheets and their canonical names in the master file
 REQUIRED_SHEETS = {
-    "overview":    "Overview_KPIs",       # consolidated 9-country metrics
-    "macro":       "Macro_Summary",       # country macro data (country column required)
-    "questions":   "7_Questions_Summary", # strategic Q&A
-    "hospitals":   "Hospitals_Infra",     # facility data
-    "competitors": "Competitor_Matrix",   # competitor table
-    "financials":  "Financials_Tenders",  # tender/financial projections
-    "forecast":    "Forecast_Data",       # forecast series per country
+    # 1) Competitor intelligence
+    "competitors": "Competitor_Matrix",
+
+    # 2) Key Opinion Leaders
+    # Placeholder: implement KOL_Catalog in the master file if it does not exist yet.
+    "kol": "KOL_Catalog",
+
+    # 3) Macro / market environment
+    "macro": "Macro_Summary",
+
+    # 4) Executive overview / global KPIs
+    "overview": "Overview_KPIs",
+
+    # 5) Tenders + financial intelligence
+    # Preferred: keep tenders and financials together because the current
+    # dashboard treats them as one commercial/financial section.
+    "tenders": "Financials_Tenders",
+
+    # 6) High-priority / attractive market areas
+    # Placeholder: implement Hot_Areas in the master file if it does not exist yet.
+    "hot_areas": "Hot_Areas",
+
+    # 7) Data provenance and verification
+    # Placeholder: implement Sources in the master file if it does not exist yet.
+    "sources": "Sources",
+
+    # 8) Competitor ASP / pricing intelligence
+    # Preferred separate sheet so ASP data does not get mixed with the
+    # broader competitor matrix.
+    # Placeholder: implement Competitor_Aspiration if it does not exist yet.
+    "competitors_asp": "Competitor_Aspiration",
+
+    # 9) Revenue / market forecast
+    "forecast": "Forecast_Data",
+}
 }
 
 # Expected columns in Overview_KPIs sheet
