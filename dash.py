@@ -10,7 +10,7 @@ Single-file Streamlit dashboard with:
 Repository layout expected:
   amecath_dashboard/
   ├── dash_v2.py                  ← this file
-  ├── AMECATH_Master_Data.xlsx    ← single source of truth
+  ├── AMECATH_Dash.xlsx    ← single source of truth
   ├── assets/
   │   ├── logos/
   │   │   └── amecath_logo.png
