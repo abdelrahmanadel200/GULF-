@@ -1,22 +1,20 @@
-import streamlit as st
+import pathlib
 import pandas as pd
-import plotly.express as px
+import streamlit as st
 
-# ضبط إعدادات الصفحة
-st.set_page_config(page_title="AMECATH GCC & Levant Dashboard", layout="wide")
+# تحديد المسار الرئيسي للسيرفر ديناميكياً
+BASE_DIR = pathlib.Path(__file__).parent
+EXCEL_PATH = BASE_DIR / "Amecath Dash.xlsx"  # غير اسم الملف أو المسار لو الملف جوه فولدر فرعي
 
-# تحميل البيانات من الإكسيل
+
 @st.cache_data
 def load_data():
-    excel_file = 'Amecath Dash.xlsx'
-    kpis = pd.read_excel(excel_file, sheet_name='Overview_KPIs')
-    hot_areas = pd.read_excel(excel_file, sheet_name='Hot_Areas')
-    competitors = pd.read_excel(excel_file, sheet_name='Competitor_Matrix')
-    tenders = pd.read_excel(excel_file, sheet_name='Financials_Tenders')
-    asp = pd.read_excel(excel_file, sheet_name='our ASP')
+    kpis = pd.read_excel(EXCEL_PATH, sheet_name="Overview_KPIs")
+    hot_areas = pd.read_excel(EXCEL_PATH, sheet_name="Hot_Areas")
+    competitors = pd.read_excel(EXCEL_PATH, sheet_name="Competitor_Matrix")
+    tenders = pd.read_excel(EXCEL_PATH, sheet_name="Financials_Tenders")
+    asp = pd.read_excel(EXCEL_PATH, sheet_name="our ASP")
     return kpis, hot_areas, competitors, tenders, asp
-
-kpis_df, hot_areas_df, competitors_df, tenders_df, asp_df = load_data()
 
 # القائمة الجانبية للتبويب
 st.sidebar.title("AMECATH Analytics")
