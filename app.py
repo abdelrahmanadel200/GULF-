@@ -2,9 +2,10 @@ import pathlib
 import pandas as pd
 import streamlit as st
 
-# تحديد المسار الرئيسي للسيرفر ديناميكياً
+st.set_page_config(page_title="AMECATH GCC & Levant Dashboard", layout="wide")
+
 BASE_DIR = pathlib.Path(__file__).parent
-EXCEL_PATH = BASE_DIR / "Amecath Dash.xlsx"  # غير اسم الملف أو المسار لو الملف جوه فولدر فرعي
+EXCEL_PATH = BASE_DIR / "Amecath Dash.xlsx"
 
 
 @st.cache_data
@@ -15,6 +16,43 @@ def load_data():
     tenders = pd.read_excel(EXCEL_PATH, sheet_name="Financials_Tenders")
     asp = pd.read_excel(EXCEL_PATH, sheet_name="our ASP")
     return kpis, hot_areas, competitors, tenders, asp
+
+
+# ⚠️ السطر الأساسي: استدعاء البيانات في النطاق العام قبل أي تبويب
+kpis_df, hot_areas_df, competitors_df, tenders_df, asp_df = load_data()
+
+# القائمة الجانبية
+st.sidebar.title("AMECATH Analytics")
+page = st.sidebar.radio(
+    "الانتقال إلى:",
+    [
+        "1. Overview (9 Countries)",
+        "2. Country Deep-Dive",
+        "3. Revenue Forecast",
+        "4. Sources & Methodology",
+    ],
+)
+
+# 1. Overview Page
+if page == "1. Overview (9 Countries)":
+    st.title("🌐 Market Overview - GCC & Levant")
+
+    cols = st.columns(3)
+    # الآن kpis_df معرف وجاهز للاستخدام بدون خطأ
+    for index, row in kpis_df.iterrows():
+        col_idx = index % 3
+        with cols[col_idx]:
+            with st.container(border=True):
+                st.subheader(f"{row['Country']}")
+                st.metric("HD Patients (2026)", f"{row['Est. 2026 HD']:,}")
+                st.metric(
+                    "Annual Catheter Demand",
+                    f"{row['Annual Catheter Demand']:,}",
+                )
+                st.write(f"**Market Value:** {row['Market Value']}")
+                st.write(
+                    f"**Distributors:** {row['Distributors']} | **KOLs:** {row['KOLs']}"
+                )
 
 # القائمة الجانبية للتبويب
 st.sidebar.title("AMECATH Analytics")
