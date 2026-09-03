@@ -300,84 +300,91 @@ def render_generic_table(data: Dict[str, pd.DataFrame], key: str, title: str, co
     else:
         st.warning(f"No data available for key '{key}'.")
 
-def render_overview(data: Dict[str, pd.DataFrame], theme: dict) -> None:
-    st.subheader("🌐 Regional Overview — Executive Summary")
-    df_ov = get_sheet(data, "overview")
-    if df_ov is None or df_ov.empty:
-        st.info("Overview data is currently unavailable.")
+def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme: dict) -> None:
+    st.subheader(f"🔥 Hot Market Areas — {selected_country}")
+    df = get_sheet(data, "hot_areas")
+    
+    if df is None or df.empty:
+        st.warning("No Hot Market Areas data available.")
         return
 
-    # Identify target columns dynamically
-    country_col = find_column(df_ov, ["country", "الدولة", "Market"])
-    patients_col = find_column(df_ov, ["dialysis_patients", "dialysis patients", "patients", "hd_patients"])
-    market_col = find_column(df_ov, ["market_size_usd_m", "market_size", "market size", "usd_m"])
-    cagr_col = find_column(df_ov, ["cagr_pct", "cagr", "growth_rate"])
-    share_col = find_column(df_ov, ["amecath_share_pct", "amecath_share", "share"])
-    trend_col = find_column(df_ov, ["trend", "market_trend"])
-    competitor_col = find_column(df_ov, ["top_competitor", "competitor", "leader"])
+    # Find matching country column
+    country_col = find_column(df, [selected_country])
+    if not country_col:
+        for col in df.columns:
+            if selected_country.lower() in str(col).lower():
+                country_col = col
+                break
 
-    total_patients = pd.to_numeric(df_ov[patients_col], errors="coerce").sum() if patients_col else 0
-    total_market = pd.to_numeric(df_ov[market_col], errors="coerce").sum() if market_col else 0
-    avg_cagr = pd.to_numeric(df_ov[cagr_col], errors="coerce").mean() if cagr_col else 0
-    avg_share = pd.to_numeric(df_ov[share_col], errors="coerce").mean() if share_col else 0
+    if not country_col:
+        st.warning(f"No specific hot market area data found for {selected_country}.")
+        st.dataframe(df, use_container_width=True)
+        return
 
-    k1, k2, k3, k4, k5 = st.columns(5)
-    kpi_style = (
-        f"background:{theme['card_bg']};border:1px solid {theme['primary']};"
-        f"border-radius:10px;padding:14px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.25);"
+    # Parse City Names, Centers count & Details
+    rank_col = find_column(df, ["rank", "الترتيب", "no"])
+    parsed_data = []
+
+    for idx, row in df.iterrows():
+        val = str(row[country_col]) if pd.notna(row[country_col]) else ""
+        if not val or val.strip() in ["-", "nan", "None"]:
+            continue
+        
+        rank = row[rank_col] if rank_col and pd.notna(row[rank_col]) else idx + 1
+        
+        # Extract City Name (text before parenthesis)
+        city_match = re.split(r'[\(;\:]', val)[0].strip()
+        city_name = city_match if city_match else f"Area {rank}"
+        
+        # Extract number of centers for Treemap sizing
+        centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
+        centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
+
+        parsed_data.append({
+            "Rank": rank,
+            "City": city_name,
+            "Centers": centers,
+            "Details": val
+        })
+
+    if not parsed_data:
+        st.info(f"No valid data points found for {selected_country}.")
+        return
+
+    parsed_df = pd.DataFrame(parsed_data)
+
+    # 💥 قائمة ألوان Flame النارية المصممة يدويًا لضمان التوافق
+    flame_colors = ['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00']
+
+    # Render Interactive Plotly Treemap using Custom Flame Palette
+    fig = px.treemap(
+        parsed_df,
+        path=['City'],
+        values='Centers',
+        color='Centers',
+        color_continuous_scale=flame_colors,
+        hover_data=['Rank', 'Details'],
+        title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
     )
     
-    metrics = [
-        ("Markets Tracked", f"{len(df_ov)}"),
-        ("Total Dialysis Patients", f"{total_patients:,.0f}" if total_patients else "N/A"),
-        ("Addressable Market", f"${total_market:,.1f}M" if total_market else "N/A"),
-        ("Avg. Market CAGR", f"{avg_cagr:.1f}%" if avg_cagr else "N/A"),
-        ("Avg. AMECATH Share", f"{avg_share:.1f}%" if avg_share else "N/A"),
-    ]
-
-    for col, (label, value) in zip([k1, k2, k3, k4, k5], metrics):
-        col.markdown(
-            f'<div style="{kpi_style}">'
-            f'<div style="font-size:12px;opacity:.8;margin-bottom:4px;font-weight:600;">{label}</div>'
-            f'<div style="font-size:20px;font-weight:bold;color:{theme["accent"]}">{value}</div>'
-            f'</div>', unsafe_allow_html=True
-        )
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("### Regional Market Snapshots")
+    fig.update_layout(
+        margin=dict(t=40, l=10, r=10, b=10),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color="#FFFFFF", size=14),
+        coloraxis_showscale=False
+    )
     
-    rows = [df_ov.iloc[i:i+3] for i in range(0, len(df_ov), 3)]
-    for row_group in rows:
-        cols = st.columns(3)
-        for col, (_, row) in zip(cols, row_group.iterrows()):
-            country = str(row.get(country_col, "Unknown")) if country_col else "—"
-            patients = row.get(patients_col, 0) if patients_col else 0
-            mkt = row.get(market_col, 0) if market_col else 0
-            cagr = row.get(cagr_col, 0) if cagr_col else 0
-            share = row.get(share_col, 0) if share_col else 0
-            trend = str(row.get(trend_col, "stable")).lower() if trend_col else "stable"
-            top_comp = str(row.get(competitor_col, "—")) if competitor_col else "—"
-            
-            c_theme = COUNTRY_THEMES.get(country, COUNTRY_THEMES["Saudi Arabia"])
-            flag = c_theme["flag"]
-            t_icon = TREND_ICONS.get(trend, "◆")
-            t_color = TREND_COLORS.get(trend, "#FFD600")
+    fig.update_traces(
+        texttemplate="<b>%{label}</b><br>%{value} Centers",
+        hovertemplate="<b>%{label}</b><br>Rank: %{customdata[0]}<br>Centers: %{value}<br><br>%{customdata[1]}<extra></extra>"
+    )
 
-            col.markdown(f"""
-            <div class="country-mini-card" style="border-left-color:{c_theme['primary']};">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div style="font-size:19px;font-weight:bold;">{flag} {country}</div>
-                <div style="color:{t_color};font-size:18px;">{t_icon}</div>
-              </div>
-              <hr style="border-color:{c_theme['primary']}44;margin:8px 0;">
-              <table style="width:100%;font-size:13px;border-collapse:collapse;">
-                <tr><td style="opacity:.75;">Dialysis Patients</td><td style="text-align:right;font-weight:bold;">{patients:,.0f}</td></tr>
-                <tr><td style="opacity:.75;">Market Size</td><td style="text-align:right;font-weight:bold;">${mkt:,.1f}M</td></tr>
-                <tr><td style="opacity:.75;">CAGR</td><td style="text-align:right;font-weight:bold;color:{t_color};">{cagr:.1f}%</td></tr>
-                <tr><td style="opacity:.75;">AMECATH Share</td><td style="text-align:right;font-weight:bold;">{share:.1f}%</td></tr>
-                <tr><td style="opacity:.75;">Top Competitor</td><td style="text-align:right;font-style:italic;">{top_comp}</td></tr>
-              </table>
-            </div>""", unsafe_allow_html=True)
+    st.plotly_chart(fig, use_container_width=True)
+
+    # Detailed Table View
+    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
+        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
 
 def render_forecast(data: Dict[str, pd.DataFrame], selected_country: str, theme: dict) -> None:
     st.subheader(f"🔮 Revenue & Growth Forecast — {selected_country}")
