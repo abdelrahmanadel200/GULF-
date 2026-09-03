@@ -437,6 +437,16 @@ nav_mode = NAV_MAP[selected_nav_label]
 st.sidebar.markdown("---")
 
 # ─────────────────────────────────────────────
+# HELPER FUNCTION FOR OVERVIEW BACKGROUND
+# ─────────────────────────────────────────────
+def find_overview_bg_b64() -> str:
+    if 'ASSETS_DIR' in globals() and ASSETS_DIR.exists():
+        for p in ASSETS_DIR.glob("**/*"):
+            if p.is_file() and "overview" in p.name.lower():
+                return _image_to_b64(p)
+    return ""
+
+# ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
 # ─────────────────────────────────────────────
 
