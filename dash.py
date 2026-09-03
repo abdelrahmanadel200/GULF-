@@ -69,15 +69,9 @@ dashboard_html = """
   .ha-tab { padding:5px 12px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; border:1px solid #1e3d7a; color:#6a85b0; background:#0f1f3d; transition:all .15s; user-select:none; }
   .ha-tab:hover { border-color:#2563eb; color:#c8d8f0; }
   .ha-tab.active { background:#1e3d7a; color:#e8edf5; border-color:#3b82f6; }
-  .ha-map-area { position:relative; background:#0a1525; border:1px solid #1e3d7a; border-radius:14px; overflow:hidden; }
-  #haCanvas { display:block; width:100%; cursor:crosshair; }
-  .ha-tooltip { position:absolute; pointer-events:none; background:#0d2145; border:1px solid #2563eb; border-radius:10px; padding:10px 14px; font-size:12px; color:#e8edf5; min-width:180px; z-index:20; opacity:0; transition:opacity .15s; }
-  .ha-tt-name { font-size:13px; font-weight:700; color:#60a5fa; margin-bottom:6px; }
-  .ha-tt-row { display:flex; justify-content:space-between; gap:16px; margin-top:3px; font-size:11px; }
-  .ha-tt-label { color:#6a85b0; }
-  .ha-tt-val { color:#e8edf5; font-weight:600; }
-  .ha-legend { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:11px; color:#6a85b0; }
-  .ha-legend-bar { width:160px; height:10px; border-radius:5px; }
+  .leaflet-popup-content-wrapper { background:transparent !important; border:none !important; box-shadow:none !important; padding:0 !important; }
+  .leaflet-popup-content { margin:0 !important; }
+  .leaflet-popup-tip-container { display:none !important; }
 </style>
 </head>
 <body>
@@ -138,32 +132,28 @@ dashboard_html = """
     <div class="page" id="page-countries">
       <div class="placeholder-page"><div class="placeholder-icon">&#127757;</div><div class="placeholder-title">Country Analysis</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
-
     <!-- Revenue Forecast -->
     <div class="page" id="page-forecast">
       <div class="placeholder-page"><div class="placeholder-icon">&#128200;</div><div class="placeholder-title">Revenue Forecast</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
-
     <!-- Pricing Intel -->
     <div class="page" id="page-pricing">
       <div class="placeholder-page"><div class="placeholder-icon">&#128178;</div><div class="placeholder-title">Pricing Intel</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
-
     <!-- Tenders -->
     <div class="page" id="page-tenders">
       <div class="placeholder-page"><div class="placeholder-icon">&#128203;</div><div class="placeholder-title">Tenders</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
-
     <!-- Competitors -->
     <div class="page" id="page-competitors">
       <div class="placeholder-page"><div class="placeholder-icon">&#127942;</div><div class="placeholder-title">Competitors</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
 
-        <!-- Hot Areas -->
+    <!-- Hot Areas -->
     <div class="page" id="page-hotareas">
       <div class="ha-wrap">
         <div class="ha-header">
-          <div class="ha-title">&#128205; Hot Areas &#8212; Dialysis Heatmap</div>
+          <div class="ha-title">&#128205; Hot Areas &#8212; Dialysis Map</div>
           <div style="font-size:11px;color:#3a5278">Click a marker for details</div>
         </div>
         <div class="ha-tabs" id="haTabs"></div>
@@ -181,7 +171,6 @@ dashboard_html = """
     <div class="page" id="page-exhibitions">
       <div class="placeholder-page"><div class="placeholder-icon">&#128197;</div><div class="placeholder-title">Exhibitions</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
-
     <!-- Regulatory -->
     <div class="page" id="page-regulatory">
       <div class="placeholder-page"><div class="placeholder-icon">&#128220;</div><div class="placeholder-title">Regulatory</div><div class="placeholder-sub">Coming soon</div></div>
@@ -196,216 +185,148 @@ dashboard_html = """
     el.classList.add('active');
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
+    if (pageId === 'hotareas') {
+      if (!haInited) { initHaMap(); }
+      else { setTimeout(function(){ haMap.invalidateSize(); }, 150); }
+    }
   }
 
-  (function() {
-    const HA_DATA = {
-      "Saudi Arabia": { flag:"SA", areas:[
-        {name:"Riyadh",x:.48,y:.52,rank:1,centers:39,hd:5700,priority:"Critical"},
-        {name:"Jeddah",x:.30,y:.60,rank:2,centers:12,hd:2100,priority:"High"},
-        {name:"Makkah",x:.28,y:.62,rank:3,centers:12,hd:1950,priority:"High"},
-        {name:"Dammam/Khobar",x:.70,y:.50,rank:4,centers:6,hd:1200,priority:"High"},
-        {name:"Madinah",x:.33,y:.42,rank:5,centers:5,hd:900,priority:"Medium"},
-        {name:"Buraydah",x:.46,y:.35,rank:6,centers:7,hd:1020,priority:"Medium"},
-        {name:"Hail",x:.44,y:.27,rank:7,centers:6,hd:870,priority:"Medium"},
-        {name:"Abha",x:.32,y:.72,rank:8,centers:4,hd:600,priority:"Low"},
-        {name:"Tabuk",x:.22,y:.28,rank:9,centers:3,hd:450,priority:"Low"}
-      ]},
-      "UAE": { flag:"AE", areas:[
-        {name:"Dubai",x:.68,y:.55,rank:1,centers:7,hd:840,priority:"Critical"},
-        {name:"Abu Dhabi",x:.35,y:.62,rank:2,centers:5,hd:600,priority:"High"},
-        {name:"Sharjah",x:.72,y:.45,rank:3,centers:3,hd:360,priority:"Medium"},
-        {name:"Al Ain",x:.55,y:.72,rank:4,centers:2,hd:240,priority:"Medium"},
-        {name:"Ajman",x:.74,y:.40,rank:5,centers:2,hd:200,priority:"Low"},
-        {name:"Fujairah/RAK",x:.85,y:.35,rank:6,centers:2,hd:180,priority:"Low"}
-      ]},
-      "Qatar": { flag:"QA", areas:[
-        {name:"Doha - FBJ",x:.40,y:.60,rank:1,centers:4,hd:720,priority:"Critical"},
-        {name:"Al Wakrah",x:.42,y:.70,rank:2,centers:2,hd:240,priority:"Medium"},
-        {name:"Al Khor",x:.38,y:.35,rank:3,centers:1,hd:120,priority:"Low"},
-        {name:"Al Shahania",x:.35,y:.30,rank:4,centers:1,hd:80,priority:"Low"},
-        {name:"Lusail",x:.42,y:.50,rank:5,centers:1,hd:60,priority:"Low"}
-      ]},
-      "Kuwait": { flag:"KW", areas:[
-        {name:"Kuwait City",x:.42,y:.55,rank:1,centers:8,hd:970,priority:"Critical"},
-        {name:"Ahmadi",x:.48,y:.68,rank:2,centers:3,hd:390,priority:"High"},
-        {name:"Hawalli",x:.45,y:.52,rank:3,centers:3,hd:340,priority:"Medium"},
-        {name:"Farwaniya",x:.38,y:.48,rank:4,centers:3,hd:280,priority:"Medium"},
-        {name:"Jahra",x:.30,y:.42,rank:5,centers:2,hd:180,priority:"Low"},
-        {name:"Sabah Al-Ahmad",x:.52,y:.72,rank:6,centers:1,hd:80,priority:"Low"}
-      ]},
-      "Iraq": { flag:"IQ", areas:[
-        {name:"Baghdad",x:.52,y:.48,rank:1,centers:11,hd:3967,priority:"Critical"},
-        {name:"Basra",x:.60,y:.78,rank:2,centers:3,hd:1500,priority:"Critical"},
-        {name:"Erbil",x:.65,y:.30,rank:3,centers:4,hd:1200,priority:"High"},
-        {name:"Sulaymaniyah",x:.72,y:.32,rank:4,centers:3,hd:900,priority:"High"},
-        {name:"Kirkuk",x:.62,y:.40,rank:5,centers:2,hd:463,priority:"Medium"},
-        {name:"Mosul",x:.58,y:.28,rank:6,centers:2,hd:420,priority:"Medium"},
-        {name:"Najaf",x:.50,y:.60,rank:7,centers:2,hd:380,priority:"Medium"},
-        {name:"Diwaniyah",x:.53,y:.65,rank:8,centers:2,hd:300,priority:"Low"}
-      ]},
-      "Jordan": { flag:"JO", areas:[
-        {name:"Amman",x:.48,y:.52,rank:1,centers:5,hd:3200,priority:"Critical"},
-        {name:"Irbid",x:.46,y:.38,rank:2,centers:2,hd:960,priority:"High"},
-        {name:"Zarqa",x:.52,y:.48,rank:3,centers:2,hd:768,priority:"Medium"},
-        {name:"Salt",x:.44,y:.54,rank:4,centers:1,hd:480,priority:"Medium"},
-        {name:"Karak",x:.46,y:.66,rank:5,centers:1,hd:320,priority:"Low"}
-      ]},
-      "Lebanon": { flag:"LB", areas:[
-        {name:"Greater Beirut",x:.40,y:.50,rank:1,centers:30,hd:2365,priority:"Critical"},
-        {name:"Tripoli",x:.38,y:.35,rank:2,centers:12,hd:850,priority:"High"},
-        {name:"Sidon",x:.38,y:.62,rank:3,centers:8,hd:520,priority:"Medium"},
-        {name:"Zahle",x:.48,y:.52,rank:4,centers:6,hd:400,priority:"Medium"},
-        {name:"Jounieh",x:.42,y:.45,rank:5,centers:4,hd:280,priority:"Low"},
-        {name:"Nabatieh",x:.40,y:.68,rank:6,centers:3,hd:200,priority:"Low"}
-      ]},
-      "Oman": { flag:"OM", areas:[
-        {name:"Muscat",x:.62,y:.40,rank:1,centers:4,hd:1000,priority:"Critical"},
-        {name:"Salalah",x:.45,y:.80,rank:2,centers:2,hd:500,priority:"High"},
-        {name:"Sohar",x:.55,y:.28,rank:3,centers:2,hd:380,priority:"Medium"},
-        {name:"Ibri",x:.48,y:.45,rank:4,centers:2,hd:250,priority:"Medium"},
-        {name:"Barka/Seeb",x:.60,y:.38,rank:5,centers:1,hd:180,priority:"Low"}
-      ]},
-      "Bahrain": { flag:"BH", areas:[
-        {name:"Manama / Riffa",x:.52,y:.50,rank:1,centers:5,hd:2500,priority:"Critical"},
-        {name:"A'Ali",x:.48,y:.56,rank:2,centers:2,hd:900,priority:"High"},
-        {name:"Muharraq",x:.58,y:.42,rank:3,centers:2,hd:680,priority:"Medium"},
-        {name:"Saar",x:.44,y:.48,rank:4,centers:1,hd:320,priority:"Low"},
-        {name:"Riffa (private)",x:.52,y:.60,rank:5,centers:1,hd:150,priority:"Low"}
-      ]}
+  var haInited = false;
+  var haMap = null;
+  var haMarkers = [];
+  var haActive = 'Saudi Arabia';
+
+  var HA_DATA = {
+    'Saudi Arabia': { lat:24.0, lng:45.0, zoom:5, areas:[
+      {name:'Riyadh',        lat:24.69, lng:46.72, rank:1, centers:39, hd:5700,  priority:'Critical'},
+      {name:'Jeddah',        lat:21.49, lng:39.19, rank:2, centers:12, hd:2100,  priority:'High'},
+      {name:'Makkah',        lat:21.39, lng:39.86, rank:3, centers:12, hd:1950,  priority:'High'},
+      {name:'Dammam/Khobar', lat:26.43, lng:50.10, rank:4, centers:6,  hd:1200,  priority:'High'},
+      {name:'Madinah',       lat:24.47, lng:39.61, rank:5, centers:5,  hd:900,   priority:'Medium'},
+      {name:'Buraydah',      lat:26.33, lng:43.97, rank:6, centers:7,  hd:1020,  priority:'Medium'},
+      {name:'Hail',          lat:27.51, lng:41.69, rank:7, centers:6,  hd:870,   priority:'Medium'},
+      {name:'Abha',          lat:18.22, lng:42.51, rank:8, centers:4,  hd:600,   priority:'Low'},
+      {name:'Tabuk',         lat:28.38, lng:36.57, rank:9, centers:3,  hd:450,   priority:'Low'}
+    ]},
+    'UAE': { lat:24.0, lng:54.0, zoom:7, areas:[
+      {name:'Dubai',         lat:25.20, lng:55.27, rank:1, centers:7, hd:840,  priority:'Critical'},
+      {name:'Abu Dhabi',     lat:24.45, lng:54.37, rank:2, centers:5, hd:600,  priority:'High'},
+      {name:'Sharjah',       lat:25.35, lng:55.42, rank:3, centers:3, hd:360,  priority:'Medium'},
+      {name:'Al Ain',        lat:24.21, lng:55.76, rank:4, centers:2, hd:240,  priority:'Medium'},
+      {name:'Ajman',         lat:25.41, lng:55.44, rank:5, centers:2, hd:200,  priority:'Low'},
+      {name:'Fujairah/RAK',  lat:25.12, lng:56.34, rank:6, centers:2, hd:180,  priority:'Low'}
+    ]},
+    'Qatar': { lat:25.3, lng:51.2, zoom:9, areas:[
+      {name:'Doha - FBJ',    lat:25.29, lng:51.53, rank:1, centers:4, hd:720, priority:'Critical'},
+      {name:'Al Wakrah',     lat:25.17, lng:51.60, rank:2, centers:2, hd:240, priority:'Medium'},
+      {name:'Al Khor',       lat:25.68, lng:51.50, rank:3, centers:1, hd:120, priority:'Low'},
+      {name:'Al Shahania',   lat:25.57, lng:51.27, rank:4, centers:1, hd:80,  priority:'Low'},
+      {name:'Lusail',        lat:25.43, lng:51.49, rank:5, centers:1, hd:60,  priority:'Low'}
+    ]},
+    'Kuwait': { lat:29.3, lng:47.7, zoom:9, areas:[
+      {name:'Kuwait City',    lat:29.37, lng:47.98, rank:1, centers:8, hd:970, priority:'Critical'},
+      {name:'Ahmadi',         lat:29.08, lng:48.08, rank:2, centers:3, hd:390, priority:'High'},
+      {name:'Hawalli',        lat:29.33, lng:48.03, rank:3, centers:3, hd:340, priority:'Medium'},
+      {name:'Farwaniya',      lat:29.27, lng:47.96, rank:4, centers:3, hd:280, priority:'Medium'},
+      {name:'Jahra',          lat:29.33, lng:47.66, rank:5, centers:2, hd:180, priority:'Low'},
+      {name:'Sabah Al-Ahmad', lat:28.90, lng:48.18, rank:6, centers:1, hd:80,  priority:'Low'}
+    ]},
+    'Iraq': { lat:33.0, lng:44.0, zoom:6, areas:[
+      {name:'Baghdad',        lat:33.34, lng:44.40, rank:1, centers:11, hd:3967, priority:'Critical'},
+      {name:'Basra',          lat:30.51, lng:47.78, rank:2, centers:3,  hd:1500, priority:'Critical'},
+      {name:'Erbil',          lat:36.19, lng:44.01, rank:3, centers:4,  hd:1200, priority:'High'},
+      {name:'Sulaymaniyah',   lat:35.56, lng:45.43, rank:4, centers:3,  hd:900,  priority:'High'},
+      {name:'Kirkuk',         lat:35.47, lng:44.39, rank:5, centers:2,  hd:463,  priority:'Medium'},
+      {name:'Mosul',          lat:36.34, lng:43.13, rank:6, centers:2,  hd:420,  priority:'Medium'},
+      {name:'Najaf',          lat:31.99, lng:44.33, rank:7, centers:2,  hd:380,  priority:'Medium'},
+      {name:'Diwaniyah',      lat:31.99, lng:44.92, rank:8, centers:2,  hd:300,  priority:'Low'}
+    ]},
+    'Jordan': { lat:31.0, lng:36.5, zoom:7, areas:[
+      {name:'Amman', lat:31.95, lng:35.93, rank:1, centers:5, hd:3200, priority:'Critical'},
+      {name:'Irbid',  lat:32.55, lng:35.85, rank:2, centers:2, hd:960,  priority:'High'},
+      {name:'Zarqa',  lat:32.07, lng:36.09, rank:3, centers:2, hd:768,  priority:'Medium'},
+      {name:'Salt',   lat:32.03, lng:35.73, rank:4, centers:1, hd:480,  priority:'Medium'},
+      {name:'Karak',  lat:31.18, lng:35.70, rank:5, centers:1, hd:320,  priority:'Low'}
+    ]},
+    'Lebanon': { lat:33.9, lng:35.9, zoom:8, areas:[
+      {name:'Greater Beirut', lat:33.89, lng:35.50, rank:1, centers:30, hd:2365, priority:'Critical'},
+      {name:'Tripoli',        lat:34.44, lng:35.85, rank:2, centers:12, hd:850,  priority:'High'},
+      {name:'Sidon',          lat:33.56, lng:35.37, rank:3, centers:8,  hd:520,  priority:'Medium'},
+      {name:'Zahle',          lat:33.85, lng:35.90, rank:4, centers:6,  hd:400,  priority:'Medium'},
+      {name:'Jounieh',        lat:33.98, lng:35.62, rank:5, centers:4,  hd:280,  priority:'Low'},
+      {name:'Nabatieh',       lat:33.38, lng:35.48, rank:6, centers:3,  hd:200,  priority:'Low'}
+    ]},
+    'Oman': { lat:21.0, lng:57.0, zoom:6, areas:[
+      {name:'Muscat',    lat:23.61, lng:58.59, rank:1, centers:4, hd:1000, priority:'Critical'},
+      {name:'Salalah',   lat:17.02, lng:54.09, rank:2, centers:2, hd:500,  priority:'High'},
+      {name:'Sohar',     lat:24.34, lng:56.75, rank:3, centers:2, hd:380,  priority:'Medium'},
+      {name:'Ibri',      lat:23.22, lng:56.51, rank:4, centers:2, hd:250,  priority:'Medium'},
+      {name:'Barka/Seeb',lat:23.68, lng:57.89, rank:5, centers:1, hd:180,  priority:'Low'}
+    ]},
+    'Bahrain': { lat:26.0, lng:50.5, zoom:10, areas:[
+      {name:'Manama / Riffa',  lat:26.22, lng:50.59, rank:1, centers:5, hd:2500, priority:'Critical'},
+      {name:"A'Ali",           lat:26.15, lng:50.53, rank:2, centers:2, hd:900,  priority:'High'},
+      {name:'Muharraq',        lat:26.26, lng:50.62, rank:3, centers:2, hd:680,  priority:'Medium'},
+      {name:'Saar',            lat:26.21, lng:50.48, rank:4, centers:1, hd:320,  priority:'Low'},
+      {name:'Riffa (private)', lat:26.13, lng:50.56, rank:5, centers:1, hd:150,  priority:'Low'}
+    ]}
+  };
+
+  var PC = {Critical:'#ef4444', High:'#f97316', Medium:'#eab308', Low:'#22c55e'};
+
+  function makeIcon(priority, rank) {
+    var color = PC[priority];
+    var size = rank === 1 ? 22 : rank <= 3 ? 16 : 12;
+    var s = size * 2;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="'+s+'" height="'+s+'" viewBox="0 0 100 100">'
+      + '<circle cx="50" cy="50" r="40" fill="'+color+'" opacity="0.2"/>'
+      + '<circle cx="50" cy="50" r="24" fill="'+color+'"/>'
+      + '<circle cx="50" cy="50" r="11" fill="white" opacity="0.85"/>'
+      + '</svg>';
+    return L.divIcon({ html:svg, className:'', iconSize:[s,s], iconAnchor:[size,size], popupAnchor:[0,-size] });
+  }
+
+  function loadCountry(c) {
+    var d = HA_DATA[c];
+    haMarkers.forEach(function(m){ haMap.removeLayer(m); });
+    haMarkers = [];
+    haMap.flyTo([d.lat, d.lng], d.zoom, {duration:1.2});
+    d.areas.forEach(function(a) {
+      var m = L.marker([a.lat, a.lng], {icon: makeIcon(a.priority, a.rank)});
+      var popup = '<div style="background:#0d2145;border:1px solid #2563eb;border-radius:10px;padding:10px 14px;min-width:170px;font-family:Segoe UI,sans-serif;">'
+        + '<div style="font-size:13px;font-weight:700;color:#60a5fa;margin-bottom:6px;">'+a.name+'</div>'
+        + '<div style="font-size:11px;color:#6a85b0;margin-top:3px;">Rank <span style="color:#e8edf5;font-weight:600;">#'+a.rank+' in '+c+'</span></div>'
+        + '<div style="font-size:11px;color:#6a85b0;margin-top:3px;">Centers <span style="color:#e8edf5;font-weight:600;">'+a.centers+'</span></div>'
+        + '<div style="font-size:11px;color:#6a85b0;margin-top:3px;">HD Patients <span style="color:#e8edf5;font-weight:600;">'+a.hd.toLocaleString()+'</span></div>'
+        + '<div style="font-size:11px;color:#6a85b0;margin-top:3px;">Priority <span style="font-weight:700;color:'+PC[a.priority]+';">'+a.priority+'</span></div>'
+        + '</div>';
+      m.bindPopup(popup, {maxWidth:220});
+      m.addTo(haMap);
+      haMarkers.push(m);
+    });
+  }
+
+  function initHaMap() {
+    haInited = true;
+    haMap = L.map('haMap', {zoomControl:true, attributionControl:false});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(haMap);
+    loadCountry(haActive);
+  }
+
+  // Build tabs
+  var haTabs = document.getElementById('haTabs');
+  Object.keys(HA_DATA).forEach(function(c) {
+    var el = document.createElement('div');
+    el.className = 'ha-tab' + (c === haActive ? ' active' : '');
+    el.textContent = c;
+    el.onclick = function() {
+      haActive = c;
+      document.querySelectorAll('.ha-tab').forEach(function(t){ t.classList.remove('active'); });
+      el.classList.add('active');
+      if (haInited) { loadCountry(c); }
     };
-
-    const PC = {Critical:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#22c55e"};
-    let haActive = "Saudi Arabia";
-    let haAnimPhase = 0;
-    let haPulseT = 0;
-
-    const haTabs   = document.getElementById("haTabs");
-    const haCanvas = document.getElementById("haCanvas");
-    const haCtx    = haCanvas.getContext("2d");
-    const haTip    = document.getElementById("haTooltip");
-    const haArea   = document.getElementById("haMapArea");
-    const haLeg    = document.getElementById("haLegendBar");
-    const haLCtx   = haLeg.getContext("2d");
-
-    function flameColor(t, a) {
-      const r = Math.min(255, Math.round(255*Math.min(t*2,1)));
-      const g = Math.min(255, Math.round(255*Math.max(0,t*2-0.5)));
-      const b = Math.round(10*(1-t));
-      return "rgba("+r+","+g+","+b+","+a+")";
-    }
-
-    function haResize() {
-  const W = haArea.clientWidth || (window.innerWidth - 220);
-  haCanvas.width  = W;
-  haCanvas.height = Math.round(W * 0.52);
-}
-
-    function haRender() {
-      const W = haCanvas.width, H = haCanvas.height;
-      const areas = HA_DATA[haActive].areas;
-      haCtx.clearRect(0,0,W,H);
-      haCtx.fillStyle="#0a1525"; haCtx.fillRect(0,0,W,H);
-      haCtx.strokeStyle="rgba(30,61,122,0.3)"; haCtx.lineWidth=0.5;
-      for(var x=0;x<W;x+=W/8){haCtx.beginPath();haCtx.moveTo(x,0);haCtx.lineTo(x,H);haCtx.stroke();}
-      for(var y=0;y<H;y+=H/6){haCtx.beginPath();haCtx.moveTo(0,y);haCtx.lineTo(W,y);haCtx.stroke();}
-      areas.forEach(function(a){
-        var cx=a.x*W,cy=a.y*H,intensity=1-(a.rank-1)/areas.length;
-        var r=(40+intensity*70)*(W/700);
-        var g=haCtx.createRadialGradient(cx,cy,0,cx,cy,r);
-        var al=0.18+intensity*0.32;
-        g.addColorStop(0,flameColor(intensity,al));
-        g.addColorStop(0.5,flameColor(intensity*0.6,al*0.5));
-        g.addColorStop(1,"rgba(0,0,0,0)");
-        haCtx.beginPath();haCtx.arc(cx,cy,r,0,Math.PI*2);haCtx.fillStyle=g;haCtx.fill();
-      });
-      areas.forEach(function(a,i){
-        var cx=a.x*W,cy=a.y*H,intensity=1-(a.rank-1)/areas.length;
-        var appear=Math.min(1,Math.max(0,(haAnimPhase-i*0.12)/0.15));
-        if(appear<=0)return;
-        var baseR=(5+intensity*9)*(W/700);
-        var pc=PC[a.priority];
-        var pulse=Math.sin(haPulseT*0.05+i*0.8)*0.5+0.5;
-        haCtx.beginPath();haCtx.arc(cx,cy,baseR+3+pulse*5,0,Math.PI*2);
-        haCtx.strokeStyle=pc+"55";haCtx.lineWidth=1.5;haCtx.stroke();
-        haCtx.beginPath();haCtx.arc(cx,cy,baseR*appear,0,Math.PI*2);
-        haCtx.fillStyle=pc;haCtx.fill();
-        haCtx.beginPath();haCtx.arc(cx,cy,baseR*appear*0.45,0,Math.PI*2);
-        haCtx.fillStyle="rgba(255,255,255,0.7)";haCtx.fill();
-        if(appear>=1&&W>400){
-          haCtx.font="bold "+Math.round(9*W/700+8)+"px 'Segoe UI',sans-serif";
-          haCtx.fillStyle="#e8edf5";haCtx.textAlign="center";
-          var lbl=a.rank===1?a.name:(a.name.length>14?a.name.slice(0,13)+"...":a.name);
-          haCtx.fillText(lbl,cx,cy-baseR-5);
-        }
-      });
-      var lg=haLCtx.createLinearGradient(0,0,160,0);
-      for(var i=0;i<=10;i++)lg.addColorStop(i/10,flameColor(i/10,1));
-      haLCtx.clearRect(0,0,160,10);haLCtx.fillStyle=lg;
-      haLCtx.roundRect(0,0,160,10,5);haLCtx.fill();
-    }
-
-    function haAnimate() {
-      haPulseT++;
-      if(haAnimPhase<1.5)haAnimPhase+=0.018;
-      haRender();
-      requestAnimationFrame(haAnimate);
-    }
-
-    Object.keys(HA_DATA).forEach(function(c){
-      var el=document.createElement("div");
-      el.className="ha-tab"+(c===haActive?" active":"");
-      el.textContent=c;
-      el.onclick=function(){
-        haActive=c;
-        document.querySelectorAll(".ha-tab").forEach(function(t){t.classList.remove("active");});
-        el.classList.add("active");
-        haAnimPhase=0;
-      };
-      haTabs.appendChild(el);
-    });
-
-    haCanvas.addEventListener("mousemove",function(e){
-      var rect=haCanvas.getBoundingClientRect();
-      var mx=(e.clientX-rect.left)*(haCanvas.width/rect.width);
-      var my=(e.clientY-rect.top)*(haCanvas.height/rect.height);
-      var areas=HA_DATA[haActive].areas, hit=null;
-      for(var i=areas.length-1;i>=0;i--){
-        var a=areas[i],cx=a.x*haCanvas.width,cy=a.y*haCanvas.height;
-        var intensity=1-(a.rank-1)/areas.length;
-        var r=(8+intensity*9)*(haCanvas.width/700)+6;
-        if(Math.hypot(mx-cx,my-cy)<r){hit=a;break;}
-      }
-      if(hit){
-        document.getElementById("ha-tt-name").textContent=hit.name;
-        document.getElementById("ha-tt-rank").textContent="#"+hit.rank+" in "+haActive;
-        document.getElementById("ha-tt-centers").textContent=hit.centers+" dialysis centers";
-        document.getElementById("ha-tt-hd").textContent=hit.hd.toLocaleString()+" patients (est.)";
-        var pe=document.getElementById("ha-tt-priority");
-        pe.textContent=hit.priority;pe.style.color=PC[hit.priority];
-        var pxX=e.clientX-rect.left,pxY=e.clientY-rect.top;
-        var left=pxX+14,top=pxY-60;
-        if(left+190>rect.width-10)left=pxX-204;
-        if(top<4)top=4;
-        haTip.style.left=left+"px";haTip.style.top=top+"px";haTip.style.opacity="1";
-        haCanvas.style.cursor="pointer";
-      } else {
-        haTip.style.opacity="0";haCanvas.style.cursor="crosshair";
-      }
-    });
-    window.addEventListener("resize", function(){ haResize(); haAnimPhase=0; });
-
-const haObserver = new MutationObserver(function() {
-  if (haArea.clientWidth > 0) {
-    haResize();
-    haAnimPhase = 0;
-  }
-});
-haObserver.observe(document.getElementById("page-hotareas"), { attributes: true, attributeFilter: ["class"] });
-
-haResize();
-haAnimate();
-  })();
+    haTabs.appendChild(el);
+  });
 </script>
 </body>
 </html>
