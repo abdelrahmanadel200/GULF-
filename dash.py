@@ -1,113 +1,15 @@
-"""
-AMECATH Executive Intelligence Hub — v2.2 (Ultra-Resilient Edition)
-===================================================================
-Single-file Streamlit dashboard with dynamic file resolution, 
-fuzzy sheet matching, resilient column detection, and rich UI cards.
-"""
-
 import base64
 import os
+import re
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 
-import re
-import plotly.express as px
-
 # ─────────────────────────────────────────────
-# 0. CONFIGURATION & MAPPINGS
-# ─────────────────────────────────────────────
-
-PRIMARY_FILE = "Amecath Dash_5.xlsx"
-FALLBACK_FILES = ["Amecath Dash.xlsx", "amecath_dash.xlsx", "data.xlsx"]
-
-ASSETS_DIR = Path("assets")
-LANDSCAPE_DIR = ASSETS_DIR / "landscapes"
-LOGO_DIR = ASSETS_DIR / "logos"
-
-# Flexible Sheet Alias Mapping (Maps internal keys to list of candidate tab names)
-REQUIRED_SHEETS: Dict[str, List[str]] = {
-    "overview": ["Overview_KPIs", "overview", "Overview", "kpi_overview"],
-    "macro": ["Macro_Summary", "macro", "Macro", "macro_environment"],
-    "tenders": ["Financials_Tenders", "tenders", "Tenders", "financials"],
-    "hot_areas": ["Hot_Areas", "Hot Areas", "hot_areas", "HotMarkets"],
-    "distributors": ["Local_Distributors", "Distributors", "distributors", "distributor_network"],
-    "competitors": ["Competitor_Matrix", "COMPETITORS", "competitors", "Competitors"],
-    "competitors_asp": ["Competitor_Aspiration", "comp asp", "competitors_asp", "ASP_Pricing"],
-    "kol": ["KOL_Catalog", "KOLS", "kol", "KeyOpinionLeaders"],
-    "forecast": ["Forecast_Data", "Revenue Forecast", "forecast", "Forecast"],
-    "sources": ["Sources", "sources", "Audit_Sources"],
-}
-
-# Sidebar Navigation Map
-NAV_MAP: Dict[str, str] = {
-    "🌐 Executive Overview": "overview",
-    "📊 Macro Environment": "macro",
-    "📈 Financials & Tenders": "tenders",
-    "🔥 Hot Market Areas": "hot_areas",
-    "🤝 Local Distributors": "distributors",
-    "⚔️ Competitor Matrix": "competitors",
-    "🏷️ Competitor ASP & Pricing": "competitors_asp",
-    "👨‍⚕️ Key Opinion Leaders": "kol",
-    "🔮 Market Forecast": "forecast",
-    "📚 Data Sources & Audit": "sources",
-}
-
-COUNTRY_THEMES = {
-    "Saudi Arabia": {
-        "flag": "🇸🇦", "primary": "#006C35", "accent": "#C5A059",
-        "bg": "#0D1B1E", "card_bg": "rgba(19,42,47,0.85)", "text": "#E6F1FF",
-        "landmark": "Kingdom Centre & Riyadh Skyline"
-    },
-    "UAE": {
-        "flag": "🇦🇪", "primary": "#CE1126", "accent": "#00732F",
-        "bg": "#1A0F10", "card_bg": "rgba(42,22,24,0.85)", "text": "#FFFFFF",
-        "landmark": "Burj Khalifa & Dubai Skyline"
-    },
-    "Qatar": {
-        "flag": "🇶🇦", "primary": "#8A1538", "accent": "#E0A96D",
-        "bg": "#1C0D12", "card_bg": "rgba(46,21,30,0.85)", "text": "#FFF5F5",
-        "landmark": "Doha Corniche & Museum of Islamic Art"
-    },
-    "Kuwait": {
-        "flag": "🇰🇼", "primary": "#007A3D", "accent": "#CE1126",
-        "bg": "#0A1816", "card_bg": "rgba(17,41,37,0.85)", "text": "#E6FFFA",
-        "landmark": "Kuwait Towers"
-    },
-    "Oman": {
-        "flag": "🇴🇲", "primary": "#DB162F", "accent": "#008000",
-        "bg": "#1C0D10", "card_bg": "rgba(46,22,26,0.85)", "text": "#FFF0F0",
-        "landmark": "Al Alam Palace & Muscat Forts"
-    },
-    "Bahrain": {
-        "flag": "🇧🇭", "primary": "#CE1126", "accent": "#FFFFFF",
-        "bg": "#1A0F10", "card_bg": "rgba(42,22,24,0.85)", "text": "#FFFFFF",
-        "landmark": "Bahrain World Trade Center"
-    },
-    "Jordan": {
-        "flag": "🇯🇴", "primary": "#000000", "accent": "#CE1126",
-        "bg": "#121212", "card_bg": "rgba(31,31,31,0.85)", "text": "#F5F5F5",
-        "landmark": "Petra & Amman Citadel"
-    },
-    "Lebanon": {
-        "flag": "🇱🇧", "primary": "#CE1126", "accent": "#007A3D",
-        "bg": "#1A0D0D", "card_bg": "rgba(43,22,22,0.85)", "text": "#FFF0F0",
-        "landmark": "Jeita Grotto & Beirut Skyline"
-    },
-  "Iraq": {
-        "flag": "🇮🇶", "primary": "#CE1126", "accent": "#007A3D",
-        "bg": "#121212", "card_bg": "rgba(30,30,30,0.85)", "text": "#FFFFFF",
-        "landmark": "Erbil Citadel & Baghdad Skyline"
-    },
-}
-
-TREND_ICONS = {"up": "▲", "down": "▼", "stable": "◆"}
-TREND_COLORS = {"up": "#00C853", "down": "#FF1744", "stable": "#FFD600"}
-
-# ─────────────────────────────────────────────
-# 1. HELPER FUNCTIONS & RESILIENT DATA RETRIEVAL
+# 0. CONFIG & CONSTANTS INITIALIZATION
 # ─────────────────────────────────────────────
 
 st.set_page_config(
@@ -117,26 +19,99 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+LANDSCAPE_DIR = Path("assets/landscapes")
+ASSETS_DIR = Path("assets")
+LOGO_DIR = Path("assets/logo")
+
+PRIMARY_FILE = "AMECATH_Master_Data.xlsx"
+FALLBACK_FILES = ["data.xlsx", "master.xlsx"]
+
+REQUIRED_SHEETS = {
+    "macro": ["Macro", "Macro Environment"],
+    "tenders": ["Tenders", "Financials & Tenders"],
+    "hot_areas": ["Hot Areas", "Hot Market Areas"],
+    "distributors": ["Distributors", "Local Distributors"],
+    "competitors": ["Competitors", "Competitor Matrix"],
+    "competitors_asp": ["Competitors ASP", "ASP Pricing"],
+    "kol": ["KOL", "Key Opinion Leaders"],
+    "forecast": ["Forecast", "Revenue Forecast"],
+    "sources": ["Sources", "Data Sources"],
+}
+
+NAV_MAP = {
+    "🌐 Executive Overview": "overview",
+    "📊 Macro Environment": "macro",
+    "📈 Financials & Tenders": "tenders",
+    "🔥 Hot Market Areas": "hot_areas",
+    "🤝 Local Distributors": "distributors",
+    "⚔️ Competitor Matrix": "competitors",
+    "🏷️ Competitor ASP": "competitors_asp",
+    "👨‍⚕️ Key Opinion Leaders": "kol",
+    "🔮 Growth Forecast": "forecast",
+    "📚 Data Sources": "sources",
+}
+
+COUNTRY_THEMES = {
+    "Saudi Arabia": {
+        "flag": "🇸🇦",
+        "primary": "#006C35",
+        "accent": "#D4AF37",
+        "bg": "#0B1D12",
+        "card_bg": "rgba(15, 40, 25, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "Kingdom of Saudi Arabia",
+    },
+    "UAE": {
+        "flag": "🇦🇪",
+        "primary": "#007A3D",
+        "accent": "#FFD700",
+        "bg": "#0D1F17",
+        "card_bg": "rgba(13, 31, 23, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "United Arab Emirates",
+    },
+    "Egypt": {
+        "flag": "🇪🇬",
+        "primary": "#C00000",
+        "accent": "#FFD700",
+        "bg": "#1C1008",
+        "card_bg": "rgba(45, 20, 10, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "Arab Republic of Egypt",
+    },
+}
+
+# ─────────────────────────────────────────────
+# 1. HELPER FUNCTIONS & DATA RETRIEVAL
+# ─────────────────────────────────────────────
+
 def _image_to_b64(path: Path) -> str:
     if path.exists():
         return base64.b64encode(path.read_bytes()).decode()
     return ""
 
+def find_overview_bg_b64() -> str:
+    if ASSETS_DIR.exists():
+        for p in ASSETS_DIR.glob("**/*"):
+            if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
+                return _image_to_b64(p)
+    for p in Path(".").glob("*"):
+        if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
+            return _image_to_b64(p)
+    return ""
+
 def find_landscape_b64(country: str) -> str:
     if not LANDSCAPE_DIR.exists():
         return ""
-    
-    # استخراج الكلمة الأساسية من اسم الدولة (مثلاً saudi من Saudi Arabia)
     key = country.lower().split()[0]
     if key == "jordan":
-        key = "jord"    # للتعامل مع تسمية jordon
+        key = "jord"
     elif key == "bahrain":
-        key = "bahra"   # للتعامل مع تسمية bahraien
+        key = "bahra"
         
     for p in LANDSCAPE_DIR.glob("*"):
         if p.is_file() and key in p.name.lower() and "landscape" in p.name.lower():
             return _image_to_b64(p)
-            
     return ""
 
 def find_flag_b64(country: str) -> str:
@@ -153,16 +128,15 @@ def find_flag_b64(country: str) -> str:
     return ""
 
 def logo_b64() -> str:
-    if not LOGO_DIR.exists():
-        return ""
-    for ext in ("png", "jpeg", "jpg"):
-        b64 = _image_to_b64(LOGO_DIR / f"amecath_logo.{ext}")
-        if b64:
-            return b64
+    search_dirs = [LOGO_DIR, ASSETS_DIR, Path(".")]
+    for d in search_dirs:
+        if d.exists():
+            for p in d.glob("**/*"):
+                if p.is_file() and "logo" in p.name.lower():
+                    return _image_to_b64(p)
     return ""
 
 def find_column(df: pd.DataFrame, candidates: List[str]) -> Optional[str]:
-    """Dynamically finds a column matching any candidate name (case & whitespace insensitive)."""
     normalized_cols = {str(c).strip().lower(): str(c) for c in df.columns}
     for cand in candidates:
         norm_cand = cand.strip().lower()
@@ -171,7 +145,6 @@ def find_column(df: pd.DataFrame, candidates: List[str]) -> Optional[str]:
     return None
 
 def resolve_master_filepath() -> Optional[str]:
-    """Finds available Excel file in root directory."""
     if os.path.exists(PRIMARY_FILE):
         return PRIMARY_FILE
     for fname in FALLBACK_FILES:
@@ -181,7 +154,6 @@ def resolve_master_filepath() -> Optional[str]:
 
 @st.cache_data(ttl=300)
 def load_master_data(filepath: str) -> Dict[str, pd.DataFrame]:
-    """Loads and maps Excel sheets dynamically matching internal aliases."""
     xls = pd.ExcelFile(filepath)
     actual_sheets = {s.strip().lower(): s for s in xls.sheet_names}
 
@@ -217,8 +189,8 @@ def get_sheet(data: Dict[str, pd.DataFrame], key: str) -> Optional[pd.DataFrame]
 def inject_css(theme: dict, bg_b64: str = "") -> None:
     bg_css = f"""
     .stApp {{
-        background: linear-gradient(rgba(10,15,20,0.82), rgba(10,15,20,0.92)),
-                    url("data:image/jpeg;base64,{bg_b64}") no-repeat center center fixed !important;
+        background: linear-gradient(rgba(5, 19, 41, 0.82), rgba(5, 19, 41, 0.92)),
+                    url("data:image/png;base64,{bg_b64}") no-repeat center center fixed !important;
         background-size: cover !important;
     }}""" if bg_b64 else f".stApp {{ background-color: {theme['bg']} !important; }}"
 
@@ -229,16 +201,14 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     .country-mini-card {{
         background: {theme['card_bg']};
         border-left: 5px solid {theme['primary']}; border-radius: 12px;
-        padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(8px);
+        padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(10px);
         box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-        transition: transform 0.2s ease-in-out;
     }}
     .hero-banner {{
         background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
         padding: 22px 28px; border-radius: 16px; border-left: 6px solid {theme['accent']};
         margin-bottom: 25px; backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(0,0,0,0.45);
     }}
-    .header-container {{ display: flex; align-items: center; justify-content: space-between; gap: 15px; }}
     .header-title {{ color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }}
     .forecast-frame {{
         background: {theme['card_bg']}; border: 1px solid {theme['accent']}66;
@@ -246,7 +216,6 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     }}
     </style>
     """, unsafe_allow_html=True)
-
 
 def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
     flag_b64 = find_flag_b64(country)
@@ -274,13 +243,85 @@ def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
         <h1 class="header-title" style="margin:0; font-size:34px; letter-spacing:1px;">{country.upper()}</h1>
       </div>
       <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
-        &#128205; Strategic Landmark: <span>{theme['landmark']}</span>
+        📍 Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # 3. VIEWS & DASHBOARD SECTIONS
 # ─────────────────────────────────────────────
+
+def render_overview(data: dict = None, theme: dict = None) -> None:
+    st.subheader("🌐 Gulf Region — Executive Overview")
+    card_bg = theme.get("card_bg", "#1E222D") if theme else "#1E222D"
+    primary = theme.get("primary", "#00B4D8") if theme else "#00B4D8"
+    accent = theme.get("accent", "#FFB703") if theme else "#FFB703"
+
+    st.markdown(f"""
+        <style>
+        .overview-card {{
+            background: {card_bg};
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 3px solid {primary};
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 100%;
+        }}
+        .overview-card:hover {{
+            transform: translateY(-6px);
+            border-top-color: {accent};
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 12px {accent}40;
+        }}
+        .card-icon {{ font-size: 26px; margin-bottom: 6px; }}
+        .card-value {{ font-size: 22px; font-weight: 700; color: #FFFFFF; margin: 4px 0; }}
+        .card-label {{ font-size: 11px; color: #A0AAB8; text-transform: uppercase; font-weight: 600; min-height: 28px; display: flex; align-items: center; justify-content: center; }}
+        .card-subtext {{ font-size: 11px; color: {accent}; margin-top: 4px; font-weight: 500; }}
+        </style>
+    """, unsafe_allow_html=True)
+
+    metrics = [
+        {"icon": "🌍", "label": "Countries Covered", "value": "9", "sub": "Gulf Region"},
+        {"icon": "👥", "label": "Total Population 2026", "value": "127.68M", "sub": "127,681,500"},
+        {"icon": "🩺", "label": "Total HD Patients", "value": "65,254", "sub": "Hemodialysis"},
+        {"icon": "🧪", "label": "Est. 2026 PD", "value": "4,114", "sub": "Peritoneal Dialysis"},
+        {"icon": "🏥", "label": "Dialysis Facilities", "value": "762", "sub": "Centers"},
+        {"icon": "⚡", "label": "HD Machines", "value": "44,050", "sub": "Units"},
+        {"icon": "💉", "label": "Annual Catheter Demand", "value": "167.87K", "sub": "167,867 units"},
+        {"icon": "💰", "label": "Market Value", "value": "$18.90M", "sub": "USD"},
+        {"icon": "🏢", "label": "Distributors", "value": "90", "sub": "Active Partners"},
+        {"icon": "👨‍⚕️", "label": "KOLs", "value": "90", "sub": "Opinion Leaders"}
+    ]
+
+    cols1 = st.columns(5)
+    for i in range(5):
+        m = metrics[i]
+        with cols1[i]:
+            st.markdown(f"""
+                <div class="overview-card">
+                    <div class="card-icon">{m['icon']}</div>
+                    <div class="card-label">{m['label']}</div>
+                    <div class="card-value">{m['value']}</div>
+                    <div class="card-subtext">{m['sub']}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("<div style='margin-bottom: 16px;'></div>", unsafe_allow_html=True)
+
+    cols2 = st.columns(5)
+    for i in range(5):
+        m = metrics[i+5]
+        with cols2[i]:
+            st.markdown(f"""
+                <div class="overview-card">
+                    <div class="card-icon">{m['icon']}</div>
+                    <div class="card-label">{m['label']}</div>
+                    <div class="card-value">{m['value']}</div>
+                    <div class="card-subtext">{m['sub']}</div>
+                </div>
+            """, unsafe_allow_html=True)
 
 def render_generic_table(data: Dict[str, pd.DataFrame], key: str, title: str, country: str) -> None:
     st.subheader(f"{title} — {country}")
@@ -308,7 +349,6 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         st.warning("No Hot Market Areas data available.")
         return
 
-    # Find matching country column
     country_col = find_column(df, [selected_country])
     if not country_col:
         for col in df.columns:
@@ -321,7 +361,6 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         st.dataframe(df, use_container_width=True)
         return
 
-    # Parse City Names, Centers count & Details
     rank_col = find_column(df, ["rank", "الترتيب", "no"])
     parsed_data = []
 
@@ -331,12 +370,9 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
             continue
         
         rank = row[rank_col] if rank_col and pd.notna(row[rank_col]) else idx + 1
-        
-        # Extract City Name (text before parenthesis)
         city_match = re.split(r'[\(;\:]', val)[0].strip()
         city_name = city_match if city_match else f"Area {rank}"
         
-        # Extract number of centers for Treemap sizing
         centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
         centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
 
@@ -352,17 +388,14 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         return
 
     parsed_df = pd.DataFrame(parsed_data)
+    flame_colors_reversed = ['#FFCC00', '#FF9900', '#FF6600', '#CC3300', '#990000', '#660000', '#2B0000']
 
-    # مصفوفة درجات ألوان Flame النارية المحددة يدويًا بدلاً من الاعتماد على المكتبة
-    flame_colors = ['#FFF3BF', '#FFD43B', '#FFA800', '#FF6B00', '#D9381E', '#7A0010']
-
-    # Render Interactive Plotly Treemap
     fig = px.treemap(
         parsed_df,
         path=['City'],
         values='Centers',
         color='Centers',
-        color_continuous_scale=flame_colors,
+        color_continuous_scale=flame_colors_reversed,
         hover_data=['Rank', 'Details'],
         title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
     )
@@ -380,15 +413,13 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         hovertemplate="<b>%{label}</b><br>Rank: %{customdata[0]}<br>Centers: %{value}<br><br>%{customdata[1]}<extra></extra>"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=f"hot_areas_chart_{selected_country}")
 
-    # Detailed Table View
     with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
         st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
 
-    # Detailed Table View
-    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
-        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
+def render_distributors(data: Dict[str, pd.DataFrame], selected_country: str, theme: dict) -> None:
+    render_generic_table(data, "distributors", "🤝 Local Distributors & Partners", selected_country)
 
 def render_forecast(data: Dict[str, pd.DataFrame], selected_country: str, theme: dict) -> None:
     st.subheader(f"🔮 Revenue & Growth Forecast — {selected_country}")
@@ -433,93 +464,6 @@ def render_forecast(data: Dict[str, pd.DataFrame], selected_country: str, theme:
     st.markdown("##### Detailed Forecast Data")
     st.dataframe(df_c, use_container_width=True, hide_index=True)
 
-def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme: dict) -> None:
-    st.subheader(f"🔥 Hot Market Areas — {selected_country}")
-    df = get_sheet(data, "hot_areas")
-    
-    if df is None or df.empty:
-        st.warning("No Hot Market Areas data available.")
-        return
-
-    # Find matching country column
-    country_col = find_column(df, [selected_country])
-    if not country_col:
-        for col in df.columns:
-            if selected_country.lower() in str(col).lower():
-                country_col = col
-                break
-
-    if not country_col:
-        st.warning(f"No specific hot market area data found for {selected_country}.")
-        st.dataframe(df, use_container_width=True)
-        return
-
-    # Parse City Names, Centers count & Details
-    rank_col = find_column(df, ["rank", "الترتيب", "no"])
-    parsed_data = []
-
-    for idx, row in df.iterrows():
-        val = str(row[country_col]) if pd.notna(row[country_col]) else ""
-        if not val or val.strip() in ["-", "nan", "None"]:
-            continue
-        
-        rank = row[rank_col] if rank_col and pd.notna(row[rank_col]) else idx + 1
-        
-        # Extract City Name
-        city_match = re.split(r'[\(;\:]', val)[0].strip()
-        city_name = city_match if city_match else f"Area {rank}"
-        
-        # Extract number of centers
-        centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
-        centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
-
-        parsed_data.append({
-            "Rank": rank,
-            "City": city_name,
-            "Centers": centers,
-            "Details": val
-        })
-
-    if not parsed_data:
-        st.info(f"No valid data points found for {selected_country}.")
-        return
-
-    parsed_df = pd.DataFrame(parsed_data)
-
-    # تدرج ألوان Flame المعكوس (من الأصفر للأحمر الداكن)
-    flame_colors_reversed = ['#FFCC00', '#FF9900', '#FF6600', '#CC3300', '#990000', '#660000', '#2B0000']
-
-    # Render Interactive Plotly Treemap
-    fig = px.treemap(
-        parsed_df,
-        path=['City'],
-        values='Centers',
-        color='Centers',
-        color_continuous_scale=flame_colors_reversed,
-        hover_data=['Rank', 'Details'],
-        title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
-    )
-    
-    fig.update_layout(
-        margin=dict(t=40, l=10, r=10, b=10),
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color="#FFFFFF", size=14),
-        coloraxis_showscale=False
-    )
-    
-    fig.update_traces(
-        texttemplate="<b>%{label}</b><br>%{value} Centers",
-        hovertemplate="<b>%{label}</b><br>Rank: %{customdata[0]}<br>Centers: %{value}<br><br>%{customdata[1]}<extra></extra>"
-    )
-
-    # إضافة key فريد لتجنب تعارض Streamlit IDs
-    st.plotly_chart(fig, use_container_width=True, key=f"hot_areas_chart_{selected_country}")
-
-    # Detailed Table View
-    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
-        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
-
 # ─────────────────────────────────────────────
 # 4. SIDEBAR CONTROLS & NAVIGATION ROUTING
 # ─────────────────────────────────────────────
@@ -537,185 +481,6 @@ nav_mode = NAV_MAP[selected_nav_label]
 
 st.sidebar.markdown("---")
 
-# ─────────────────────────────────────────────
-# 1. HELPER FUNCTIONS & RESILIENT DATA RETRIEVAL
-# ─────────────────────────────────────────────
-
-def _image_to_b64(path: Path) -> str:
-    if path.exists():
-        return base64.b64encode(path.read_bytes()).decode()
-    return ""
-
-def find_overview_bg_b64() -> str:
-    """Finds overview background image matching 'overview' or 'background'."""
-    if ASSETS_DIR.exists():
-        for p in ASSETS_DIR.glob("**/*"):
-            if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
-                return _image_to_b64(p)
-    for p in Path(".").glob("*"):
-        if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
-            return _image_to_b64(p)
-    return ""
-
-def find_landscape_b64(country: str) -> str:
-    if not LANDSCAPE_DIR.exists():
-        return ""
-    for ext in ("jpeg", "jpg", "png"):
-        p = LANDSCAPE_DIR / f"{country} landscape.{ext}"
-        b64 = _image_to_b64(p)
-        if b64:
-            return b64
-    matches = list(LANDSCAPE_DIR.glob(f"{country}*landscape*"))
-    if matches:
-        return _image_to_b64(matches[0])
-    return ""
-
-def logo_b64() -> str:
-    """Flexible logo matching for any variation of amecath logo file name."""
-    search_dirs = [LOGO_DIR, ASSETS_DIR, Path(".")]
-    for d in search_dirs:
-        if d.exists():
-            for p in d.glob("**/*"):
-                if p.is_file() and "logo" in p.name.lower():
-                    return _image_to_b64(p)
-    return ""
-
-# ─────────────────────────────────────────────
-# STYLING INJECTION WITH DARK OVERLAY FOR CLARITY
-# ─────────────────────────────────────────────
-
-def inject_css(theme: dict, bg_b64: str = "") -> None:
-    # High-contrast overlay to make text crisp over white/bright backgrounds
-    bg_css = f"""
-    .stApp {{
-        background: linear-gradient(rgba(5, 19, 41, 0.82), rgba(5, 19, 41, 0.92)),
-                    url("data:image/png;base64,{bg_b64}") no-repeat center center fixed !important;
-        background-size: cover !important;
-    }}""" if bg_b64 else f".stApp {{ background-color: {theme['bg']} !important; }}"
-
-    st.markdown(f"""
-    <style>
-    {bg_css}
-    body, .stApp {{ color: {theme['text']}; font-family: 'Segoe UI', Roboto, sans-serif; }}
-    .country-mini-card {{
-        background: {theme['card_bg']};
-        border-left: 5px solid {theme['primary']}; border-radius: 12px;
-        padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(10px);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.4);
-    }}
-    .hero-banner {{
-        background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
-        padding: 22px 28px; border-radius: 16px; border-left: 6px solid {theme['accent']};
-        margin-bottom: 25px; backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-    }}
-    .header-container {{ display: flex; align-items: center; justify-content: space-between; gap: 15px; }}
-    .header-title {{ color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }}
-    </style>
-    """, unsafe_allow_html=True)
-
-# ─────────────────────────────────────────────
-# REGIONAL OVERVIEW RENDER FUNCTION
-# ─────────────────────────────────────────────
-def render_overview(data: dict = None, theme: dict = None) -> None:
-    st.subheader("🌐 Gulf Region — Executive Overview")
-    
-    # إعدادات الألوان المتناسقة مع الثيم
-    card_bg = theme.get("card_bg", "#1E222D") if theme else "#1E222D"
-    primary = theme.get("primary", "#00B4D8") if theme else "#00B4D8"
-    accent = theme.get("accent", "#FFB703") if theme else "#FFB703"
-
-    # تصميم الـ CSS للـ Active Cards
-    st.markdown(f"""
-        <style>
-        .overview-card {{
-            background: {card_bg};
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 3px solid {primary};
-            border-radius: 12px;
-            padding: 16px 12px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            height: 100%;
-        }}
-        .overview-card:hover {{
-            transform: translateY(-6px);
-            border-top-color: {accent};
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 12px {accent}40;
-        }}
-        .card-icon {{
-            font-size: 26px;
-            margin-bottom: 6px;
-        }}
-        .card-value {{
-            font-size: 22px;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin: 4px 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-        }}
-        .card-label {{
-            font-size: 11px;
-            color: #A0AAB8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            min-height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-        .card-subtext {{
-            font-size: 11px;
-            color: {accent};
-            margin-top: 4px;
-            font-weight: 500;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
-
-    metrics = [
-        {"icon": "🌍", "label": "Countries Covered", "value": "9", "sub": "Gulf Region"},
-        {"icon": "👥", "label": "Total Population 2026", "value": "127.68M", "sub": "127,681,500"},
-        {"icon": "🩺", "label": "Total HD Patients", "value": "65,254", "sub": "Hemodialysis"},
-        {"icon": "🧪", "label": "Est. 2026 PD", "value": "4,114", "sub": "Peritoneal Dialysis"},
-        {"icon": "🏥", "label": "Dialysis Facilities", "value": "762", "sub": "Centers"},
-        {"icon": "⚡", "label": "HD Machines", "value": "44,050", "sub": "Units"},
-        {"icon": "💉", "label": "Annual Catheter Demand", "value": "167.87K", "sub": "167,867 units"},
-        {"icon": "💰", "label": "Market Value", "value": "$18.90M", "sub": "USD"},
-        {"icon": "🏢", "label": "Distributors", "value": "90", "sub": "Active Partners"},
-        {"icon": "👨‍⚕️", "label": "KOLs", "value": "90", "sub": "Opinion Leaders"}
-    ]
-
-    # الصف الأول (5 بطاقات)
-    cols1 = st.columns(5)
-    for i in range(5):
-        m = metrics[i]
-        with cols1[i]:
-            st.markdown(f"""
-                <div class="overview-card">
-                    <div class="card-icon">{m['icon']}</div>
-                    <div class="card-label">{m['label']}</div>
-                    <div class="card-value">{m['value']}</div>
-                    <div class="card-subtext">{m['sub']}</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<div style='margin-bottom: 16px;'></div>", unsafe_allow_html=True)
-
-    # الصف الثاني (5 بطاقات)
-    cols2 = st.columns(5)
-    for i in range(5):
-        m = metrics[i+5]
-        with cols2[i]:
-            st.markdown(f"""
-                <div class="overview-card">
-                    <div class="card-icon">{m['icon']}</div>
-                    <div class="card-label">{m['label']}</div>
-                    <div class="card-value">{m['value']}</div>
-                    <div class="card-subtext">{m['sub']}</div>
-                </div>
-            """, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
 # ─────────────────────────────────────────────
@@ -750,7 +515,6 @@ st.sidebar.caption(
     f"⚡ Version: 2.3"
 )
 
-# AMECATH Navy Theme Configuration
 overview_theme = {
     "flag": "🌐", "primary": "#005A9C", "accent": "#00D4FF",
     "bg": "#051329", "card_bg": "rgba(8, 28, 54, 0.88)", "text": "#FFFFFF",
@@ -759,7 +523,6 @@ overview_theme = {
 
 active_theme = overview_theme if nav_mode == "overview" else theme
 
-# Background image routing
 if nav_mode == "overview":
     bg_b64 = find_overview_bg_b64()
 else:
@@ -767,10 +530,9 @@ else:
 
 inject_css(active_theme, bg_b64)
 
-# Dashboard Routing Switcher
+# Routing Switcher
 if nav_mode == "overview":
     logo = logo_b64()
-
     logo_html = (
         f'<img src="data:image/png;base64,{logo}" style="height:48px; background:white; padding:6px 12px; border-radius:8px; box-shadow:0 3px 10px rgba(0,0,0,0.4);" alt="AMECATH Logo">'
         if logo else ""
@@ -797,7 +559,7 @@ else:
     elif nav_mode == "hot_areas":
         render_hot_areas(data_sheets, selected_country, active_theme)
     elif nav_mode == "distributors":
-        render_generic_table(data_sheets, "distributors", "🤝 Local Distributors Network", selected_country)
+        render_distributors(data_sheets, selected_country, active_theme)
     elif nav_mode == "competitors":
         render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", selected_country)
     elif nav_mode == "competitors_asp":
