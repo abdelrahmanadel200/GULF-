@@ -619,36 +619,103 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
 def render_overview(data: dict = None, theme: dict = None) -> None:
     st.subheader("🌐 Gulf Region — Executive Overview")
     
-    # الصف الأول (5 مؤشرات رئيسية)
-    c1, c2, c3, c4, c5 = st.columns(5)
-    
-    with c1:
-        st.metric(label="🌍 Countries Covered", value="9")
-    with c2:
-        st.metric(label="👥 Total Population 2026", value="127.68M", delta="127,681,500")
-    with c3:
-        st.metric(label="🩺 Total HD Patients", value="65,254")
-    with c4:
-        st.metric(label="🧪 Est. 2026 PD Patients", value="4,114")
-    with c5:
-        st.metric(label="🏥 Dialysis Facilities", value="762")
+    # إعدادات الألوان المتناسقة مع الثيم
+    card_bg = theme.get("card_bg", "#1E222D") if theme else "#1E222D"
+    primary = theme.get("primary", "#00B4D8") if theme else "#00B4D8"
+    accent = theme.get("accent", "#FFB703") if theme else "#FFB703"
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    # تصميم الـ CSS للـ Active Cards
+    st.markdown(f"""
+        <style>
+        .overview-card {{
+            background: {card_bg};
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 3px solid {primary};
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 100%;
+        }}
+        .overview-card:hover {{
+            transform: translateY(-6px);
+            border-top-color: {accent};
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 12px {accent}40;
+        }}
+        .card-icon {{
+            font-size: 26px;
+            margin-bottom: 6px;
+        }}
+        .card-value {{
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin: 4px 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }}
+        .card-label {{
+            font-size: 11px;
+            color: #A0AAB8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .card-subtext {{
+            font-size: 11px;
+            color: {accent};
+            margin-top: 4px;
+            font-weight: 500;
+        }}
+        </style>
+    """, unsafe_allow_html=True)
 
-    # الصف الثاني (5 مؤشرات سوقية وتشغيلية)
-    c6, c7, c8, c9, c10 = st.columns(5)
+    metrics = [
+        {"icon": "🌍", "label": "Countries Covered", "value": "9", "sub": "Gulf Region"},
+        {"icon": "👥", "label": "Total Population 2026", "value": "127.68M", "sub": "127,681,500"},
+        {"icon": "🩺", "label": "Total HD Patients", "value": "65,254", "sub": "Hemodialysis"},
+        {"icon": "🧪", "label": "Est. 2026 PD", "value": "4,114", "sub": "Peritoneal Dialysis"},
+        {"icon": "🏥", "label": "Dialysis Facilities", "value": "762", "sub": "Centers"},
+        {"icon": "⚡", "label": "HD Machines", "value": "44,050", "sub": "Units"},
+        {"icon": "💉", "label": "Annual Catheter Demand", "value": "167.87K", "sub": "167,867 units"},
+        {"icon": "💰", "label": "Market Value", "value": "$18.90M", "sub": "USD"},
+        {"icon": "🏢", "label": "Distributors", "value": "90", "sub": "Active Partners"},
+        {"icon": "👨‍⚕️", "label": "KOLs", "value": "90", "sub": "Opinion Leaders"}
+    ]
 
-    with c6:
-        st.metric(label="⚡ HD Machines", value="44,050")
-    with c7:
-        st.metric(label="💉 Annual Catheter Demand", value="167.87K", delta="167,867 units")
-    with c8:
-        st.metric(label="💰 Market Value", value="$18.90M")
-    with c9:
-        st.metric(label="🏢 Distributors", value="90")
-    with c10:
-        st.metric(label="👨‍⚕️ Key Opinion Leaders (KOLs)", value="90")
+    # الصف الأول (5 بطاقات)
+    cols1 = st.columns(5)
+    for i in range(5):
+        m = metrics[i]
+        with cols1[i]:
+            st.markdown(f"""
+                <div class="overview-card">
+                    <div class="card-icon">{m['icon']}</div>
+                    <div class="card-label">{m['label']}</div>
+                    <div class="card-value">{m['value']}</div>
+                    <div class="card-subtext">{m['sub']}</div>
+                </div>
+            """, unsafe_allow_html=True)
 
+    st.markdown("<div style='margin-bottom: 16px;'></div>", unsafe_allow_html=True)
+
+    # الصف الثاني (5 بطاقات)
+    cols2 = st.columns(5)
+    for i in range(5):
+        m = metrics[i+5]
+        with cols2[i]:
+            st.markdown(f"""
+                <div class="overview-card">
+                    <div class="card-icon">{m['icon']}</div>
+                    <div class="card-label">{m['label']}</div>
+                    <div class="card-value">{m['value']}</div>
+                    <div class="card-subtext">{m['sub']}</div>
+                </div>
+            """, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
 # ─────────────────────────────────────────────
