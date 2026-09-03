@@ -180,14 +180,16 @@ dashboard_html = """
 </div>
 
 <script>
-  function navigate(el, pageId) {
+    function navigate(el, pageId) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     el.classList.add('active');
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     if (pageId === 'hotareas') {
-      if (!haInited) { initHaMap(); }
-      else { setTimeout(function(){ haMap.invalidateSize(); }, 150); }
+      setTimeout(function() {
+        if (!haInited) { initHaMap(); }
+        else { haMap.invalidateSize(); }
+      }, 150);
     }
   }
 
