@@ -693,7 +693,7 @@ dashboard_html = """
     background: #0b1628;
     color: #e8edf5;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
+    min-height: 600px;
     display: flex;
   }
 
