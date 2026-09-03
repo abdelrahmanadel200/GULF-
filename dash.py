@@ -27,8 +27,8 @@ PRIMARY_FILE = "AMECATH_Master_Data.xlsx"
 FALLBACK_FILES = ["data.xlsx", "master.xlsx"]
 
 REQUIRED_SHEETS = {
-    "macro": ["Macro", "Macro Environment"],
-    "tenders": ["Tenders", "Financials & Tenders"],
+    "Macro_Summary": ["Macro", "Macro Environment"],
+    "Financials_Tenders": ["Tenders", "Financials & Tenders"],
     "hot_areas": ["Hot Areas", "Hot Market Areas"],
     "distributors": ["Distributors", "Local Distributors"],
     "competitors": ["Competitors", "Competitor Matrix"],
