@@ -492,7 +492,7 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         path=['City'],
         values='Centers',
         color='Centers',
-        color_continuous_scale=px.colors.sequential.Flame,  # بالتة ألوان Flame
+        color_continuous_scale=['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00'],
         hover_data=['Rank', 'Details'],
         title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
     )
