@@ -294,3 +294,152 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
 
         with tab_forecast:
             render_forecast(data_sheets, c_name, theme) 
+import streamlit as st
+import pandas as pd
+from typing import Dict
+
+def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: Dict[str, dict]) -> None:
+    """
+    دالة عرض صفحة الدول المحدّثة:
+    - تتغير خلفية الصفحة لتصبح صورة الـ Landscape المخصصة للدولة.
+    - تتغير ألوان الـ Tabs والتصميم لتطابق ألوان علم الدولة المختارة.
+    """
+
+    # إدارة حالة الدولة المحددة في الـ Session State
+    if "selected_country_view" not in st.session_state:
+        st.session_state["selected_country_view"] = None
+
+    # ── 1. العرض الأول: شبكة اختيار الدول (Default Region Theme) ──────────────
+    if st.session_state["selected_country_view"] is None:
+        
+        # تطبيق التنسيق الافتراضي العام عند تصفح القائمة
+        default_theme = {
+            "primary": "#00D4FF", "accent": "#FFB703", 
+            "bg": "#051329", "card_bg": "rgba(8, 28, 54, 0.88)", "text": "#FFFFFF"
+        }
+        inject_css(default_theme, bg_b64="")
+
+        st.subheader("🌍 Select a Country Market / اختر الدولة")
+        st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات الخلفية المخصصة لها.")
+
+        # تنسيق كروت الأعلام
+        st.markdown("""
+            <style>
+            div[data-testid="stColumn"] div.stButton > button {
+                width: 100% !important;
+                height: 150px !important;
+                background: linear-gradient(145deg, #0D1F2D 0%, #08121C 100%) !important;
+                border: 2px solid #1E3A8A !important;
+                border-radius: 16px !important;
+                color: #FFFFFF !important;
+                font-size: 20px !important;
+                font-weight: 700 !important;
+                transition: all 0.3s ease-in-out !important;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+            }
+            div[data-testid="stColumn"] div.stButton > button:hover {
+                border-color: #00D4FF !important;
+                transform: translateY(-5px) !important;
+                box-shadow: 0 10px 25px rgba(0, 212, 255, 0.35) !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        countries_list = list(country_themes.keys())
+        cols_per_row = 3
+        
+        for i in range(0, len(countries_list), cols_per_row):
+            cols = st.columns(cols_per_row)
+            row_countries = countries_list[i : i + cols_per_row]
+            
+            for j, c_name in enumerate(row_countries):
+                theme = country_themes[c_name]
+                flag = theme.get("flag", "🏳️")
+                card_label = f"{flag}\n\n{c_name}"
+                
+                with cols[j]:
+                    if st.button(card_label, key=f"country_card_{c_name}", use_container_width=True):
+                        st.session_state["selected_country_view"] = c_name
+                        st.rerun()
+
+    # ── 2. العرض الثاني: تفاصيل الدولة بالخلفية والألوان الخاصة بها ──────────
+    else:
+        c_name = st.session_state["selected_country_view"]
+        theme = country_themes.get(c_name, {
+            "flag": "🏳️", "primary": "#00B4D8", "accent": "#FFB703", 
+            "bg": "#0B1D12", "card_bg": "rgba(15, 40, 25, 0.88)", "text": "#FFFFFF"
+        })
+
+        # 🎨 جلب صورة الـ Landscape المخصصة للدولة من المجلد
+        landscape_b64 = find_landscape_b64(c_name)
+
+        # 🎨 تطبيق الخلفية الهيدروليكية والألوان الخاصة بعلم الدولة
+        inject_css(theme, bg_b64=landscape_b64)
+
+        # 🎨 تخصيص ألوان الـ Tabs بحسب ألوان العلم المحددة في (primary & accent)
+        st.markdown(f"""
+            <style>
+            /* تخصيص شكل تبويبات الـ Tabs بألوان علم الدولة */
+            button[data-baseweb="tab"] {{
+                background-color: {theme['card_bg']} !important;
+                color: #FFFFFF !important;
+                border-radius: 8px 8px 0px 0px !important;
+                padding: 10px 18px !important;
+                border: 1px solid rgba(255,255,255,0.1) !important;
+                font-weight: 600 !important;
+            }}
+            button[data-baseweb="tab"][aria-selected="true"] {{
+                background-color: {theme['primary']} !important;
+                color: #FFFFFF !important;
+                border-bottom: 3px solid {theme['accent']} !important;
+                font-weight: 800 !important;
+                box-shadow: 0 -4px 12px rgba(0,0,0,0.3) !important;
+            }}
+            /* تخصيص زر العودة */
+            div.stButton > button[key="btn_back_to_countries"] {{
+                background-color: {theme['primary']} !important;
+                border: 1px solid {theme['accent']} !important;
+                color: #FFFFFF !important;
+                font-weight: bold !important;
+            }}
+            </style>
+        """, unsafe_allow_html=True)
+
+        # زر العودة
+        col_back, col_title = st.columns([1, 4])
+        with col_back:
+            if st.button("⬅️ Back to Countries", key="btn_back_to_countries"):
+                st.session_state["selected_country_view"] = None
+                st.rerun()
+
+        # هيدر تفاصيل الدولة
+        render_hero(c_name, theme, bg_b64=landscape_b64)
+
+        # التبويبات المخصصة للدولة
+        tabs = st.tabs([
+            "📊 Macro Environment",
+            "📈 Financials & Tenders",
+            "🔥 Hot Market Areas",
+            "🤝 Local Distributors",
+            "⚔️ Competitor Matrix",
+            "🏷️ Competitor ASP",
+            "👨‍⚕️ Key Opinion Leaders",
+            "🔮 Growth Forecast"
+        ])
+
+        with tabs[0]:
+            render_generic_table(data_sheets, "macro", "📊 Macro Environment", c_name)
+        with tabs[1]:
+            render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", c_name)
+        with tabs[2]:
+            render_hot_areas(data_sheets, c_name, theme)
+        with tabs[3]:
+            render_distributors(data_sheets, c_name, theme)
+        with tabs[4]:
+            render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", c_name)
+        with tabs[5]:
+            render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP", c_name)
+        with tabs[6]:
+            render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", c_name)
+        with tabs[7]:
+            render_forecast(data_sheets, c_name, theme)
