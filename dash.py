@@ -1,4 +1,3 @@
-فين الكود
 st.set_page_config(
     page_title="AMECATH Executive Intelligence Hub",
     page_icon="🩺",
