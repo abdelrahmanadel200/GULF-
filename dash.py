@@ -472,15 +472,14 @@ st.sidebar.caption(
 )
 
 # Render Dynamic Styling & Top Banner Header
-# Render Dynamic Styling & Top Banner Header
 bg_b64 = find_landscape_b64(selected_country)
 inject_css(theme, bg_b64 if nav_mode != "overview" else "")
 
 if nav_mode == "overview":
     st.markdown("""
-    <div class="hero-banner" style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #0D1B1E, #132A2F); border-left: 6px solid #C5A059;">
-      <h1 class="header-title" style="margin:0; font-size:32px; letter-spacing:1px;">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
-      <p style="color:#C5A059; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
+    <div class="hero-banner" style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #002B49, #005A9C); border-left: 6px solid #00D4FF; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <h1 class="header-title" style="margin:0; font-size:32px; letter-spacing:1px; color: #FFFFFF;">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
+      <p style="color: #D0E8FF; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
         📍 Scope: Middle East & GCC Markets Performance
       </p>
     </div>""", unsafe_allow_html=True)
