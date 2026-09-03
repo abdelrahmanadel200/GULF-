@@ -21,6 +21,8 @@ dashboard_html = """
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #0b1628; height: 100%; }
@@ -157,28 +159,20 @@ dashboard_html = """
       <div class="placeholder-page"><div class="placeholder-icon">&#127942;</div><div class="placeholder-title">Competitors</div><div class="placeholder-sub">Coming soon</div></div>
     </div>
 
-    <!-- Hot Areas -->
+        <!-- Hot Areas -->
     <div class="page" id="page-hotareas">
       <div class="ha-wrap">
         <div class="ha-header">
           <div class="ha-title">&#128205; Hot Areas &#8212; Dialysis Heatmap</div>
-          <div style="font-size:11px;color:#3a5278">Hover over a point for details</div>
+          <div style="font-size:11px;color:#3a5278">Click a marker for details</div>
         </div>
         <div class="ha-tabs" id="haTabs"></div>
-        <div class="ha-map-area" id="haMapArea">
-          <canvas id="haCanvas"></canvas>
-          <div class="ha-tooltip" id="haTooltip">
-            <div class="ha-tt-name" id="ha-tt-name"></div>
-            <div class="ha-tt-row"><span class="ha-tt-label">Rank</span><span class="ha-tt-val" id="ha-tt-rank"></span></div>
-            <div class="ha-tt-row"><span class="ha-tt-label">Centers</span><span class="ha-tt-val" id="ha-tt-centers"></span></div>
-            <div class="ha-tt-row"><span class="ha-tt-label">HD Patients</span><span class="ha-tt-val" id="ha-tt-hd"></span></div>
-            <div class="ha-tt-row"><span class="ha-tt-label">Market Priority</span><span class="ha-tt-val" id="ha-tt-priority"></span></div>
-          </div>
-        </div>
-        <div class="ha-legend">
-          <span>Low</span>
-          <canvas class="ha-legend-bar" id="haLegendBar" width="160" height="10"></canvas>
-          <span>High intensity</span>
+        <div id="haMap" style="width:100%;height:520px;border-radius:14px;border:1px solid #1e3d7a;overflow:hidden;"></div>
+        <div style="margin-top:10px;display:flex;gap:18px;flex-wrap:wrap;">
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#ef4444;">&#11044; Critical</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#f97316;">&#11044; High</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#eab308;">&#11044; Medium</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#22c55e;">&#11044; Low</span>
         </div>
       </div>
     </div>
