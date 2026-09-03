@@ -1,481 +1,380 @@
-"""
-dash.py  ─  AMECATH Market Intelligence Dashboard
-═══════════════════════════════════════════════════
-Run with:  streamlit run app.py
-
-Pages (sidebar navigation):
-  1. 🏠 Overview          – headline KPIs + total market snapshot
-  2. 🌍 Country Analysis  – per-country comparison tables & charts
-  3. 📈 Revenue Forecast  – 3-scenario revenue & units view
-  4. 💲 Pricing Intel     – AMECATH ASP vs competitor ASP
-  5. 📋 Tenders           – active tender pipeline by country
-  6. 🏆 Hot Areas         – ranked geographic hotspots
-  7. 📅 Exhibitions       – conference & congress calendar
-"""
-
 import streamlit as st
-import plotly.express as px
-import plotly.graph_objects as go
-import pandas as pd
+import streamlit.components.v1 as components
 
-from utils.data_loader import (
-    load_overview_kpis,
-    load_macro_summary,
-    load_forecast,
-    load_exec_forecast,
-    load_asp,
-    load_competitor_aspiration,
-    load_tenders,
-    load_hot_areas,
-    load_exhibitions,
-)
-
-# ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="AMECATH Market Intelligence",
     page_icon="🩺",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
-# ── Brand colours ─────────────────────────────────────────────────────────────
-AMECATH_BLUE   = "#1A4A8A"
-AMECATH_TEAL   = "#0D9B8A"
-AMECATH_ORANGE = "#E87722"
-COLOUR_SEQ     = [AMECATH_BLUE, AMECATH_TEAL, AMECATH_ORANGE,
-                  "#6C3B8A", "#C0392B", "#16A085", "#F39C12", "#8E44AD", "#2C3E50"]
+# Hide default streamlit chrome
+st.markdown("""
+<style>
+    #MainMenu, header, footer { visibility: hidden; }
+    .block-container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+    [data-testid="stAppViewContainer"] { background: #0b1628; }
+</style>
+""", unsafe_allow_html=True)
 
-COUNTRY_COLOURS = {
-    c: COLOUR_SEQ[i % len(COLOUR_SEQ)]
-    for i, c in enumerate([
-        "Saudi Arabia","UAE","Qatar","Kuwait",
-        "Oman","Jordan","Lebanon","Iraq","Bahrain"
-    ])
-}
+dashboard_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0b1628; height: 100%; }
 
-# ── Sidebar navigation ────────────────────────────────────────────────────────
-st.sidebar.image(
-    "https://via.placeholder.com/200x60/1A4A8A/FFFFFF?text=AMECATH",
-    use_container_width=True,
-)
-st.sidebar.markdown("## Navigation")
-page = st.sidebar.radio(
-    "",
-    [
-        "🏠 Overview",
-        "🌍 Country Analysis",
-        "📈 Revenue Forecast",
-        "💲 Pricing Intel",
-        "📋 Tenders",
-        "🏆 Hot Areas",
-        "📅 Exhibitions",
-    ],
-)
-st.sidebar.markdown("---")
-st.sidebar.caption("Data source: Amecath_Dash.xlsx · © 2026 AMECATH")
+  .dash {
+    background: #0b1628;
+    color: #e8edf5;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+  }
 
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    background: #070f1f;
+    border-right: 1px solid #1e3d7a;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 10;
+  }
+  .logo {
+    padding: 0 16px 18px;
+    border-bottom: 1px solid #1e3d7a;
+    margin-bottom: 10px;
+  }
+  .logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
+  .logo-sub  { font-size: 10px; color: #3a5278; margin-top: 2px; letter-spacing: 0.5px; }
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 1 — OVERVIEW
-# ═════════════════════════════════════════════════════════════════════════════
-if page == "🏠 Overview":
-    st.title("🩺 AMECATH — Market Intelligence Dashboard")
-    st.markdown(
-        "**9-country HD/PD catheter market intelligence** across the GCC & Levant region — 2026 edition."
-    )
-    st.divider()
+  .nav-section-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: #2a4060;
+    text-transform: uppercase;
+    padding: 14px 16px 6px;
+    font-weight: 700;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #6a85b0;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .nav-item:hover  { background: #0f1f3d; color: #c8d8f0; }
+  .nav-item.active { background: #0f1f3d; color: #60a5fa; border-left-color: #2563eb; font-weight: 600; }
+  .nav-icon  { font-size: 15px; width: 18px; text-align: center; }
 
-    # Load data
-    kpi  = load_overview_kpis()
-    macro = load_macro_summary()
+  /* ── Main ── */
+  .main { margin-left: 200px; flex: 1; min-height: 100vh; }
 
-    # ── KPI row ──────────────────────────────────────────────────────────────
-    cols = st.columns(4)
-    metrics = [
-        ("Total Population", f"{kpi['total_population']:,.0f}",          "9 markets"),
-        ("HD Patients 2026",  f"{kpi['hd_patients']:,}",                  "Est."),
-        ("Annual Catheter Demand", f"{kpi['annual_catheter_demand']:,}",  "Units/year"),
-        ("Market Value",      f"${kpi['market_value_usd_m']:.1f} M",     "USD 2026"),
-    ]
-    for col, (label, val, delta) in zip(cols, metrics):
-        col.metric(label, val, delta)
+  /* ── Banner ── */
+  .top-banner {
+    background: linear-gradient(135deg, #0d2145 0%, #1a3a6e 50%, #0d2145 100%);
+    border: 1px solid #1e3d7a;
+    border-radius: 14px;
+    padding: 20px 32px;
+    margin: 16px 16px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% -20%, #2563eb22 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .banner-title {
+    font-size: 18px; font-weight: 700; letter-spacing: 2px; color: #e8edf5;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .banner-sub {
+    font-size: 11px; color: #f59e0b; margin-top: 5px;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
 
-    cols2 = st.columns(4)
-    metrics2 = [
-        ("PD Patients 2026",      f"{kpi['pd_patients']:,}",          "Est."),
-        ("Dialysis Facilities",   f"{kpi['dialysis_facilities']:,}",   "Centers"),
-        ("HD Machines",           f"{kpi['hd_machines']:,}",           "Units"),
-        ("Distributors / KOLs",   f"{kpi['distributors']} / {kpi['kols']}", "contacts"),
-    ]
-    for col, (label, val, delta) in zip(cols2, metrics2):
-        col.metric(label, val, delta)
+  /* ── Section header ── */
+  .section-header { display: flex; align-items: center; gap: 10px; margin: 18px 16px 12px; }
+  .section-title  { font-size: 15px; font-weight: 600; color: #c8d8f0; }
 
-    st.divider()
+  /* ── KPI grid ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 0 16px 10px;
+  }
+  .kpi-card {
+    background: #0f1f3d;
+    border: 1px solid #1e3d7a;
+    border-radius: 12px;
+    padding: 16px 12px 12px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: default;
+  }
+  .kpi-card:hover { border-color: #2563eb; transform: translateY(-1px); }
+  .kpi-icon  { font-size: 20px; margin-bottom: 2px; }
+  .kpi-label { font-size: 9px; letter-spacing: 1px; color: #6a85b0; text-transform: uppercase; font-weight: 600; }
+  .kpi-value { font-size: 22px; font-weight: 700; color: #e8edf5; line-height: 1.1; }
+  .kpi-value.accent { color: #60a5fa; }
+  .kpi-value.gold   { color: #f59e0b; }
+  .kpi-sub          { font-size: 10px; color: #3b82f6; font-weight: 500; }
+  .kpi-sub.muted    { color: #6a85b0; }
+  .kpi-sub.green    { color: #34d399; }
+  .kpi-sub.amber    { color: #f59e0b; }
 
-    # ── Two charts side by side ───────────────────────────────────────────────
-    c1, c2 = st.columns(2)
+  .divider { height: 1px; background: #1e3d7a; margin: 4px 16px 10px; }
 
-    with c1:
-        st.subheader("Annual Catheter Demand by Country")
-        fig = px.bar(
-            macro.sort_values("Annual Catheter Demand", ascending=True),
-            x="Annual Catheter Demand",
-            y="Country",
-            orientation="h",
-            color="Country",
-            color_discrete_map=COUNTRY_COLOURS,
-            labels={"Annual Catheter Demand": "Units"},
-            template="plotly_white",
-        )
-        fig.update_layout(showlegend=False, height=380)
-        st.plotly_chart(fig, use_container_width=True)
+  /* ── Placeholder pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+  .placeholder-page {
+    margin: 16px;
+    background: #0f1f3d;
+    border: 1px dashed #1e3d7a;
+    border-radius: 14px;
+    padding: 60px 32px;
+    text-align: center;
+    color: #3a5278;
+  }
+  .placeholder-icon  { font-size: 40px; margin-bottom: 14px; }
+  .placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
+  .placeholder-sub   { font-size: 13px; color: #3a5278; }
+</style>
+</head>
+<body>
+<div class="dash">
 
-    with c2:
-        st.subheader("Market Value Distribution (USD M)")
-        fig2 = px.pie(
-            macro,
-            values="Market Value",
-            names="Country",
-            color="Country",
-            color_discrete_map=COUNTRY_COLOURS,
-            hole=0.45,
-            template="plotly_white",
-        )
-        fig2.update_traces(textposition="inside", textinfo="percent+label")
-        fig2.update_layout(height=380, showlegend=False)
-        st.plotly_chart(fig2, use_container_width=True)
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-text">AMECATH</div>
+      <div class="logo-sub">Market Intelligence</div>
+    </div>
 
-    # ── Summary table ─────────────────────────────────────────────────────────
-    st.subheader("Country Macro Summary")
-    display_cols = [
-        "Country", "Population 2026", "Est. 2026 HD", "Est. 2026 PD",
-        "Annual Catheter Demand", "Market Value", "total dialysis facilities",
-        "HD Machines", "Annual Growth",
-    ]
-    disp = macro[[c for c in display_cols if c in macro.columns]].copy()
-    disp.rename(columns={
-        "Population 2026": "Population",
-        "Est. 2026 HD": "HD Patients",
-        "Est. 2026 PD": "PD Patients",
-        "Annual Catheter Demand": "Catheter Demand",
-        "Market Value": "Mkt Value ($M)",
-        "total dialysis facilities": "Centers",
-        "Annual Growth": "Growth Rate",
-    }, inplace=True)
-    st.dataframe(disp, use_container_width=True, hide_index=True)
+    <div class="nav-section-label">Main</div>
+    <div class="nav-item active" onclick="navigate(this,'overview')">
+      <span class="nav-icon">🏠</span><span>Overview</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'countries')">
+      <span class="nav-icon">🌍</span><span>Country Analysis</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'forecast')">
+      <span class="nav-icon">📈</span><span>Revenue Forecast</span>
+    </div>
 
+    <div class="nav-section-label">Market</div>
+    <div class="nav-item" onclick="navigate(this,'pricing')">
+      <span class="nav-icon">💲</span><span>Pricing Intel</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'tenders')">
+      <span class="nav-icon">📋</span><span>Tenders</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'competitors')">
+      <span class="nav-icon">🏆</span><span>Competitors</span>
+    </div>
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 2 — COUNTRY ANALYSIS
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "🌍 Country Analysis":
-    st.title("🌍 Country-Level Analysis")
-    macro = load_macro_summary()
+    <div class="nav-section-label">Field</div>
+    <div class="nav-item" onclick="navigate(this,'hotareas')">
+      <span class="nav-icon">📍</span><span>Hot Areas</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'exhibitions')">
+      <span class="nav-icon">📅</span><span>Exhibitions</span>
+    </div>
+    <div class="nav-item" onclick="navigate(this,'regulatory')">
+      <span class="nav-icon">📜</span><span>Regulatory</span>
+    </div>
+  </div>
 
-    # Country selector
-    selected = st.multiselect(
-        "Select countries to compare",
-        options=sorted(macro["Country"].unique()),
-        default=sorted(macro["Country"].unique()),
-    )
-    if not selected:
-        st.warning("Please select at least one country.")
-        st.stop()
+  <!-- ── Main content ── -->
+  <div class="main">
 
-    filt = macro[macro["Country"].isin(selected)]
+    <!-- Overview -->
+    <div class="page active" id="page-overview">
+      <div class="top-banner">
+        <div class="banner-title">🌐 REGIONAL EXECUTIVE OVERVIEW</div>
+        <div class="banner-sub">📌 Scope: Middle East &amp; GCC Markets Performance</div>
+      </div>
 
-    c1, c2 = st.columns(2)
+      <div class="section-header">
+        <span style="font-size:16px">🌐</span>
+        <span class="section-title">Gulf Region — Executive Overview</span>
+      </div>
 
-    with c1:
-        st.subheader("HD vs PD Patients")
-        fig = go.Figure()
-        fig.add_bar(name="HD Patients", x=filt["Country"], y=filt["Est. 2026 HD"],
-                    marker_color=AMECATH_BLUE)
-        fig.add_bar(name="PD Patients", x=filt["Country"], y=filt["Est. 2026 PD"],
-                    marker_color=AMECATH_TEAL)
-        fig.update_layout(barmode="group", template="plotly_white", height=380,
-                          legend=dict(orientation="h", y=1.1))
-        st.plotly_chart(fig, use_container_width=True)
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">🌍</div>
+          <div class="kpi-label">Countries Covered</div>
+          <div class="kpi-value">9</div>
+          <div class="kpi-sub">Gulf Region</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-label">Total Population 2026</div>
+          <div class="kpi-value accent">127.68M</div>
+          <div class="kpi-sub muted">127,681,500</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🩺</div>
+          <div class="kpi-label">Total HD Patients</div>
+          <div class="kpi-value">65,254</div>
+          <div class="kpi-sub">Hemodialysis</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">💉</div>
+          <div class="kpi-label">Est. 2026 PD</div>
+          <div class="kpi-value">4,114</div>
+          <div class="kpi-sub">Peritoneal Dialysis</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🏥</div>
+          <div class="kpi-label">Dialysis Facilities</div>
+          <div class="kpi-value">762</div>
+          <div class="kpi-sub muted">Centers</div>
+        </div>
+      </div>
 
-    with c2:
-        st.subheader("Dialysis Facilities & HD Machines")
-        fig2 = go.Figure()
-        fig2.add_bar(name="Centers", x=filt["Country"],
-                     y=filt["total dialysis facilities"], marker_color=AMECATH_ORANGE)
-        fig2.add_scatter(name="HD Machines ÷ 10", x=filt["Country"],
-                         y=filt["HD Machines"] / 10,
-                         mode="markers+lines",
-                         marker=dict(size=9, color=AMECATH_BLUE))
-        fig2.update_layout(template="plotly_white", height=380,
-                           legend=dict(orientation="h", y=1.1))
-        st.plotly_chart(fig2, use_container_width=True)
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">⚡</div>
+          <div class="kpi-label">HD Machines</div>
+          <div class="kpi-value">44,050</div>
+          <div class="kpi-sub muted">Units</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🩹</div>
+          <div class="kpi-label">Annual Catheter Demand</div>
+          <div class="kpi-value accent">167.87K</div>
+          <div class="kpi-sub muted">167,867 units</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">Market Value</div>
+          <div class="kpi-value gold">$18.90M</div>
+          <div class="kpi-sub amber">USD</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🤝</div>
+          <div class="kpi-label">Distributors</div>
+          <div class="kpi-value">90</div>
+          <div class="kpi-sub green">Active Partners</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⭐</div>
+          <div class="kpi-label">KOLs</div>
+          <div class="kpi-value">90</div>
+          <div class="kpi-sub green">Opinion Leaders</div>
+        </div>
+      </div>
 
-    st.subheader("Annual Growth Rate by Country")
-    fig3 = px.bar(
-        filt.sort_values("Annual Growth", ascending=False),
-        x="Country", y="Annual Growth",
-        color="Country",
-        color_discrete_map=COUNTRY_COLOURS,
-        text_auto=".1%",
-        template="plotly_white",
-        labels={"Annual Growth": "Growth Rate"},
-    )
-    fig3.update_layout(showlegend=False, height=320)
-    fig3.update_yaxes(tickformat=".1%")
-    st.plotly_chart(fig3, use_container_width=True)
+      <div class="divider"></div>
+      <div style="text-align:center;padding:8px 16px 16px;font-size:10px;color:#2a4060;">
+        Data source: Amecath_Dash.xlsx &nbsp;·&nbsp; 2026 Edition &nbsp;·&nbsp; 9 Markets
+      </div>
+    </div>
 
+    <!-- Country Analysis -->
+    <div class="page" id="page-countries">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">🌍</div>
+        <div class="placeholder-title">Country Analysis</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 3 — REVENUE FORECAST
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "📈 Revenue Forecast":
-    st.title("📈 Revenue Forecast — 2026‑2028")
+    <!-- Revenue Forecast -->
+    <div class="page" id="page-forecast">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">📈</div>
+        <div class="placeholder-title">Revenue Forecast</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    exec_fc = load_exec_forecast()
-    country_fc = load_forecast()
+    <!-- Pricing Intel -->
+    <div class="page" id="page-pricing">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">💲</div>
+        <div class="placeholder-title">Pricing Intel</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    # ── Exec summary cards ───────────────────────────────────────────────────
-    st.subheader("Executive Scenario Summary")
-    scen_cols = st.columns(3)
-    colours = {
-        "Conservative": "#6C757D",
-        "Base Case":    AMECATH_BLUE,
-        "Upside":       AMECATH_TEAL,
-    }
-    for col, (_, row) in zip(scen_cols, exec_fc.iterrows()):
-        with col:
-            st.markdown(
-                f"<div style='background:{colours.get(row['Scenario'], '#eee')};"
-                f"padding:16px;border-radius:10px;color:white'>"
-                f"<h4>{row['Scenario']}</h4>"
-                f"<p style='font-size:22px;font-weight:bold'>"
-                f"${row['3-Year Revenue ($)']:,.0f}</p>"
-                f"<p>3-Year Total</p>"
-                f"<hr style='border-color:rgba(255,255,255,.4)'>"
-                f"<p>2026: ${row['2026 Revenue ($)']:,.0f}</p>"
-                f"<p>2027: ${row['2027 Revenue ($)']:,.0f}</p>"
-                f"<p>2028: ${row['2028 Revenue ($)']:,.0f}</p>"
-                f"</div>",
-                unsafe_allow_html=True,
-            )
+    <!-- Tenders -->
+    <div class="page" id="page-tenders">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">📋</div>
+        <div class="placeholder-title">Tenders</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    st.divider()
+    <!-- Competitors -->
+    <div class="page" id="page-competitors">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">🏆</div>
+        <div class="placeholder-title">Competitors</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    # ── Revenue trend per scenario ───────────────────────────────────────────
-    st.subheader("Revenue Trend by Scenario")
-    years = ["2026", "2027", "2028"]
-    rev_cols = ["2026 Revenue ($)", "2027 Revenue ($)", "2028 Revenue ($)"]
-    fig = go.Figure()
-    line_styles = {"Conservative": "dash", "Base Case": "solid", "Upside": "dot"}
-    for _, row in exec_fc.iterrows():
-        fig.add_scatter(
-            x=years,
-            y=[row[c] for c in rev_cols],
-            name=row["Scenario"],
-            mode="lines+markers",
-            line=dict(dash=line_styles[row["Scenario"]], width=3),
-        )
-    fig.update_layout(template="plotly_white", height=380,
-                      yaxis_tickprefix="$", yaxis_tickformat=",")
-    st.plotly_chart(fig, use_container_width=True)
+    <!-- Hot Areas -->
+    <div class="page" id="page-hotareas">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">📍</div>
+        <div class="placeholder-title">Hot Areas</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    # ── Country bottom-up ────────────────────────────────────────────────────
-    st.subheader("Base Case — Revenue by Country (2026‑2028)")
-    fig2 = go.Figure()
-    for yr, col, clr in [
-        ("2026", "2026 Revenue ($)", AMECATH_BLUE),
-        ("2027", "2027 Revenue ($)", AMECATH_TEAL),
-        ("2028", "2028 Revenue ($)", AMECATH_ORANGE),
-    ]:
-        fig2.add_bar(
-            name=yr,
-            x=country_fc["Country"],
-            y=country_fc[col],
-            marker_color=clr,
-        )
-    fig2.update_layout(barmode="group", template="plotly_white", height=420,
-                       yaxis_tickprefix="$", yaxis_tickformat=",",
-                       legend=dict(orientation="h", y=1.05))
-    st.plotly_chart(fig2, use_container_width=True)
+    <!-- Exhibitions -->
+    <div class="page" id="page-exhibitions">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">📅</div>
+        <div class="placeholder-title">Exhibitions</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
-    # ── Underlying table ─────────────────────────────────────────────────────
-    with st.expander("📊 Country Bottom-Up Detail Table"):
-        show_cols = [
-            "Country", "2026 Demand", "2027 Demand", "2028 Demand",
-            "Blended ASP", "2026 Share",
-            "2026 Revenue ($)", "2027 Revenue ($)", "2028 Revenue ($)",
-        ]
-        st.dataframe(
-            country_fc[[c for c in show_cols if c in country_fc.columns]],
-            use_container_width=True,
-            hide_index=True,
-        )
+    <!-- Regulatory -->
+    <div class="page" id="page-regulatory">
+      <div class="placeholder-page">
+        <div class="placeholder-icon">📜</div>
+        <div class="placeholder-title">Regulatory</div>
+        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      </div>
+    </div>
 
+  </div>
+</div>
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 4 — PRICING INTELLIGENCE
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "💲 Pricing Intel":
-    st.title("💲 Pricing Intelligence")
+<script>
+  function navigate(el, pageId) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+  }
+</script>
+</body>
+</html>
+"""
 
-    asp = load_asp()
-    comp = load_competitor_aspiration()
-
-    # ── AMECATH ASP table ────────────────────────────────────────────────────
-    st.subheader("AMECATH ASP by Country & Product Type (USD)")
-    fig = go.Figure()
-    for prod, clr in [
-        ("Short-Term / STD",        AMECATH_BLUE),
-        ("Mid-Term",                AMECATH_TEAL),
-        ("Long-Term / Tunneled LTD", AMECATH_ORANGE),
-    ]:
-        fig.add_bar(name=prod, x=asp["Country"], y=asp[prod], marker_color=clr)
-    fig.update_layout(
-        barmode="group", template="plotly_white", height=380,
-        yaxis_title="USD", legend=dict(orientation="h", y=1.05),
-    )
-    st.plotly_chart(fig, use_container_width=True)
-    st.dataframe(asp, use_container_width=True, hide_index=True)
-
-    st.divider()
-
-    # ── Competitor ASP ───────────────────────────────────────────────────────
-    st.subheader("Competitor ASP vs AMECATH — GCC Region")
-    comp_gcc = comp[comp["Region"].str.contains("GCC", na=False)].copy()
-
-    # Build a comparison scatter
-    fig2 = go.Figure()
-    fig2.add_scatter(
-        x=comp_gcc["Company"],
-        y=comp_gcc.get(
-            "Short-Term HD Catheter Kit ASP (USD)",
-            comp_gcc.get("Short-Term HD Catheter Kit ASP (USD)", pd.Series(dtype=float))
-        ),
-        name="Competitor Short-Term ASP (mid-range)",
-        mode="markers",
-        marker=dict(size=12, color="#C0392B"),
-    )
-
-    # AMECATH KSA short-term ASP reference line
-    amecath_std = asp.loc[asp["Country"] == "Saudi Arabia", "Short-Term / STD"].values
-    if len(amecath_std):
-        fig2.add_hline(
-            y=float(amecath_std[0]),
-            line_dash="dash",
-            line_color=AMECATH_BLUE,
-            annotation_text=f"AMECATH STD KSA: ${amecath_std[0]}",
-        )
-    fig2.update_layout(template="plotly_white", height=360,
-                       yaxis_title="ASP (USD)", xaxis_title="Competitor")
-    st.plotly_chart(fig2, use_container_width=True)
-
-    with st.expander("📋 Full Competitor ASP Table"):
-        st.dataframe(comp, use_container_width=True, hide_index=True)
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 5 — TENDERS
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "📋 Tenders":
-    st.title("📋 Tender Pipeline")
-
-    tenders = load_tenders()
-
-    # Filter
-    countries_t = sorted(tenders["Country"].dropna().unique())
-    sel_country = st.multiselect(
-        "Filter by country", countries_t, default=countries_t
-    )
-    filt_t = tenders[tenders["Country"].isin(sel_country)]
-
-    st.metric("Active Tender Records", len(filt_t))
-    st.divider()
-
-    # Count per country bar
-    counts = filt_t["Country"].value_counts().reset_index()
-    counts.columns = ["Country", "Count"]
-    fig = px.bar(
-        counts, x="Country", y="Count",
-        color="Country", color_discrete_map=COUNTRY_COLOURS,
-        template="plotly_white",
-        title="Tender Count by Country",
-    )
-    fig.update_layout(showlegend=False, height=320)
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Table
-    show_cols_t = [
-        "Country", "Tender Title (Short)", "Issuing Entity",
-        "Published", "Closing Date", "Tender Value (USD)", "Link",
-    ]
-    st.dataframe(
-        filt_t[[c for c in show_cols_t if c in filt_t.columns]],
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Link": st.column_config.LinkColumn("Link", display_text="Open 🔗")
-        },
-    )
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 6 — HOT AREAS
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "🏆 Hot Areas":
-    st.title("🏆 Geographic Hot Areas")
-    st.markdown("Top-ranked dialysis hubs per country.")
-
-    hot = load_hot_areas()
-    countries_h = sorted(hot["Country"].unique())
-    sel_h = st.selectbox("Select Country", countries_h)
-
-    filt_h = hot[hot["Country"] == sel_h].sort_values("Rank")
-    st.subheader(f"Hot Areas — {sel_h}")
-    for _, row in filt_h.iterrows():
-        area_text = str(row["Area"])
-        # Clean up citations like [Expert Judgment]
-        area_clean = area_text.split("[")[0].split("(")[0].strip()
-        st.markdown(f"**#{row['Rank']}** — {area_clean}")
-
-    st.divider()
-    st.subheader("Number of Ranked Areas per Country")
-    area_counts = hot.groupby("Country").size().reset_index(name="Ranked Areas")
-    fig = px.bar(
-        area_counts.sort_values("Ranked Areas", ascending=False),
-        x="Country", y="Ranked Areas",
-        color="Country", color_discrete_map=COUNTRY_COLOURS,
-        template="plotly_white",
-    )
-    fig.update_layout(showlegend=False, height=340)
-    st.plotly_chart(fig, use_container_width=True)
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PAGE 7 — EXHIBITIONS
-# ═════════════════════════════════════════════════════════════════════════════
-elif page == "📅 Exhibitions":
-    st.title("📅 Medical Exhibitions & Congresses")
-    exh = load_exhibitions()
-
-    search = st.text_input("🔍 Search by event name, city, or focus area")
-    if search:
-        mask = exh.apply(
-            lambda r: search.lower() in str(r).lower(), axis=1
-        )
-        exh = exh[mask]
-
-    show_cols_e = [
-        "Event Name", "Dates", "City / Country",
-        "Focus Area", "Target Audience", "Official Website",
-    ]
-    st.dataframe(
-        exh[[c for c in show_cols_e if c in exh.columns]],
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Official Website": st.column_config.LinkColumn(
-                "Website", display_text="Visit 🔗"
-            )
-        },
-    )
-    st.caption(f"Showing {len(exh)} events.")
+components.html(dashboard_html, height=800, scrolling=False)
