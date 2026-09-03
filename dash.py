@@ -241,7 +241,6 @@ def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
         if logo else ""
     )
     
-    # استخدام الصورة كخلفية للبانر إذا كانت موجودة
     bg_style = (
         f"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('data:image/jpeg;base64,{bg_b64}') center/cover no-repeat;"
         if bg_b64 else f"background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});"
@@ -255,7 +254,7 @@ def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
         <h1 class="header-title" style="margin:0; font-size:34px; letter-spacing:1px;">{country.upper()}</h1>
       </div>
       <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
-        📍 Strategic Landmark: <span>{theme['landmark']}</span>
+        \U0001F4CD Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
 
