@@ -405,7 +405,9 @@ dashboard_html = """
 
   </div>
 </div>
- // ─────────────────────────────────────────────
+<script>
+
+// ─────────────────────────────────────────────
 // REAL GEOGRAPHIC MARKET MAP
 // ─────────────────────────────────────────────
 
@@ -513,20 +515,26 @@ function createMarketMap() {
 
   const mapElement = document.getElementById("market-map");
 
-  if (!mapElement) return;
+  if (!mapElement) {
+    console.log("Market map element not found");
+    return;
+  }
 
-  // Prevent creating the map more than once
   if (marketMap !== null) {
     marketMap.invalidateSize();
     return;
   }
 
+  // Create real geographic map
   marketMap = L.map("market-map", {
     zoomControl: true,
     scrollWheelZoom: true
-  }).setView([27.5, 46.5], 5);
+  });
 
-  // Real geographic basemap
+  // Center on Middle East
+  marketMap.setView([27.5, 46.5], 5);
+
+  // Real world map tiles
   L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
@@ -535,10 +543,11 @@ function createMarketMap() {
     }
   ).addTo(marketMap);
 
-  // Add every geographic point
+  // Add dialysis market locations
   marketPoints.forEach(point => {
 
-    const color = priorityColors[point.priority] || "#60a5fa";
+    const color =
+      priorityColors[point.priority] || "#60a5fa";
 
     const radius =
       point.priority === "Critical" ? 13 :
@@ -558,6 +567,7 @@ function createMarketMap() {
 
     marker.bindPopup(`
       <div class="map-popup">
+
         <div class="map-popup-title">
           ${point.city}, ${point.country}
         </div>
@@ -576,12 +586,15 @@ function createMarketMap() {
           <b>Coordinates:</b>
           ${point.lat.toFixed(4)}, ${point.lng.toFixed(4)}
         </div>
+
       </div>
     `);
   });
 
   // Legend
-  const legend = L.control({position: "bottomright"});
+  const legend = L.control({
+    position: "bottomright"
+  });
 
   legend.onAdd = function() {
 
@@ -613,7 +626,47 @@ function createMarketMap() {
   };
 
   legend.addTo(marketMap);
+
+  // Fix Leaflet size after opening hidden page
+  setTimeout(() => {
+    marketMap.invalidateSize();
+  }, 300);
 }
+
+
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
+
+function navigate(el, pageId) {
+
+  document.querySelectorAll('.nav-item')
+    .forEach(n => n.classList.remove('active'));
+
+  el.classList.add('active');
+
+  document.querySelectorAll('.page')
+    .forEach(p => p.classList.remove('active'));
+
+  document.getElementById('page-' + pageId)
+    .classList.add('active');
+
+  // Initialize map when Hot Areas opens
+  if (pageId === "hotareas") {
+
+    setTimeout(() => {
+
+      createMarketMap();
+
+      if (marketMap) {
+        marketMap.invalidateSize();
+      }
+
+    }, 200);
+  }
+}
+
+</script>
 <script>
   function navigate(el, pageId) {
 
