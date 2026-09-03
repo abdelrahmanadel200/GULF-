@@ -204,7 +204,31 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
 
     st.markdown(f"""
     <style>
-   def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
+    {bg_css}
+    body, .stApp {{ color: {theme['text']}; font-family: 'Segoe UI', Roboto, sans-serif; }}
+    .country-mini-card {{
+        background: {theme['card_bg']};
+        border-left: 5px solid {theme['primary']}; border-radius: 12px;
+        padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(8px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+        transition: transform 0.2s ease-in-out;
+    }}
+    .hero-banner {{
+        background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
+        padding: 22px 28px; border-radius: 16px; border-left: 6px solid {theme['accent']};
+        margin-bottom: 25px; backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }}
+    .header-container {{ display: flex; align-items: center; justify-content: space-between; gap: 15px; }}
+    .header-title {{ color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }}
+    .forecast-frame {{
+        background: {theme['card_bg']}; border: 1px solid {theme['accent']}66;
+        border-radius: 12px; padding: 20px; backdrop-filter: blur(6px);
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+
+def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
     flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
     logo = logo_b64()
     logo_html = (
@@ -228,7 +252,6 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
         &#128205; Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
-
 def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
     flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
     logo = logo_b64()
