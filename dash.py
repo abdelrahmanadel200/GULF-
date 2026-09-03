@@ -465,11 +465,11 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         
         rank = row[rank_col] if rank_col and pd.notna(row[rank_col]) else idx + 1
         
-        # Extract City Name (text before parenthesis)
+        # Extract City Name
         city_match = re.split(r'[\(;\:]', val)[0].strip()
         city_name = city_match if city_match else f"Area {rank}"
         
-        # Extract number of centers for Treemap sizing
+        # Extract number of centers
         centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
         centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
 
@@ -486,13 +486,16 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
 
     parsed_df = pd.DataFrame(parsed_data)
 
-    # Render Interactive Plotly Treemap using Flame Palette
+    # تدرج ألوان Flame المعكوس (من الأصفر للأحمر الداكن)
+    flame_colors_reversed = ['#FFCC00', '#FF9900', '#FF6600', '#CC3300', '#990000', '#660000', '#2B0000']
+
+    # Render Interactive Plotly Treemap
     fig = px.treemap(
         parsed_df,
         path=['City'],
         values='Centers',
         color='Centers',
-        color_continuous_scale=['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00'],
+        color_continuous_scale=flame_colors_reversed,
         hover_data=['Rank', 'Details'],
         title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
     )
@@ -511,6 +514,10 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
+    # Detailed Table View
+    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
+        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
 
     # Detailed Table View
     with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
