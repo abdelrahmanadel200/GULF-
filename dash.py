@@ -1,45 +1,105 @@
+import os
 import pandas as pd
 import streamlit as st
-from typing import Dict
+from typing import Dict, Optional
 
-# اسم الملف الموجود في نفس مجلد المشروع (على GitHub/Server)
-# أو يمكنك وضع رابط مباشر لملف أونلاين بدلاً من اسم الملف
-DATA_SOURCE = "AMECATH_Master_Data.xlsx" 
+# ==============================================================================
+# 1. CONFIGURATION & CONSTANTS
+# ==============================================================================
 
-@st.cache_data(ttl=3600)  # تخزين البيانات مؤقتاً لمدة ساعة لسرعة استجابة الموقع
+DATA_SOURCE = "AMECATH_Master_Data.xlsx"
+
+# ثيمات دول الخليج (GCC)
+COUNTRY_THEMES = {
+    "Saudi Arabia": {
+        "flag": "🇸🇦",
+        "primary": "#006C35",
+        "accent": "#D4AF37",
+        "bg": "#0B1D12",
+        "card_bg": "rgba(15, 40, 25, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "Kingdom of Saudi Arabia",
+    },
+    "UAE": {
+        "flag": "🇦🇪",
+        "primary": "#007A3D",
+        "accent": "#FFD700",
+        "bg": "#0D1F17",
+        "card_bg": "rgba(13, 31, 23, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "United Arab Emirates",
+    },
+    "Kuwait": {
+        "flag": "🇰🇼",
+        "primary": "#007A3D",
+        "accent": "#CE1126",
+        "bg": "#0A1A14",
+        "card_bg": "rgba(10, 26, 20, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "State of Kuwait",
+    },
+    "Qatar": {
+        "flag": "🇶🇦",
+        "primary": "#8A1538",
+        "accent": "#FFFFFF",
+        "bg": "#1A080C",
+        "card_bg": "rgba(35, 12, 20, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "State of Qatar",
+    },
+    "Oman": {
+        "flag": "🇴🇲",
+        "primary": "#DB162F",
+        "accent": "#008000",
+        "bg": "#1C0A0C",
+        "card_bg": "rgba(35, 15, 18, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "Sultanate of Oman",
+    },
+    "Bahrain": {
+        "flag": "🇧🇭",
+        "primary": "#CE1126",
+        "accent": "#FFFFFF",
+        "bg": "#1C080A",
+        "card_bg": "rgba(35, 10, 14, 0.88)",
+        "text": "#FFFFFF",
+        "landmark": "Kingdom of Bahrain",
+    },
+}
+
+
+# ==============================================================================
+# 2. DATA LOADING & CACHING
+# ==============================================================================
+
+@st.cache_data(ttl=3600)
 def load_master_data(source_path: str = DATA_SOURCE) -> Dict[str, pd.DataFrame]:
     """
-    دالة تقوم بقراءة ملف الإكسيل المرفق بالمشروع تلقائياً 
-    وترجع جميع الشيتات داخل Dictionary لتسهيل الوصول إليها.
+    قراءة ملف الإكسيل المرفق تلقائياً وترتيب جميع الشيتات داخل Dictionary.
     """
     try:
-        # قراءة ملف الإكسيل
         xls = pd.ExcelFile(source_path)
         data_sheets = {}
-
-        # قراءة كل شيت وتنظيف الصفوف الفارغة
         for sheet_name in xls.sheet_names:
             df = pd.read_excel(xls, sheet_name=sheet_name)
             data_sheets[sheet_name.strip()] = df.dropna(how="all").reset_index(drop=True)
-
         return data_sheets
-
     except Exception as e:
         st.error(f"⚠️ تعذر تحميل ملف البيانات تلقائياً: {e}")
         return {}
-        import streamlit as st
-from typing import Dict, Optional
+
+
+# ==============================================================================
+# 3. EXECUTIVE OVERVIEW PAGE RENDERER
+# ==============================================================================
 
 def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
     """
-    دالة تعرض الصفحة الرئيسية (Executive Overview) بنفس التصميم المعروض
-    وتقوم بتحويل الكروت الـ 10 إلى أزرار تفاعلية (Active Buttons).
+    عرض الصفحة الرئيسية (Executive Overview) وتحويل الكروت الـ 10 إلى أزرار تفاعلية.
     """
-    
-    # ── 1. تنسيقات CSS لتحسين شكل البانر والكروت التفاعلية ──────────────────
+    # ── CSS Styling ────────────────────────────────────────────────────────────
     st.markdown("""
         <style>
-        /* تنسيق البانر العلوي */
         .top-banner {
             background: linear-gradient(180deg, #02457A 0%, #001B3A 100%);
             border: 1px solid #00A8E8;
@@ -67,8 +127,6 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
             margin-top: 8px;
             margin-bottom: 0;
         }
-
-        /* عنوان القسم */
         .section-header {
             color: #FFFFFF;
             font-size: 22px;
@@ -78,8 +136,6 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
             align-items: center;
             gap: 10px;
         }
-
-        /* تحويل أزرار Streamlit لتبدو ككروت تفاعلية مطابقة للصورة */
         div[data-testid="stColumn"] div.stButton > button {
             width: 100% !important;
             min-height: 140px !important;
@@ -97,16 +153,12 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
             white-space: pre-wrap !important;
             line-height: 1.4 !important;
         }
-
-        /* تأثير التمرير للزر التفاعلي (Hover) */
         div[data-testid="stColumn"] div.stButton > button:hover {
             border-color: #00B4D8 !important;
             transform: translateY(-5px) !important;
             box-shadow: 0 8px 22px rgba(0, 180, 216, 0.35) !important;
             background: linear-gradient(145deg, #0F2A4A 0%, #0A192F 100%) !important;
         }
-
-        /* تأثير الضغط على الزر (Active/Clicked) */
         div[data-testid="stColumn"] div.stButton > button:active {
             transform: scale(0.97) !important;
             border-color: #00D4FF !important;
@@ -114,7 +166,7 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
         </style>
     """, unsafe_allow_html=True)
 
-    # ── 2. البانر العلوي (Top Hero Banner) ──────────────────────────────────
+    # ── Top Hero Banner ────────────────────────────────────────────────────────
     st.markdown("""
         <div class="top-banner">
             <h1 class="banner-title">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
@@ -122,12 +174,11 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
         </div>
     """, unsafe_allow_html=True)
 
-    # ── 3. عنوان المنطقة ───────────────────────────────────────────────────
     st.markdown('<div class="section-header">🌐 Gulf Region — Executive Overview</div>', unsafe_allow_html=True)
 
-    # ── 4. بيانات الكروت التفاعلية الـ 10 ──────────────────────────────────
+    # ── Cards Data ─────────────────────────────────────────────────────────────
     cards = [
-        {"id": "countries", "icon": "🌍", "label": "COUNTRIES COVERED", "value": "9", "sub": "Gulf Region"},
+        {"id": "countries", "icon": "🌍", "label": "COUNTRIES COVERED", "value": "6", "sub": "Gulf Region"},
         {"id": "population", "icon": "👥", "label": "TOTAL POPULATION 2026", "value": "127.68M", "sub": "127,681,500"},
         {"id": "hd_patients", "icon": "🩺", "label": "TOTAL HD PATIENTS", "value": "65,254", "sub": "Hemodialysis"},
         {"id": "pd_est", "icon": "🧪", "label": "EST. 2026 PD", "value": "4,114", "sub": "Peritoneal Dialysis"},
@@ -139,11 +190,11 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
         {"id": "kols", "icon": "👨‍⚕️", "label": "KOLS", "value": "90", "sub": "Opinion Leaders"}
     ]
 
-    # Initialize Active State Variable
     if "active_kpi" not in st.session_state:
         st.session_state["active_kpi"] = None
 
-    # ── 5. رسم الصف الأول من الكروت (5 كروت) ──────────────────────────────
+    # ── Grid Rendering ─────────────────────────────────────────────────────────
+    # Row 1
     cols_row1 = st.columns(5)
     for i in range(5):
         c = cards[i]
@@ -154,175 +205,44 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
 
     st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
-    # ── 6. رسم الصف الثاني من الكروت (5 كروت) ─────────────────────────────
+    # Row 2
     cols_row2 = st.columns(5)
     for i in range(5, 10):
         c = cards[i]
         button_text = f"{c['icon']}\n\n{c['label']}\n\n{c['value']}\n\n{c['sub']}"
-        with cols_row2[i-5]:
+        with cols_row2[i - 5]:
             if st.button(button_text, key=f"btn_{c['id']}"):
                 st.session_state["active_kpi"] = c["id"]
 
-    # ── 7. إجراء عند الضغط على أي زر تفاعلي ───────────────────────────────
+    # ── Selection Feedback ──────────────────────────────────────────────────────
     if st.session_state["active_kpi"]:
-        selected_card = next(c for c in cards if c["id"] == st.session_state["active_kpi"])
-        st.info(f"🎯 تم الضغط على كارت: **{selected_card['label']}** ({selected_card['value']})")
-       import streamlit as st
-import pandas as pd
-from typing import Dict
+        selected_card = next((c for c in cards if c["id"] == st.session_state["active_kpi"]), None)
+        if selected_card:
+            st.info(f"🎯 تم الضغط على كارت: **{selected_card['label']}** ({selected_card['value']})")
+
+
+# ==============================================================================
+# 4. COUNTRIES PAGE RENDERER
+# ==============================================================================
 
 def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: Dict[str, dict]) -> None:
     """
-    دالة تعرض صفحة الدول (Countries Page) بكروت تفاعلية لأعلام الدول.
-    عند الضغط على علم دولة، تفتح صفحة مخصصة لها بجميع أقسامها داخل Tabs.
+    عرض صفحة الدول بتصميم ديناميكي يتغير حسب علم وخلفية كل دولة.
     """
-
-    # ── 1. تنسيق CSS لكروت الأعلام والتنقل ──────────────────────────────────
-    st.markdown("""
-        <style>
-        /* CSS لكروت أعلام الدول التفاعلية */
-        div[data-testid="stColumn"] div.stButton > button.country-card-btn {
-            width: 100% !important;
-            height: 160px !important;
-            background: linear-gradient(145deg, #0D1F2D 0%, #08121C 100%) !important;
-            border: 2px solid #1E3A8A !important;
-            border-radius: 16px !important;
-            color: #FFFFFF !important;
-            font-size: 20px !important;
-            font-weight: 700 !important;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            white-space: pre-wrap !important;
-        }
-
-        div[data-testid="stColumn"] div.stButton > button.country-card-btn:hover {
-            border-color: #00D4FF !important;
-            transform: translateY(-6px) scale(1.02) !important;
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3) !important;
-            background: linear-gradient(145deg, #132E45 0%, #0D1F2D 100%) !important;
-        }
-
-        /* شريط العودة */
-        .back-bar {
-            margin-bottom: 20px;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # إدارة حالة الدولة المحددة (Session State)
     if "selected_country_view" not in st.session_state:
         st.session_state["selected_country_view"] = None
 
-    # ── 2. العرض الأول: شبكة كروت الأعلام (Grid of Country Cards) ───────────
+    # ── View 1: Default Selection Grid ─────────────────────────────────────────
     if st.session_state["selected_country_view"] is None:
-        st.subheader("🌍 Select a Country / اختر الدولة")
-        st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات الخاصة بها.")
-
-        countries_list = list(country_themes.keys())
-        cols_per_row = 3
-        
-        # تقسيم الدول على أعمدة
-        for i in range(0, len(countries_list), cols_per_row):
-            cols = st.columns(cols_per_row)
-            row_countries = countries_list[i : i + cols_per_row]
-            
-            for j, c_name in enumerate(row_countries):
-                theme = country_themes[c_name]
-                flag = theme.get("flag", "🏳️")
-                
-                # نص الكارت: العلم + اسم الدولة
-                card_label = f"{flag}\n\n{c_name}"
-                
-                with cols[j]:
-                    if st.button(card_label, key=f"country_btn_{c_name}", use_container_width=True):
-                        st.session_state["selected_country_view"] = c_name
-                        st.rerun()
-
-    # ── 3. العرض الثاني: تفاصيل الدولة المحددة داخل Tabs ─────────────────────
-    else:
-        c_name = st.session_state["selected_country_view"]
-        theme = country_themes.get(c_name, {})
-        flag = theme.get("flag", "🏳️")
-
-        # زر العودة لشبكة الأعلام
-        col_back, col_title = st.columns([1, 5])
-        with col_back:
-            if st.button("⬅️ Back to Countries", key="btn_back_to_countries"):
-                st.session_state["selected_country_view"] = None
-                st.rerun()
-
-        # هيدر الدولة المختارة
-        st.markdown(f"## {flag} {c_name.upper()} — Market Intelligence")
-        st.divider()
-
-        # إنشاء التبويبات المخصصة للدولة (Tabs)
-        tab_macro, tab_tenders, tab_hot, tab_dist, tab_comp, tab_asp, tab_kol, tab_forecast = st.tabs([
-            "📊 Macro Environment",
-            "📈 Financials & Tenders",
-            "🔥 Hot Market Areas",
-            "🤝 Local Distributors",
-            "⚔️ Competitor Matrix",
-            "🏷️ Competitor ASP",
-            "👨‍⚕️ Key Opinion Leaders",
-            "🔮 Growth Forecast"
-        ])
-
-        with tab_macro:
-            render_generic_table(data_sheets, "macro", "📊 Macro Environment", c_name)
-
-        with tab_tenders:
-            render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", c_name)
-
-        with tab_hot:
-            render_hot_areas(data_sheets, c_name, theme)
-
-        with tab_dist:
-            render_distributors(data_sheets, c_name, theme)
-
-        with tab_comp:
-            render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", c_name)
-
-        with tab_asp:
-            render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP", c_name)
-
-        with tab_kol:
-            render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", c_name)
-
-        with tab_forecast:
-            render_forecast(data_sheets, c_name, theme) 
-import streamlit as st
-import pandas as pd
-from typing import Dict
-
-def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: Dict[str, dict]) -> None:
-    """
-    دالة عرض صفحة الدول المحدّثة:
-    - تتغير خلفية الصفحة لتصبح صورة الـ Landscape المخصصة للدولة.
-    - تتغير ألوان الـ Tabs والتصميم لتطابق ألوان علم الدولة المختارة.
-    """
-
-    # إدارة حالة الدولة المحددة في الـ Session State
-    if "selected_country_view" not in st.session_state:
-        st.session_state["selected_country_view"] = None
-
-    # ── 1. العرض الأول: شبكة اختيار الدول (Default Region Theme) ──────────────
-    if st.session_state["selected_country_view"] is None:
-        
-        # تطبيق التنسيق الافتراضي العام عند تصفح القائمة
         default_theme = {
-            "primary": "#00D4FF", "accent": "#FFB703", 
+            "primary": "#00D4FF", "accent": "#FFB703",
             "bg": "#051329", "card_bg": "rgba(8, 28, 54, 0.88)", "text": "#FFFFFF"
         }
         inject_css(default_theme, bg_b64="")
 
         st.subheader("🌍 Select a Country Market / اختر الدولة")
-        st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات الخلفية المخصصة لها.")
+        st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات المخصصة لها.")
 
-        # تنسيق كروت الأعلام
         st.markdown("""
             <style>
             div[data-testid="stColumn"] div.stButton > button {
@@ -347,39 +267,34 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
 
         countries_list = list(country_themes.keys())
         cols_per_row = 3
-        
+
         for i in range(0, len(countries_list), cols_per_row):
             cols = st.columns(cols_per_row)
             row_countries = countries_list[i : i + cols_per_row]
-            
+
             for j, c_name in enumerate(row_countries):
                 theme = country_themes[c_name]
                 flag = theme.get("flag", "🏳️")
                 card_label = f"{flag}\n\n{c_name}"
-                
+
                 with cols[j]:
                     if st.button(card_label, key=f"country_card_{c_name}", use_container_width=True):
                         st.session_state["selected_country_view"] = c_name
                         st.rerun()
 
-    # ── 2. العرض الثاني: تفاصيل الدولة بالخلفية والألوان الخاصة بها ──────────
+    # ── View 2: Detailed Country Dashboard ──────────────────────────────────────
     else:
         c_name = st.session_state["selected_country_view"]
         theme = country_themes.get(c_name, {
-            "flag": "🏳️", "primary": "#00B4D8", "accent": "#FFB703", 
+            "flag": "🏳️", "primary": "#00B4D8", "accent": "#FFB703",
             "bg": "#0B1D12", "card_bg": "rgba(15, 40, 25, 0.88)", "text": "#FFFFFF"
         })
 
-        # 🎨 جلب صورة الـ Landscape المخصصة للدولة من المجلد
         landscape_b64 = find_landscape_b64(c_name)
-
-        # 🎨 تطبيق الخلفية الهيدروليكية والألوان الخاصة بعلم الدولة
         inject_css(theme, bg_b64=landscape_b64)
 
-        # 🎨 تخصيص ألوان الـ Tabs بحسب ألوان العلم المحددة في (primary & accent)
         st.markdown(f"""
             <style>
-            /* تخصيص شكل تبويبات الـ Tabs بألوان علم الدولة */
             button[data-baseweb="tab"] {{
                 background-color: {theme['card_bg']} !important;
                 color: #FFFFFF !important;
@@ -395,7 +310,6 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
                 font-weight: 800 !important;
                 box-shadow: 0 -4px 12px rgba(0,0,0,0.3) !important;
             }}
-            /* تخصيص زر العودة */
             div.stButton > button[key="btn_back_to_countries"] {{
                 background-color: {theme['primary']} !important;
                 border: 1px solid {theme['accent']} !important;
@@ -405,17 +319,14 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
             </style>
         """, unsafe_allow_html=True)
 
-        # زر العودة
-        col_back, col_title = st.columns([1, 4])
+        col_back, _ = st.columns([1, 4])
         with col_back:
             if st.button("⬅️ Back to Countries", key="btn_back_to_countries"):
                 st.session_state["selected_country_view"] = None
                 st.rerun()
 
-        # هيدر تفاصيل الدولة
         render_hero(c_name, theme, bg_b64=landscape_b64)
 
-        # التبويبات المخصصة للدولة
         tabs = st.tabs([
             "📊 Macro Environment",
             "📈 Financials & Tenders",
