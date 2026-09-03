@@ -22,7 +22,43 @@ dashboard_html = """
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
+.hot-map {
+  margin: 0 16px 16px;
+  height: 520px;
+  border: 1px solid #1e3d7a;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #081321;
+}
+
+#market-map {
+  width: 100%;
+  height: 100%;
+}
+
+.leaflet-container {
+  background: #081321;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.map-popup {
+  min-width: 180px;
+  color: #111827;
+}
+
+.map-popup-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.map-popup-row {
+  font-size: 11px;
+  margin: 3px 0;
+}
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #0b1628; height: 100%; }
 
@@ -336,13 +372,18 @@ dashboard_html = """
     </div>
 
     <!-- Hot Areas -->
-    <div class="page" id="page-hotareas">
-      <div class="placeholder-page">
-        <div class="placeholder-icon">📍</div>
-        <div class="placeholder-title">Hot Areas</div>
-        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
-      </div>
-    </div>
+<div class="page" id="page-hotareas">
+
+  <div class="section-header">
+    <span style="font-size:16px">📍</span>
+    <span class="section-title">Hot Areas — Dialysis Market</span>
+  </div>
+
+  <div class="hot-map">
+    <div id="market-map"></div>
+  </div>
+
+</div>
 
     <!-- Exhibitions -->
     <div class="page" id="page-exhibitions">
@@ -364,14 +405,242 @@ dashboard_html = """
 
   </div>
 </div>
+ // ─────────────────────────────────────────────
+// REAL GEOGRAPHIC MARKET MAP
+// ─────────────────────────────────────────────
 
+let marketMap = null;
+
+const marketPoints = [
+  {
+    country: "Saudi Arabia",
+    city: "Riyadh",
+    lat: 24.7136,
+    lng: 46.6753,
+    patients: 18500,
+    priority: "Critical"
+  },
+  {
+    country: "Saudi Arabia",
+    city: "Jeddah",
+    lat: 21.4858,
+    lng: 39.1925,
+    patients: 9200,
+    priority: "High"
+  },
+  {
+    country: "UAE",
+    city: "Dubai",
+    lat: 25.2048,
+    lng: 55.2708,
+    patients: 6100,
+    priority: "High"
+  },
+  {
+    country: "UAE",
+    city: "Abu Dhabi",
+    lat: 24.4539,
+    lng: 54.3773,
+    patients: 4800,
+    priority: "Medium"
+  },
+  {
+    country: "Qatar",
+    city: "Doha",
+    lat: 25.2854,
+    lng: 51.5310,
+    patients: 2800,
+    priority: "Medium"
+  },
+  {
+    country: "Kuwait",
+    city: "Kuwait City",
+    lat: 29.3759,
+    lng: 47.9774,
+    patients: 3500,
+    priority: "High"
+  },
+  {
+    country: "Iraq",
+    city: "Baghdad",
+    lat: 33.3152,
+    lng: 44.3661,
+    patients: 4200,
+    priority: "High"
+  },
+  {
+    country: "Jordan",
+    city: "Amman",
+    lat: 31.9539,
+    lng: 35.9106,
+    patients: 2100,
+    priority: "Medium"
+  },
+  {
+    country: "Lebanon",
+    city: "Beirut",
+    lat: 33.8938,
+    lng: 35.5018,
+    patients: 1700,
+    priority: "Low"
+  },
+  {
+    country: "Oman",
+    city: "Muscat",
+    lat: 23.5880,
+    lng: 58.3829,
+    patients: 1900,
+    priority: "Medium"
+  },
+  {
+    country: "Bahrain",
+    city: "Manama",
+    lat: 26.2235,
+    lng: 50.5876,
+    patients: 1200,
+    priority: "Low"
+  }
+];
+
+const priorityColors = {
+  Critical: "#ef4444",
+  High: "#f97316",
+  Medium: "#eab308",
+  Low: "#22c55e"
+};
+
+function createMarketMap() {
+
+  const mapElement = document.getElementById("market-map");
+
+  if (!mapElement) return;
+
+  // Prevent creating the map more than once
+  if (marketMap !== null) {
+    marketMap.invalidateSize();
+    return;
+  }
+
+  marketMap = L.map("market-map", {
+    zoomControl: true,
+    scrollWheelZoom: true
+  }).setView([27.5, 46.5], 5);
+
+  // Real geographic basemap
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 18,
+      attribution: "&copy; OpenStreetMap contributors"
+    }
+  ).addTo(marketMap);
+
+  // Add every geographic point
+  marketPoints.forEach(point => {
+
+    const color = priorityColors[point.priority] || "#60a5fa";
+
+    const radius =
+      point.priority === "Critical" ? 13 :
+      point.priority === "High" ? 11 :
+      point.priority === "Medium" ? 9 : 7;
+
+    const marker = L.circleMarker(
+      [point.lat, point.lng],
+      {
+        radius: radius,
+        color: "#ffffff",
+        weight: 2,
+        fillColor: color,
+        fillOpacity: 0.90
+      }
+    ).addTo(marketMap);
+
+    marker.bindPopup(`
+      <div class="map-popup">
+        <div class="map-popup-title">
+          ${point.city}, ${point.country}
+        </div>
+
+        <div class="map-popup-row">
+          <b>HD Patients:</b>
+          ${point.patients.toLocaleString()}
+        </div>
+
+        <div class="map-popup-row">
+          <b>Priority:</b>
+          ${point.priority}
+        </div>
+
+        <div class="map-popup-row">
+          <b>Coordinates:</b>
+          ${point.lat.toFixed(4)}, ${point.lng.toFixed(4)}
+        </div>
+      </div>
+    `);
+  });
+
+  // Legend
+  const legend = L.control({position: "bottomright"});
+
+  legend.onAdd = function() {
+
+    const div = L.DomUtil.create("div");
+
+    div.style.background = "#0b1628";
+    div.style.padding = "10px 12px";
+    div.style.border = "1px solid #1e3d7a";
+    div.style.borderRadius = "8px";
+    div.style.color = "#e8edf5";
+    div.style.fontSize = "11px";
+
+    div.innerHTML = `
+      <div style="
+        font-weight:700;
+        margin-bottom:7px;
+        color:#c8d8f0;
+      ">
+        MARKET PRIORITY
+      </div>
+
+      <div>🔴 Critical</div>
+      <div>🟠 High</div>
+      <div>🟡 Medium</div>
+      <div>🟢 Low</div>
+    `;
+
+    return div;
+  };
+
+  legend.addTo(marketMap);
+}
 <script>
   function navigate(el, pageId) {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + pageId).classList.add('active');
+
+  document.querySelectorAll('.nav-item')
+    .forEach(n => n.classList.remove('active'));
+
+  el.classList.add('active');
+
+  document.querySelectorAll('.page')
+    .forEach(p => p.classList.remove('active'));
+
+  document.getElementById('page-' + pageId)
+    .classList.add('active');
+
+  // Initialize map when Hot Areas is opened
+  if (pageId === "hotareas") {
+
+    setTimeout(() => {
+      createMarketMap();
+
+      if (marketMap) {
+        marketMap.invalidateSize();
+      }
+    }, 150);
   }
+}
+ 
 </script>
 </body>
 </html>
