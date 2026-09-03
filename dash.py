@@ -571,7 +571,7 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         path=['City'],
         values='Centers',
         color='Centers',
-        color_continuous_scale=['#002B49', '#005A9C', '#00D4FF'],
+        color_continuous_scale=['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00'],
         hover_data=['Rank', 'Details'],
         title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
     )
@@ -714,7 +714,7 @@ def render_overview(data: Dict[str, pd.DataFrame], theme: dict) -> None:
     countries = [
         ("Saudi Arabia", "SA"), ("UAE", "AE"), ("Qatar", "QA"),
         ("Kuwait", "KW"), ("Oman", "OM"), ("Bahrain", "BH"),
-        ("Egypt", "EG"), ("Jordan", "JO"), ("Iraq", "IQ")
+        ("Jordan", "JO"), ("Iraq", "IQ")
     ]
     
     cols = st.columns(3)
