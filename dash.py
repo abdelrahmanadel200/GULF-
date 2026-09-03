@@ -233,23 +233,28 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     </style>
     """, unsafe_allow_html=True)
 
-def render_hero(country: str, theme: dict) -> None:
-    flag_html = f'<span style="font-size:38px;margin-right:12px;">{theme["flag"]}</span>'
+def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
+    flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
     logo = logo_b64()
     logo_html = (
-        f'<img src="data:image/png;base64,{logo}" style="height:46px;" alt="AMECATH logo">'
+        f'<img src="data:image/png;base64,{logo}" style="height:46px;position:absolute;right:25px;top:20px;" alt="AMECATH logo">'
         if logo else ""
     )
+    
+    # استخدام الصورة كخلفية للبانر إذا كانت موجودة
+    bg_style = (
+        f"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('data:image/jpeg;base64,{bg_b64}') center/cover no-repeat;"
+        if bg_b64 else f"background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});"
+    )
+
     st.markdown(f"""
-    <div class="hero-banner">
-      <div class="header-container">
-        <div style="display:flex;align-items:center;">
-            {flag_html}
-        <h1 class="header-title">{country.upper()} — EXECUTIVE MARKET DOSSIER</h1>    
-        </div>
-        {logo_html}
+    <div class="hero-banner" style="{bg_style} position: relative; text-align: center; padding: 30px 20px;">
+      {logo_html}
+      <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+        {flag_html}
+        <h1 class="header-title" style="margin:0; font-size:34px; letter-spacing:1px;">{country.upper()}</h1>
       </div>
-      <p style="color:{theme['accent']};font-size:14px;margin-top:10px;margin-bottom:0;font-weight:600;">
+      <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
         📍 Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
