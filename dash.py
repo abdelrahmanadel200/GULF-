@@ -246,7 +246,12 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
 
 
 def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
-    flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
+    flag_b64 = find_flag_b64(country)
+    if flag_b64:
+        flag_html = f'<img src="data:image/png;base64,{flag_b64}" style="height:32px; border-radius:4px; margin-right:10px; vertical-align:middle; box-shadow:0 2px 6px rgba(0,0,0,0.3);">'
+    else:
+        flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
+
     logo = logo_b64()
     logo_html = (
         f'<img src="data:image/png;base64,{logo}" style="height:46px;position:absolute;right:25px;top:20px;" alt="AMECATH logo">'
@@ -267,30 +272,6 @@ def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
       </div>
       <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
         &#128205; Strategic Landmark: <span>{theme['landmark']}</span>
-      </p>
-    </div>""", unsafe_allow_html=True)
-def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
-    flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
-    logo = logo_b64()
-    logo_html = (
-        f'<img src="data:image/png;base64,{logo}" style="height:46px;position:absolute;right:25px;top:20px;" alt="AMECATH logo">'
-        if logo else ""
-    )
-    
-    bg_style = (
-        f"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('data:image/jpeg;base64,{bg_b64}') center/cover no-repeat;"
-        if bg_b64 else f"background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});"
-    )
-
-    st.markdown(f"""
-    <div class="hero-banner" style="{bg_style} position: relative; text-align: center; padding: 30px 20px;">
-      {logo_html}
-      <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-        {flag_html}
-        <h1 class="header-title" style="margin:0; font-size:34px; letter-spacing:1px;">{country.upper()}</h1>
-      </div>
-      <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
-        \U0001F4CD Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
 
