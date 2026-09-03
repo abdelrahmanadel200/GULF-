@@ -24,6 +24,9 @@ dashboard_html = """
 <meta charset="UTF-8"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- إضافة Tailwind CSS و FontAwesome -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
 .hot-map {
   margin: 0 16px 16px;
@@ -362,14 +365,159 @@ dashboard_html = """
       </div>
     </div>
 
-    <!-- Competitors -->
     <div class="page" id="page-competitors">
-      <div class="placeholder-page">
-        <div class="placeholder-icon">🏆</div>
-        <div class="placeholder-title">Competitors</div>
-        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+  <div class="p-4 space-y-6">
+    
+    <!-- Header & Filter Buttons -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0f1f3d] p-5 rounded-2xl border border-[#1e3d7a]">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>🏆</span> تحليل منافسي قسطرة الغسيل الكلوي (HD Catheters)
+        </h2>
+        <p class="text-slate-400 text-xs mt-1">متابعة الحصص السوقية، نقاط القوة، والميزة التنافسية لـ AMECATH</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button onclick="filterCompetitors('all', this)" class="comp-filter-btn active-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow">الكل (4)</button>
+        <button onclick="filterCompetitors('high', this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300 hover:bg-slate-700">تهديد عالٍ 🔴</button>
+        <button onclick="filterCompetitors('medium', this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300 hover:bg-slate-700">متوسط 🟡</button>
       </div>
     </div>
+
+    <!-- Competitors Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+
+      <!-- Fresenius -->
+      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Fresenius Medical Care</h3>
+            <span class="text-xs text-slate-400">ألمانيا — هيمنة المنظومة الكاملة (NUPCO)</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">تهديد عالٍ</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>الحصة السوقية (السعودية):</span>
+              <span class="text-blue-400 font-bold">~18–20%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-blue-500 h-full rounded-full" style="width: 20%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة القوة:</span><span class="text-slate-200">ربط القساطر بأجهزة الغسيل</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة الضعف:</span><span class="text-slate-200">تركيز أقل على ابتكار القسطرة</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">ميزة AMECATH: تخصيص عالي + سعر تنافسي + سرعة توريد</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">تفاصيل التفوق ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>تغطية السوق:</strong> ⭐⭐⭐⭐⭐ (تغطية شاملة عبر NUPCO والمناقصات المباشرة).</p>
+        </div>
+      </div>
+
+      <!-- B. Braun -->
+      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">B. Braun Melsungen</h3>
+            <span class="text-xs text-slate-400">ألمانيا — قوة تسعيرية واسعة</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">تهديد عالٍ</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>الحصة السوقية (السعودية):</span>
+              <span class="text-blue-400 font-bold">~12–14%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-blue-500 h-full rounded-full" style="width: 14%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة القوة:</span><span class="text-slate-200">علامة تجارية قوية + أسعار تنافسية</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة الضعف:</span><span class="text-slate-200">القساطر منتج ثانوي للأجهزة</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">ميزة AMECATH: مرونة توريد إقليمية + تركيز متخصص</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">تفاصيل التفوق ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>تغطية السوق:</strong> ⭐⭐⭐⭐⭐ (إطار NUPCO + موزعين معتمدين SFDA).</p>
+        </div>
+      </div>
+
+      <!-- Medtronic -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Medtronic (Mahurkar/Permcath)</h3>
+            <span class="text-xs text-slate-400">أمريكا — ريادة تكنولوجية وعلمية</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">تهديد متوسط</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>الحصة السوقية (السعودية):</span>
+              <span class="text-blue-400 font-bold">~10–12%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 12%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة القوة:</span><span class="text-slate-200">أدلة إكلينيكية وعلامة ممتازة</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة الضعف:</span><span class="text-slate-200">أسعار مرتفعة جداً (Premium)</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">ميزة AMECATH: فارق سعر كبير + سرعة استجابة للمنطقة</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">تفاصيل التفوق ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>تغطية السوق:</strong> ⭐⭐⭐⭐⭐ (فائز بمناقصة NUPCO NPT0048-22).</p>
+        </div>
+      </div>
+
+      <!-- BD -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">BD (Bard / Pristine)</h3>
+            <span class="text-xs text-slate-400">أمريكا — شبكة توزيع عالمية ضخمة</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">تهديد متوسط</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>الحصة السوقية (السعودية):</span>
+              <span class="text-blue-400 font-bold">~8–10%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 10%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة القوة:</span><span class="text-slate-200">تصميم Y-Tip ومحفظة متكاملة</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">نقطة الضعف:</span><span class="text-slate-200">تكلفة عالية وضغط مناقصات</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">ميزة AMECATH: القيمة مقابل السعر + التصنيع بالخليج</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">تفاصيل التفوق ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>تغطية السوق:</strong> ⭐⭐⭐⭐⭐ (مرخص من SFDA ومورد رئيسي لـ NUPCO).</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
     <!-- Hot Areas -->
 <div class="page" id="page-hotareas">
