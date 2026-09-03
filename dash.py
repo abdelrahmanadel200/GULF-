@@ -677,7 +677,7 @@ else:
     elif nav_mode == "tenders":
         render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", selected_country)
     elif nav_mode == "hot_areas":
-    render_hot_areas(data_sheets, selected_country, active_theme)
+        render_hot_areas(data_sheets, selected_country, active_theme)
     elif nav_mode == "distributors":
         render_generic_table(data_sheets, "distributors", "🤝 Local Distributors Network", selected_country)
     elif nav_mode == "competitors":
