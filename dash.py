@@ -528,105 +528,46 @@ page = st.session_state.page
 if page == "overview":
 
     st.markdown(
-        """
-        <div class="top-banner">
-            <div class="banner-title">🌐 REGIONAL EXECUTIVE OVERVIEW</div>
-            <div class="banner-sub">
-                📌 Scope: Middle East &amp; GCC Markets Performance
-            </div>
-        </div>
+    """
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-icon">🌍</div>
+        <div class="kpi-label">Countries Covered</div>
+        <div class="kpi-value">9</div>
+        <div class="kpi-sub">Gulf Region</div>
+    </div>
 
-        <div class="section-hdr">
-            🌐 Gulf Region — Executive Overview
-        </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-label">Total Population 2026</div>
+        <div class="kpi-value accent">127.68M</div>
+        <div class="kpi-sub muted">127,681,500</div>
+    </div>
 
-        <div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-icon">🫀</div>
+        <div class="kpi-label">Total HD Patients</div>
+        <div class="kpi-value">65,254</div>
+        <div class="kpi-sub">Hemodialysis</div>
+    </div>
 
-            <div class="kpi-card">
-                <div class="kpi-icon">🌍</div>
-                <div class="kpi-label">Countries Covered</div>
-                <div class="kpi-value">9</div>
-                <div class="kpi-sub">Gulf Region</div>
-            </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">💉</div>
+        <div class="kpi-label">Est. 2026 PD</div>
+        <div class="kpi-value">4,114</div>
+        <div class="kpi-sub">Peritoneal Dialysis</div>
+    </div>
 
-            <div class="kpi-card">
-                <div class="kpi-icon">👥</div>
-                <div class="kpi-label">Total Population 2026</div>
-                <div class="kpi-value accent">127.68M</div>
-                <div class="kpi-sub muted">127,681,500</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">🫀</div>
-                <div class="kpi-label">Total HD Patients</div>
-                <div class="kpi-value">65,254</div>
-                <div class="kpi-sub">Hemodialysis</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">💉</div>
-                <div class="kpi-label">Est. 2026 PD</div>
-                <div class="kpi-value">4,114</div>
-                <div class="kpi-sub">Peritoneal Dialysis</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">🏥</div>
-                <div class="kpi-label">Dialysis Facilities</div>
-                <div class="kpi-value">762</div>
-                <div class="kpi-sub muted">Centers</div>
-            </div>
-
-        </div>
-
-        <div class="kpi-grid">
-
-            <div class="kpi-card">
-                <div class="kpi-icon">⚡</div>
-                <div class="kpi-label">HD Machines</div>
-                <div class="kpi-value">44,050</div>
-                <div class="kpi-sub muted">Units</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">🩹</div>
-                <div class="kpi-label">Annual Catheter Demand</div>
-                <div class="kpi-value accent">167.87K</div>
-                <div class="kpi-sub muted">167,867 units</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">💰</div>
-                <div class="kpi-label">Market Value</div>
-                <div class="kpi-value gold">$18.90M</div>
-                <div class="kpi-sub amber">USD</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">🤝</div>
-                <div class="kpi-label">Distributors</div>
-                <div class="kpi-value">90</div>
-                <div class="kpi-sub green">Active Partners</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-icon">⭐</div>
-                <div class="kpi-label">KOLs</div>
-                <div class="kpi-value">90</div>
-                <div class="kpi-sub green">Opinion Leaders</div>
-            </div>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div style="text-align:center;padding:8px 0 16px;
-                    font-size:10px;color:#2a4060;">
-            Data source: Amecath_Dash.xlsx · 2026 Edition · 9 Markets
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    <div class="kpi-card">
+        <div class="kpi-icon">🏥</div>
+        <div class="kpi-label">Dialysis Facilities</div>
+        <div class="kpi-value">762</div>
+        <div class="kpi-sub muted">Centers</div>
+    </div>
+</div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # ============================================================
