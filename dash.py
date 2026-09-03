@@ -353,10 +353,10 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
 
     parsed_df = pd.DataFrame(parsed_data)
 
-    # 💥 قائمة ألوان Flame النارية المصممة يدويًا لضمان التوافق
+    # مصفوفة درجات ألوان Flame النارية المحددة يدويًا بدلاً من الاعتماد على المكتبة
     flame_colors = ['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00']
 
-    # Render Interactive Plotly Treemap using Custom Flame Palette
+    # Render Interactive Plotly Treemap
     fig = px.treemap(
         parsed_df,
         path=['City'],
@@ -381,6 +381,10 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
+    # Detailed Table View
+    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
+        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
 
     # Detailed Table View
     with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
