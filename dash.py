@@ -685,6 +685,50 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
+# REGIONAL OVERVIEW RENDER FUNCTION
+# ─────────────────────────────────────────────
+def render_overview(data: Dict[str, pd.DataFrame], theme: dict) -> None:
+    st.subheader("🌐 Regional Overview — Executive Summary")
+    
+    # High-level KPIs
+    k1, k2, k3, k4, k5 = st.columns(5)
+    with k1:
+        st.metric("Markets Tracked", "9")
+    with k2:
+        st.metric("Total Dialysis Patients", "N/A")
+    with k3:
+        st.metric("Addressable Market", "N/A")
+    with k4:
+        st.metric("Avg. Market CAGR", "N/A")
+    with k5:
+        st.metric("Avg. AMECATH Share", "N/A")
+        
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.subheader("Regional Market Snapshots")
+    
+    # Regional Country Cards
+    countries = [
+        ("Saudi Arabia", "SA"), ("UAE", "AE"), ("Qatar", "QA"),
+        ("Kuwait", "KW"), ("Oman", "OM"), ("Bahrain", "BH"),
+        ("Egypt", "EG"), ("Jordan", "JO"), ("Iraq", "IQ")
+    ]
+    
+    cols = st.columns(3)
+    for idx, (country, code) in enumerate(countries):
+        with cols[idx % 3]:
+            st.markdown(f"""
+            <div class="country-mini-card">
+                <h4 style="margin:0 0 8px 0; color:#00D4FF; font-size:16px;">{code} {country}</h4>
+                <div style="font-size:13px; line-height:1.6; color:#E0F2FE;">
+                    <b>Dialysis Patients:</b> 0<br>
+                    <b>Market Size:</b> $0.0M<br>
+                    <b>CAGR:</b> 0.0%<br>
+                    <b>AMECATH Share:</b> 0.0%
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
 # ─────────────────────────────────────────────
 
