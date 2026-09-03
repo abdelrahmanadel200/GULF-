@@ -372,13 +372,13 @@ dashboard_html = """
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0f1f3d] p-5 rounded-2xl border border-[#1e3d7a]">
       <div>
         <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <span>🏆</span> Hemodialysis (HD) Catheters Competitor Analysis
+          <span>🏆</span> Hemodialysis (HD) Catheters Global & Regional Competitor Analysis
         </h2>
-        <p class="text-slate-400 text-xs mt-1">Market share tracking, strengths, weaknesses, and AMECATH's competitive edge</p>
+        <p class="text-slate-400 text-xs mt-1">Comprehensive market share tracking, strengths, weaknesses, and AMECATH's strategic edge</p>
       </div>
 
       <div class="flex flex-wrap gap-2">
-        <button onclick="filterCompetitors('all', this)" class="comp-filter-btn active-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow">All (4)</button>
+        <button onclick="filterCompetitors('all', this)" class="comp-filter-btn active-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow">All (10)</button>
         <button onclick="filterCompetitors('high', this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300 hover:bg-slate-700">High Threat 🔴</button>
         <button onclick="filterCompetitors('medium', this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300 hover:bg-slate-700">Medium Threat 🟡</button>
       </div>
@@ -387,39 +387,71 @@ dashboard_html = """
     <!-- Competitors Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
-      <!-- Fresenius Medical Care -->
+      <!-- 1. Fresenius Medical Care -->
       <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
         <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
         <div class="flex justify-between items-start mb-3">
           <div>
             <h3 class="font-bold text-base text-white group-hover:text-blue-400">Fresenius Medical Care</h3>
-            <span class="text-xs text-slate-400">Germany — Full Ecosystem Dominance (NUPCO)</span>
+            <span class="text-xs text-slate-400">Germany — Full Dialysis Ecosystem Dominance</span>
           </div>
           <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span>
         </div>
         <div class="space-y-2 text-xs mb-3">
           <div>
             <div class="flex justify-between mb-1 text-slate-300">
-              <span>Market Share (KSA):</span>
+              <span>Est. Market Share (KSA/GCC):</span>
               <span class="text-blue-400 font-bold">~18–20%</span>
             </div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-blue-500 h-full rounded-full" style="width: 20%"></div></div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Bundling catheters with HD machines</span></div>
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Lower focus on catheter innovation</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Bundling catheters with dialysis machines</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Lower focus on standalone catheter innovation</span></div>
           </div>
         </div>
         <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
-          <span class="text-emerald-400 font-semibold">AMECATH Advantage: High customization + competitive pricing + fast delivery</span>
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Flexible customization + faster local supply</span>
           <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
         </div>
         <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
-          <p><strong>Market Coverage:</strong> ⭐⭐⭐⭐⭐ (Comprehensive coverage via NUPCO & direct tenders).</p>
+          <p><strong>Market Coverage:</strong> Comprehensive coverage via NUPCO and direct clinical contracts.</p>
         </div>
       </div>
 
-      <!-- B. Braun Melsungen -->
+      <!-- 2. Teleflex / Arrow -->
+      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Teleflex (Arrow)</h3>
+            <span class="text-xs text-slate-400">USA — Vascular Access Brand Equity</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~14–16%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-blue-500 h-full rounded-full" style="width: 16%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Arrowg+ard antimicrobial technologies</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Premium pricing structure</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Competitive pricing with equivalent flow performance</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Strong preference in ICU and acute vascular access tenders.</p>
+        </div>
+      </div>
+
+      <!-- 3. B. Braun Melsungen -->
       <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
         <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
         <div class="flex justify-between items-start mb-3">
@@ -432,86 +464,246 @@ dashboard_html = """
         <div class="space-y-2 text-xs mb-3">
           <div>
             <div class="flex justify-between mb-1 text-slate-300">
-              <span>Market Share (KSA):</span>
+              <span>Est. Market Share (KSA/GCC):</span>
               <span class="text-blue-400 font-bold">~12–14%</span>
             </div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-blue-500 h-full rounded-full" style="width: 14%"></div></div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Strong brand equity + aggressive pricing</span></div>
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Catheters treated as secondary line</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Established institutional distribution</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Standard design with slower iteration speed</span></div>
           </div>
         </div>
         <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
-          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Regional supply flexibility + specialized focus</span>
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Specialized catheter focus + regional agility</span>
           <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
         </div>
         <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
-          <p><strong>Market Coverage:</strong> ⭐⭐⭐⭐⭐ (NUPCO framework + SFDA approved distributors).</p>
+          <p><strong>Market Coverage:</strong> SFDA approved with presence in all major ministry tenders.</p>
         </div>
       </div>
 
-      <!-- Medtronic -->
+      <!-- 4. Medtronic -->
       <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
         <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
         <div class="flex justify-between items-start mb-3">
           <div>
-            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Medtronic (Mahurkar/Permcath)</h3>
-            <span class="text-xs text-slate-400">USA — Technological & Clinical Leadership</span>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Medtronic (Mahurkar / Permcath)</h3>
+            <span class="text-xs text-slate-400">USA — Legacy Clinical Reputation</span>
           </div>
           <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
         </div>
         <div class="space-y-2 text-xs mb-3">
           <div>
             <div class="flex justify-between mb-1 text-slate-300">
-              <span>Market Share (KSA):</span>
+              <span>Est. Market Share (KSA/GCC):</span>
               <span class="text-blue-400 font-bold">~10–12%</span>
             </div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 12%"></div></div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Extensive clinical evidence & premium brand</span></div>
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High pricing strategy (Premium)</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Mahurkar curved lumen design benchmark</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High acquisition cost</span></div>
           </div>
         </div>
         <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
-          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Significant price margin + rapid regional response</span>
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Cost-effective alternative with identical lumen specs</span>
           <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
         </div>
         <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
-          <p><strong>Market Coverage:</strong> ⭐⭐⭐⭐⭐ (Awarded NUPCO tender NPT0048-22).</p>
+          <p><strong>Market Coverage:</strong> Active in NUPCO tenders (NPT0048-22 framework).</p>
         </div>
       </div>
 
-      <!-- BD -->
+      <!-- 5. MedComp (Medical Components Inc.) -->
       <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
         <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
         <div class="flex justify-between items-start mb-3">
           <div>
-            <h3 class="font-bold text-base text-white group-hover:text-blue-400">BD (Bard / Pristine)</h3>
-            <span class="text-xs text-slate-400">USA — Massive Global Distribution Network</span>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">MedComp</h3>
+            <span class="text-xs text-slate-400">USA — Dedicated Vascular Access Specialist</span>
           </div>
           <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
         </div>
         <div class="space-y-2 text-xs mb-3">
           <div>
             <div class="flex justify-between mb-1 text-slate-300">
-              <span>Market Share (KSA):</span>
+              <span>Est. Market Share (KSA/GCC):</span>
               <span class="text-blue-400 font-bold">~8–10%</span>
             </div>
             <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 10%"></div></div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Y-Tip design & comprehensive portfolio</span></div>
-            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High cost structure & tender margin pressure</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Extensive specialized HD portfolio</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Reliance on regional third-party distributors</span></div>
           </div>
         </div>
         <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
-          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Superior value proposition + regional hub</span>
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Direct Middle East manufacturing & supply chain speed</span>
           <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
         </div>
         <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
-          <p><strong>Market Coverage:</strong> ⭐⭐⭐⭐⭐ (SFDA registered & key supplier to NUPCO).</p>
+          <p><strong>Market Coverage:</strong> Strong presence in specialized private nephrology clinics.</p>
+        </div>
+      </div>
+
+      <!-- 6. BD (Bard) -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">BD (Bard / Pristine)</h3>
+            <span class="text-xs text-slate-400">USA — Massive Global Sales Footprint</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~8–10%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 10%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Innovative tip designs (Pristine/Symmetrex)</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High tender price pressures</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Superior price-to-performance ratio</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Registered with SFDA and active in major hospital networks.</p>
+        </div>
+      </div>
+
+      <!-- 7. Merit Medical -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Merit Medical (Proguide)</h3>
+            <span class="text-xs text-slate-400">USA — Interventional Suite Specialist</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~5–7%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 7%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Complete interventional accessories bundle</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Smaller chronic dialysis presence</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Focus on both short-term acute & long-term chronic HD</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Focused on interventional radiology departments.</p>
+        </div>
+      </div>
+
+      <!-- 8. Nipro Corporation -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Nipro Corporation</h3>
+            <span class="text-xs text-slate-400">Japan — High Quality Japanese Engineering</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~5–7%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 7%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Dialyzer and bloodline integration</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Slower delivery lead times from East Asia</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Strategic regional inventory & rapid restocking</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Growing share in private dialysis centers across the Gulf.</p>
+        </div>
+      </div>
+
+      <!-- 9. AngioDynamics -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">AngioDynamics (BioFlo)</h3>
+            <span class="text-xs text-slate-400">USA — Advanced Material Science</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~4–6%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 6%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">EndurAClear & thrombus-resistant polymer</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Limited tender participation due to price</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Flexible polyurethane options at standard budget tiers</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Niche hospital installations for high-risk thrombosis cases.</p>
+        </div>
+      </div>
+
+      <!-- 10. Cook Medical -->
+      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h3 class="font-bold text-base text-white group-hover:text-blue-400">Cook Medical</h3>
+            <span class="text-xs text-slate-400">USA — Interventional Pioneer</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span>
+        </div>
+        <div class="space-y-2 text-xs mb-3">
+          <div>
+            <div class="flex justify-between mb-1 text-slate-300">
+              <span>Est. Market Share (KSA/GCC):</span>
+              <span class="text-blue-400 font-bold">~3–5%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full"><div class="bg-amber-500 h-full rounded-full" style="width: 5%"></div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">High build quality and introducer kits</span></div>
+            <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Slower commercial expansion in dialysis space</span></div>
+          </div>
+        </div>
+        <div class="pt-2 border-t border-[#1e3d7a] flex justify-between items-center text-xs">
+          <span class="text-emerald-400 font-semibold">AMECATH Advantage: Comprehensive kit variations and custom lumen sizes</span>
+          <button onclick="toggleDetails(this)" class="px-2.5 py-1 bg-[#1a2d4d] hover:bg-blue-600 text-slate-200 rounded text-[11px] transition-colors">Details ←</button>
+        </div>
+        <div class="details-panel hidden mt-3 pt-2 border-t border-slate-700 text-xs text-slate-300 bg-[#081321] p-2.5 rounded">
+          <p><strong>Market Coverage:</strong> Selective hospital presence, primarily in specialty medical centers.</p>
         </div>
       </div>
 
