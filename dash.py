@@ -486,13 +486,30 @@ inject_css(active_theme, bg_b64)
 
 # Dashboard Routing Switcher
 if nav_mode == "overview":
-    st.markdown("""
-    <div class="hero-banner" style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #002B49, #005A9C); border-left: 6px solid #00D4FF; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    ov_bg = find_overview_bg_b64()
+    logo = logo_b64()
+
+    logo_html = (
+        f'<img src="data:image/png;base64,{logo}" style="height:42px; background:white; padding:4px 8px; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.3);" alt="AMECATH Logo">'
+        if logo else ""
+    )
+
+    banner_style = (
+        f"background: linear-gradient(rgba(0, 43, 73, 0.78), rgba(0, 43, 73, 0.88)), url('data:image/png;base64,{ov_bg}') center/cover no-repeat;"
+        if ov_bg else "background: linear-gradient(135deg, #002B49, #005A9C);"
+    )
+
+    st.markdown(f"""
+    <div class="hero-banner" style="{banner_style} position: relative; text-align: center; padding: 30px 20px; border-left: 6px solid #00D4FF; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <div style="position: absolute; right: 20px; top: 20px;">
+        {logo_html}
+      </div>
       <h1 class="header-title" style="margin:0; font-size:32px; letter-spacing:1px; color: #FFFFFF;">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
       <p style="color: #D0E8FF; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
         📍 Scope: Middle East & GCC Markets Performance
       </p>
     </div>""", unsafe_allow_html=True)
+    
     render_overview(data_sheets, active_theme)
 else:
     render_hero(selected_country, theme)
