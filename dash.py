@@ -167,4 +167,130 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
     if st.session_state["active_kpi"]:
         selected_card = next(c for c in cards if c["id"] == st.session_state["active_kpi"])
         st.info(f"🎯 تم الضغط على كارت: **{selected_card['label']}** ({selected_card['value']})")
+       import streamlit as st
+import pandas as pd
+from typing import Dict
+
+def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: Dict[str, dict]) -> None:
+    """
+    دالة تعرض صفحة الدول (Countries Page) بكروت تفاعلية لأعلام الدول.
+    عند الضغط على علم دولة، تفتح صفحة مخصصة لها بجميع أقسامها داخل Tabs.
+    """
+
+    # ── 1. تنسيق CSS لكروت الأعلام والتنقل ──────────────────────────────────
+    st.markdown("""
+        <style>
+        /* CSS لكروت أعلام الدول التفاعلية */
+        div[data-testid="stColumn"] div.stButton > button.country-card-btn {
+            width: 100% !important;
+            height: 160px !important;
+            background: linear-gradient(145deg, #0D1F2D 0%, #08121C 100%) !important;
+            border: 2px solid #1E3A8A !important;
+            border-radius: 16px !important;
+            color: #FFFFFF !important;
+            font-size: 20px !important;
+            font-weight: 700 !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            white-space: pre-wrap !important;
+        }
+
+        div[data-testid="stColumn"] div.stButton > button.country-card-btn:hover {
+            border-color: #00D4FF !important;
+            transform: translateY(-6px) scale(1.02) !important;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3) !important;
+            background: linear-gradient(145deg, #132E45 0%, #0D1F2D 100%) !important;
+        }
+
+        /* شريط العودة */
+        .back-bar {
+            margin-bottom: 20px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # إدارة حالة الدولة المحددة (Session State)
+    if "selected_country_view" not in st.session_state:
+        st.session_state["selected_country_view"] = None
+
+    # ── 2. العرض الأول: شبكة كروت الأعلام (Grid of Country Cards) ───────────
+    if st.session_state["selected_country_view"] is None:
+        st.subheader("🌍 Select a Country / اختر الدولة")
+        st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات الخاصة بها.")
+
+        countries_list = list(country_themes.keys())
+        cols_per_row = 3
         
+        # تقسيم الدول على أعمدة
+        for i in range(0, len(countries_list), cols_per_row):
+            cols = st.columns(cols_per_row)
+            row_countries = countries_list[i : i + cols_per_row]
+            
+            for j, c_name in enumerate(row_countries):
+                theme = country_themes[c_name]
+                flag = theme.get("flag", "🏳️")
+                
+                # نص الكارت: العلم + اسم الدولة
+                card_label = f"{flag}\n\n{c_name}"
+                
+                with cols[j]:
+                    if st.button(card_label, key=f"country_btn_{c_name}", use_container_width=True):
+                        st.session_state["selected_country_view"] = c_name
+                        st.rerun()
+
+    # ── 3. العرض الثاني: تفاصيل الدولة المحددة داخل Tabs ─────────────────────
+    else:
+        c_name = st.session_state["selected_country_view"]
+        theme = country_themes.get(c_name, {})
+        flag = theme.get("flag", "🏳️")
+
+        # زر العودة لشبكة الأعلام
+        col_back, col_title = st.columns([1, 5])
+        with col_back:
+            if st.button("⬅️ Back to Countries", key="btn_back_to_countries"):
+                st.session_state["selected_country_view"] = None
+                st.rerun()
+
+        # هيدر الدولة المختارة
+        st.markdown(f"## {flag} {c_name.upper()} — Market Intelligence")
+        st.divider()
+
+        # إنشاء التبويبات المخصصة للدولة (Tabs)
+        tab_macro, tab_tenders, tab_hot, tab_dist, tab_comp, tab_asp, tab_kol, tab_forecast = st.tabs([
+            "📊 Macro Environment",
+            "📈 Financials & Tenders",
+            "🔥 Hot Market Areas",
+            "🤝 Local Distributors",
+            "⚔️ Competitor Matrix",
+            "🏷️ Competitor ASP",
+            "👨‍⚕️ Key Opinion Leaders",
+            "🔮 Growth Forecast"
+        ])
+
+        with tab_macro:
+            render_generic_table(data_sheets, "macro", "📊 Macro Environment", c_name)
+
+        with tab_tenders:
+            render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", c_name)
+
+        with tab_hot:
+            render_hot_areas(data_sheets, c_name, theme)
+
+        with tab_dist:
+            render_distributors(data_sheets, c_name, theme)
+
+        with tab_comp:
+            render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", c_name)
+
+        with tab_asp:
+            render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP", c_name)
+
+        with tab_kol:
+            render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", c_name)
+
+        with tab_forecast:
+            render_forecast(data_sheets, c_name, theme) 
