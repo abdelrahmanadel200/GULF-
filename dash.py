@@ -484,19 +484,22 @@ st.sidebar.caption(
 # AMECATH Navy Theme for Regional Overview Page
 overview_theme = {
     "flag": "🌐", "primary": "#005A9C", "accent": "#00D4FF",
-    "bg": "#051329", "card_bg": "rgba(10, 32, 59, 0.85)", "text": "#FFFFFF",
+    "bg": "#051329", "card_bg": "rgba(10, 32, 59, 0.88)", "text": "#FFFFFF",
     "landmark": "Scope: Middle East & GCC Markets Performance"
 }
 
 active_theme = overview_theme if nav_mode == "overview" else theme
 
-# Render Dynamic Styling
-bg_b64 = find_landscape_b64(selected_country) if nav_mode != "overview" else ""
+# Set full-page background image (Catheter image for Overview, Landscape image for countries)
+if nav_mode == "overview":
+    bg_b64 = find_overview_bg_b64()
+else:
+    bg_b64 = find_landscape_b64(selected_country)
+
 inject_css(active_theme, bg_b64)
 
 # Dashboard Routing Switcher
 if nav_mode == "overview":
-    ov_bg = find_overview_bg_b64()
     logo = logo_b64()
 
     logo_html = (
@@ -504,13 +507,8 @@ if nav_mode == "overview":
         if logo else ""
     )
 
-    banner_style = (
-        f"background: linear-gradient(rgba(0, 43, 73, 0.78), rgba(0, 43, 73, 0.88)), url('data:image/png;base64,{ov_bg}') center/cover no-repeat;"
-        if ov_bg else "background: linear-gradient(135deg, #002B49, #005A9C);"
-    )
-
     st.markdown(f"""
-    <div class="hero-banner" style="{banner_style} position: relative; text-align: center; padding: 30px 20px; border-left: 6px solid #00D4FF; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    <div class="hero-banner" style="position: relative; text-align: center; padding: 30px 20px; background: linear-gradient(135deg, rgba(0, 43, 73, 0.9), rgba(0, 90, 156, 0.9)); border-left: 6px solid #00D4FF; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
       <div style="position: absolute; right: 20px; top: 20px;">
         {logo_html}
       </div>
