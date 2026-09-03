@@ -7,7 +7,21 @@ from typing import Dict, Optional
 # 1. CONFIGURATION & CONSTANTS
 # ==============================================================================
 
-DATA_SOURCE = "AMECATH_Master_Data.xlsx"
+# اسم الملف المحدد
+DATA_SOURCE = "Amecath Dash_2.xlsx"
+
+# خريطة توحيد أسماء الشيتات لربط الشيتات الموجودة بالملف بالدوال
+SHEET_MAPPING = {
+    "Macro_Summary": "macro",
+    "Financials_Tenders": "tenders",
+    "Hot_Areas": "hot_areas",
+    "Distributors": "distributors",
+    "Competitor_Matrix": "competitors",
+    "Competitor_Aspiration": "competitors_asp",
+    "KOL_Catalog": "kol",
+    "Forecast_Data": "forecast",
+    "Overview_KPIs": "overview_kpis",
+}
 
 # ثيمات دول الخليج (GCC)
 COUNTRY_THEMES = {
@@ -69,23 +83,38 @@ COUNTRY_THEMES = {
 
 
 # ==============================================================================
-# 2. DATA LOADING & CACHING
+# 2. DATA LOADING & CACHING FROM EXCEL FILE
 # ==============================================================================
 
 @st.cache_data(ttl=3600)
 def load_master_data(source_path: str = DATA_SOURCE) -> Dict[str, pd.DataFrame]:
     """
-    قراءة ملف الإكسيل المرفق تلقائياً وترتيب جميع الشيتات داخل Dictionary.
+    قراءة ملف الإكسيل 'Amecath Dash_2.xlsx' تلقائياً
+    وتعيين مفاتيح القياسية لجميع الشيتات لتسهيل العرض داخل Dashboard.
     """
+    # البحث عن اسم الملف في حال تغير الامتداد قليلاً أو وجوده بالمسار الحالي
+    if not os.path.exists(source_path):
+        fallback_files = [f for f in os.listdir('.') if 'Amecath' in f and f.endswith('.xlsx')]
+        if fallback_files:
+            source_path = fallback_files[0]
+
     try:
         xls = pd.ExcelFile(source_path)
         data_sheets = {}
+
         for sheet_name in xls.sheet_names:
-            df = pd.read_excel(xls, sheet_name=sheet_name)
-            data_sheets[sheet_name.strip()] = df.dropna(how="all").reset_index(drop=True)
+            clean_name = sheet_name.strip()
+            df = pd.read_excel(xls, sheet_name=sheet_name).dropna(how="all").reset_index(drop=True)
+            
+            # حفظ الشيت باسمها الأصلي وبالمفتاح المعياري الموحد
+            data_sheets[clean_name] = df
+            if clean_name in SHEET_MAPPING:
+                data_sheets[SHEET_MAPPING[clean_name]] = df
+
         return data_sheets
+
     except Exception as e:
-        st.error(f"⚠️ تعذر تحميل ملف البيانات تلقائياً: {e}")
+        st.error(f"⚠️ تعذر تحميل ملف البيانات ({source_path}): {e}")
         return {}
 
 
@@ -93,11 +122,10 @@ def load_master_data(source_path: str = DATA_SOURCE) -> Dict[str, pd.DataFrame]:
 # 3. EXECUTIVE OVERVIEW PAGE RENDERER
 # ==============================================================================
 
-def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
+def render_executive_overview(data_sheets: Optional[Dict[str, pd.DataFrame]] = None) -> None:
     """
-    عرض الصفحة الرئيسية (Executive Overview) وتحويل الكروت الـ 10 إلى أزرار تفاعلية.
+    عرض الصفحة الرئيسية (Executive Overview) بكروت تفاعلية.
     """
-    # ── CSS Styling ────────────────────────────────────────────────────────────
     st.markdown("""
         <style>
         .top-banner {
@@ -113,28 +141,19 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
             color: #FFFFFF;
             font-size: 26px;
             font-weight: 800;
-            letter-spacing: 1.5px;
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
         }
         .banner-subtitle {
             color: #79C7FF;
             font-size: 13px;
             font-weight: 600;
             margin-top: 8px;
-            margin-bottom: 0;
         }
         .section-header {
             color: #FFFFFF;
             font-size: 22px;
             font-weight: 700;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         div[data-testid="stColumn"] div.stButton > button {
             width: 100% !important;
@@ -151,22 +170,15 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
             justify-content: center !important;
             align-items: center !important;
             white-space: pre-wrap !important;
-            line-height: 1.4 !important;
         }
         div[data-testid="stColumn"] div.stButton > button:hover {
             border-color: #00B4D8 !important;
             transform: translateY(-5px) !important;
             box-shadow: 0 8px 22px rgba(0, 180, 216, 0.35) !important;
-            background: linear-gradient(145deg, #0F2A4A 0%, #0A192F 100%) !important;
-        }
-        div[data-testid="stColumn"] div.stButton > button:active {
-            transform: scale(0.97) !important;
-            border-color: #00D4FF !important;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # ── Top Hero Banner ────────────────────────────────────────────────────────
     st.markdown("""
         <div class="top-banner">
             <h1 class="banner-title">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
@@ -176,7 +188,6 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
 
     st.markdown('<div class="section-header">🌐 Gulf Region — Executive Overview</div>', unsafe_allow_html=True)
 
-    # ── Cards Data ─────────────────────────────────────────────────────────────
     cards = [
         {"id": "countries", "icon": "🌍", "label": "COUNTRIES COVERED", "value": "6", "sub": "Gulf Region"},
         {"id": "population", "icon": "👥", "label": "TOTAL POPULATION 2026", "value": "127.68M", "sub": "127,681,500"},
@@ -193,32 +204,30 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
     if "active_kpi" not in st.session_state:
         st.session_state["active_kpi"] = None
 
-    # ── Grid Rendering ─────────────────────────────────────────────────────────
-    # Row 1
+    # الصف الأول
     cols_row1 = st.columns(5)
     for i in range(5):
         c = cards[i]
-        button_text = f"{c['icon']}\n\n{c['label']}\n\n{c['value']}\n\n{c['sub']}"
+        btn_text = f"{c['icon']}\n\n{c['label']}\n\n{c['value']}\n\n{c['sub']}"
         with cols_row1[i]:
-            if st.button(button_text, key=f"btn_{c['id']}"):
+            if st.button(btn_text, key=f"btn_{c['id']}"):
                 st.session_state["active_kpi"] = c["id"]
 
     st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
 
-    # Row 2
+    # الصف الثاني
     cols_row2 = st.columns(5)
     for i in range(5, 10):
         c = cards[i]
-        button_text = f"{c['icon']}\n\n{c['label']}\n\n{c['value']}\n\n{c['sub']}"
+        btn_text = f"{c['icon']}\n\n{c['label']}\n\n{c['value']}\n\n{c['sub']}"
         with cols_row2[i - 5]:
-            if st.button(button_text, key=f"btn_{c['id']}"):
+            if st.button(btn_text, key=f"btn_{c['id']}"):
                 st.session_state["active_kpi"] = c["id"]
 
-    # ── Selection Feedback ──────────────────────────────────────────────────────
     if st.session_state["active_kpi"]:
         selected_card = next((c for c in cards if c["id"] == st.session_state["active_kpi"]), None)
         if selected_card:
-            st.info(f"🎯 تم الضغط على كارت: **{selected_card['label']}** ({selected_card['value']})")
+            st.info(f"🎯 تم اختيار: **{selected_card['label']}** ({selected_card['value']})")
 
 
 # ==============================================================================
@@ -227,43 +236,14 @@ def render_executive_overview(data_sheets: Optional[Dict] = None) -> None:
 
 def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: Dict[str, dict]) -> None:
     """
-    عرض صفحة الدول بتصميم ديناميكي يتغير حسب علم وخلفية كل دولة.
+    عرض صفحة الدول وقراءة البيانات الخاصة بها مباشرة من ملف Excel المرفق.
     """
     if "selected_country_view" not in st.session_state:
         st.session_state["selected_country_view"] = None
 
-    # ── View 1: Default Selection Grid ─────────────────────────────────────────
     if st.session_state["selected_country_view"] is None:
-        default_theme = {
-            "primary": "#00D4FF", "accent": "#FFB703",
-            "bg": "#051329", "card_bg": "rgba(8, 28, 54, 0.88)", "text": "#FFFFFF"
-        }
-        inject_css(default_theme, bg_b64="")
-
         st.subheader("🌍 Select a Country Market / اختر الدولة")
         st.caption("اضغط على علم الدولة لمشاهدة كافة التقارير والمعلومات المخصصة لها.")
-
-        st.markdown("""
-            <style>
-            div[data-testid="stColumn"] div.stButton > button {
-                width: 100% !important;
-                height: 150px !important;
-                background: linear-gradient(145deg, #0D1F2D 0%, #08121C 100%) !important;
-                border: 2px solid #1E3A8A !important;
-                border-radius: 16px !important;
-                color: #FFFFFF !important;
-                font-size: 20px !important;
-                font-weight: 700 !important;
-                transition: all 0.3s ease-in-out !important;
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
-            }
-            div[data-testid="stColumn"] div.stButton > button:hover {
-                border-color: #00D4FF !important;
-                transform: translateY(-5px) !important;
-                box-shadow: 0 10px 25px rgba(0, 212, 255, 0.35) !important;
-            }
-            </style>
-        """, unsafe_allow_html=True)
 
         countries_list = list(country_themes.keys())
         cols_per_row = 3
@@ -282,42 +262,9 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
                         st.session_state["selected_country_view"] = c_name
                         st.rerun()
 
-    # ── View 2: Detailed Country Dashboard ──────────────────────────────────────
     else:
         c_name = st.session_state["selected_country_view"]
-        theme = country_themes.get(c_name, {
-            "flag": "🏳️", "primary": "#00B4D8", "accent": "#FFB703",
-            "bg": "#0B1D12", "card_bg": "rgba(15, 40, 25, 0.88)", "text": "#FFFFFF"
-        })
-
-        landscape_b64 = find_landscape_b64(c_name)
-        inject_css(theme, bg_b64=landscape_b64)
-
-        st.markdown(f"""
-            <style>
-            button[data-baseweb="tab"] {{
-                background-color: {theme['card_bg']} !important;
-                color: #FFFFFF !important;
-                border-radius: 8px 8px 0px 0px !important;
-                padding: 10px 18px !important;
-                border: 1px solid rgba(255,255,255,0.1) !important;
-                font-weight: 600 !important;
-            }}
-            button[data-baseweb="tab"][aria-selected="true"] {{
-                background-color: {theme['primary']} !important;
-                color: #FFFFFF !important;
-                border-bottom: 3px solid {theme['accent']} !important;
-                font-weight: 800 !important;
-                box-shadow: 0 -4px 12px rgba(0,0,0,0.3) !important;
-            }}
-            div.stButton > button[key="btn_back_to_countries"] {{
-                background-color: {theme['primary']} !important;
-                border: 1px solid {theme['accent']} !important;
-                color: #FFFFFF !important;
-                font-weight: bold !important;
-            }}
-            </style>
-        """, unsafe_allow_html=True)
+        theme = country_themes.get(c_name, {})
 
         col_back, _ = st.columns([1, 4])
         with col_back:
@@ -325,7 +272,7 @@ def render_countries_page(data_sheets: Dict[str, pd.DataFrame], country_themes: 
                 st.session_state["selected_country_view"] = None
                 st.rerun()
 
-        render_hero(c_name, theme, bg_b64=landscape_b64)
+        st.markdown(f"## {theme.get('flag', '')} {c_name.upper()} — Market Dashboard")
 
         tabs = st.tabs([
             "📊 Macro Environment",
