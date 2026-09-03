@@ -616,46 +616,38 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
 # ─────────────────────────────────────────────
 # REGIONAL OVERVIEW RENDER FUNCTION
 # ─────────────────────────────────────────────
-def render_overview(data: Dict[str, pd.DataFrame], theme: dict) -> None:
-    st.subheader("🌐 Regional Overview — Executive Summary")
+def render_overview(data: dict = None) -> None:
+    st.subheader("🌐 Gulf Region — Executive Overview")
     
-    # High-level KPIs
-    k1, k2, k3, k4, k5 = st.columns(5)
-    with k1:
-        st.metric("Markets Tracked", "9")
-    with k2:
-        st.metric("Total Dialysis Patients", "N/A")
-    with k3:
-        st.metric("Addressable Market", "N/A")
-    with k4:
-        st.metric("Avg. Market CAGR", "N/A")
-    with k5:
-        st.metric("Avg. AMECATH Share", "N/A")
-        
+    # الصف الأول (5 مؤشرات رئيسية)
+    c1, c2, c3, c4, c5 = st.columns(5)
+    
+    with c1:
+        st.metric(label="🌍 Countries Covered", value="9")
+    with c2:
+        st.metric(label="👥 Total Population 2026", value="127.68M", delta="127,681,500")
+    with c3:
+        st.metric(label="🩺 Total HD Patients", value="65,254")
+    with c4:
+        st.metric(label="🧪 Est. 2026 PD Patients", value="4,114")
+    with c5:
+        st.metric(label="🏥 Dialysis Facilities", value="762")
+
     st.markdown("<br>", unsafe_allow_html=True)
-    st.subheader("Regional Market Snapshots")
-    
-    # Regional Country Cards
-    countries = [
-        ("Saudi Arabia", "SA"), ("UAE", "AE"), ("Qatar", "QA"),
-        ("Kuwait", "KW"), ("Oman", "OM"), ("Bahrain", "BH"),
-        ("Jordan", "JO"), ("Iraq", "IQ")
-    ]
-    
-    cols = st.columns(3)
-    for idx, (country, code) in enumerate(countries):
-        with cols[idx % 3]:
-            st.markdown(f"""
-            <div class="country-mini-card">
-                <h4 style="margin:0 0 8px 0; color:#00D4FF; font-size:16px;">{code} {country}</h4>
-                <div style="font-size:13px; line-height:1.6; color:#E0F2FE;">
-                    <b>Dialysis Patients:</b> 0<br>
-                    <b>Market Size:</b> $0.0M<br>
-                    <b>CAGR:</b> 0.0%<br>
-                    <b>AMECATH Share:</b> 0.0%
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+
+    # الصف الثاني (5 مؤشرات سوقية وتشغيلية)
+    c6, c7, c8, c9, c10 = st.columns(5)
+
+    with c6:
+        st.metric(label="⚡ HD Machines", value="44,050")
+    with c7:
+        st.metric(label="💉 Annual Catheter Demand", value="167.87K", delta="167,867 units")
+    with c8:
+        st.metric(label="💰 Market Value", value="$18.90M")
+    with c9:
+        st.metric(label="🏢 Distributors", value="90")
+    with c10:
+        st.metric(label="👨‍⚕️ Key Opinion Leaders (KOLs)", value="90")
 
 # ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
