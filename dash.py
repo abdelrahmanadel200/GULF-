@@ -25,9 +25,10 @@ st.markdown("""
 }
 
 .block-container {
-    padding: 0 !important;
+    padding: 16px 20px 40px 230px !important;
     margin: 0 !important;
     max-width: 100% !important;
+    box-sizing: border-box;
 }
 
 [data-testid="stAppViewContainer"] {
@@ -513,8 +514,6 @@ st.markdown(
         </div>
         {sb_items}
     </div>
-
-    <div class="main-wrap">
     """,
     unsafe_allow_html=True,
 )
