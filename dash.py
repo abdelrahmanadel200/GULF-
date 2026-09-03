@@ -122,14 +122,18 @@ def _image_to_b64(path: Path) -> str:
 def find_landscape_b64(country: str) -> str:
     if not LANDSCAPE_DIR.exists():
         return ""
-    for ext in ("jpeg", "jpg", "png"):
-        p = LANDSCAPE_DIR / f"{country} landscape.{ext}"
-        b64 = _image_to_b64(p)
-        if b64:
-            return b64
-    matches = list(LANDSCAPE_DIR.glob(f"{country}*landscape*"))
-    if matches:
-        return _image_to_b64(matches[0])
+    
+    # استخراج الكلمة الأساسية من اسم الدولة (مثلاً saudi من Saudi Arabia)
+    key = country.lower().split()[0]
+    if key == "jordan":
+        key = "jord"    # للتعامل مع تسمية jordon
+    elif key == "bahrain":
+        key = "bahra"   # للتعامل مع تسمية bahraien
+        
+    for p in LANDSCAPE_DIR.glob("*"):
+        if p.is_file() and key in p.name.lower() and "landscape" in p.name.lower():
+            return _image_to_b64(p)
+            
     return ""
 
 def logo_b64() -> str:
