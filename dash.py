@@ -136,6 +136,19 @@ def find_landscape_b64(country: str) -> str:
             
     return ""
 
+def find_flag_b64(country: str) -> str:
+    key = country.lower().split()[0]
+    if key == "jordan":
+        key = "jord"
+    elif key == "bahrain":
+        key = "bahra"
+        
+    if ASSETS_DIR.exists():
+        for p in ASSETS_DIR.glob("**/*"):
+            if p.is_file() and key in p.name.lower() and "flag" in p.name.lower():
+                return _image_to_b64(p)
+    return ""
+
 def logo_b64() -> str:
     if not LOGO_DIR.exists():
         return ""
