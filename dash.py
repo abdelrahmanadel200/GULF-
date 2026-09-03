@@ -354,7 +354,7 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
     parsed_df = pd.DataFrame(parsed_data)
 
     # مصفوفة درجات ألوان Flame النارية المحددة يدويًا بدلاً من الاعتماد على المكتبة
-    flame_colors = ['#2B0000', '#660000', '#990000', '#CC3300', '#FF6600', '#FF9900', '#FFCC00']
+    flame_colors = ['#FFCC00', '#FF9900', '#FF6600', '#CC3300', '#990000', '#660000', '#2B0000']
 
     # Render Interactive Plotly Treemap
     fig = px.treemap(
