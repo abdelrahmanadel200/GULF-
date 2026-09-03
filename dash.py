@@ -471,10 +471,20 @@ st.sidebar.caption(
     f"⚡ Version: 2.2"
 )
 
-# Render Dynamic Styling & Top Banner Header
-bg_b64 = find_landscape_b64(selected_country)
-inject_css(theme, bg_b64 if nav_mode != "overview" else "")
+# AMECATH Navy Theme for Regional Overview Page
+overview_theme = {
+    "flag": "🌐", "primary": "#005A9C", "accent": "#00D4FF",
+    "bg": "#051329", "card_bg": "rgba(10, 32, 59, 0.85)", "text": "#FFFFFF",
+    "landmark": "Scope: Middle East & GCC Markets Performance"
+}
 
+active_theme = overview_theme if nav_mode == "overview" else theme
+
+# Render Dynamic Styling
+bg_b64 = find_landscape_b64(selected_country) if nav_mode != "overview" else ""
+inject_css(active_theme, bg_b64)
+
+# Dashboard Routing Switcher
 if nav_mode == "overview":
     st.markdown("""
     <div class="hero-banner" style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #002B49, #005A9C); border-left: 6px solid #00D4FF; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
@@ -483,27 +493,24 @@ if nav_mode == "overview":
         📍 Scope: Middle East & GCC Markets Performance
       </p>
     </div>""", unsafe_allow_html=True)
+    render_overview(data_sheets, active_theme)
 else:
     render_hero(selected_country, theme)
-
-# Dashboard Routing Switcher
-if nav_mode == "overview":
-    render_overview(data_sheets, theme)
-elif nav_mode == "macro":
-    render_generic_table(data_sheets, "macro", "📊 Macro Environment", selected_country)
-elif nav_mode == "tenders":
-    render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", selected_country)
-elif nav_mode == "hot_areas":
-    render_generic_table(data_sheets, "hot_areas", "🔥 Hot Market Areas", selected_country)
-elif nav_mode == "distributors":
-    render_generic_table(data_sheets, "distributors", "🤝 Local Distributors Network", selected_country)
-elif nav_mode == "competitors":
-    render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", selected_country)
-elif nav_mode == "competitors_asp":
-    render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP & Pricing", selected_country)
-elif nav_mode == "kol":
-    render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", selected_country)
-elif nav_mode == "forecast":
-    render_forecast(data_sheets, selected_country, theme)
-elif nav_mode == "sources":
-    render_generic_table(data_sheets, "sources", "📚 Data Sources & Audit", selected_country)
+    if nav_mode == "macro":
+        render_generic_table(data_sheets, "macro", "📊 Macro Environment", selected_country)
+    elif nav_mode == "tenders":
+        render_generic_table(data_sheets, "tenders", "📈 Financials & Tenders", selected_country)
+    elif nav_mode == "hot_areas":
+        render_generic_table(data_sheets, "hot_areas", "🔥 Hot Market Areas", selected_country)
+    elif nav_mode == "distributors":
+        render_generic_table(data_sheets, "distributors", "🤝 Local Distributors Network", selected_country)
+    elif nav_mode == "competitors":
+        render_generic_table(data_sheets, "competitors", "⚔️ Competitor Matrix", selected_country)
+    elif nav_mode == "competitors_asp":
+        render_generic_table(data_sheets, "competitors_asp", "🏷️ Competitor ASP & Pricing", selected_country)
+    elif nav_mode == "kol":
+        render_generic_table(data_sheets, "kol", "👨‍⚕️ Key Opinion Leaders", selected_country)
+    elif nav_mode == "forecast":
+        render_forecast(data_sheets, selected_country, theme)
+    elif nav_mode == "sources":
+        render_generic_table(data_sheets, "sources", "📚 Data Sources & Audit", selected_country)
