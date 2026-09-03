@@ -4,7 +4,7 @@ import plotly.express as px
 
 # ============================================================
 # AMECATH MARKET INTELLIGENCE DASHBOARD
-# app.py
+# dash.py
 # ============================================================
 
 st.set_page_config(
