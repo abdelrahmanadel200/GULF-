@@ -616,7 +616,7 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
 # ─────────────────────────────────────────────
 # REGIONAL OVERVIEW RENDER FUNCTION
 # ─────────────────────────────────────────────
-def render_overview(data: dict = None) -> None:
+def render_overview(data: dict = None, theme: dict = None) -> None:
     st.subheader("🌐 Gulf Region — Executive Overview")
     
     # الصف الأول (5 مؤشرات رئيسية)
