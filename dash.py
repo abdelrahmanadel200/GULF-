@@ -302,10 +302,10 @@ dashboard_html = """
     }
 
     function haResize() {
-      const W = haArea.clientWidth;
-      haCanvas.width  = W;
-      haCanvas.height = Math.round(W*0.52);
-    }
+  const W = haArea.clientWidth || (window.innerWidth - 220);
+  haCanvas.width  = W;
+  haCanvas.height = Math.round(W * 0.52);
+}
 
     function haRender() {
       const W = haCanvas.width, H = haCanvas.height;
@@ -399,10 +399,18 @@ dashboard_html = """
         haTip.style.opacity="0";haCanvas.style.cursor="crosshair";
       }
     });
-    haCanvas.addEventListener("mouseleave",function(){haTip.style.opacity="0";});
-    window.addEventListener("resize",function(){haResize();haAnimPhase=0;});
+    window.addEventListener("resize", function(){ haResize(); haAnimPhase=0; });
+
+const haObserver = new MutationObserver(function() {
+  if (haArea.clientWidth > 0) {
     haResize();
-    haAnimate();
+    haAnimPhase = 0;
+  }
+});
+haObserver.observe(document.getElementById("page-hotareas"), { attributes: true, attributeFilter: ["class"] });
+
+haResize();
+haAnimate();
   })();
 </script>
 </body>
