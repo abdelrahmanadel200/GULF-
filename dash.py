@@ -47,7 +47,7 @@ NAV_MAP = {
     "⚔️ Competitor Matrix": "competitors",
     "🏷️ Competitor ASP": "competitors_asp",
     "👨‍⚕️ Key Opinion Leaders": "kol",
-    "🔮 Growth Forecast": "forecast",
+    "🔮 Bottom-up forecast": "forecast",
     "📚 Data Sources": "sources",
 }
 
