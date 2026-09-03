@@ -180,7 +180,8 @@ dashboard_html = """
 </div>
 
 <script>
-    function navigate(el, pageId) {
+  // ✅ FIX 1: navigate with setTimeout so map container is visible before init
+  function navigate(el, pageId) {
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     el.classList.add('active');
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -311,6 +312,7 @@ dashboard_html = """
   function initHaMap() {
     haInited = true;
     haMap = L.map('haMap', {zoomControl:true, attributionControl:false});
+    // ✅ FIX 2: OpenStreetMap instead of CartoDB (works on Streamlit Cloud)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(haMap);
     loadCountry(haActive);
   }
