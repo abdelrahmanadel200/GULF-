@@ -239,7 +239,7 @@ def render_hero(country: str, theme: dict) -> None:
       <div class="header-container">
         <div style="display:flex;align-items:center;">
             {flag_html}
-            
+        <h1 class="header-title">{country.upper()} — EXECUTIVE MARKET DOSSIER</h1>    
         </div>
         {logo_html}
       </div>
