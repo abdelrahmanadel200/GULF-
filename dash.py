@@ -458,6 +458,85 @@ def render_hot_areas(data: Dict[str, pd.DataFrame], selected_country: str, theme
         city_match = re.split(r'[\(;\:]', val)[0].strip()
         city_name = city_match if city_match else f"Area {rank}"
         
+        # Extract number of centers for Treemap sizing
+        centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
+        centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
+
+        parsed_data.append({
+            "Rank": rank,
+            "City": city_name,
+            "Centers": centers,
+            "Details": val
+        })
+
+    if not parsed_data:
+        st.info(f"No valid data points found for {selected_country}.")
+        return
+
+    parsed_df = pd.DataFrame(parsed_data)
+
+    # Render Interactive Plotly Treemap using Flame Palette
+    fig = px.treemap(
+        parsed_df,
+        path=['City'],
+        values='Centers',
+        color='Centers',
+        color_continuous_scale=px.colors.sequential.Flame,  # بالتة ألوان Flame
+        hover_data=['Rank', 'Details'],
+        title=f"📍 Regional Market Concentration (Treemap) — {selected_country}"
+    )
+    
+    fig.update_layout(
+        margin=dict(t=40, l=10, r=10, b=10),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color="#FFFFFF", size=14),
+        coloraxis_showscale=False
+    )
+    
+    fig.update_traces(
+        texttemplate="<b>%{label}</b><br>%{value} Centers",
+        hovertemplate="<b>%{label}</b><br>Rank: %{customdata[0]}<br>Centers: %{value}<br><br>%{customdata[1]}<extra></extra>"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    # Detailed Table View
+    with st.expander("📋 View Detailed Market Breakdown Table", expanded=False):
+        st.dataframe(parsed_df[['Rank', 'City', 'Centers', 'Details']], use_container_width=True, hide_index=True)
+    
+    if df is None or df.empty:
+        st.warning("No Hot Market Areas data available.")
+        return
+
+    # Find matching country column
+    country_col = find_column(df, [selected_country])
+    if not country_col:
+        for col in df.columns:
+            if selected_country.lower() in str(col).lower():
+                country_col = col
+                break
+
+    if not country_col:
+        st.warning(f"No specific hot market area data found for {selected_country}.")
+        st.dataframe(df, use_container_width=True)
+        return
+
+    # Parse City Names, Centers count & Details
+    rank_col = find_column(df, ["rank", "الترتيب", "no"])
+    parsed_data = []
+
+    for idx, row in df.iterrows():
+        val = str(row[country_col]) if pd.notna(row[country_col]) else ""
+        if not val or val.strip() in ["-", "nan", "None"]:
+            continue
+        
+        rank = row[rank_col] if rank_col and pd.notna(row[rank_col]) else idx + 1
+        
+        # Extract City Name (text before parenthesis)
+        city_match = re.split(r'[\(;\:]', val)[0].strip()
+        city_name = city_match if city_match else f"Area {rank}"
+        
         # Extract number of centers for Treemap sizing (fallback to rank weight if not specified)
         centers_match = re.search(r'(\d+)\s*center', val, re.IGNORECASE)
         centers = int(centers_match.group(1)) if centers_match else (10 - min(idx, 9))
