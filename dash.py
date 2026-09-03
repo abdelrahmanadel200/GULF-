@@ -208,7 +208,7 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
     logo = logo_b64()
     logo_html = (
-        f'<img src="data:image/png;base64,{logo}" style="height:46px;position:absolute;right:28px;top:22px;" alt="AMECATH logo">'
+        f'<img src="data:image/png;base64,{logo}" style="height:46px;position:absolute;right:25px;top:20px;" alt="AMECATH logo">'
         if logo else ""
     )
     
@@ -218,20 +218,16 @@ def inject_css(theme: dict, bg_b64: str = "") -> None:
     )
 
     st.markdown(f"""
-    <div class="hero-banner" style="{bg_style} text-align: center; position: relative; padding: 30px 28px;">
+    <div class="hero-banner" style="{bg_style} position: relative; text-align: center; padding: 30px 20px;">
       {logo_html}
       <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
         {flag_html}
         <h1 class="header-title" style="margin:0; font-size:34px; letter-spacing:1px;">{country.upper()}</h1>
       </div>
       <p style="color:{theme['accent']}; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
-        📍 Strategic Landmark: <span>{theme['landmark']}</span>
+        &#128205; Strategic Landmark: <span>{theme['landmark']}</span>
       </p>
     </div>""", unsafe_allow_html=True)
-        border-radius: 12px; padding: 20px; backdrop-filter: blur(6px);
-    }}
-    </style>
-    """, unsafe_allow_html=True)
 
 def render_hero(country: str, theme: dict, bg_b64: str = "") -> None:
     flag_html = f'<span style="font-size:38px;margin-right:10px;">{theme["flag"]}</span>'
