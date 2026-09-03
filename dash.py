@@ -309,7 +309,7 @@ dashboard_html = """
   function initHaMap() {
     haInited = true;
     haMap = L.map('haMap', {zoomControl:true, attributionControl:false});
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(haMap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(haMap);
     loadCountry(haActive);
   }
 
