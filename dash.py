@@ -396,15 +396,160 @@ dashboard_html = """
 
     <!-- Regulatory -->
     <div class="page" id="page-regulatory">
-      <div class="placeholder-page">
-        <div class="placeholder-icon">📜</div>
-        <div class="placeholder-title">Regulatory</div>
-        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
+      <style>
+        .reg-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 10px;
+          margin: 0 16px 16px;
+        }
+        .reg-table-container {
+          margin: 0 16px 16px;
+          background: #0f1f3d;
+          border: 1px solid #1e3d7a;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        .reg-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+          font-size: 12px;
+        }
+        .reg-table th {
+          background: #070f1f;
+          color: #6a85b0;
+          padding: 12px 16px;
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          border-bottom: 1px solid #1e3d7a;
+        }
+        .reg-table td {
+          padding: 12px 16px;
+          color: #e8edf5;
+          border-bottom: 1px solid #14284b;
+        }
+        .reg-table tr:last-child td {
+          border-bottom: none;
+        }
+        .reg-table tr:hover {
+          background: #13274c;
+        }
+        .badge {
+          display: inline-block;
+          padding: 3px 8px;
+          border-radius: 6px;
+          font-size: 10px;
+          font-weight: 600;
+        }
+        .badge-approved { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+        .badge-pending  { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+      </style>
+
+      <div class="section-header">
+        <span style="font-size:16px">📜</span>
+        <span class="section-title">Regulatory & Registration Overview</span>
+      </div>
+
+      <!-- Regulatory KPI Summary -->
+      <div class="reg-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-label">Active Registrations</div>
+          <div class="kpi-value green">7</div>
+          <div class="kpi-sub green">GCC & ME Markets</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⏳</div>
+          <div class="kpi-label">Pending / Renewal</div>
+          <div class="kpi-value gold">2</div>
+          <div class="kpi-sub amber">In Progress</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🛡️</div>
+          <div class="kpi-label">Core Compliance</div>
+          <div class="kpi-value accent">CE / ISO</div>
+          <div class="kpi-sub muted">ISO 13485 Certified</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📄</div>
+          <div class="kpi-label">Key Requirement</div>
+          <div class="kpi-value">FSC</div>
+          <div class="kpi-sub muted">Free Sale Certificate</div>
+        </div>
+      </div>
+
+      <!-- Regulatory Status Table -->
+      <div class="reg-table-container">
+        <table class="reg-table">
+          <thead>
+            <tr>
+              <th>Country / Market</th>
+              <th>Health Authority</th>
+              <th>Registration Status</th>
+              <th>Key Requirements & Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>🇸🇦 Saudi Arabia</b></td>
+              <td>SFDA (Saudi FDA)</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>Medical Device National Registry (MDNR) & CE Mark</td>
+            </tr>
+            <tr>
+              <td><b>🇦🇪 UAE</b></td>
+              <td>MOHAP</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>Classification & Free Sale Certificate (FSC)</td>
+            </tr>
+            <tr>
+              <td><b>🇰🇼 Kuwait</b></td>
+              <td>MOH Kuwait</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>Local Agent Registration + ISO 13485</td>
+            </tr>
+            <tr>
+              <td><b>🇶🇦 Qatar</b></td>
+              <td>MOPH Qatar</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>MOPH Registration & Product Dossier</td>
+            </tr>
+            <tr>
+              <td><b>🇴🇲 Oman</b></td>
+              <td>MOH Oman</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>Medical Device Department Approval</td>
+            </tr>
+            <tr>
+              <td><b>🇧🇭 Bahrain</b></td>
+              <td>NHRA</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>NHRA Medical Device License</td>
+            </tr>
+            <tr>
+              <td><b>🇮🇶 Iraq</b></td>
+              <td>MOH Iraq (KIMADIA)</td>
+              <td><span class="badge badge-pending">Under Process</span></td>
+              <td>Tender Registration & MOH Dossier</td>
+            </tr>
+            <tr>
+              <td><b>🇯🇴 Jordan</b></td>
+              <td>JFDA</td>
+              <td><span class="badge badge-approved">Approved</span></td>
+              <td>JFDA Medical Device Registration</td>
+            </tr>
+            <tr>
+              <td><b>🇱🇧 Lebanon</b></td>
+              <td>MOPH Lebanon</td>
+              <td><span class="badge badge-pending">Under Renewal</span></td>
+              <td>Import Permit & Quality Certificate</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-
-  </div>
-</div>
 <script>
 
 // ─────────────────────────────────────────────
