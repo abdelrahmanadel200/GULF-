@@ -8,11 +8,98 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# ── Global styles ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    #MainMenu, header, footer { visibility: hidden; }
-    .block-container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-    [data-testid="stAppViewContainer"] { background: #0b1628; }
+  /* hide streamlit chrome */
+  #MainMenu, header, footer, [data-testid="collapsedControl"] { display:none !important; }
+  .block-container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+  [data-testid="stAppViewContainer"] { background: #0b1628; }
+  /* sidebar fixed */
+  .sb-wrap {
+    position:fixed; top:0; left:0; bottom:0; width:210px;
+    background:#070f1f; border-right:1px solid #1e3d7a;
+    display:flex; flex-direction:column; padding:18px 0;
+    z-index:9999; font-family:'Segoe UI',system-ui,sans-serif;
+    overflow-y:auto;
+  }
+  .sb-logo      { padding:0 16px 18px; border-bottom:1px solid #1e3d7a; margin-bottom:10px; }
+  .sb-logo-text { font-size:15px; font-weight:700; color:#60a5fa; letter-spacing:1.5px; }
+  .sb-logo-sub  { font-size:10px; color:#3a5278; margin-top:2px; }
+  .sb-section   { font-size:9px; letter-spacing:1.5px; color:#2a4060; text-transform:uppercase;
+                  padding:14px 16px 6px; font-weight:700; }
+  .sb-item      { display:flex; align-items:center; gap:10px; padding:10px 16px;
+                  font-size:12px; color:#6a85b0; border-left:3px solid transparent;
+                  cursor:pointer; text-decoration:none !important; }
+  .sb-item:hover  { background:#0f1f3d; color:#c8d8f0; }
+  .sb-item.active { background:#0f1f3d; color:#60a5fa; border-left-color:#2563eb; font-weight:600; }
+  .sb-icon { font-size:15px; width:18px; text-align:center; }
+  /* main content wrapper */
+  .main-wrap {
+    margin-left:210px;
+    padding:16px 20px 40px 20px;
+    background:#0b1628;
+    min-height:100vh;
+    font-family:'Segoe UI',system-ui,sans-serif;
+    color:#e8edf5;
+    box-sizing:border-box;
+  }
+  /* top banner */
+  .top-banner {
+    background:linear-gradient(135deg,#0d2145 0%,#1a3a6e 50%,#0d2145 100%);
+    border:1px solid #1e3d7a; border-radius:14px;
+    padding:20px 32px; margin-bottom:18px; text-align:center; position:relative; overflow:hidden;
+  }
+  .top-banner::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% -20%,#2563eb22 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .banner-title { font-size:18px; font-weight:700; letter-spacing:2px; color:#e8edf5; }
+  .banner-sub   { font-size:11px; color:#f59e0b; margin-top:5px; }
+  /* section header */
+  .section-hdr { font-size:15px; font-weight:600; color:#c8d8f0; margin:0 0 14px;
+                 display:flex; align-items:center; gap:8px; }
+  /* kpi grid */
+  .kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:14px; }
+  .kpi-card { background:#0f1f3d; border:1px solid #1e3d7a; border-radius:12px;
+              padding:16px 12px 12px; display:flex; flex-direction:column;
+              align-items:center; text-align:center; gap:5px;
+              transition:border-color .2s, transform .15s; }
+  .kpi-card:hover { border-color:#2563eb; transform:translateY(-1px); }
+  .kpi-icon  { font-size:22px; margin-bottom:2px; }
+  .kpi-label { font-size:9px; letter-spacing:1px; color:#6a85b0; text-transform:uppercase; font-weight:600; }
+  .kpi-value { font-size:22px; font-weight:700; color:#e8edf5; line-height:1.1; }
+  .accent { color:#60a5fa !important; }
+  .gold   { color:#f59e0b !important; }
+  .kpi-sub       { font-size:10px; color:#3b82f6; font-weight:500; }
+  .kpi-sub.muted { color:#6a85b0; }
+  .kpi-sub.green { color:#34d399; }
+  .kpi-sub.amber { color:#f59e0b; }
+  .divider { height:1px; background:#1e3d7a; margin:6px 0 12px; }
+  /* placeholder */
+  .placeholder { background:#0f1f3d; border:1px dashed #1e3d7a; border-radius:14px;
+                 padding:80px 32px; text-align:center; margin-top:8px; }
+  .ph-icon  { font-size:44px; margin-bottom:14px; }
+  .ph-title { font-size:18px; font-weight:600; color:#6a85b0; margin-bottom:8px; }
+  .ph-sub   { font-size:13px; color:#3a5278; }
+  /* map legend */
+  .legend { display:flex; gap:20px; flex-wrap:wrap; margin-top:10px; font-size:12px; color:#c8d8f0; }
+  /* plotly chart full-width */
+  [data-testid="stPlotlyChart"] { width:100% !important; }
+  /* country buttons row */
+  .stButton>button {
+    font-size:11px !important; padding:5px 8px !important;
+    border-radius:20px !important; font-weight:600 !important;
+    border:1px solid #1e3d7a !important;
+    background:#0f1f3d !important; color:#6a85b0 !important;
+  }
+  .stButton>button:hover { border-color:#2563eb !important; color:#c8d8f0 !important; }
+  /* active country button via primary type */
+  .stButton>button[kind="primary"] {
+    background:#1e3d7a !important; color:#e8edf5 !important;
+    border-color:#3b82f6 !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 
@@ -112,12 +199,11 @@ PAGES = [
 if "page"    not in st.session_state: st.session_state.page    = "overview"
 if "country" not in st.session_state: st.session_state.country = "Saudi Arabia"
 
-# Read from URL query param on first load
 qp = st.query_params
-if "page" in qp and st.session_state.page != qp["page"]:
+if "page" in qp:
     st.session_state.page = qp["page"]
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+# ── Sidebar HTML ──────────────────────────────────────────────────────────────
 sections = [
     ("Main",   ["overview","countries","forecast"]),
     ("Market", ["pricing","tenders","competitors"]),
@@ -137,55 +223,6 @@ for sec_label, ids in sections:
         )
 
 st.markdown(f"""
-<style>
-  .sb-wrap {{
-    position:fixed;top:0;left:0;bottom:0;width:200px;
-    background:#070f1f;border-right:1px solid #1e3d7a;
-    display:flex;flex-direction:column;padding:18px 0;
-    z-index:9999;font-family:'Segoe UI',system-ui,sans-serif;
-  }}
-  .sb-logo      {{ padding:0 16px 18px;border-bottom:1px solid #1e3d7a;margin-bottom:10px; }}
-  .sb-logo-text {{ font-size:15px;font-weight:700;color:#60a5fa;letter-spacing:1.5px; }}
-  .sb-logo-sub  {{ font-size:10px;color:#3a5278;margin-top:2px; }}
-  .sb-section   {{ font-size:9px;letter-spacing:1.5px;color:#2a4060;text-transform:uppercase;
-                   padding:14px 16px 6px;font-weight:700; }}
-  .sb-item      {{ display:flex;align-items:center;gap:10px;padding:10px 16px;
-                   font-size:12px;color:#6a85b0;border-left:3px solid transparent;
-                   cursor:pointer;text-decoration:none; }}
-  .sb-item:hover  {{ background:#0f1f3d;color:#c8d8f0; }}
-  .sb-item.active {{ background:#0f1f3d;color:#60a5fa;border-left-color:#2563eb;font-weight:600; }}
-  .sb-icon        {{ font-size:15px;width:18px;text-align:center; }}
-  /* shared page styles */
-  .top-banner {{
-    background:linear-gradient(135deg,#0d2145 0%,#1a3a6e 50%,#0d2145 100%);
-    border:1px solid #1e3d7a;border-radius:14px;
-    padding:20px 32px;margin:16px 0 0;text-align:center;
-  }}
-  .banner-title {{ font-size:18px;font-weight:700;letter-spacing:2px;color:#e8edf5; }}
-  .banner-sub   {{ font-size:11px;color:#f59e0b;margin-top:5px; }}
-  .section-hdr  {{ font-size:15px;font-weight:600;color:#c8d8f0;margin:18px 0 12px;
-                   display:flex;align-items:center;gap:8px; }}
-  .kpi-grid {{ display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px; }}
-  .kpi-card {{ background:#0f1f3d;border:1px solid #1e3d7a;border-radius:12px;
-               padding:16px 12px 12px;display:flex;flex-direction:column;
-               align-items:center;text-align:center;gap:5px; }}
-  .kpi-icon  {{ font-size:20px; }}
-  .kpi-label {{ font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600; }}
-  .kpi-value {{ font-size:22px;font-weight:700;color:#e8edf5; }}
-  .kpi-value.accent {{ color:#60a5fa; }}
-  .kpi-value.gold   {{ color:#f59e0b; }}
-  .kpi-sub          {{ font-size:10px;color:#3b82f6;font-weight:500; }}
-  .kpi-sub.muted    {{ color:#6a85b0; }}
-  .kpi-sub.green    {{ color:#34d399; }}
-  .kpi-sub.amber    {{ color:#f59e0b; }}
-  .divider    {{ height:1px;background:#1e3d7a;margin:4px 0 10px; }}
-  .placeholder {{ background:#0f1f3d;border:1px dashed #1e3d7a;border-radius:14px;
-                  padding:60px 32px;text-align:center;margin-top:16px; }}
-  .ph-icon  {{ font-size:40px;margin-bottom:14px; }}
-  .ph-title {{ font-size:18px;font-weight:600;color:#6a85b0;margin-bottom:8px; }}
-  .ph-sub   {{ font-size:13px;color:#3a5278; }}
-  .legend   {{ display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:11px; }}
-</style>
 <div class="sb-wrap">
   <div class="sb-logo">
     <div class="sb-logo-text">AMECATH</div>
@@ -193,10 +230,8 @@ st.markdown(f"""
   </div>
   {sb_items}
 </div>
+<div class="main-wrap">
 """, unsafe_allow_html=True)
-
-# ── Page padding to clear sidebar ────────────────────────────────────────────
-st.markdown('<div style="margin-left:200px;padding:0 16px;">', unsafe_allow_html=True)
 
 page = st.session_state.page
 
@@ -209,18 +244,68 @@ if page == "overview":
     </div>
     <div class="section-hdr">🌐 Gulf Region — Executive Overview</div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-icon">🌍</div><div class="kpi-label">Countries Covered</div><div class="kpi-value">9</div><div class="kpi-sub">Gulf Region</div></div>
-      <div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-label">Total Population 2026</div><div class="kpi-value accent">127.68M</div><div class="kpi-sub muted">127,681,500</div></div>
-      <div class="kpi-card"><div class="kpi-icon">🫀</div><div class="kpi-label">Total HD Patients</div><div class="kpi-value">65,254</div><div class="kpi-sub">Hemodialysis</div></div>
-      <div class="kpi-card"><div class="kpi-icon">💉</div><div class="kpi-label">Est. 2026 PD</div><div class="kpi-value">4,114</div><div class="kpi-sub">Peritoneal Dialysis</div></div>
-      <div class="kpi-card"><div class="kpi-icon">🏥</div><div class="kpi-label">Dialysis Facilities</div><div class="kpi-value">762</div><div class="kpi-sub muted">Centers</div></div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🌍</div>
+        <div class="kpi-label">Countries Covered</div>
+        <div class="kpi-value">9</div>
+        <div class="kpi-sub">Gulf Region</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-label">Total Population 2026</div>
+        <div class="kpi-value accent">127.68M</div>
+        <div class="kpi-sub muted">127,681,500</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🫀</div>
+        <div class="kpi-label">Total HD Patients</div>
+        <div class="kpi-value">65,254</div>
+        <div class="kpi-sub">Hemodialysis</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">💉</div>
+        <div class="kpi-label">Est. 2026 PD</div>
+        <div class="kpi-value">4,114</div>
+        <div class="kpi-sub">Peritoneal Dialysis</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🏥</div>
+        <div class="kpi-label">Dialysis Facilities</div>
+        <div class="kpi-value">762</div>
+        <div class="kpi-sub muted">Centers</div>
+      </div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-icon">⚡</div><div class="kpi-label">HD Machines</div><div class="kpi-value">44,050</div><div class="kpi-sub muted">Units</div></div>
-      <div class="kpi-card"><div class="kpi-icon">🩹</div><div class="kpi-label">Annual Catheter Demand</div><div class="kpi-value accent">167.87K</div><div class="kpi-sub muted">167,867 units</div></div>
-      <div class="kpi-card"><div class="kpi-icon">💰</div><div class="kpi-label">Market Value</div><div class="kpi-value gold">$18.90M</div><div class="kpi-sub amber">USD</div></div>
-      <div class="kpi-card"><div class="kpi-icon">🤝</div><div class="kpi-label">Distributors</div><div class="kpi-value">90</div><div class="kpi-sub green">Active Partners</div></div>
-      <div class="kpi-card"><div class="kpi-icon">⭐</div><div class="kpi-label">KOLs</div><div class="kpi-value">90</div><div class="kpi-sub green">Opinion Leaders</div></div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⚡</div>
+        <div class="kpi-label">HD Machines</div>
+        <div class="kpi-value">44,050</div>
+        <div class="kpi-sub muted">Units</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🩹</div>
+        <div class="kpi-label">Annual Catheter Demand</div>
+        <div class="kpi-value accent">167.87K</div>
+        <div class="kpi-sub muted">167,867 units</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">Market Value</div>
+        <div class="kpi-value gold">$18.90M</div>
+        <div class="kpi-sub amber">USD</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🤝</div>
+        <div class="kpi-label">Distributors</div>
+        <div class="kpi-value">90</div>
+        <div class="kpi-sub green">Active Partners</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⭐</div>
+        <div class="kpi-label">KOLs</div>
+        <div class="kpi-value">90</div>
+        <div class="kpi-sub green">Opinion Leaders</div>
+      </div>
     </div>
     <div class="divider"></div>
     <div style="text-align:center;padding:8px 0 16px;font-size:10px;color:#2a4060;">
@@ -232,19 +317,20 @@ if page == "overview":
 elif page == "hotareas":
     st.markdown('<div class="section-hdr">📍 Hot Areas — Dialysis Map</div>', unsafe_allow_html=True)
 
+    # Country selector buttons
     countries = list(HA_DATA.keys())
     cols = st.columns(len(countries))
     for i, c in enumerate(countries):
         with cols[i]:
-            if st.button(c, key=f"btn_{c}",
-                         type="primary" if st.session_state.country == c else "secondary",
-                         use_container_width=True):
+            btn_type = "primary" if st.session_state.country == c else "secondary"
+            if st.button(c, key=f"btn_{c}", type=btn_type, use_container_width=True):
                 st.session_state.country = c
                 st.rerun()
 
     country = st.session_state.country
     d = HA_DATA[country]
 
+    # Build Plotly map
     fig = go.Figure()
     for priority in ["Critical", "High", "Medium", "Low"]:
         pts = [a for a in d["areas"] if a["priority"] == priority]
@@ -278,7 +364,7 @@ elif page == "hotareas":
             zoom=d["zoom"],
         ),
         margin=dict(l=0, r=0, t=0, b=0),
-        height=520,
+        height=530,
         paper_bgcolor="#0b1628",
         plot_bgcolor="#0b1628",
         legend=dict(
@@ -320,4 +406,5 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
+# close main-wrap
 st.markdown('</div>', unsafe_allow_html=True)
