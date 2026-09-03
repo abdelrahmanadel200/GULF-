@@ -18,7 +18,7 @@ st.set_page_config(
 # GLOBAL STYLES
 # ============================================================
 
-st.markdown(textwrap.dedent("""
+st.markdown("""
 <style>
 #MainMenu, header, footer, [data-testid="collapsedControl"] {
     display:none !important;
