@@ -93,10 +93,10 @@ COUNTRY_THEMES = {
         "bg": "#1A0D0D", "card_bg": "rgba(43,22,22,0.85)", "text": "#FFF0F0",
         "landmark": "Jeita Grotto & Beirut Skyline"
     },
-    "Egypt": {
-        "flag": "🇪🇬", "primary": "#C8102E", "accent": "#C09300",
-        "bg": "#1A110C", "card_bg": "rgba(43,28,18,0.85)", "text": "#FFF8F0",
-        "landmark": "Pyramids of Giza & Cairo Skyline"
+  "Iraq": {
+        "flag": "🇮🇶", "primary": "#CE1126", "accent": "#007A3D",
+        "bg": "#121212", "card_bg": "rgba(30,30,30,0.85)", "text": "#FFFFFF",
+        "landmark": "Erbil Citadel & Baghdad Skyline"
     },
 }
 
