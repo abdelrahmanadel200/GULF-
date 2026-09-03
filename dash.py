@@ -437,14 +437,80 @@ nav_mode = NAV_MAP[selected_nav_label]
 st.sidebar.markdown("---")
 
 # ─────────────────────────────────────────────
-# HELPER FUNCTION FOR OVERVIEW BACKGROUND
+# 1. HELPER FUNCTIONS & RESILIENT DATA RETRIEVAL
 # ─────────────────────────────────────────────
-def find_overview_bg_b64() -> str:
-    if 'ASSETS_DIR' in globals() and ASSETS_DIR.exists():
-        for p in ASSETS_DIR.glob("**/*"):
-            if p.is_file() and "overview" in p.name.lower():
-                return _image_to_b64(p)
+
+def _image_to_b64(path: Path) -> str:
+    if path.exists():
+        return base64.b64encode(path.read_bytes()).decode()
     return ""
+
+def find_overview_bg_b64() -> str:
+    """Finds overview background image matching 'overview' or 'background'."""
+    if ASSETS_DIR.exists():
+        for p in ASSETS_DIR.glob("**/*"):
+            if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
+                return _image_to_b64(p)
+    for p in Path(".").glob("*"):
+        if p.is_file() and any(k in p.name.lower() for k in ["overview", "catheter", "background"]):
+            return _image_to_b64(p)
+    return ""
+
+def find_landscape_b64(country: str) -> str:
+    if not LANDSCAPE_DIR.exists():
+        return ""
+    for ext in ("jpeg", "jpg", "png"):
+        p = LANDSCAPE_DIR / f"{country} landscape.{ext}"
+        b64 = _image_to_b64(p)
+        if b64:
+            return b64
+    matches = list(LANDSCAPE_DIR.glob(f"{country}*landscape*"))
+    if matches:
+        return _image_to_b64(matches[0])
+    return ""
+
+def logo_b64() -> str:
+    """Flexible logo matching for any variation of amecath logo file name."""
+    search_dirs = [LOGO_DIR, ASSETS_DIR, Path(".")]
+    for d in search_dirs:
+        if d.exists():
+            for p in d.glob("**/*"):
+                if p.is_file() and "logo" in p.name.lower():
+                    return _image_to_b64(p)
+    return ""
+
+# ─────────────────────────────────────────────
+# STYLING INJECTION WITH DARK OVERLAY FOR CLARITY
+# ─────────────────────────────────────────────
+
+def inject_css(theme: dict, bg_b64: str = "") -> None:
+    # High-contrast overlay to make text crisp over white/bright backgrounds
+    bg_css = f"""
+    .stApp {{
+        background: linear-gradient(rgba(5, 19, 41, 0.82), rgba(5, 19, 41, 0.92)),
+                    url("data:image/png;base64,{bg_b64}") no-repeat center center fixed !important;
+        background-size: cover !important;
+    }}""" if bg_b64 else f".stApp {{ background-color: {theme['bg']} !important; }}"
+
+    st.markdown(f"""
+    <style>
+    {bg_css}
+    body, .stApp {{ color: {theme['text']}; font-family: 'Segoe UI', Roboto, sans-serif; }}
+    .country-mini-card {{
+        background: {theme['card_bg']};
+        border-left: 5px solid {theme['primary']}; border-radius: 12px;
+        padding: 16px 18px; margin-bottom: 14px; backdrop-filter: blur(10px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }}
+    .hero-banner {{
+        background: linear-gradient(135deg, {theme['primary']}CC, {theme['card_bg']});
+        padding: 22px 28px; border-radius: 16px; border-left: 6px solid {theme['accent']};
+        margin-bottom: 25px; backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }}
+    .header-container {{ display: flex; align-items: center; justify-content: space-between; gap: 15px; }}
+    .header-title {{ color: #FFFFFF; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }}
+    </style>
+    """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # 5. EXECUTION & APP INITIALIZATION
@@ -454,8 +520,7 @@ active_filepath = resolve_master_filepath()
 
 if not active_filepath:
     st.error("⚠️ Master dataset file not found.")
-    st.info("Please place `Amecath Dash_5.xlsx` or `Amecath Dash.xlsx` in your project root directory.")
-    uploaded_file = st.file_uploader("Or Upload Master Dataset (.xlsx)", type=["xlsx"])
+    uploaded_file = st.file_uploader("Upload Master Dataset (.xlsx)", type=["xlsx"])
     if uploaded_file:
         data_sheets = {}
         xls = pd.ExcelFile(uploaded_file)
@@ -478,19 +543,19 @@ else:
 st.sidebar.caption(
     f"📁 File: `{os.path.basename(str(active_filepath))}`  \n"
     f"📍 Section: `{nav_mode}`  \n"
-    f"⚡ Version: 2.2"
+    f"⚡ Version: 2.3"
 )
 
-# AMECATH Navy Theme for Regional Overview Page
+# AMECATH Navy Theme Configuration
 overview_theme = {
     "flag": "🌐", "primary": "#005A9C", "accent": "#00D4FF",
-    "bg": "#051329", "card_bg": "rgba(10, 32, 59, 0.88)", "text": "#FFFFFF",
+    "bg": "#051329", "card_bg": "rgba(8, 28, 54, 0.88)", "text": "#FFFFFF",
     "landmark": "Scope: Middle East & GCC Markets Performance"
 }
 
 active_theme = overview_theme if nav_mode == "overview" else theme
 
-# Set full-page background image (Catheter image for Overview, Landscape image for countries)
+# Background image routing
 if nav_mode == "overview":
     bg_b64 = find_overview_bg_b64()
 else:
@@ -503,17 +568,17 @@ if nav_mode == "overview":
     logo = logo_b64()
 
     logo_html = (
-        f'<img src="data:image/png;base64,{logo}" style="height:42px; background:white; padding:4px 8px; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.3);" alt="AMECATH Logo">'
+        f'<img src="data:image/png;base64,{logo}" style="height:48px; background:white; padding:6px 12px; border-radius:8px; box-shadow:0 3px 10px rgba(0,0,0,0.4);" alt="AMECATH Logo">'
         if logo else ""
     )
 
     st.markdown(f"""
-    <div class="hero-banner" style="position: relative; text-align: center; padding: 30px 20px; background: linear-gradient(135deg, rgba(0, 43, 73, 0.9), rgba(0, 90, 156, 0.9)); border-left: 6px solid #00D4FF; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-      <div style="position: absolute; right: 20px; top: 20px;">
+    <div class="hero-banner" style="position: relative; text-align: center; padding: 28px 20px; background: linear-gradient(135deg, rgba(0, 43, 73, 0.92), rgba(0, 90, 156, 0.92)); border-left: 6px solid #00D4FF; border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,0.5);">
+      <div style="position: absolute; right: 20px; top: 18px;">
         {logo_html}
       </div>
-      <h1 class="header-title" style="margin:0; font-size:32px; letter-spacing:1px; color: #FFFFFF;">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
-      <p style="color: #D0E8FF; font-size:14px; margin-top:10px; margin-bottom:0; font-weight:600;">
+      <h1 class="header-title" style="margin:0; font-size:30px; letter-spacing:1px; color: #FFFFFF;">🌐 REGIONAL EXECUTIVE OVERVIEW</h1>
+      <p style="color: #D0E8FF; font-size:14px; margin-top:8px; margin-bottom:0; font-weight:600;">
         📍 Scope: Middle East & GCC Markets Performance
       </p>
     </div>""", unsafe_allow_html=True)
