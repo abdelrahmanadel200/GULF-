@@ -866,7 +866,6 @@ dashboard_html = """
        aria-label="Saudi Arabia">
     <div class="c-flag">🇸🇦</div>
     <div class="c-name">Saudi Arabia</div>
-    <div class="c-stat">18,500 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -875,7 +874,6 @@ dashboard_html = """
        aria-label="UAE">
     <div class="c-flag">🇦🇪</div>
     <div class="c-name">UAE</div>
-    <div class="c-stat">10,900 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -884,7 +882,6 @@ dashboard_html = """
        aria-label="Kuwait">
     <div class="c-flag">🇰🇼</div>
     <div class="c-name">Kuwait</div>
-    <div class="c-stat">3,500 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -893,7 +890,6 @@ dashboard_html = """
        aria-label="Qatar">
     <div class="c-flag">🇶🇦</div>
     <div class="c-name">Qatar</div>
-    <div class="c-stat">2,800 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -902,7 +898,6 @@ dashboard_html = """
        aria-label="Oman">
     <div class="c-flag">🇴🇲</div>
     <div class="c-name">Oman</div>
-    <div class="c-stat">1,900 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -911,7 +906,6 @@ dashboard_html = """
        aria-label="Bahrain">
     <div class="c-flag">🇧🇭</div>
     <div class="c-name">Bahrain</div>
-    <div class="c-stat">1,200 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -929,7 +923,6 @@ dashboard_html = """
        aria-label="Jordan">
     <div class="c-flag">🇯🇴</div>
     <div class="c-name">Jordan</div>
-    <div class="c-stat">2,100 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
@@ -938,7 +931,6 @@ dashboard_html = """
        aria-label="Lebanon">
     <div class="c-flag">🇱🇧</div>
     <div class="c-name">Lebanon</div>
-    <div class="c-stat">1,700 HD Patients</div>
     <div class="c-accent"></div>
   </div>
 
