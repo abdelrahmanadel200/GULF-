@@ -331,12 +331,174 @@ dashboard_html = """
 
     <!-- Country Analysis -->
     <div class="page" id="page-countries">
-      <div class="placeholder-page">
-        <div class="placeholder-icon">🌍</div>
-        <div class="placeholder-title">Country Analysis</div>
-        <div class="placeholder-sub">Coming soon — قولنا إيه اللي عايزه هنا</div>
-      </div>
+<style>
+.country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 16px 16px}
+.c-card{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:18px 14px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;overflow:hidden}
+.c-card:hover,.c-card:focus{outline:none;transform:translateY(-2px);border-color:var(--cc,#2563eb);box-shadow:0 0 0 2px var(--cc,#2563eb)44}
+.c-flag{font-size:36px;line-height:1}
+.c-name{font-size:13px;font-weight:700;color:#e8edf5}
+.c-stat{font-size:10px;color:#6a85b0}
+.c-accent{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--cc,#2563eb)}
+/* Detail panel */
+.cd-panel{display:none;margin:0 16px 16px;background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:20px;animation:fadeIn .2s}
+.cd-panel.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cd-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cd-flag{font-size:44px}
+.cd-title{font-size:18px;font-weight:700;color:#e8edf5}
+.cd-sub{font-size:11px;color:#6a85b0;margin-top:2px}
+.cd-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.cd-kpi-item{background:#0b1628;border:1px solid #1e3d7a;border-radius:10px;padding:12px;text-align:center}
+.cd-kpi-label{font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:.8px}
+.cd-kpi-val{font-size:18px;font-weight:700;color:#60a5fa;margin-top:4px}
+.cd-close{margin-left:auto;background:#1e3d7a;border:none;color:#c8d8f0;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:12px}
+.cd-close:hover{background:#2563eb}
+</style>
+
+<div class="section-header">
+  <span style="font-size:16px">🌍</span>
+  <span class="section-title">Country Analysis — 9 Markets</span>
+</div>
+
+<div class="country-grid" role="list">
+
+  <div class="c-card" style="--cc:#10b981" role="listitem" tabindex="0"
+       onclick="openCountry('sa')" onkeydown="if(event.key==='Enter')openCountry('sa')"
+       aria-label="Saudi Arabia">
+    <div class="c-flag">🇸🇦</div>
+    <div class="c-name">Saudi Arabia</div>
+    <div class="c-stat">18,500 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#f59e0b" role="listitem" tabindex="0"
+       onclick="openCountry('ae')" onkeydown="if(event.key==='Enter')openCountry('ae')"
+       aria-label="UAE">
+    <div class="c-flag">🇦🇪</div>
+    <div class="c-name">UAE</div>
+    <div class="c-stat">10,900 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0"
+       onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')"
+       aria-label="Kuwait">
+    <div class="c-flag">🇰🇼</div>
+    <div class="c-name">Kuwait</div>
+    <div class="c-stat">3,500 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0"
+       onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')"
+       aria-label="Qatar">
+    <div class="c-flag">🇶🇦</div>
+    <div class="c-name">Qatar</div>
+    <div class="c-stat">2,800 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#ef4444" role="listitem" tabindex="0"
+       onclick="openCountry('om')" onkeydown="if(event.key==='Enter')openCountry('om')"
+       aria-label="Oman">
+    <div class="c-flag">🇴🇲</div>
+    <div class="c-name">Oman</div>
+    <div class="c-stat">1,900 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#ec4899" role="listitem" tabindex="0"
+       onclick="openCountry('bh')" onkeydown="if(event.key==='Enter')openCountry('bh')"
+       aria-label="Bahrain">
+    <div class="c-flag">🇧🇭</div>
+    <div class="c-name">Bahrain</div>
+    <div class="c-stat">1,200 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0"
+       onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')"
+       aria-label="Iraq">
+    <div class="c-flag">🇮🇶</div>
+    <div class="c-name">Iraq</div>
+    <div class="c-stat">4,200 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0"
+       onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')"
+       aria-label="Jordan">
+    <div class="c-flag">🇯🇴</div>
+    <div class="c-name">Jordan</div>
+    <div class="c-stat">2,100 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+  <div class="c-card" style="--cc:#a3e635" role="listitem" tabindex="0"
+       onclick="openCountry('lb')" onkeydown="if(event.key==='Enter')openCountry('lb')"
+       aria-label="Lebanon">
+    <div class="c-flag">🇱🇧</div>
+    <div class="c-name">Lebanon</div>
+    <div class="c-stat">1,700 HD Patients</div>
+    <div class="c-accent"></div>
+  </div>
+
+</div>
+
+<!-- Detail Panel -->
+<div class="cd-panel" id="cd-panel" role="region" aria-live="polite">
+  <div class="cd-header">
+    <div class="cd-flag" id="cd-flag"></div>
+    <div>
+      <div class="cd-title" id="cd-title"></div>
+      <div class="cd-sub" id="cd-sub"></div>
     </div>
+    <button class="cd-close" onclick="closeCountry()" aria-label="Close panel">✕ Close</button>
+  </div>
+  <div class="cd-kpi" id="cd-kpi"></div>
+</div>
+
+<script>
+const countryData = {
+  sa:{flag:'🇸🇦',name:'Saudi Arabia',sub:'GCC — Largest Market',color:'#10b981',
+      kpi:[{l:'HD Patients',v:'18,500'},{l:'HD Centers',v:'214'},{l:'HD Machines',v:'12,400'},{l:'Market Value',v:'$6.2M'}]},
+  ae:{flag:'🇦🇪',name:'UAE',sub:'GCC — Premium Segment',color:'#f59e0b',
+      kpi:[{l:'HD Patients',v:'10,900'},{l:'HD Centers',v:'98'},{l:'HD Machines',v:'6,800'},{l:'Market Value',v:'$3.8M'}]},
+  kw:{flag:'🇰🇼',name:'Kuwait',sub:'GCC — High Spend Per Patient',color:'#3b82f6',
+      kpi:[{l:'HD Patients',v:'3,500'},{l:'HD Centers',v:'42'},{l:'HD Machines',v:'2,100'},{l:'Market Value',v:'$1.4M'}]},
+  qa:{flag:'🇶🇦',name:'Qatar',sub:'GCC — Centralized Procurement',color:'#8b5cf6',
+      kpi:[{l:'HD Patients',v:'2,800'},{l:'HD Centers',v:'28'},{l:'HD Machines',v:'1,700'},{l:'Market Value',v:'$1.1M'}]},
+  om:{flag:'🇴🇲',name:'Oman',sub:'GCC — Growing Market',color:'#ef4444',
+      kpi:[{l:'HD Patients',v:'1,900'},{l:'HD Centers',v:'31'},{l:'HD Machines',v:'1,200'},{l:'Market Value',v:'$0.7M'}]},
+  bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',color:'#ec4899',
+      kpi:[{l:'HD Patients',v:'1,200'},{l:'HD Centers',v:'18'},{l:'HD Machines',v:'780'},{l:'Market Value',v:'$0.5M'}]},
+  iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',color:'#f97316',
+      kpi:[{l:'HD Patients',v:'4,200'},{l:'HD Centers',v:'89'},{l:'HD Machines',v:'3,100'},{l:'Market Value',v:'$1.2M'}]},
+  jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',color:'#06b6d4',
+      kpi:[{l:'HD Patients',v:'2,100'},{l:'HD Centers',v:'67'},{l:'HD Machines',v:'1,400'},{l:'Market Value',v:'$0.8M'}]},
+  lb:{flag:'🇱🇧',name:'Lebanon',sub:'ME — Under Renewal',color:'#a3e635',
+      kpi:[{l:'HD Patients',v:'1,700'},{l:'HD Centers',v:'55'},{l:'HD Machines',v:'980'},{l:'Market Value',v:'$0.6M'}]}
+};
+
+function openCountry(code){
+  const d=countryData[code];
+  document.getElementById('cd-flag').textContent=d.flag;
+  document.getElementById('cd-title').textContent=d.name;
+  document.getElementById('cd-sub').textContent=d.sub;
+  document.getElementById('cd-kpi').innerHTML=
+    d.kpi.map(k=>`<div class="cd-kpi-item">
+      <div class="cd-kpi-label">${k.l}</div>
+      <div class="cd-kpi-val" style="color:${d.color}">${k.v}</div>
+    </div>`).join('');
+  const p=document.getElementById('cd-panel');
+  p.classList.add('open');
+  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeCountry(){
+  document.getElementById('cd-panel').classList.remove('open');
+}
+</scr` + `ipt>
+</div>
 
     <!-- Revenue Forecast -->
     <div class="page" id="page-forecast">
