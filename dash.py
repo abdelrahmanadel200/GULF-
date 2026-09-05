@@ -37,7 +37,7 @@ html, body { background: #0b1628; height: 100%; }
 .nav-item:hover { background: #0f1f3d; color: #c8d8f0; }
 .nav-item.active { background: #0f1f3d; color: #60a5fa; border-left-color: #2563eb; font-weight: 600; }
 .nav-icon { font-size: 15px; width: 18px; text-align: center; }
-.main { margin-left: 200px; flex: 1; min-height: 100vh; }
+.main { flex: 1; min-height: 100vh; overflow-y: auto; }
 .top-banner { background: linear-gradient(135deg, #0d2145 0%, #1a3a6e 50%, #0d2145 100%); border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px 32px; margin: 16px 16px 0; text-align: center; }
 .banner-title { font-size: 18px; font-weight: 700; letter-spacing: 2px; color: #e8edf5; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .banner-sub { font-size: 11px; color: #f59e0b; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; }
