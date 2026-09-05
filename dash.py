@@ -405,41 +405,40 @@ const countryData = {
   sa:{flag:'🇸🇦',name:'Saudi Arabia',sub:'GCC — Largest Market',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_landscape.jpeg',
     colors:{primary:'#006400',secondary:'#ffffff',accent:'#ffffff'},
-    sa: kpi:[{l:'HD Patients',v:'18,500'},{l:'PD Patients',v:'740'},{l:'Catheters Used',v:'47,970'},{l:'Market Value',v:'$6.2M'}]
+    kpi:[{l:'HD Patients',v:'18,500'},{l:'PD Patients',v:'740'},{l:'Catheters Used',v:'47,970'},{l:'Market Value',v:'$6.2M'}]},
   ae:{flag:'🇦🇪',name:'UAE',sub:'GCC — Premium Segment',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_landscape.jpeg',
     colors:{primary:'#00732f',secondary:'#ff0000',accent:'#ffffff'},
-    ae: kpi:[{l:'HD Patients',v:'10,900'},{l:'PD Patients',v:'436'},{l:'Catheters Used',v:'28,245'},{l:'Market Value',v:'$3.8M'}]
+    kpi:[{l:'HD Patients',v:'10,900'},{l:'PD Patients',v:'436'},{l:'Catheters Used',v:'28,245'},{l:'Market Value',v:'$3.8M'}]},
   kw:{flag:'🇰🇼',name:'Kuwait',sub:'GCC — High Spend Per Patient',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_landscape.jpeg',
     colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    kw: kpi:[{l:'HD Patients',v:'3,500'},{l:'PD Patients',v:'140'},{l:'Catheters Used',v:'9,065'},{l:'Market Value',v:'$1.4M'}]
+    kpi:[{l:'HD Patients',v:'3,500'},{l:'PD Patients',v:'140'},{l:'Catheters Used',v:'9,065'},{l:'Market Value',v:'$1.4M'}]},
   qa:{flag:'🇶🇦',name:'Qatar',sub:'GCC — Centralized Procurement',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_landscape.jpeg',
     colors:{primary:'#8d1b3d',secondary:'#ffffff',accent:'#8d1b3d'},
-    qa: kpi:[{l:'HD Patients',v:'2,800'},{l:'PD Patients',v:'112'},{l:'Catheters Used',v:'7,252'},{l:'Market Value',v:'$1.1M'}]
+    kpi:[{l:'HD Patients',v:'2,800'},{l:'PD Patients',v:'112'},{l:'Catheters Used',v:'7,252'},{l:'Market Value',v:'$1.1M'}]},
   om:{flag:'🇴🇲',name:'Oman',sub:'GCC — Growing Market',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_landscape.jpeg',
     colors:{primary:'#db161b',secondary:'#ffffff',accent:'#008000'},
-    kpi:[{l:'HD Patients',v:'1,900'},{l:'HD Centers',v:'31'},{l:'HD Machines',v:'1,200'},{l:'Market Value',v:'$0.7M'}]},
+    kpi:[{l:'HD Patients',v:'1,900'},{l:'PD Patients',v:'76'},{l:'Catheters Used',v:'4,921'},{l:'Market Value',v:'$0.7M'}]},
   bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpeg',
     colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
-    bh: kpi:[{l:'HD Patients',v:'1,200'},{l:'PD Patients',v:'48'},{l:'Catheters Used',v:'3,108'},{l:'Market Value',v:'$0.5M'}]
+    kpi:[{l:'HD Patients',v:'1,200'},{l:'PD Patients',v:'48'},{l:'Catheters Used',v:'3,108'},{l:'Market Value',v:'$0.5M'}]},
   iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpeg',
-    colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#000000'},
-    iq: kpi:[{l:'HD Patients',v:'4,200'},{l:'PD Patients',v:'168'},{l:'Catheters Used',v:'10,878'},{l:'Market Value',v:'$1.2M'}]
+    colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ffffff'},
+    kpi:[{l:'HD Patients',v:'4,200'},{l:'PD Patients',v:'168'},{l:'Catheters Used',v:'10,878'},{l:'Market Value',v:'$1.2M'}]},
   jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_landscape.jpeg',
     colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    jo: kpi:[{l:'HD Patients',v:'2,100'},{l:'PD Patients',v:'84'},{l:'Catheters Used',v:'5,439'},{l:'Market Value',v:'$0.8M'}]
+    kpi:[{l:'HD Patients',v:'2,100'},{l:'PD Patients',v:'84'},{l:'Catheters Used',v:'5,439'},{l:'Market Value',v:'$0.8M'}]},
   lb:{flag:'🇱🇧',name:'Lebanon',sub:'ME — Under Renewal',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_landscape.jpeg',
     colors:{primary:'#ee161f',secondary:'#ffffff',accent:'#00a650'},
-    lb: kpi:[{l:'HD Patients',v:'1,700'},{l:'PD Patients',v:'68'},{l:'Catheters Used',v:'4,403'},{l:'Market Value',v:'$0.6M'}]
+    kpi:[{l:'HD Patients',v:'1,700'},{l:'PD Patients',v:'68'},{l:'Catheters Used',v:'4,403'},{l:'Market Value',v:'$0.6M'}]}
 };
-
 function openCountry(code){
   const d = countryData[code];
   const existing = document.getElementById('country-overlay');
