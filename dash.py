@@ -81,7 +81,9 @@ html, body { background: #0b1628; height: 100%; }
 .cd-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
 .cd-kpi-item { background: #0b1628; border: 1px solid #1e3d7a; border-radius: 10px; padding: 12px; text-align: center; }
 .cd-kpi-label { font-size: 9px; color: #6a85b0; text-transform: uppercase; letter-spacing: .8px; }
-.cd-kpi-val { font-size: 18px; font-weight: 700; color: #60a5fa; margin-top: 4px; }
+.cd-kpi-val{font-size:20px;font-weight:800;color:#60a5fa;margin-top:6px;letter-spacing:.5px;}
+.cd-kpi-label{font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
+.cd-kpi-item{background:#0b1628;border:1px solid #1e3d7a;border-radius:10px;padding:14px 12px;text-align:center;border-top:2px solid #2563eb;}
 .cd-close { margin-left: auto; background: #1e3d7a; border: none; color: #c8d8f0; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 12px; }
 .cd-close:hover { background: #2563eb; }
 /* Hot map */
@@ -166,7 +168,7 @@ html, body { background: #0b1628; height: 100%; }
     <div class="c-name">UAE</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" class="c-img"/>
+    src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" onerror="this.style.display='none'"
     <div class="c-name">Kuwait</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar">
