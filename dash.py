@@ -182,7 +182,7 @@ html, body { background: #0b1628; height: 100%; }
     <div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.style.display='none'"
+  <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.style.display='none'"/>
     <div class="c-name">Iraq</div><div class="c-accent"></div>
 </div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
@@ -439,6 +439,7 @@ const countryData = {
     colors:{primary:'#ee161f',secondary:'#ffffff',accent:'#00a650'},
     kpi:[{l:'HD Patients',v:'1,700'},{l:'PD Patients',v:'68'},{l:'Catheters Used',v:'4,403'},{l:'Market Value',v:'$0.6M'}]}
 };
+
 function openCountry(code){
   const d = countryData[code];
   const existing = document.getElementById('country-overlay');
