@@ -184,7 +184,7 @@ html, body { background: #0b1628; height: 100%; }
     <div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img"/>
+    src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" onerror="this.src='';this.style.fontSize='48px';this.outerHTML='<div style=\'font-size:48px\'>🇮🇶</div>'"
     <div class="c-name">Iraq</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
