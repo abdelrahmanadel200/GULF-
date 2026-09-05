@@ -63,15 +63,12 @@ html, body { background: #0b1628; height: 100%; }
 .placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
 .placeholder-sub { font-size: 13px; color: #3a5278; }
 /* Country page */
-.country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 16px 16px; }
-.c-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 18px 14px; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; overflow: hidden; }
-.c-card:hover, .c-card:focus { outline: none; transform: translateY(-2px); border-color: var(--cc, #2563eb); box-shadow: 0 0 0 2px var(--cc, #2563eb); }
-.c-flag { font-size: 42px; line-height: 1; }
-.c-name { font-size: 13px; font-weight: 700; color: #e8edf5; }
+.country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 16px 16px; }
+.c-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 0; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: stretch; position: relative; overflow: hidden; height: 180px; }
+.c-card:hover, .c-card:focus { outline: none; transform: translateY(-2px); border-color: var(--cc, #2563eb); box-shadow: 0 0 0 3px var(--cc, #2563eb)55; }
+.c-img { width: 100%; height: 140px; object-fit: cover; object-position: center; display: block; border-radius: 0; }
+.c-name { font-size: 13px; font-weight: 700; color: #e8edf5; text-align: center; padding: 8px 0 10px; flex: 1; display: flex; align-items: center; justify-content: center; }
 .c-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--cc, #2563eb); }
-..c-img{width:100%;height:100px;object-fit:cover;border-radius:10px;display:block;}
-.c-card{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:10px 10px 14px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;}
-.c-flag-img{width:100%;height:100px;border-radius:10px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:0px;}
 .cd-panel { display: none; margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px; animation: fadeIn .2s; }
 .cd-panel.open { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
