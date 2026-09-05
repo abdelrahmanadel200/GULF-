@@ -77,11 +77,9 @@ html, body { background: #0b1628; height: 100%; }
 .cd-title { font-size: 18px; font-weight: 700; color: #e8edf5; }
 .cd-sub { font-size: 11px; color: #6a85b0; margin-top: 2px; }
 .cd-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
-.cd-kpi-item { background: #0b1628; border: 1px solid #1e3d7a; border-radius: 10px; padding: 12px; text-align: center; }
-.cd-kpi-label { font-size: 9px; color: #6a85b0; text-transform: uppercase; letter-spacing: .8px; }
-.cd-kpi-val{font-size:20px;font-weight:800;color:#60a5fa;margin-top:6px;letter-spacing:.5px;}
-.cd-kpi-label{font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
-.cd-kpi-item{background:#0b1628;border:1px solid #1e3d7a;border-radius:10px;padding:14px 12px;text-align:center;border-top:2px solid #2563eb;}
+.cd-kpi-item { background:#0b1628; border:1px solid #1e3d7a; border-radius:10px; padding:14px 12px; text-align:center; border-top:2px solid #2563eb; }
+.cd-kpi-label { font-size:9px; color:#6a85b0; text-transform:uppercase; letter-spacing:1.2px; font-weight:600; }
+.cd-kpi-val { font-size:20px; font-weight:800; color:#60a5fa; margin-top:6px; letter-spacing:.5px; }
 .cd-close { margin-left: auto; background: #1e3d7a; border: none; color: #c8d8f0; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 12px; }
 .cd-close:hover { background: #2563eb; }
 /* Hot map */
@@ -481,6 +479,8 @@ html, body { background: #0b1628; height: 100%; }
 })();
 </script>
 
+</div>
+
 <!-- PRICING -->
 <div class="page" id="page-pricing">
   <div class="placeholder-page"><div class="placeholder-icon">💲</div><div class="placeholder-title">Pricing Intel</div><div class="placeholder-sub">Coming soon</div></div>
@@ -847,6 +847,7 @@ const countryData = {
 
 function openCountry(code){
   const d = countryData[code];
+  if(!d) return;
   const existing = document.getElementById('country-overlay');
   if(existing) existing.remove();
   const overlay = document.createElement('div');
@@ -946,10 +947,14 @@ function createMarketMap(){
 }
 
 function navigate(el,pageId){
+  const page=document.getElementById('page-'+pageId);
+  if(!page) return;
+  const overlay=document.getElementById('country-overlay');
+  if(overlay) overlay.remove();
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
+  if(el) el.classList.add('active');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+pageId).classList.add('active');
+  page.classList.add('active');
   if(pageId==="hotareas"){setTimeout(()=>{createMarketMap();if(marketMap)marketMap.invalidateSize();},200);}
 }
 </script>
