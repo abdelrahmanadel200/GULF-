@@ -28,7 +28,7 @@ dashboard_html = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #0b1628; height: 100%; }
 .dash { background: #0b1628; color: #e8edf5; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; }
-.sidebar { width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; position: fixed; top: 0; left: 0; bottom: 0; z-index: 10; }
+.sidebar { width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; position: sticky; top: 0; height: 100vh; z-index: 10; align-self: flex-start; }
 .logo { padding: 0 16px 18px; border-bottom: 1px solid #1e3d7a; margin-bottom: 10px; }
 .logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
 .logo-sub { font-size: 10px; color: #3a5278; margin-top: 2px; }
@@ -552,4 +552,4 @@ function navigate(el,pageId){
 </body>
 </html>
 """
-components.html(dashboard_html, height=900, scrolling=True)
+components.html(dashboard_html, height=1080, scrolling=True)
