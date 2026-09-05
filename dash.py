@@ -182,7 +182,7 @@ html, body { background: #0b1628; height: 100%; }
     <div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'🇮🇶',style:'font-size:60px;padding:20px'}))"/>
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.style.display='none'"
     <div class="c-name">Iraq</div><div class="c-accent"></div>
 </div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
@@ -405,19 +405,19 @@ const countryData = {
   sa:{flag:'🇸🇦',name:'Saudi Arabia',sub:'GCC — Largest Market',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_landscape.jpeg',
     colors:{primary:'#006400',secondary:'#ffffff',accent:'#ffffff'},
-    kpi:[{l:'HD Patients',v:'18,500'},{l:'HD Centers',v:'214'},{l:'HD Machines',v:'12,400'},{l:'Market Value',v:'$6.2M'}]},
+    sa: kpi:[{l:'HD Patients',v:'18,500'},{l:'PD Patients',v:'740'},{l:'Catheters Used',v:'47,970'},{l:'Market Value',v:'$6.2M'}]
   ae:{flag:'🇦🇪',name:'UAE',sub:'GCC — Premium Segment',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_landscape.jpeg',
     colors:{primary:'#00732f',secondary:'#ff0000',accent:'#ffffff'},
-    kpi:[{l:'HD Patients',v:'10,900'},{l:'HD Centers',v:'98'},{l:'HD Machines',v:'6,800'},{l:'Market Value',v:'$3.8M'}]},
+    ae: kpi:[{l:'HD Patients',v:'10,900'},{l:'PD Patients',v:'436'},{l:'Catheters Used',v:'28,245'},{l:'Market Value',v:'$3.8M'}]
   kw:{flag:'🇰🇼',name:'Kuwait',sub:'GCC — High Spend Per Patient',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_landscape.jpeg',
     colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'HD Patients',v:'3,500'},{l:'HD Centers',v:'42'},{l:'HD Machines',v:'2,100'},{l:'Market Value',v:'$1.4M'}]},
+    kw: kpi:[{l:'HD Patients',v:'3,500'},{l:'PD Patients',v:'140'},{l:'Catheters Used',v:'9,065'},{l:'Market Value',v:'$1.4M'}]
   qa:{flag:'🇶🇦',name:'Qatar',sub:'GCC — Centralized Procurement',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_landscape.jpeg',
     colors:{primary:'#8d1b3d',secondary:'#ffffff',accent:'#8d1b3d'},
-    kpi:[{l:'HD Patients',v:'2,800'},{l:'HD Centers',v:'28'},{l:'HD Machines',v:'1,700'},{l:'Market Value',v:'$1.1M'}]},
+    qa: kpi:[{l:'HD Patients',v:'2,800'},{l:'PD Patients',v:'112'},{l:'Catheters Used',v:'7,252'},{l:'Market Value',v:'$1.1M'}]
   om:{flag:'🇴🇲',name:'Oman',sub:'GCC — Growing Market',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_landscape.jpeg',
     colors:{primary:'#db161b',secondary:'#ffffff',accent:'#008000'},
@@ -425,19 +425,19 @@ const countryData = {
   bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpeg',
     colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'HD Patients',v:'1,200'},{l:'HD Centers',v:'18'},{l:'HD Machines',v:'780'},{l:'Market Value',v:'$0.5M'}]},
+    bh: kpi:[{l:'HD Patients',v:'1,200'},{l:'PD Patients',v:'48'},{l:'Catheters Used',v:'3,108'},{l:'Market Value',v:'$0.5M'}]
   iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpeg',
     colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#000000'},
-    kpi:[{l:'HD Patients',v:'4,200'},{l:'HD Centers',v:'89'},{l:'HD Machines',v:'3,100'},{l:'Market Value',v:'$1.2M'}]},
+    iq: kpi:[{l:'HD Patients',v:'4,200'},{l:'PD Patients',v:'168'},{l:'Catheters Used',v:'10,878'},{l:'Market Value',v:'$1.2M'}]
   jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_landscape.jpeg',
     colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'HD Patients',v:'2,100'},{l:'HD Centers',v:'67'},{l:'HD Machines',v:'1,400'},{l:'Market Value',v:'$0.8M'}]},
+    jo: kpi:[{l:'HD Patients',v:'2,100'},{l:'PD Patients',v:'84'},{l:'Catheters Used',v:'5,439'},{l:'Market Value',v:'$0.8M'}]
   lb:{flag:'🇱🇧',name:'Lebanon',sub:'ME — Under Renewal',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_landscape.jpeg',
     colors:{primary:'#ee161f',secondary:'#ffffff',accent:'#00a650'},
-    kpi:[{l:'HD Patients',v:'1,700'},{l:'HD Centers',v:'55'},{l:'HD Machines',v:'980'},{l:'Market Value',v:'$0.6M'}]}
+    lb: kpi:[{l:'HD Patients',v:'1,700'},{l:'PD Patients',v:'68'},{l:'Catheters Used',v:'4,403'},{l:'Market Value',v:'$0.6M'}]
 };
 
 function openCountry(code){
@@ -478,7 +478,9 @@ function openCountry(code){
           </div>
         `).join('')}
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+      <div onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px ${d.colors.primary}44';this.style.borderColor='${d.colors.primary}'"
+     onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor='${d.colors.primary}55'"
+     style="background:rgba(255,255,255,0.06);border:1px solid ${d.colors.primary}55;border-top:3px solid ${d.colors.primary};border-radius:14px;padding:20px;text-align:center;backdrop-filter:blur(8px);transition:all 0.2s;cursor:default;">
         <div style="font-size:13px;font-weight:600;color:#c8d8f0;margin-bottom:10px;">📊 Market Overview</div>
         <div style="color:#6a85b0;font-size:12px;">Detailed market data coming soon...</div>
       </div>
