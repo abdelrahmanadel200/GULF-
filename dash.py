@@ -489,7 +489,6 @@ function openCountry(code){
 }
 
 function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
-function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
 
 function filterCompetitors(type,btn){
   document.querySelectorAll('.comp-filter-btn').forEach(b=>{b.classList.remove('bg-blue-600','text-white');b.classList.add('bg-[#1a2d4d]','text-slate-300');});
