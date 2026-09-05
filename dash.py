@@ -168,10 +168,10 @@ html, body { background: #0b1628; height: 100%; }
     <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_flag.jpeg" class="c-img"/>
     <div class="c-name">UAE</div><div class="c-accent"></div>
   </div>
- <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
-    <div class="c-flag-img" style="background-image:url('https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg')">🇰🇼</div>
+<div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" class="c-img" onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'🇰🇼',style:'font-size:60px;padding:20px'}))"/>
     <div class="c-name">Kuwait</div><div class="c-accent"></div>
-  </div>
+</div>
   <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar">
     <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_flag.jpeg" class="c-img"/>
     <div class="c-name">Qatar</div><div class="c-accent"></div>
@@ -185,9 +185,9 @@ html, body { background: #0b1628; height: 100%; }
     <div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-    <div class="c-flag-img" style="background-image:url('https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg')">🇮🇶</div>
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'🇮🇶',style:'font-size:60px;padding:20px'}))"/>
     <div class="c-name">Iraq</div><div class="c-accent"></div>
-  </div>
+</div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
     <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_flag.jpeg" class="c-img"/>
     <div class="c-name">Jordan</div><div class="c-accent"></div>
