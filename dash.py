@@ -17,7 +17,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-dashboard_html = """
+dashboard_html = (
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2656,5 +2656,7 @@ function navigate(el, pageId) {
 </body>
 </html>
 """
+
+)
 
 components.html(dashboard_html, height=800, scrolling=False)
