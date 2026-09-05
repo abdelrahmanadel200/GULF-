@@ -639,7 +639,140 @@ html, body { background: #0b1628; height: 100%; }
 
 <!-- EXHIBITIONS -->
 <div class="page" id="page-exhibitions">
-  <div class="placeholder-page"><div class="placeholder-icon">📅</div><div class="placeholder-title">Exhibitions</div><div class="placeholder-sub">Coming soon</div></div>
+  <div style="padding:0 16px 24px;">
+
+    <!-- KPI Cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #60a5fa;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Total Events</div>
+        <div style="font-size:28px;font-weight:700;color:#60a5fa;margin-top:6px;">12</div>
+        <div style="font-size:10px;color:#3b82f6;margin-top:4px;">2027 – 2028</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #34d399;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">2027 Events</div>
+        <div style="font-size:28px;font-weight:700;color:#34d399;margin-top:6px;">10</div>
+        <div style="font-size:10px;color:#34d399;margin-top:4px;">This cycle</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #a78bfa;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">2028 Events</div>
+        <div style="font-size:28px;font-weight:700;color:#a78bfa;margin-top:6px;">2</div>
+        <div style="font-size:10px;color:#a78bfa;margin-top:4px;">Next cycle</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #ef4444;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Critical Priority 🔴</div>
+        <div style="font-size:28px;font-weight:700;color:#ef4444;margin-top:6px;">6</div>
+        <div style="font-size:10px;color:#ef4444;margin-top:4px;">Must attend</div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button onclick="filterExhibitions('all',this)" id="exh-btn-all"
+        style="padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #2563eb;background:#2563eb;color:#fff;">
+        All (12)
+      </button>
+      <button onclick="filterExhibitions('2027',this)" id="exh-btn-2027"
+        style="padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #1e3d7a;background:#0f1f3d;color:#6a85b0;">
+        2027 (10)
+      </button>
+      <button onclick="filterExhibitions('2028',this)" id="exh-btn-2028"
+        style="padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #1e3d7a;background:#0f1f3d;color:#6a85b0;">
+        2028 (2)
+      </button>
+      <button onclick="filterExhibitions('critical',this)" id="exh-btn-critical"
+        style="padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #1e3d7a;background:#0f1f3d;color:#6a85b0;">
+        🔴 Critical Only
+      </button>
+    </div>
+
+    <!-- Timeline Grid -->
+    <div id="exh-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const exhibitions = [
+      {year:'2027',month:'01',date:'25–28 Jan 2027',name:'Arab Health (World Health Expo Dubai)',location:'Dubai, UAE',flag:'🇦🇪',focus:'General Healthcare + Dialysis',priority:'critical',icon:'🔴'},
+      {year:'2027',month:'01',date:'Jan 2027',name:'SIRS 2027 — Saudi IR Society',location:'Riyadh, KSA',flag:'🇸🇦',focus:'IR + Dialysis Access',priority:'critical',icon:'🔴'},
+      {year:'2027',month:'02',date:'Feb 2027',name:'Gulf Aorta Summit (GAS)',location:'Dubai, UAE',flag:'🇦🇪',focus:'Vascular + Endovascular',priority:'high',icon:'🟠'},
+      {year:'2027',month:'03',date:'29–30 Mar 2027',name:'Urology & Nephrology Conference',location:'Dubai, UAE',flag:'🇦🇪',focus:'Nephrology + Dialysis',priority:'high',icon:'🟠'},
+      {year:'2027',month:'04',date:'1–4 Apr 2027',name:'World Congress of Nephrology (WCN)',location:'Kuala Lumpur, Malaysia',flag:'🇲🇾',focus:'Global Nephrology',priority:'high',icon:'🟠'},
+      {year:'2027',month:'04',date:'Apr–May 2027',name:'PAIRS 2027 — Pan Arab IR Society',location:'Dubai, UAE',flag:'🇦🇪',focus:'IR + Vascular Access + Dialysis',priority:'critical',icon:'🔴'},
+      {year:'2027',month:'09',date:'2027 TBA',name:'TCT Plus Middle East',location:'Dubai, UAE',flag:'🇦🇪',focus:'Cardiovascular + Vascular Access',priority:'high',icon:'🟠'},
+      {year:'2027',month:'10',date:'26–29 Oct 2027',name:'Global Health Exhibition (GHE)',location:'Riyadh, KSA',flag:'🇸🇦',focus:'Medical Devices + MOH / NUPCO',priority:'critical',icon:'🔴'},
+      {year:'2027',month:'12',date:'Dec 2027',name:'Qatar Nephrology Conference (QNC)',location:'Doha, Qatar',flag:'🇶🇦',focus:'Nephrology + Dialysis',priority:'critical',icon:'🔴'},
+      {year:'2027',month:'12',date:'Dec 2027',name:'PAVSS Annual Meeting',location:'Rotating',flag:'🌍',focus:'Vascular Surgery + HD Access',priority:'high',icon:'🟠'},
+      {year:'2028',month:'01',date:'Jan 2028',name:'Arab Health 2028',location:'Dubai, UAE',flag:'🇦🇪',focus:'Medical Devices',priority:'critical',icon:'🔴'},
+      {year:'2028',month:'04',date:'27–30 Apr 2028',name:'World Congress of Nephrology (WCN) 2028',location:'Montreal, Canada',flag:'🇨🇦',focus:'Global Nephrology',priority:'medium',icon:'🟡'},
+    ];
+
+    const priorityStyles = {
+      critical:{bg:'rgba(239,68,68,0.12)',border:'rgba(239,68,68,0.4)',dot:'#ef4444',label:'Critical'},
+      high:    {bg:'rgba(249,115,22,0.12)',border:'rgba(249,115,22,0.4)',dot:'#f97316',label:'High'},
+      medium:  {bg:'rgba(234,179,8,0.12)', border:'rgba(234,179,8,0.4)', dot:'#eab308',label:'Medium'},
+    };
+
+    function renderGrid(filter){
+      const grid = document.getElementById('exh-grid');
+      grid.innerHTML = '';
+      const filtered = exhibitions.filter(e => {
+        if(filter==='all') return true;
+        if(filter==='2027') return e.year==='2027';
+        if(filter==='2028') return e.year==='2028';
+        if(filter==='critical') return e.priority==='critical';
+        return true;
+      });
+      filtered.forEach(e => {
+        const ps = priorityStyles[e.priority] || priorityStyles.medium;
+        const card = document.createElement('div');
+        card.className = 'exh-card';
+        card.dataset.year = e.year;
+        card.dataset.priority = e.priority;
+        card.style.cssText = `
+          background:#0f1f3d;border:1px solid #1e3d7a;border-left:4px solid ${ps.dot};
+          border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;
+          transition:border-color .15s,transform .15s;cursor:default;
+        `;
+        card.onmouseenter = () => { card.style.borderColor = ps.dot; card.style.transform = 'translateY(-2px)'; };
+        card.onmouseleave = () => { card.style.borderColor = '#1e3d7a'; card.style.borderLeftColor = ps.dot; card.style.transform = ''; };
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <div style="font-size:13px;font-weight:700;color:#e8edf5;line-height:1.35;flex:1;">${e.name}</div>
+            <span style="flex-shrink:0;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;
+              background:${ps.bg};color:${ps.dot};border:1px solid ${ps.border};">
+              ${e.icon} ${ps.label}
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#60a5fa;font-weight:600;">
+            <span>📅</span><span>${e.date}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#a0b4cc;">
+            <span>${e.flag}</span><span>${e.location}</span>
+          </div>
+          <div style="margin-top:2px;background:#081321;border-radius:7px;padding:7px 10px;font-size:11px;color:#6a85b0;">
+            <span style="color:#3b82f6;font-weight:600;">Focus: </span>${e.focus}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      if(filtered.length === 0){
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#3a5278;">No events match this filter.</div>';
+      }
+    }
+
+    window.filterExhibitions = function(filter, btn){
+      ['all','2027','2028','critical'].forEach(f => {
+        const b = document.getElementById('exh-btn-'+f);
+        if(b){ b.style.background='#0f1f3d'; b.style.color='#6a85b0'; b.style.borderColor='#1e3d7a'; }
+      });
+      btn.style.background='#2563eb'; btn.style.color='#fff'; btn.style.borderColor='#2563eb';
+      renderGrid(filter);
+    };
+
+    renderGrid('all');
+  })();
+  </script>
 </div>
 
 <!-- REGULATORY -->
