@@ -206,8 +206,280 @@ html, body { background: #0b1628; height: 100%; }
 
 <!-- FORECAST -->
 <div class="page" id="page-forecast">
-  <div class="placeholder-page"><div class="placeholder-icon">📈</div><div class="placeholder-title">Revenue Forecast</div><div class="placeholder-sub">Coming soon</div></div>
+<div style="padding:0 16px 24px;">
+
+  <!-- KPI Cards -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #3b82f6;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Total 3-Year Revenue (Base)</div>
+      <div style="font-size:22px;font-weight:700;color:#60a5fa;margin-top:6px;">$964,939</div>
+      <div style="font-size:10px;color:#3b82f6;margin-top:4px;">2026 – 2028</div>
+    </div>
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #f59e0b;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Best Case 3-Year Revenue</div>
+      <div style="font-size:22px;font-weight:700;color:#f59e0b;margin-top:6px;">$1,609,369</div>
+      <div style="font-size:10px;color:#f59e0b;margin-top:4px;">Upside Scenario</div>
+    </div>
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #34d399;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">2028 Target (Base)</div>
+      <div style="font-size:22px;font-weight:700;color:#34d399;margin-top:6px;">$467,575</div>
+      <div style="font-size:10px;color:#34d399;margin-top:4px;">12,546 Units</div>
+    </div>
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #a78bfa;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Revenue CAGR</div>
+      <div style="font-size:22px;font-weight:700;color:#a78bfa;margin-top:6px;">61%</div>
+      <div style="font-size:10px;color:#a78bfa;margin-top:4px;">Base Case Growth</div>
+    </div>
+  </div>
+
+  <!-- Scenario Cards -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;">
+
+    <!-- Conservative -->
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #3b82f6;border-radius:14px;padding:18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="font-size:18px;">🔵</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#60a5fa;">Conservative</div>
+          <div style="font-size:10px;color:#3a5278;">Low adoption / slow ramp</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2026</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$120,296</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#60a5fa;">3,357</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2027</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$253,536</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#60a5fa;">6,938</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2028</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$400,779</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#60a5fa;">10,754</div></div>
+        </div>
+        <div style="background:#0b1a35;border-radius:10px;padding:10px;text-align:center;border:1px dashed #1e3d7a;margin-top:2px;">
+          <div style="font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:1px;">3-Year Total</div>
+          <div style="font-size:18px;font-weight:800;color:#3b82f6;margin-top:2px;">$774,611</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Base Case -->
+    <div style="background:#0f2f1f;border:1px solid #1e5a3a;border-top:3px solid #34d399;border-radius:14px;padding:18px;box-shadow:0 0 20px rgba(52,211,153,0.08);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="font-size:18px;">🟢</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#34d399;">Base Case</div>
+          <div style="font-size:10px;color:#2a6a4a;">Primary target scenario</div>
+        </div>
+        <span style="margin-left:auto;background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;">TARGET</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2026</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$180,444</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#34d399;">5,036</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2027</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$316,920</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#34d399;">8,673</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2028</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$467,575</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#34d399;">12,546</div></div>
+        </div>
+        <div style="background:#061a10;border-radius:10px;padding:10px;text-align:center;border:1px dashed #1e5a3a;margin-top:2px;">
+          <div style="font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:1px;">3-Year Total</div>
+          <div style="font-size:18px;font-weight:800;color:#34d399;margin-top:2px;">$964,939</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upside -->
+    <div style="background:#1f1800;border:1px solid #5a3e00;border-top:3px solid #f59e0b;border-radius:14px;padding:18px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="font-size:18px;">🟡</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;">Upside</div>
+          <div style="font-size:10px;color:#6a4a00;">Aggressive expansion</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2026</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$300,739</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#f59e0b;">8,393</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2027</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$507,072</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#f59e0b;">13,876</div></div>
+        </div>
+        <div style="background:#081321;border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:#6a85b0;">2028</div><div style="font-size:16px;font-weight:700;color:#e8edf5;">$801,557</div></div>
+          <div style="text-align:right;"><div style="font-size:10px;color:#6a85b0;">Units</div><div style="font-size:13px;color:#f59e0b;">21,507</div></div>
+        </div>
+        <div style="background:#100e00;border-radius:10px;padding:10px;text-align:center;border:1px dashed #5a3e00;margin-top:2px;">
+          <div style="font-size:9px;color:#6a85b0;text-transform:uppercase;letter-spacing:1px;">3-Year Total</div>
+          <div style="font-size:18px;font-weight:800;color:#f59e0b;margin-top:2px;">$1,609,369</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG Bar Chart -->
+  <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:20px;margin-bottom:18px;">
+    <div style="font-size:13px;font-weight:600;color:#c8d8f0;margin-bottom:4px;">📊 Scenario Comparison by Year</div>
+    <div style="font-size:10px;color:#3a5278;margin-bottom:16px;">Revenue in USD — Grouped by year</div>
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+      <!-- Grid lines -->
+      <line x1="60" y1="20" x2="60" y2="210" stroke="#1e3d7a" stroke-width="1"/>
+      <line x1="60" y1="210" x2="740" y2="210" stroke="#1e3d7a" stroke-width="1"/>
+      <line x1="60" y1="160" x2="740" y2="160" stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="60" y1="110" x2="740" y2="110" stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="60" y1="60"  x2="740" y2="60"  stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <!-- Y labels -->
+      <text x="55" y="214" fill="#6a85b0" font-size="9" text-anchor="end">$0</text>
+      <text x="55" y="164" fill="#6a85b0" font-size="9" text-anchor="end">$200K</text>
+      <text x="55" y="114" fill="#6a85b0" font-size="9" text-anchor="end">$400K</text>
+      <text x="55" y="64"  fill="#6a85b0" font-size="9" text-anchor="end">$600K</text>
+      <!-- X labels -->
+      <text x="200" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2026</text>
+      <text x="420" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2027</text>
+      <text x="640" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2028</text>
+
+      <!-- Scale: max ~$802K → 190px usable height (210→20). $802K=190px → 1px=$4221 -->
+      <!-- 2026: Conservative=120296→28.5px, Base=180444→42.7px, Upside=300739→71.2px -->
+      <!-- 2027: Conservative=253536→60px,  Base=316920→75px,   Upside=507072→120px  -->
+      <!-- 2028: Conservative=400779→94.9px, Base=467575→110.7px, Upside=801557→189.9px -->
+
+      <!-- 2026 bars -->
+      <rect x="130" y="181.5" width="42" height="28.5"  fill="#3b82f6" rx="3"/>
+      <rect x="178" y="167.3" width="42" height="42.7"  fill="#34d399" rx="3"/>
+      <rect x="226" y="138.8" width="42" height="71.2"  fill="#f59e0b" rx="3"/>
+      <!-- value labels 2026 -->
+      <text x="151" y="178" fill="#60a5fa" font-size="8" text-anchor="middle">$120K</text>
+      <text x="199" y="163" fill="#34d399" font-size="8" text-anchor="middle">$180K</text>
+      <text x="247" y="135" fill="#f59e0b" font-size="8" text-anchor="middle">$301K</text>
+
+      <!-- 2027 bars -->
+      <rect x="348" y="150" width="42" height="60"   fill="#3b82f6" rx="3"/>
+      <rect x="396" y="135" width="42" height="75"   fill="#34d399" rx="3"/>
+      <rect x="444" y="90"  width="42" height="120"  fill="#f59e0b" rx="3"/>
+      <!-- value labels 2027 -->
+      <text x="369" y="146" fill="#60a5fa" font-size="8" text-anchor="middle">$254K</text>
+      <text x="417" y="131" fill="#34d399" font-size="8" text-anchor="middle">$317K</text>
+      <text x="465" y="86"  fill="#f59e0b" font-size="8" text-anchor="middle">$507K</text>
+
+      <!-- 2028 bars -->
+      <rect x="568" y="115.1" width="42" height="94.9"  fill="#3b82f6" rx="3"/>
+      <rect x="616" y="99.3"  width="42" height="110.7" fill="#34d399" rx="3"/>
+      <rect x="664" y="20.1"  width="42" height="189.9" fill="#f59e0b" rx="3"/>
+      <!-- value labels 2028 -->
+      <text x="589" y="111" fill="#60a5fa" font-size="8" text-anchor="middle">$401K</text>
+      <text x="637" y="95"  fill="#34d399" font-size="8" text-anchor="middle">$468K</text>
+      <text x="685" y="16"  fill="#f59e0b" font-size="8" text-anchor="middle">$802K</text>
+    </svg>
+    <!-- Legend -->
+    <div style="display:flex;gap:20px;justify-content:center;margin-top:10px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#3b82f6;border-radius:3px;"></span>Conservative</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#34d399;border-radius:3px;"></span>Base Case</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#f59e0b;border-radius:3px;"></span>Upside</div>
+    </div>
+  </div>
+
+  <!-- Bottom-Up Country Table -->
+  <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;overflow:hidden;">
+    <div style="padding:16px 20px;border-bottom:1px solid #1e3d7a;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:15px;">🌍</span>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;">Bottom-Up Revenue Forecast by Country</div>
+        <div style="font-size:10px;color:#3a5278;margin-top:2px;">Base Case — USD · Share of 3-Year Total ($964,939)</div>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr style="background:#070f1f;">
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Country</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:right;font-weight:600;">2026</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:right;font-weight:600;">2027</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:right;font-weight:600;">2028</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:right;font-weight:600;">3-Year Total</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;min-width:140px;">Share</th>
+        </tr>
+      </thead>
+      <tbody id="country-forecast-body">
+      </tbody>
+    </table>
+  </div>
+
 </div>
+
+<script>
+(function(){
+  const rows=[
+    {flag:'🇸🇦',name:'Saudi Arabia', v26:85361,  v27:149466, v28:219841},
+    {flag:'🇮🇶',name:'Iraq',         v26:26801,  v27:47612,  v28:71049},
+    {flag:'🇯🇴',name:'Jordan',       v26:16788,  v27:29395,  v28:43236},
+    {flag:'🇱🇧',name:'Lebanon',      v26:12380,  v27:21573,  v28:31576},
+    {flag:'🇧🇭',name:'Bahrain',      v26:13085,  v27:23024,  v28:34029},
+    {flag:'🇴🇲',name:'Oman',         v26:6903,   v27:12146,  v28:17951},
+    {flag:'🇦🇪',name:'UAE',          v26:8914,   v27:15759,  v28:23404},
+    {flag:'🇰🇼',name:'Kuwait',       v26:6470,   v27:11329,  v28:16663},
+    {flag:'🇶🇦',name:'Qatar',        v26:3743,   v27:6617,   v28:9827},
+  ];
+  const grandTotal=964939;
+  const fmt=n=>'$'+n.toLocaleString();
+  const pct=(n,t)=>((n/t)*100).toFixed(1)+'%';
+  const barColors=['#f59e0b','#60a5fa','#34d399','#a78bfa','#f97316','#06b6d4','#ec4899','#84cc16','#e879f9'];
+  const tbody=document.getElementById('country-forecast-body');
+  rows.forEach((r,i)=>{
+    const total3=r.v26+r.v27+r.v28;
+    const share=(total3/grandTotal)*100;
+    const barW=Math.round(share*1.8);
+    const color=barColors[i%barColors.length];
+    const tr=document.createElement('tr');
+    tr.style.cssText='border-bottom:1px solid #14284b;transition:background .15s;';
+    tr.onmouseenter=()=>tr.style.background='#13274c';
+    tr.onmouseleave=()=>tr.style.background='';
+    tr.innerHTML=`
+      <td style="padding:12px 16px;color:#e8edf5;font-weight:600;">${r.flag} ${r.name}</td>
+      <td style="padding:12px 16px;color:#c8d8f0;text-align:right;">${fmt(r.v26)}</td>
+      <td style="padding:12px 16px;color:#c8d8f0;text-align:right;">${fmt(r.v27)}</td>
+      <td style="padding:12px 16px;color:#c8d8f0;text-align:right;">${fmt(r.v28)}</td>
+      <td style="padding:12px 16px;color:${color};font-weight:700;text-align:right;">${fmt(total3)}</td>
+      <td style="padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;background:#0b1628;border-radius:4px;height:6px;overflow:hidden;">
+            <div style="width:${barW}%;height:100%;background:${color};border-radius:4px;transition:width .4s;"></div>
+          </div>
+          <span style="font-size:10px;color:${color};font-weight:600;min-width:36px;">${share.toFixed(1)}%</span>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  // Total row
+  const totalTr=document.createElement('tr');
+  totalTr.style.cssText='background:#070f1f;border-top:2px solid #1e3d7a;';
+  const t26=rows.reduce((s,r)=>s+r.v26,0);
+  const t27=rows.reduce((s,r)=>s+r.v27,0);
+  const t28=rows.reduce((s,r)=>s+r.v28,0);
+  totalTr.innerHTML=`
+    <td style="padding:12px 16px;color:#60a5fa;font-weight:700;font-size:12px;">🌐 Total</td>
+    <td style="padding:12px 16px;color:#60a5fa;font-weight:700;text-align:right;">$${t26.toLocaleString()}</td>
+    <td style="padding:12px 16px;color:#60a5fa;font-weight:700;text-align:right;">$${t27.toLocaleString()}</td>
+    <td style="padding:12px 16px;color:#60a5fa;font-weight:700;text-align:right;">$${t28.toLocaleString()}</td>
+    <td style="padding:12px 16px;color:#f59e0b;font-weight:800;text-align:right;font-size:14px;">$964,939</td>
+    <td style="padding:12px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="flex:1;background:#0b1628;border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:100%;height:100%;background:linear-gradient(90deg,#3b82f6,#34d399,#f59e0b);border-radius:4px;"></div>
+        </div>
+        <span style="font-size:10px;color:#f59e0b;font-weight:700;">100%</span>
+      </div>
+    </td>
+  `;
+  tbody.appendChild(totalTr);
+})();
+</script>
 
 <!-- PRICING -->
 <div class="page" id="page-pricing">
