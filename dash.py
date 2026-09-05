@@ -155,16 +155,43 @@ html, body { background: #0b1628; height: 100%; }
 <div class="page" id="page-countries">
   <div class="section-header"><span style="font-size:16px">🌍</span><span class="section-title">Country Analysis — 9 Markets</span></div>
   <div class="country-grid" role="list">
-    <div class="c-card" style="--cc:#10b981" role="listitem" tabindex="0" onclick="openCountry('sa')" onkeydown="if(event.key==='Enter')openCountry('sa')" aria-label="Saudi Arabia"><div class="c-flag">🇸🇦</div><div class="c-name">Saudi Arabia</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#f59e0b" role="listitem" tabindex="0" onclick="openCountry('ae')" onkeydown="if(event.key==='Enter')openCountry('ae')" aria-label="UAE"><div class="c-flag">🇦🇪</div><div class="c-name">UAE</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait"><div class="c-flag">🇰🇼</div><div class="c-name">Kuwait</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar"><div class="c-flag">🇶🇦</div><div class="c-name">Qatar</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#ef4444" role="listitem" tabindex="0" onclick="openCountry('om')" onkeydown="if(event.key==='Enter')openCountry('om')" aria-label="Oman"><div class="c-flag">🇴🇲</div><div class="c-name">Oman</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#ec4899" role="listitem" tabindex="0" onclick="openCountry('bh')" onkeydown="if(event.key==='Enter')openCountry('bh')" aria-label="Bahrain"><div class="c-flag">🇧🇭</div><div class="c-name">Bahrain</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq"><div class="c-flag">🇮🇶</div><div class="c-name">Iraq</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan"><div class="c-flag">🇯🇴</div><div class="c-name">Jordan</div><div class="c-accent"></div></div>
-    <div class="c-card" style="--cc:#a3e635" role="listitem" tabindex="0" onclick="openCountry('lb')" onkeydown="if(event.key==='Enter')openCountry('lb')" aria-label="Lebanon"><div class="c-flag">🇱🇧</div><div class="c-name">Lebanon</div><div class="c-accent"></div></div>
+  <div class="c-card" style="--cc:#10b981" role="listitem" tabindex="0" onclick="openCountry('sa')" onkeydown="if(event.key==='Enter')openCountry('sa')" aria-label="Saudi Arabia">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_arabia_flag.jpeg" class="c-img"/>
+    <div class="c-name">Saudi Arabia</div><div class="c-accent"></div>
   </div>
+  <div class="c-card" style="--cc:#f59e0b" role="listitem" tabindex="0" onclick="openCountry('ae')" onkeydown="if(event.key==='Enter')openCountry('ae')" aria-label="UAE">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_flag.jpeg" class="c-img"/>
+    <div class="c-name">UAE</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" class="c-img"/>
+    <div class="c-name">Kuwait</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_flag.jpeg" class="c-img"/>
+    <div class="c-name">Qatar</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#ef4444" role="listitem" tabindex="0" onclick="openCountry('om')" onkeydown="if(event.key==='Enter')openCountry('om')" aria-label="Oman">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_flag.jpeg" class="c-img"/>
+    <div class="c-name">Oman</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#ec4899" role="listitem" tabindex="0" onclick="openCountry('bh')" onkeydown="if(event.key==='Enter')openCountry('bh')" aria-label="Bahrain">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahraien_flag.jpeg" class="c-img"/>
+    <div class="c-name">Bahrain</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img"/>
+    <div class="c-name">Iraq</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_flag.jpeg" class="c-img"/>
+    <div class="c-name">Jordan</div><div class="c-accent"></div>
+  </div>
+  <div class="c-card" style="--cc:#a3e635" role="listitem" tabindex="0" onclick="openCountry('lb')" onkeydown="if(event.key==='Enter')openCountry('lb')" aria-label="Lebanon">
+    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_flag.jpeg" class="c-img"/>
+    <div class="c-name">Lebanon</div><div class="c-accent"></div>
+  </div>
+</div>
   <div class="cd-panel" id="cd-panel" role="region" aria-live="polite">
     <div class="cd-header">
       <div class="cd-flag" id="cd-flag"></div>
