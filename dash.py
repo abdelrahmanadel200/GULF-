@@ -402,27 +402,92 @@ html, body { background: #0b1628; height: 100%; }
 
 <script>
 const countryData = {
-  sa:{flag:'🇸🇦',name:'Saudi Arabia',sub:'GCC — Largest Market',color:'#10b981',kpi:[{l:'HD Patients',v:'18,500'},{l:'HD Centers',v:'214'},{l:'HD Machines',v:'12,400'},{l:'Market Value',v:'$6.2M'}]},
-  ae:{flag:'🇦🇪',name:'UAE',sub:'GCC — Premium Segment',color:'#f59e0b',kpi:[{l:'HD Patients',v:'10,900'},{l:'HD Centers',v:'98'},{l:'HD Machines',v:'6,800'},{l:'Market Value',v:'$3.8M'}]},
-  kw:{flag:'🇰🇼',name:'Kuwait',sub:'GCC — High Spend Per Patient',color:'#3b82f6',kpi:[{l:'HD Patients',v:'3,500'},{l:'HD Centers',v:'42'},{l:'HD Machines',v:'2,100'},{l:'Market Value',v:'$1.4M'}]},
-  qa:{flag:'🇶🇦',name:'Qatar',sub:'GCC — Centralized Procurement',color:'#8b5cf6',kpi:[{l:'HD Patients',v:'2,800'},{l:'HD Centers',v:'28'},{l:'HD Machines',v:'1,700'},{l:'Market Value',v:'$1.1M'}]},
-  om:{flag:'🇴🇲',name:'Oman',sub:'GCC — Growing Market',color:'#ef4444',kpi:[{l:'HD Patients',v:'1,900'},{l:'HD Centers',v:'31'},{l:'HD Machines',v:'1,200'},{l:'Market Value',v:'$0.7M'}]},
-  bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',color:'#ec4899',kpi:[{l:'HD Patients',v:'1,200'},{l:'HD Centers',v:'18'},{l:'HD Machines',v:'780'},{l:'Market Value',v:'$0.5M'}]},
-  iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',color:'#f97316',kpi:[{l:'HD Patients',v:'4,200'},{l:'HD Centers',v:'89'},{l:'HD Machines',v:'3,100'},{l:'Market Value',v:'$1.2M'}]},
-  jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',color:'#06b6d4',kpi:[{l:'HD Patients',v:'2,100'},{l:'HD Centers',v:'67'},{l:'HD Machines',v:'1,400'},{l:'Market Value',v:'$0.8M'}]},
-  lb:{flag:'🇱🇧',name:'Lebanon',sub:'ME — Under Renewal',color:'#a3e635',kpi:[{l:'HD Patients',v:'1,700'},{l:'HD Centers',v:'55'},{l:'HD Machines',v:'980'},{l:'Market Value',v:'$0.6M'}]}
+  sa:{flag:'🇸🇦',name:'Saudi Arabia',sub:'GCC — Largest Market',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_landscape.jpeg',
+    colors:{primary:'#006400',secondary:'#ffffff',accent:'#ffffff'},
+    kpi:[{l:'HD Patients',v:'18,500'},{l:'HD Centers',v:'214'},{l:'HD Machines',v:'12,400'},{l:'Market Value',v:'$6.2M'}]},
+  ae:{flag:'🇦🇪',name:'UAE',sub:'GCC — Premium Segment',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_landscape.jpeg',
+    colors:{primary:'#00732f',secondary:'#ff0000',accent:'#ffffff'},
+    kpi:[{l:'HD Patients',v:'10,900'},{l:'HD Centers',v:'98'},{l:'HD Machines',v:'6,800'},{l:'Market Value',v:'$3.8M'}]},
+  kw:{flag:'🇰🇼',name:'Kuwait',sub:'GCC — High Spend Per Patient',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_landscape.jpeg',
+    colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
+    kpi:[{l:'HD Patients',v:'3,500'},{l:'HD Centers',v:'42'},{l:'HD Machines',v:'2,100'},{l:'Market Value',v:'$1.4M'}]},
+  qa:{flag:'🇶🇦',name:'Qatar',sub:'GCC — Centralized Procurement',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_landscape.jpeg',
+    colors:{primary:'#8d1b3d',secondary:'#ffffff',accent:'#8d1b3d'},
+    kpi:[{l:'HD Patients',v:'2,800'},{l:'HD Centers',v:'28'},{l:'HD Machines',v:'1,700'},{l:'Market Value',v:'$1.1M'}]},
+  om:{flag:'🇴🇲',name:'Oman',sub:'GCC — Growing Market',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_landscape.jpeg',
+    colors:{primary:'#db161b',secondary:'#ffffff',accent:'#008000'},
+    kpi:[{l:'HD Patients',v:'1,900'},{l:'HD Centers',v:'31'},{l:'HD Machines',v:'1,200'},{l:'Market Value',v:'$0.7M'}]},
+  bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpeg',
+    colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
+    kpi:[{l:'HD Patients',v:'1,200'},{l:'HD Centers',v:'18'},{l:'HD Machines',v:'780'},{l:'Market Value',v:'$0.5M'}]},
+  iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpeg',
+    colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#000000'},
+    kpi:[{l:'HD Patients',v:'4,200'},{l:'HD Centers',v:'89'},{l:'HD Machines',v:'3,100'},{l:'Market Value',v:'$1.2M'}]},
+  jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_landscape.jpeg',
+    colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
+    kpi:[{l:'HD Patients',v:'2,100'},{l:'HD Centers',v:'67'},{l:'HD Machines',v:'1,400'},{l:'Market Value',v:'$0.8M'}]},
+  lb:{flag:'🇱🇧',name:'Lebanon',sub:'ME — Under Renewal',
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_landscape.jpeg',
+    colors:{primary:'#ee161f',secondary:'#ffffff',accent:'#00a650'},
+    kpi:[{l:'HD Patients',v:'1,700'},{l:'HD Centers',v:'55'},{l:'HD Machines',v:'980'},{l:'Market Value',v:'$0.6M'}]}
 };
 
 function openCountry(code){
-  const d=countryData[code];
-  document.getElementById('cd-flag').textContent=d.flag;
-  document.getElementById('cd-title').textContent=d.name;
-  document.getElementById('cd-sub').textContent=d.sub;
-  document.getElementById('cd-kpi').innerHTML=d.kpi.map(k=>'<div class="cd-kpi-item"><div class="cd-kpi-label">'+k.l+'</div><div class="cd-kpi-val" style="color:'+d.color+'">'+k.v+'</div></div>').join('');
-  const p=document.getElementById('cd-panel');
-  p.classList.add('open');
-  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const d = countryData[code];
+  const existing = document.getElementById('country-overlay');
+  if(existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'country-overlay';
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
+    display:flex;flex-direction:column;overflow-y:auto;
+    background:linear-gradient(180deg,${d.colors.primary}dd 0%,#0b1628 45%);
+  `;
+  overlay.innerHTML = `
+    <div style="position:relative;width:100%;height:320px;overflow:hidden;flex-shrink:0;">
+      <img src="${d.landscape}" style="width:100%;height:100%;object-fit:cover;opacity:0.4;display:block;"/>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,#0b1628 100%);"></div>
+      <div style="position:absolute;top:20px;left:24px;">
+        <button onclick="document.getElementById('country-overlay').remove()"
+          style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;backdrop-filter:blur(6px);">
+          ← Back
+        </button>
+      </div>
+      <div style="position:absolute;bottom:24px;left:32px;display:flex;align-items:center;gap:16px;">
+        <span style="font-size:64px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));">${d.flag}</span>
+        <div>
+          <div style="font-size:32px;font-weight:800;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,0.7);">${d.name}</div>
+          <div style="font-size:13px;color:${d.colors.accent};filter:brightness(1.8);margin-top:4px;">${d.sub}</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 32px;flex:1;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+        ${d.kpi.map(k=>`
+          <div style="background:rgba(255,255,255,0.06);border:1px solid ${d.colors.primary}55;border-top:3px solid ${d.colors.primary};border-radius:14px;padding:20px;text-align:center;backdrop-filter:blur(8px);">
+            <div style="font-size:10px;color:#a0b0c8;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;">${k.l}</div>
+            <div style="font-size:28px;font-weight:800;color:#ffffff;margin-top:10px;">${k.v}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;margin-bottom:10px;">📊 Market Overview</div>
+        <div style="color:#6a85b0;font-size:12px;">Detailed market data coming soon...</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
 }
+
+function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
 function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
 
 function filterCompetitors(type,btn){
