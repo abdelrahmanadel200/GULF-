@@ -69,7 +69,8 @@ html, body { background: #0b1628; height: 100%; }
 .c-flag { font-size: 42px; line-height: 1; }
 .c-name { font-size: 13px; font-weight: 700; color: #e8edf5; }
 .c-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--cc, #2563eb); }
-.c-img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
+..c-img{width:100%;height:100px;object-fit:cover;border-radius:10px;display:block;}
+.c-card{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:10px 10px 14px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;}
 .cd-panel { display: none; margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px; animation: fadeIn .2s; }
 .cd-panel.open { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
