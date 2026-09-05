@@ -66,7 +66,7 @@ html, body { background: #0b1628; height: 100%; }
 .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 16px 16px; }
 .c-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 0; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: stretch; position: relative; overflow: hidden; height: 180px; }
 .c-card:hover, .c-card:focus { outline: none; transform: translateY(-2px); border-color: var(--cc, #2563eb); box-shadow: 0 0 0 3px var(--cc, #2563eb)55; }
-.c-img { width: 100%; height: 140px; object-fit: cover; object-position: center; display: block; border-radius: 0; }
+.c-img { width: 100%; height: 140px; object-fit: contain; object-position: center; display: block; border-radius: 0; background: #0a1628; }
 .c-name { font-size: 13px; font-weight: 700; color: #e8edf5; text-align: center; padding: 8px 0 10px; flex: 1; display: flex; align-items: center; justify-content: center; }
 .c-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--cc, #2563eb); }
 .cd-panel { display: none; margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px; animation: fadeIn .2s; }
