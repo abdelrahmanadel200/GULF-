@@ -71,6 +71,7 @@ html, body { background: #0b1628; height: 100%; }
 .c-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--cc, #2563eb); }
 ..c-img{width:100%;height:100px;object-fit:cover;border-radius:10px;display:block;}
 .c-card{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:10px 10px 14px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;}
+.c-flag-img{width:100%;height:100px;border-radius:10px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:0px;}
 .cd-panel { display: none; margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px; animation: fadeIn .2s; }
 .cd-panel.open { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -167,8 +168,8 @@ html, body { background: #0b1628; height: 100%; }
     <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_flag.jpeg" class="c-img"/>
     <div class="c-name">UAE</div><div class="c-accent"></div>
   </div>
-  <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
-    src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" onerror="this.style.display='none'"
+ <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
+    <div class="c-flag-img" style="background-image:url('https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg')">🇰🇼</div>
     <div class="c-name">Kuwait</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar">
@@ -183,8 +184,8 @@ html, body { background: #0b1628; height: 100%; }
     <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahraien_flag.jpeg" class="c-img"/>
     <div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
-  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-    src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" onerror="this.src='';this.style.fontSize='48px';this.outerHTML='<div style=\'font-size:48px\'>🇮🇶</div>'"
+ <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
+    <div class="c-flag-img" style="background-image:url('https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg')">🇮🇶</div>
     <div class="c-name">Iraq</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
@@ -487,5 +488,4 @@ function navigate(el,pageId){
 </body>
 </html>
 """
-
-components.html(dashboard_html, height=800, scrolling=False)
+components.html(dashboard_html, height=900, scrolling=True)
