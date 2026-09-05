@@ -82,6 +82,8 @@ html, body { background: #0b1628; height: 100%; }
 .cd-kpi-val { font-size:20px; font-weight:800; color:#60a5fa; margin-top:6px; letter-spacing:.5px; }
 .cd-close { margin-left: auto; background: #1e3d7a; border: none; color: #c8d8f0; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 12px; }
 .cd-close:hover { background: #2563eb; }
+/* Competitors by country */
+.country-filter-btn,.comp-threat-btn{padding:8px 12px;border-radius:9px;border:1px solid #1e3d7a;background:#1a2d4d;color:#c8d8f0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s ease}.country-filter-btn:hover,.comp-threat-btn:hover{border-color:#3b82f6;transform:translateY(-1px)}.country-filter-btn.comp-country-active,.comp-threat-btn.comp-threat-active{background:#2563eb;border-color:#3b82f6;color:#fff}.comp-country-title{font-size:16px;font-weight:700;color:#e8edf5}.comp-country-sub{font-size:10px;color:#6a85b0;margin-top:3px}.comp-summary{display:flex;flex-wrap:wrap;gap:8px}.comp-summary-pill{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:8px;padding:7px 10px;font-size:10px;color:#c8d8f0}.comp-card-new{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:all .18s ease}.comp-card-new:hover{border-color:#3b82f6;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}.comp-card-topline{position:absolute;top:0;left:0;right:0;height:3px}.comp-card-company{font-size:14px;font-weight:700;color:#fff}.comp-card-origin{font-size:10px;color:#6a85b0;margin-top:3px}.comp-threat-badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:700}.comp-share-row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 5px;font-size:10px;color:#94a3b8}.comp-share-value{color:#60a5fa;font-weight:700}.comp-share-bar{width:100%;height:6px;background:#081321;border-radius:99px;overflow:hidden;border:1px solid #14284b}.comp-share-fill{height:100%;border-radius:99px}.comp-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.comp-mini-box{background:#081321;border:1px solid #1e3d7a;border-radius:9px;padding:9px}.comp-mini-label{display:block;color:#6a85b0;font-size:8px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}.comp-mini-text{color:#e2e8f0;font-size:10px;line-height:1.35}.comp-edge{margin-top:11px;padding-top:10px;border-top:1px solid #1e3d7a;color:#34d399;font-size:10px;line-height:1.35}.comp-details-btn{width:100%;margin-top:11px;padding:8px 10px;border-radius:8px;border:1px solid #1e3d7a;background:#13274c;color:#60a5fa;font-size:10px;font-weight:700;cursor:pointer}.comp-details-btn:hover{background:#1a3a6e;border-color:#3b82f6}.comp-details-panel{display:none;margin-top:10px;padding:11px;background:#081321;border:1px solid #1e3d7a;border-radius:9px}.comp-details-panel.open{display:block}.comp-detail-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #14284b;font-size:10px}.comp-detail-row:last-child{border-bottom:none}.comp-detail-label{color:#6a85b0}.comp-detail-value{color:#e8edf5;text-align:right}
 /* Hot map */
 .hot-map { margin: 0 16px 16px; height: 520px; border: 1px solid #1e3d7a; border-radius: 14px; overflow: hidden; background: #081321; }
 #market-map { width: 100%; height: 100%; }
@@ -493,145 +495,33 @@ html, body { background: #0b1628; height: 100%; }
 
 <!-- COMPETITORS -->
 <div class="page" id="page-competitors">
-  <div class="p-4 space-y-6">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#0f1f3d] p-5 rounded-2xl border border-[#1e3d7a]">
-      <div>
-        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🏆</span> HD Catheters Global &amp; Regional Competitor Analysis</h2>
-        <p class="text-slate-400 text-xs mt-1">Market share tracking, strengths, weaknesses, and AMECATH's strategic edge</p>
-      </div>
+  <div class="p-4 space-y-5">
+    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 bg-[#0f1f3d] p-5 rounded-2xl border border-[#1e3d7a]">
+      <div><h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🏆</span> Competitor Intelligence by Country</h2><p class="text-slate-400 text-xs mt-1">Select a market, review the competitor benchmark, and open any company for full details.</p></div>
       <div class="flex flex-wrap gap-2">
-        <button onclick="filterCompetitors('all',this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">All (10)</button>
-        <button onclick="filterCompetitors('high',this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300">High Threat 🔴</button>
-        <button onclick="filterCompetitors('medium',this)" class="comp-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1a2d4d] text-slate-300">Medium Threat 🟡</button>
+        <button onclick="setCompetitorCountry('sa',this)" class="country-filter-btn comp-country-active">🇸🇦 Saudi Arabia</button>
+        <button onclick="setCompetitorCountry('ae',this)" class="country-filter-btn">🇦🇪 UAE</button>
+        <button onclick="setCompetitorCountry('kw',this)" class="country-filter-btn">🇰🇼 Kuwait</button>
+        <button onclick="setCompetitorCountry('qa',this)" class="country-filter-btn">🇶🇦 Qatar</button>
+        <button onclick="setCompetitorCountry('om',this)" class="country-filter-btn">🇴🇲 Oman</button>
+        <button onclick="setCompetitorCountry('bh',this)" class="country-filter-btn">🇧🇭 Bahrain</button>
+        <button onclick="setCompetitorCountry('iq',this)" class="country-filter-btn">🇮🇶 Iraq</button>
+        <button onclick="setCompetitorCountry('jo',this)" class="country-filter-btn">🇯🇴 Jordan</button>
+        <button onclick="setCompetitorCountry('lb',this)" class="country-filter-btn">🇱🇧 Lebanon</button>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="comp-grid">
-
-      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Fresenius Medical Care</h3><span class="text-xs text-slate-400">Germany — Full Dialysis Ecosystem</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~18–20%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-blue-500 h-full rounded-full" style="width:20%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Bundling catheters with machines</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Lower standalone catheter focus</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Flexible customization + faster local supply</span></div>
-      </div>
-
-      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Teleflex (Arrow)</h3><span class="text-xs text-slate-400">USA — Vascular Access Brand Equity</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~14–16%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-blue-500 h-full rounded-full" style="width:16%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Arrowg+ard antimicrobial tech</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Premium pricing structure</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Competitive pricing with equivalent flow</span></div>
-      </div>
-
-      <div class="comp-card high group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-red-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">B. Braun Melsungen</h3><span class="text-xs text-slate-400">Germany — Broad Pricing Power</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">High Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~12–14%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-blue-500 h-full rounded-full" style="width:14%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Established institutional distribution</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Standard design, slow iteration</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Specialized focus + regional agility</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Medtronic (Mahurkar)</h3><span class="text-xs text-slate-400">USA — Legacy Clinical Reputation</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~10–12%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:12%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Mahurkar curved lumen benchmark</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High acquisition cost</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Cost-effective with identical lumen specs</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">MedComp</h3><span class="text-xs text-slate-400">USA — Vascular Access Specialist</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~8–10%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:10%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Extensive HD portfolio</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Reliance on third-party distributors</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Direct ME manufacturing</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">BD (Bard / Pristine)</h3><span class="text-xs text-slate-400">USA — Global Sales Footprint</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~8–10%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:10%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Pristine/Symmetrex tip designs</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">High tender price pressures</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Superior price-to-performance</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Merit Medical</h3><span class="text-xs text-slate-400">USA — Interventional Specialist</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~5–7%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:7%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Interventional accessories bundle</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Smaller chronic dialysis presence</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Acute and chronic HD focus</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Nipro Corporation</h3><span class="text-xs text-slate-400">Japan — Quality Engineering</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~5–7%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:7%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Dialyzer and bloodline integration</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Slow delivery from East Asia</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Regional inventory and rapid restocking</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">AngioDynamics (BioFlo)</h3><span class="text-xs text-slate-400">USA — Advanced Material Science</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~4–6%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:6%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">Thrombus-resistant polymer</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Limited tender participation</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Flexible options at budget tiers</span></div>
-      </div>
-
-      <div class="comp-card medium group bg-[#0f1f3d] border border-[#1e3d7a] hover:border-blue-500 rounded-xl p-4 relative overflow-hidden transition-all duration-300">
-        <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500"></div>
-        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-base text-white group-hover:text-blue-400">Cook Medical</h3><span class="text-xs text-slate-400">USA — Interventional Pioneer</span></div><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Medium Threat</span></div>
-        <div class="flex justify-between mb-1 text-slate-300 text-xs"><span>Market Share (GCC):</span><span class="text-blue-400 font-bold">~3–5%</span></div>
-        <div class="w-full bg-slate-800 h-1.5 rounded-full mb-2"><div class="bg-amber-500 h-full rounded-full" style="width:5%"></div></div>
-        <div class="grid grid-cols-2 gap-2 text-[11px]">
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Strength:</span><span class="text-slate-200">High quality introducer kits</span></div>
-          <div class="bg-[#081321] p-2 rounded border border-[#1e3d7a]"><span class="text-slate-400 block">Weakness:</span><span class="text-slate-200">Slow dialysis space expansion</span></div>
-        </div>
-        <div class="pt-2 mt-2 border-t border-[#1e3d7a] text-xs"><span class="text-emerald-400 font-semibold">AMECATH: Comprehensive kit variations</span></div>
-      </div>
-
+    <div id="competitor-country-header" class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-4"></div>
+    <div class="flex flex-wrap gap-2">
+      <button onclick="setCompetitorThreat('all',this)" class="comp-threat-btn comp-threat-active">All</button>
+      <button onclick="setCompetitorThreat('high',this)" class="comp-threat-btn">🔴 High Threat</button>
+      <button onclick="setCompetitorThreat('medium',this)" class="comp-threat-btn">🟡 Medium Threat</button>
     </div>
+    <div id="comp-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
   </div>
 </div>
 
 <!-- HOT AREAS -->
+
 <div class="page" id="page-hotareas">
   <div class="section-header"><span style="font-size:16px">📍</span><span class="section-title">Hot Areas — Dialysis Market</span></div>
   <div class="hot-map"><div id="market-map"></div></div>
@@ -897,20 +787,27 @@ function openCountry(code){
 
 function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
 
-function filterCompetitors(type,btn){
-  document.querySelectorAll('.comp-filter-btn').forEach(b=>{b.classList.remove('bg-blue-600','text-white');b.classList.add('bg-[#1a2d4d]','text-slate-300');});
-  btn.classList.add('bg-blue-600','text-white');btn.classList.remove('bg-[#1a2d4d]','text-slate-300');
-  document.querySelectorAll('.comp-card').forEach(c=>{
-    if(type==='all'){c.style.display='';}
-    else{c.style.display=c.classList.contains(type)?'':'none';}
-  });
-}
-
-function toggleDetails(btn){
-  const panel=btn.closest('.comp-card').querySelector('.details-panel');
-  panel.classList.toggle('hidden');
-  btn.textContent=panel.classList.contains('hidden')?'Details ←':'Hide ↑';
-}
+const competitorCountries={sa:{flag:'🇸🇦',name:'Saudi Arabia',market:'Largest market in the current dashboard scope'},ae:{flag:'🇦🇪',name:'UAE',market:'Major regional hub and reference market'},kw:{flag:'🇰🇼',name:'Kuwait',market:'GCC dialysis market'},qa:{flag:'🇶🇦',name:'Qatar',market:'GCC dialysis market'},om:{flag:'🇴🇲',name:'Oman',market:'GCC dialysis market'},bh:{flag:'🇧🇭',name:'Bahrain',market:'GCC dialysis market'},iq:{flag:'🇮🇶',name:'Iraq',market:'Regional expansion market'},jo:{flag:'🇯🇴',name:'Jordan',market:'Regional expansion market'},lb:{flag:'🇱🇧',name:'Lebanon',market:'Regional expansion market'}};
+const competitorData=[
+{name:'Fresenius Medical Care',origin:'Germany',segment:'Full Dialysis Ecosystem',threat:'high',share:'18–20%',shareNum:20,strength:'Bundling catheters with machines',weakness:'Lower standalone catheter focus',edge:'Flexible customization + faster local supply'},
+{name:'Teleflex (Arrow)',origin:'USA',segment:'Vascular Access Brand Equity',threat:'high',share:'14–16%',shareNum:16,strength:'Arrowg+ard antimicrobial tech',weakness:'Premium pricing structure',edge:'Competitive pricing with equivalent flow'},
+{name:'B. Braun Melsungen',origin:'Germany',segment:'Broad Pricing Power',threat:'high',share:'12–14%',shareNum:14,strength:'Established institutional distribution',weakness:'Standard design, slow iteration',edge:'Specialized focus + regional agility'},
+{name:'Medtronic (Mahurkar)',origin:'USA',segment:'Legacy Clinical Reputation',threat:'medium',share:'10–12%',shareNum:12,strength:'Mahurkar curved lumen benchmark',weakness:'High acquisition cost',edge:'Cost-effective with identical lumen specs'},
+{name:'MedComp',origin:'USA',segment:'Vascular Access Specialist',threat:'medium',share:'8–10%',shareNum:10,strength:'Extensive HD portfolio',weakness:'Reliance on third-party distributors',edge:'Direct ME manufacturing'},
+{name:'BD (Bard / Pristine)',origin:'USA',segment:'Global Sales Footprint',threat:'medium',share:'8–10%',shareNum:10,strength:'Pristine/Symmetrex tip designs',weakness:'High tender price pressures',edge:'Superior price-to-performance'},
+{name:'Merit Medical',origin:'USA',segment:'Interventional Specialist',threat:'medium',share:'5–7%',shareNum:7,strength:'Interventional accessories bundle',weakness:'Smaller chronic dialysis presence',edge:'Acute and chronic HD focus'},
+{name:'Nipro Corporation',origin:'Japan',segment:'Quality Engineering',threat:'medium',share:'5–7%',shareNum:7,strength:'Dialyzer and bloodline integration',weakness:'Slow delivery from East Asia',edge:'Regional inventory and rapid restocking'},
+{name:'AngioDynamics (BioFlo)',origin:'USA',segment:'Advanced Material Science',threat:'medium',share:'4–6%',shareNum:6,strength:'Thrombus-resistant polymer',weakness:'Limited tender participation',edge:'Flexible options at budget tiers'},
+{name:'Cook Medical',origin:'USA',segment:'Interventional Pioneer',threat:'medium',share:'3–5%',shareNum:5,strength:'High quality introducer kits',weakness:'Slow dialysis space expansion',edge:'Comprehensive kit variations'}];
+let selectedCompetitorCountry='sa';let selectedCompetitorThreat='all';
+function threatMeta(type){return type==='high'?{label:'High Threat',dot:'#ef4444',bg:'rgba(239,68,68,.15)',text:'#f87171',line:'#ef4444'}:{label:'Medium Threat',dot:'#f59e0b',bg:'rgba(245,158,11,.15)',text:'#fbbf24',line:'#f59e0b'};}
+function renderCompetitors(){const country=competitorCountries[selectedCompetitorCountry],header=document.getElementById('competitor-country-header'),grid=document.getElementById('comp-grid');if(!header||!grid)return;const filtered=competitorData.filter(c=>selectedCompetitorThreat==='all'||c.threat===selectedCompetitorThreat),highCount=competitorData.filter(c=>c.threat==='high').length,mediumCount=competitorData.filter(c=>c.threat==='medium').length;header.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><div class="comp-country-title">${country.flag} ${country.name}</div><div class="comp-country-sub">${country.market} · Competitor view for this market</div></div><div class="comp-summary"><div class="comp-summary-pill">🏢 ${competitorData.length} Competitors</div><div class="comp-summary-pill">🔴 ${highCount} High Threat</div><div class="comp-summary-pill">🟡 ${mediumCount} Medium Threat</div><div class="comp-summary-pill">📊 GCC Benchmark</div></div></div>`;grid.innerHTML=filtered.map((c,i)=>{const t=threatMeta(c.threat),id='comp-detail-'+i+'-'+c.name.replace(/[^a-z0-9]/gi,'').toLowerCase();return `<div class="comp-card-new" data-threat="${c.threat}"><div class="comp-card-topline" style="background:${t.line};"></div><div class="flex justify-between items-start gap-3"><div><div class="comp-card-company">${c.name}</div><div class="comp-card-origin">${c.origin} · ${c.segment}</div></div><span class="comp-threat-badge" style="background:${t.bg};color:${t.text};border:1px solid ${t.dot}55;">${t.label}</span></div><div class="comp-share-row"><span>Market Share (GCC)</span><span class="comp-share-value">~${c.share}%</span></div><div class="comp-share-bar"><div class="comp-share-fill" style="width:${c.shareNum}%;background:${t.line};"></div></div><div class="comp-mini-grid"><div class="comp-mini-box"><span class="comp-mini-label">Strength</span><span class="comp-mini-text">${c.strength}</span></div><div class="comp-mini-box"><span class="comp-mini-label">Weakness</span><span class="comp-mini-text">${c.weakness}</span></div></div><div class="comp-edge"><b>AMECATH Edge:</b> ${c.edge}</div><button class="comp-details-btn" onclick="toggleCompetitorDetails('${id}',this)">View Details ↓</button><div class="comp-details-panel" id="${id}"><div class="comp-detail-row"><span class="comp-detail-label">Company</span><span class="comp-detail-value">${c.name}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Origin</span><span class="comp-detail-value">${c.origin}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Positioning</span><span class="comp-detail-value">${c.segment}</span></div><div class="comp-detail-row"><span class="comp-detail-label">GCC Share</span><span class="comp-detail-value">~${c.share}%</span></div><div class="comp-detail-row"><span class="comp-detail-label">Threat Level</span><span class="comp-detail-value">${t.label}</span></div><div style="margin-top:8px;color:#34d399;font-size:10px;line-height:1.45;"><b>Strategic takeaway:</b> ${c.edge}</div></div></div>`;}).join('');}
+function setCompetitorCountry(id,btn){selectedCompetitorCountry=id;document.querySelectorAll('.country-filter-btn').forEach(b=>b.classList.remove('comp-country-active'));if(btn)btn.classList.add('comp-country-active');renderCompetitors();}
+function setCompetitorThreat(type,btn){selectedCompetitorThreat=type;document.querySelectorAll('.comp-threat-btn').forEach(b=>b.classList.remove('comp-threat-active'));if(btn)btn.classList.add('comp-threat-active');renderCompetitors();}
+function toggleCompetitorDetails(id,btn){const panel=document.getElementById(id);if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
+function filterCompetitors(type,btn){setCompetitorThreat(type,btn);}
+function toggleDetails(btn){const panel=btn.closest('.comp-card-new')?.querySelector('.comp-details-panel');if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
+renderCompetitors();
 
 let marketMap=null;
 const marketPoints=[
