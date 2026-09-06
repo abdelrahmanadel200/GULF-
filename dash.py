@@ -1015,6 +1015,125 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
     if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); }
   });
 });
+/* ─── TENDERS ─── */
+(function () {
+  var tndrData = [
+    {id:1,  name:'National HD Catheter Supply 2026–2027',      country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO / SFDA',       value:'$820,000', deadline:'30 Sep 2026', status:'Open',      notes:'Active national procurement. Monitor tender clarifications, submission requirements, and award timeline via NUPCO Etimad portal.'},
+    {id:2,  name:'Hemodialysis Access Devices Framework',       country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'MOH KSA',             value:'$540,000', deadline:'15 Oct 2026', status:'Open',      notes:'Framework opportunity for HD access devices. Review commercial and technical requirements before final submission.'},
+    {id:3,  name:'Kimadia HD Catheter Bulk Order Q4 2026',      country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)',  value:'$610,000', deadline:'20 Oct 2026', status:'Open',      notes:'Q4 bulk procurement via Kimadia. Confirm product registration, delivery requirements, and quantities.'},
+    {id:4,  name:'RMS HD Catheter Annual Contract',             country:'Jordan',       display:'🇯🇴 Jordan',       authority:'Royal Medical Serv.', value:'$280,000', deadline:'05 Nov 2026', status:'Submitted', notes:'Submission completed. Pending evaluation and award decision by Royal Medical Services.'},
+    {id:5,  name:'MOH Jordan Dialysis Consumables 2027',        country:'Jordan',       display:'🇯🇴 Jordan',       authority:'MOH Jordan',          value:'$195,000', deadline:'12 Nov 2026', status:'Submitted', notes:'Submitted. Track evaluation progress and any requests for clarification from MOH Jordan.'},
+    {id:6,  name:'MOH Lebanon Hospital Catheter Supply',        country:'Lebanon',      display:'🇱🇧 Lebanon',      authority:'MOH Lebanon',         value:'$145,000', deadline:'18 Nov 2026', status:'Open',      notes:'Validate local procurement documentation and ensure technical files are complete before deadline.'},
+    {id:7,  name:'BDF / RMS Bahrain HD Catheter 2027',          country:'Bahrain',      display:'🇧🇭 Bahrain',      authority:'BDF Hospital / RMS', value:'$210,000', deadline:'25 Nov 2026', status:'Submitted', notes:'Submitted to BDF/RMS. Awaiting evaluation and award communication from Bahrain procurement team.'},
+    {id:8,  name:'MOH Oman Vascular Access Framework',          country:'Oman',         display:'🇴🇲 Oman',         authority:'MOH Oman Central',   value:'$320,000', deadline:'01 Dec 2026', status:'Submitted', notes:'Framework submission pending award. Maintain follow-up with central procurement team.'},
+    {id:9,  name:'DHA Dubai HD Catheter Framework 2027',        country:'UAE',          display:'🇦🇪 UAE',          authority:'DHA Dubai',           value:'$175,000', deadline:'10 Dec 2026', status:'Submitted', notes:'Submitted to DHA Dubai for evaluation. Monitor award status and technical clarification requests.'},
+    {id:10, name:'HMC Qatar Catheter Annual Contract',          country:'Qatar',        display:'🇶🇦 Qatar',        authority:'HMC Qatar',           value:'$130,000', deadline:'15 Dec 2026', status:'Submitted', notes:'Annual contract submitted to HMC. Follow procurement updates through evaluation and award process.'},
+    {id:11, name:'MOH Kuwait Dialysis Access 2027',             country:'Kuwait',       display:'🇰🇼 Kuwait',       authority:'MOH Kuwait Central', value:'$185,000', deadline:'20 Dec 2026', status:'Open',      notes:'Open 2027 dialysis access procurement. Prepare technical and commercial documentation before closing date.'},
+    {id:12, name:'NUPCO KSA Emergency HD Catheter Lot',         country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO',               value:'$390,000', deadline:'31 Dec 2026', status:'Won',       notes:'Awarded. Coordinate order execution, delivery planning, and post-award documentation with NUPCO.'},
+    {id:13, name:'MOH Iraq Regional HD Catheter Supply',        country:'Iraq',         display:'🇮🇶 Iraq',         authority:'MOH Iraq Regional',  value:'$165,000', deadline:'10 Jan 2027', status:'Won',       notes:'Won. Proceed with contracting, fulfillment planning, and required delivery documentation.'},
+    {id:14, name:'Kimadia Framework Extension 2027',            country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)', value:'$245,000', deadline:'28 Feb 2027', status:'Won',       notes:'Framework extension awarded. Coordinate documentation, forecasted quantities, and implementation schedule.'}
+  ];
+
+  var tndrCountryFilter = 'all';
+  var tndrStatusFilter  = 'all';
+
+  function tndrStatusClass(s) {
+    if (s === 'Open')      return 'tndr-status-open';
+    if (s === 'Submitted') return 'tndr-status-submitted';
+    if (s === 'Won')       return 'tndr-status-won';
+    return 'tndr-status-closed';
+  }
+  function tndrStatusLabel(s) { return s === 'Won' ? 'Won ✅' : s; }
+
+  function tndrRender() {
+    var tbody = document.getElementById('tndr-table-body');
+    if (!tbody) return;
+    var filtered = tndrData.filter(function(r) {
+      return (tndrCountryFilter === 'all' || r.country === tndrCountryFilter) &&
+             (tndrStatusFilter  === 'all' || r.status  === tndrStatusFilter);
+    });
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="tndr-empty">No tenders match the selected filters.</td></tr>';
+      return;
+    }
+    var html = '';
+    filtered.forEach(function(r) {
+      var sc = tndrStatusClass(r.status);
+      var sl = tndrStatusLabel(r.status);
+      html += '<tr>' +
+        '<td class="tndr-number">' + r.id + '</td>' +
+        '<td class="tndr-name">' + r.name + '</td>' +
+        '<td class="tndr-country">' + r.display + '</td>' +
+        '<td class="tndr-authority" style="color:#8fa8cf;">' + r.authority + '</td>' +
+        '<td class="tndr-value">' + r.value + '</td>' +
+        '<td class="tndr-deadline" style="color:#b8c7dd;">' + r.deadline + '</td>' +
+        '<td><span class="tndr-status ' + sc + '">' + sl + '</span></td>' +
+        '<td><button class="tndr-view-btn" onclick="tndrOpenModal(' + r.id + ')">View</button></td>' +
+      '</tr>';
+    });
+    /* Total row */
+    html += '<tr>' +
+      '<td colspan="4" style="padding:13px 14px;background:#10264a;color:#6a85b0;font-size:11px;font-weight:700;text-align:right;border-top:1px solid #1e3d7a;">TOTAL PIPELINE VALUE</td>' +
+      '<td style="padding:13px 14px;background:#10264a;color:#60a5fa;font-size:14px;font-weight:800;border-top:1px solid #1e3d7a;">$4,210,000</td>' +
+      '<td colspan="3" style="background:#10264a;border-top:1px solid #1e3d7a;"></td>' +
+    '</tr>';
+    tbody.innerHTML = html;
+  }
+
+  window.tndrOpenModal = function(id) {
+    var r = tndrData.find(function(x){ return x.id === id; });
+    if (!r) return;
+    document.getElementById('tndr-modal-title').textContent = r.name;
+    document.getElementById('tndr-d-name').textContent      = r.name;
+    document.getElementById('tndr-d-country').textContent   = r.display;
+    document.getElementById('tndr-d-authority').textContent = r.authority;
+    document.getElementById('tndr-d-value').textContent     = r.value;
+    document.getElementById('tndr-d-deadline').textContent  = r.deadline;
+    document.getElementById('tndr-d-status').innerHTML =
+      '<span class="tndr-status ' + tndrStatusClass(r.status) + '">' + tndrStatusLabel(r.status) + '</span>';
+    document.getElementById('tndr-d-notes').textContent = r.notes;
+    document.getElementById('tndr-modal').classList.add('show');
+  };
+
+  function tndrCloseModal() {
+    var m = document.getElementById('tndr-modal');
+    if (m) m.classList.remove('show');
+  }
+
+  function tndrSetCountry(val) {
+    tndrCountryFilter = val;
+    document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-tndr-country') === val);
+    });
+    tndrRender();
+  }
+
+  function tndrSetStatus(val) {
+    tndrStatusFilter = val;
+    document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-tndr-status') === val);
+    });
+    tndrRender();
+  }
+
+  document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
+    b.addEventListener('click', function() { tndrSetCountry(b.getAttribute('data-tndr-country')); });
+  });
+  document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
+    b.addEventListener('click', function() { tndrSetStatus(b.getAttribute('data-tndr-status')); });
+  });
+
+  var mx = document.getElementById('tndr-modal-x');
+  var mc = document.getElementById('tndr-modal-close');
+  var mo = document.getElementById('tndr-modal');
+  if (mx) mx.addEventListener('click', tndrCloseModal);
+  if (mc) mc.addEventListener('click', tndrCloseModal);
+  if (mo) mo.addEventListener('click', function(e) { if (e.target === mo) tndrCloseModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tndrCloseModal(); });
+
+  tndrRender();
+})();
+/* ─── END TENDERS ─── */
 </script>
 </body>
 </html>
