@@ -488,10 +488,10 @@ html, body { background: #0b1628; height: 100%; }
   <div class="placeholder-page"><div class="placeholder-icon">💲</div><div class="placeholder-title">Pricing Intel</div><div class="placeholder-sub">Coming soon</div></div>
 </div>
 
+
 <!-- TENDERS -->
 <div class="page" id="page-tenders">
-  <div style="padding: 0 16px 32px;">
-
+  <div style="padding:0 16px 32px;">
     <style>
       #page-tenders * { box-sizing: border-box; }
       #page-tenders .tndr-kpis { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
@@ -523,164 +523,38 @@ html, body { background: #0b1628; height: 100%; }
       #page-tenders .tndr-country, #page-tenders .tndr-deadline { white-space:nowrap; }
       #page-tenders .tndr-authority { min-width:155px; }
       #page-tenders .tndr-status { display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px; font-size:10px; font-weight:700; white-space:nowrap; border:1px solid; }
-      #page-tenders .tndr-status-open     { color:#fbbf24; background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.5); }
+      #page-tenders .tndr-status-open { color:#fbbf24; background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.5); }
       #page-tenders .tndr-status-submitted { color:#60a5fa; background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.5); }
-      #page-tenders .tndr-status-won      { color:#34d399; background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.5); }
-      #page-tenders .tndr-status-closed   { color:#8fa8cf; background:rgba(106,133,176,.12); border-color:rgba(106,133,176,.5); }
+      #page-tenders .tndr-status-won { color:#34d399; background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.5); }
+      #page-tenders .tndr-status-closed { color:#8fa8cf; background:rgba(106,133,176,.12); border-color:rgba(106,133,176,.5); }
       #page-tenders .tndr-view-btn { border:1px solid #2563eb; background:rgba(37,99,235,.16); color:#60a5fa; border-radius:8px; padding:6px 12px; font-family:inherit; font-size:11px; font-weight:700; cursor:pointer; transition:all .16s; }
       #page-tenders .tndr-view-btn:hover { background:#2563eb; color:#fff; }
       #page-tenders .tndr-empty { text-align:center; padding:42px 20px !important; color:#6a85b0 !important; }
-          </div><!-- end tndr-section-active -->
-
-    <!-- ═══ PIPELINE FORECAST SECTION ═══ -->
-    <div id="tndr-section-pipeline" style="display:none;">
-
-      <!-- Pipeline KPIs -->
-      <div class="tndr-kpis" style="grid-template-columns:repeat(5,minmax(0,1fr));">
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Pipeline</div><div class="tndr-kpi-value" style="color:#60a5fa;">20</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Est. Total Value</div><div class="tndr-kpi-value" style="color:#f59e0b;">$27M+</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical Priority</div><div class="tndr-kpi-value" style="color:#ef4444;">8</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Launching Q4 2026</div><div class="tndr-kpi-value" style="color:#a78bfa;">6</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Countries</div><div class="tndr-kpi-value" style="color:#34d399;">7</div></div>
-      </div>
-
-      <!-- Pipeline Filters -->
-      <div class="tndr-filters" style="margin-bottom:16px;">
-        <div class="tndr-filter-group">
-          <span class="tndr-filter-label">Country</span>
-          <button class="tndr-filter-btn active" data-pipe-country="all">All</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇦🇪 UAE">🇦🇪 UAE</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇴🇲 Oman">🇴🇲 Oman</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
-        </div>
-        <div class="tndr-filter-group">
-          <span class="tndr-filter-label">Priority</span>
-          <button class="tndr-filter-btn active" data-pipe-priority="all">All Priority</button>
-          <button class="tndr-filter-btn" data-pipe-priority="Critical">🔴 Critical</button>
-          <button class="tndr-filter-btn" data-pipe-priority="High">🟠 High</button>
-          <button class="tndr-filter-btn" data-pipe-priority="Medium">🟡 Medium</button>
-        </div>
-      </div>
-
-      <!-- Pipeline Table -->
-      <div class="tndr-table-wrap">
-        <table class="tndr-table" style="min-width:1200px;">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Expected Tender Title</th>
-              <th>Country</th>
-              <th>Issuing Entity</th>
-              <th>Ref. (Est.)</th>
-              <th>Launch</th>
-              <th>Closing</th>
-              <th>Est. Value</th>
-              <th>Priority</th>
-            </tr>
-          </thead>
-          <tbody id="pipe-table-body"></tbody>
-        </table>
-      </div>
-
-      <!-- Notes -->
-      <div style="margin-top:14px;background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px;font-size:11px;color:#6a85b0;line-height:1.7;">
-        <span style="color:#f59e0b;font-weight:700;">⚠️ Note:</span>
-        Pipeline data represents <b style="color:#c8d8f0;">expected / forecasted tenders</b> based on historical procurement cycles and market intelligence.
-        Tender references marked <b style="color:#c8d8f0;">(est.)</b> are estimated. Monitor official portals: NUPCO Etimad · HMC Portal · DAHC · Kimadia · MOH portals per country.
-      </div>
-
-    </div><!-- end tndr-section-pipeline -->
-        </div><!-- end tndr-section-active -->
-
-    <!-- ═══ PIPELINE FORECAST SECTION ═══ -->
-    <div id="tndr-section-pipeline" style="display:none;">
-
-      <div class="tndr-kpis">
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Pipeline</div><div class="tndr-kpi-value" style="color:#60a5fa;">20</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Est. Total Value</div><div class="tndr-kpi-value" style="color:#f59e0b;">$27M+</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical Priority</div><div class="tndr-kpi-value" style="color:#ef4444;">8</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Launching Q4 2026</div><div class="tndr-kpi-value" style="color:#a78bfa;">6</div></div>
-        <div class="tndr-kpi"><div class="tndr-kpi-label">Countries</div><div class="tndr-kpi-value" style="color:#34d399;">7</div></div>
-      </div>
-
-      <div class="tndr-filters" style="margin-bottom:16px;">
-        <div class="tndr-filter-group">
-          <span class="tndr-filter-label">Country</span>
-          <button class="tndr-filter-btn active" data-pipe-country="all">All</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇦🇪 UAE">🇦🇪 UAE</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇴🇲 Oman">🇴🇲 Oman</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
-          <button class="tndr-filter-btn" data-pipe-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
-        </div>
-        <div class="tndr-filter-group">
-          <span class="tndr-filter-label">Priority</span>
-          <button class="tndr-filter-btn active" data-pipe-priority="all">All Priority</button>
-          <button class="tndr-filter-btn" data-pipe-priority="Critical">🔴 Critical</button>
-          <button class="tndr-filter-btn" data-pipe-priority="High">🟠 High</button>
-          <button class="tndr-filter-btn" data-pipe-priority="Medium">🟡 Medium</button>
-        </div>
-      </div>
-
-      <div class="tndr-table-wrap">
-        <table class="tndr-table" style="min-width:1200px;">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Expected Tender Title</th>
-              <th>Country</th>
-              <th>Issuing Entity</th>
-              <th>Ref. (Est.)</th>
-              <th>Launch</th>
-              <th>Closing</th>
-              <th>Est. Value</th>
-              <th>Priority</th>
-            </tr>
-          </thead>
-          <tbody id="pipe-table-body"></tbody>
-        </table>
-      </div>
-
-      <div style="margin-top:14px;background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px;font-size:11px;color:#6a85b0;line-height:1.7;">
-        <span style="color:#f59e0b;font-weight:700;">⚠️ Note:</span>
-        Pipeline data represents <b style="color:#c8d8f0;">expected / forecasted tenders</b> based on historical procurement cycles and market intelligence.
-        Tender references marked <b style="color:#c8d8f0;">(est.)</b> are estimated. Monitor: NUPCO Etimad · HMC Portal · DAHC · Kimadia · MOH portals per country.
-      </div>
-
-    </div><!-- end tndr-section-pipeline -->
-      /* Modal */
-      .tndr-modal-overlay { display:none; position:fixed; inset:0; z-index:99999; background:rgba(3,10,22,.78); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:22px; }
-      .tndr-modal-overlay.show { display:flex; }
-      .tndr-modal-card { width:min(650px,100%); max-height:min(760px,92vh); overflow-y:auto; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:14px; box-shadow:0 25px 80px rgba(0,0,0,.48); }
-      .tndr-modal-header { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding:20px 21px; border-bottom:1px solid #1e3d7a; background:#10264a; }
-      .tndr-modal-title { margin:0; color:#e8edf5; font-size:17px; font-weight:700; line-height:1.35; }
-      .tndr-modal-kicker { margin:0 0 5px; color:#60a5fa; font-size:10px; text-transform:uppercase; letter-spacing:.65px; font-weight:800; }
-      .tndr-modal-x { border:1px solid #1e3d7a; background:#0b1628; color:#8fa8cf; width:31px; height:31px; border-radius:8px; cursor:pointer; font-size:17px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
-      .tndr-modal-x:hover { color:#e8edf5; border-color:#3b82f6; }
-      .tndr-modal-body { padding:20px 21px; }
-      .tndr-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-      .tndr-detail { background:#0b1628; border:1px solid rgba(30,61,122,.75); border-radius:10px; padding:13px 14px; }
-      .tndr-detail-full { grid-column:1/-1; }
-      .tndr-detail-label { color:#6a85b0; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.55px; margin-bottom:6px; }
-      .tndr-detail-value { color:#e8edf5; font-size:13px; font-weight:600; line-height:1.45; }
-      .tndr-notes { color:#8fa8cf !important; font-weight:500 !important; }
-      .tndr-modal-footer { padding:15px 21px 20px; display:flex; justify-content:flex-end; border-top:1px solid rgba(30,61,122,.65); }
-      .tndr-close-btn { border:1px solid #1e3d7a; background:#10264a; color:#e8edf5; border-radius:9px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
-      .tndr-close-btn:hover { border-color:#3b82f6; background:#15305c; }
+      #page-tenders .tndr-modal-overlay { display:none; position:fixed; inset:0; z-index:99999; background:rgba(3,10,22,.78); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:22px; }
+      #page-tenders .tndr-modal-overlay.show { display:flex; }
+      #page-tenders .tndr-modal-card { width:min(650px,100%); max-height:min(760px,92vh); overflow-y:auto; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:14px; box-shadow:0 25px 80px rgba(0,0,0,.48); }
+      #page-tenders .tndr-modal-header { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding:20px 21px; border-bottom:1px solid #1e3d7a; background:#10264a; }
+      #page-tenders .tndr-modal-title { margin:0; color:#e8edf5; font-size:17px; font-weight:700; line-height:1.35; }
+      #page-tenders .tndr-modal-kicker { margin:0 0 5px; color:#60a5fa; font-size:10px; text-transform:uppercase; letter-spacing:.65px; font-weight:800; }
+      #page-tenders .tndr-modal-x { border:1px solid #1e3d7a; background:#0b1628; color:#8fa8cf; width:31px; height:31px; border-radius:8px; cursor:pointer; font-size:17px; display:flex; align-items:center; justify-content:center; }
+      #page-tenders .tndr-modal-x:hover { color:#e8edf5; border-color:#3b82f6; }
+      #page-tenders .tndr-modal-body { padding:20px 21px; }
+      #page-tenders .tndr-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+      #page-tenders .tndr-detail { background:#0b1628; border:1px solid rgba(30,61,122,.75); border-radius:10px; padding:13px 14px; }
+      #page-tenders .tndr-detail-full { grid-column:1/-1; }
+      #page-tenders .tndr-detail-label { color:#6a85b0; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.55px; margin-bottom:6px; }
+      #page-tenders .tndr-detail-value { color:#e8edf5; font-size:13px; font-weight:600; line-height:1.45; }
+      #page-tenders .tndr-notes { color:#8fa8cf !important; font-weight:500 !important; }
+      #page-tenders .tndr-modal-footer { padding:15px 21px 20px; display:flex; justify-content:flex-end; border-top:1px solid rgba(30,61,122,.65); }
+      #page-tenders .tndr-close-btn { border:1px solid #1e3d7a; background:#10264a; color:#e8edf5; border-radius:9px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+      #page-tenders .tndr-close-btn:hover { border-color:#3b82f6; background:#15305c; }
+      @media (max-width:900px) {
+        #page-tenders .tndr-kpis { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        #page-tenders .tndr-detail-grid { grid-template-columns:1fr; }
+        #page-tenders .tndr-detail-full { grid-column:auto; }
+      }
     </style>
 
-    <!-- Header -->
-        <!-- Header -->
     <div style="margin-bottom:18px;">
       <div style="font-size:15px;font-weight:600;color:#c8d8f0;display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <span>📋</span> Tenders &amp; Procurement Intelligence
@@ -688,126 +562,130 @@ html, body { background: #0b1628; height: 100%; }
       <div style="font-size:11px;color:#3a5278;">Gulf &amp; Middle East — Active Tenders + 2026/2027 Pipeline Forecast</div>
     </div>
 
-    <!-- Tab Switcher -->
     <div style="display:flex;gap:0;margin-bottom:18px;background:#0f1f3d;border:1px solid #1e3d7a;border-radius:12px;padding:5px;">
-      <button id="tndr-tab-active" onclick="tndrSwitchTab('active')"
-        style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:#2563eb;color:#fff;">
+      <button id="tndr-tab-active" onclick="tndrSwitchTab('active')" style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:#2563eb;color:#fff;">
         📋 Active Tenders (14)
       </button>
-      <button id="tndr-tab-pipeline" onclick="tndrSwitchTab('pipeline')"
-        style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#6a85b0;">
+      <button id="tndr-tab-pipeline" onclick="tndrSwitchTab('pipeline')" style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#6a85b0;">
         🔭 Pipeline Forecast (20)
       </button>
     </div>
 
-    <!-- ═══ ACTIVE TENDERS SECTION ═══ -->
     <div id="tndr-section-active">
+      <div class="tndr-kpis">
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Active Tenders</div><div class="tndr-kpi-value">14</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Estimated Total Value</div><div class="tndr-kpi-value" style="color:#60a5fa;">$4.2M</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical / Urgent</div><div class="tndr-kpi-value" style="color:#f59e0b;">4</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Submitted / Pending</div><div class="tndr-kpi-value" style="color:#3b82f6;">6</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Won YTD</div><div class="tndr-kpi-value" style="color:#34d399;">3</div></div>
+      </div>
 
-    <!-- KPI Cards -->
-    <div class="tndr-kpis">
-      <div class="tndr-kpi"><div class="tndr-kpi-label">Total Active Tenders</div><div class="tndr-kpi-value">14</div></div>
-      <div class="tndr-kpi"><div class="tndr-kpi-label">Estimated Total Value</div><div class="tndr-kpi-value" style="color:#60a5fa;">$4.2M</div></div>
-      <div class="tndr-kpi"><div class="tndr-kpi-label">Critical / Urgent</div><div class="tndr-kpi-value" style="color:#f59e0b;">4</div></div>
-      <div class="tndr-kpi"><div class="tndr-kpi-label">Submitted / Pending</div><div class="tndr-kpi-value" style="color:#3b82f6;">6</div></div>
-      <div class="tndr-kpi"><div class="tndr-kpi-label">Won YTD</div><div class="tndr-kpi-value" style="color:#34d399;">3</div></div>
+      <div class="tndr-filters">
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Country</span>
+          <button class="tndr-filter-btn active" data-tndr-country="all">All</button>
+          <button class="tndr-filter-btn" data-tndr-country="Saudi Arabia">🇸🇦 KSA</button>
+          <button class="tndr-filter-btn" data-tndr-country="Iraq">🇮🇶 Iraq</button>
+          <button class="tndr-filter-btn" data-tndr-country="Jordan">🇯🇴 Jordan</button>
+          <button class="tndr-filter-btn" data-tndr-country="Lebanon">🇱🇧 Lebanon</button>
+          <button class="tndr-filter-btn" data-tndr-country="Bahrain">🇧🇭 Bahrain</button>
+          <button class="tndr-filter-btn" data-tndr-country="Oman">🇴🇲 Oman</button>
+          <button class="tndr-filter-btn" data-tndr-country="UAE">🇦🇪 UAE</button>
+          <button class="tndr-filter-btn" data-tndr-country="Qatar">🇶🇦 Qatar</button>
+          <button class="tndr-filter-btn" data-tndr-country="Kuwait">🇰🇼 Kuwait</button>
+        </div>
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Status</span>
+          <button class="tndr-filter-btn active" data-tndr-status="all">All Status</button>
+          <button class="tndr-filter-btn" data-tndr-status="Open">Open</button>
+          <button class="tndr-filter-btn" data-tndr-status="Submitted">Submitted</button>
+          <button class="tndr-filter-btn" data-tndr-status="Won">Won ✅</button>
+          <button class="tndr-filter-btn" data-tndr-status="Closed">Closed</button>
+        </div>
+      </div>
+
+      <div class="tndr-table-wrap">
+        <table class="tndr-table">
+          <thead><tr>
+            <th>#</th><th>Tender Name</th><th>Country</th><th>Authority</th>
+            <th>Est. Value</th><th>Deadline</th><th>Status</th><th>Action</th>
+          </tr></thead>
+          <tbody id="tndr-table-body"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Filters -->
-    <div class="tndr-filters">
-      <div class="tndr-filter-group">
-        <span class="tndr-filter-label">Country</span>
-        <button class="tndr-filter-btn active" data-tndr-country="all">All</button>
-        <button class="tndr-filter-btn" data-tndr-country="Saudi Arabia">🇸🇦 KSA</button>
-        <button class="tndr-filter-btn" data-tndr-country="Iraq">🇮🇶 Iraq</button>
-        <button class="tndr-filter-btn" data-tndr-country="Jordan">🇯🇴 Jordan</button>
-        <button class="tndr-filter-btn" data-tndr-country="Lebanon">🇱🇧 Lebanon</button>
-        <button class="tndr-filter-btn" data-tndr-country="Bahrain">🇧🇭 Bahrain</button>
-        <button class="tndr-filter-btn" data-tndr-country="Oman">🇴🇲 Oman</button>
-        <button class="tndr-filter-btn" data-tndr-country="UAE">🇦🇪 UAE</button>
-        <button class="tndr-filter-btn" data-tndr-country="Qatar">🇶🇦 Qatar</button>
-        <button class="tndr-filter-btn" data-tndr-country="Kuwait">🇰🇼 Kuwait</button>
+    <div id="tndr-section-pipeline" style="display:none;">
+      <div class="tndr-kpis">
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Pipeline</div><div class="tndr-kpi-value" style="color:#60a5fa;">20</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Est. Total Value</div><div class="tndr-kpi-value" style="color:#f59e0b;">$27M+</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical Priority</div><div class="tndr-kpi-value" style="color:#ef4444;">8</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Launching Q4 2026</div><div class="tndr-kpi-value" style="color:#a78bfa;">6</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Countries</div><div class="tndr-kpi-value" style="color:#34d399;">7</div></div>
       </div>
-      <div class="tndr-filter-group">
-        <span class="tndr-filter-label">Status</span>
-        <button class="tndr-filter-btn active" data-tndr-status="all">All Status</button>
-        <button class="tndr-filter-btn" data-tndr-status="Open">Open</button>
-        <button class="tndr-filter-btn" data-tndr-status="Submitted">Submitted</button>
-        <button class="tndr-filter-btn" data-tndr-status="Won">Won ✅</button>
-        <button class="tndr-filter-btn" data-tndr-status="Closed">Closed</button>
+      <div class="tndr-filters">
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Country</span>
+          <button class="tndr-filter-btn active" data-pipe-country="all">All</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇦🇪 UAE">🇦🇪 UAE</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇴🇲 Oman">🇴🇲 Oman</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
+        </div>
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Priority</span>
+          <button class="tndr-filter-btn active" data-pipe-priority="all">All Priority</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Critical">🔴 Critical</button>
+          <button class="tndr-filter-btn" data-pipe-priority="High">🟠 High</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Medium">🟡 Medium</button>
+        </div>
+      </div>
+      <div class="tndr-table-wrap">
+        <table class="tndr-table" style="min-width:1200px;">
+          <thead><tr>
+            <th>#</th><th>Expected Tender Title</th><th>Country</th><th>Issuing Entity</th>
+            <th>Ref. (Est.)</th><th>Launch</th><th>Closing</th><th>Est. Value</th><th>Priority</th>
+          </tr></thead>
+          <tbody id="pipe-table-body"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px;font-size:11px;color:#6a85b0;line-height:1.7;">
+        <span style="color:#f59e0b;font-weight:700;">⚠️ Note:</span>
+        Pipeline data represents <b style="color:#c8d8f0;">expected / forecasted tenders</b> based on historical procurement cycles and market intelligence.
+        Tender references marked <b style="color:#c8d8f0;">(est.)</b> are estimated. Monitor official portals: NUPCO Etimad · HMC Portal · DAHC · Kimadia · MOH portals per country.
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="tndr-table-wrap">
-      <table class="tndr-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Tender Name</th>
-            <th>Country</th>
-            <th>Authority</th>
-            <th>Est. Value</th>
-            <th>Deadline</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="tndr-table-body"></tbody>
-      </table>
+    <div class="tndr-modal-overlay" id="tndr-modal">
+      <div class="tndr-modal-card">
+        <div class="tndr-modal-header">
+          <div><p class="tndr-modal-kicker">Tender Details</p><h3 class="tndr-modal-title" id="tndr-modal-title">—</h3></div>
+          <button class="tndr-modal-x" id="tndr-modal-x" type="button">×</button>
+        </div>
+        <div class="tndr-modal-body">
+          <div class="tndr-detail-grid">
+            <div class="tndr-detail tndr-detail-full"><div class="tndr-detail-label">Tender Name</div><div class="tndr-detail-value" id="tndr-d-name"></div></div>
+            <div class="tndr-detail"><div class="tndr-detail-label">Country</div><div class="tndr-detail-value" id="tndr-d-country"></div></div>
+            <div class="tndr-detail"><div class="tndr-detail-label">Authority</div><div class="tndr-detail-value" id="tndr-d-authority"></div></div>
+            <div class="tndr-detail"><div class="tndr-detail-label">Estimated Value</div><div class="tndr-detail-value" style="color:#60a5fa;font-size:18px;" id="tndr-d-value"></div></div>
+            <div class="tndr-detail"><div class="tndr-detail-label">Deadline</div><div class="tndr-detail-value" id="tndr-d-deadline"></div></div>
+            <div class="tndr-detail"><div class="tndr-detail-label">Status</div><div class="tndr-detail-value" id="tndr-d-status"></div></div>
+            <div class="tndr-detail tndr-detail-full"><div class="tndr-detail-label">Notes</div><div class="tndr-detail-value tndr-notes" id="tndr-d-notes"></div></div>
+          </div>
+        </div>
+        <div class="tndr-modal-footer"><button class="tndr-close-btn" id="tndr-modal-close" type="button">✕ Close</button></div>
+      </div>
     </div>
 
   </div>
-
-  <!-- Modal (outside padding div, fixed to viewport) -->
-  <div class="tndr-modal-overlay" id="tndr-modal">
-    <div class="tndr-modal-card">
-      <div class="tndr-modal-header">
-        <div>
-          <p class="tndr-modal-kicker">Tender Details</p>
-          <h3 class="tndr-modal-title" id="tndr-modal-title">—</h3>
-        </div>
-        <button class="tndr-modal-x" id="tndr-modal-x">×</button>
-      </div>
-      <div class="tndr-modal-body">
-        <div class="tndr-detail-grid">
-          <div class="tndr-detail tndr-detail-full">
-            <div class="tndr-detail-label">Tender Name</div>
-            <div class="tndr-detail-value" id="tndr-d-name"></div>
-          </div>
-          <div class="tndr-detail">
-            <div class="tndr-detail-label">Country</div>
-            <div class="tndr-detail-value" id="tndr-d-country"></div>
-          </div>
-          <div class="tndr-detail">
-            <div class="tndr-detail-label">Authority</div>
-            <div class="tndr-detail-value" id="tndr-d-authority"></div>
-          </div>
-          <div class="tndr-detail">
-            <div class="tndr-detail-label">Estimated Value</div>
-            <div class="tndr-detail-value" style="color:#60a5fa;font-size:18px;" id="tndr-d-value"></div>
-          </div>
-          <div class="tndr-detail">
-            <div class="tndr-detail-label">Deadline</div>
-            <div class="tndr-detail-value" id="tndr-d-deadline"></div>
-          </div>
-          <div class="tndr-detail">
-            <div class="tndr-detail-label">Status</div>
-            <div class="tndr-detail-value" id="tndr-d-status"></div>
-          </div>
-          <div class="tndr-detail tndr-detail-full">
-            <div class="tndr-detail-label">Notes</div>
-            <div class="tndr-detail-value tndr-notes" id="tndr-d-notes"></div>
-          </div>
-        </div>
-      </div>
-      <div class="tndr-modal-footer">
-        <button class="tndr-close-btn" id="tndr-modal-close">✕ Close</button>
-      </div>
-    </div>
-  </div>
-
 </div>
 
+<!-- COMPETITORS -->
 <!-- COMPETITORS -->
 <div class="page" id="page-competitors">
   <div class="p-4 space-y-5">
