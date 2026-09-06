@@ -552,12 +552,28 @@ html, body { background: #0b1628; height: 100%; }
     </style>
 
     <!-- Header -->
+        <!-- Header -->
     <div style="margin-bottom:18px;">
       <div style="font-size:15px;font-weight:600;color:#c8d8f0;display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span>📋</span> Active Tenders &amp; Procurement Opportunities
+        <span>📋</span> Tenders &amp; Procurement Intelligence
       </div>
-      <div style="font-size:11px;color:#3a5278;">Gulf &amp; Middle East — 2026/2027 Tender Pipeline</div>
+      <div style="font-size:11px;color:#3a5278;">Gulf &amp; Middle East — Active Tenders + 2026/2027 Pipeline Forecast</div>
     </div>
+
+    <!-- Tab Switcher -->
+    <div style="display:flex;gap:0;margin-bottom:18px;background:#0f1f3d;border:1px solid #1e3d7a;border-radius:12px;padding:5px;">
+      <button id="tndr-tab-active" onclick="tndrSwitchTab('active')"
+        style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:#2563eb;color:#fff;">
+        📋 Active Tenders (14)
+      </button>
+      <button id="tndr-tab-pipeline" onclick="tndrSwitchTab('pipeline')"
+        style="flex:1;padding:10px 0;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#6a85b0;">
+        🔭 Pipeline Forecast (20)
+      </button>
+    </div>
+
+    <!-- ═══ ACTIVE TENDERS SECTION ═══ -->
+    <div id="tndr-section-active">
 
     <!-- KPI Cards -->
     <div class="tndr-kpis">
