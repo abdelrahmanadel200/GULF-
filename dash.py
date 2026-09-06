@@ -63,13 +63,17 @@ html, body { background: #0b1628; height: 100%; }
 .placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
 .placeholder-sub { font-size: 13px; color: #3a5278; }
 /* Country page */
-.country-inline-detail { margin:0 16px 24px; border:1px solid #1e3d7a; border-radius:14px; overflow:hidden; background:#0b1628; box-shadow:0 14px 40px rgba(0,0,0,.30); animation:fadeIn .22s ease; }
+#page-countries { --country-primary:#2563eb; --country-secondary:#ffffff; --country-accent:#60a5fa; transition:background .35s ease, box-shadow .35s ease; }
+#page-countries.country-theme { background:linear-gradient(180deg, color-mix(in srgb, var(--country-primary) 9%, transparent) 0%, transparent 32%); }
+.country-inline-detail { margin:0 16px 24px; border:1px solid color-mix(in srgb, var(--country-primary) 70%, #1e3d7a); border-radius:14px; overflow:hidden; background:#0b1628; box-shadow:0 14px 40px rgba(0,0,0,.30),0 0 28px color-mix(in srgb, var(--country-primary) 16%, transparent); animation:fadeIn .22s ease; }
 .cid-hero { position:relative; height:300px; overflow:hidden; background:#071426; }
 .cid-landscape { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
 .cid-overlay { position:absolute; inset:0; background:linear-gradient(90deg,rgba(4,15,30,.86) 0%,rgba(4,15,30,.35) 45%,rgba(4,15,30,.15) 100%),linear-gradient(0deg,rgba(7,20,38,.94) 0%,rgba(7,20,38,.05) 48%); }
-.cid-back { position:absolute; top:18px; left:20px; z-index:4; background:rgba(3,12,24,.72); border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:12px; backdrop-filter:blur(7px); }
+.cid-back { position:absolute; top:18px; left:20px; z-index:4; background:rgba(3,12,24,.72); border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:12px; backdrop-filter:blur(7px); transition:.2s ease; }
+.cid-back:hover { border-color:var(--country-accent); background:rgba(3,12,24,.88); }
 .cid-title { position:absolute; left:28px; bottom:24px; z-index:4; display:flex; align-items:center; gap:14px; }
-.cid-flag { width:58px; height:44px; display:flex; align-items:center; justify-content:center; font-size:40px; line-height:1; filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
+.cid-flag { width:58px; height:42px; display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
+.cid-flag img { width:56px; height:38px; object-fit:cover; object-position:center; border-radius:7px; border:1px solid rgba(255,255,255,.35); display:block; }
 .cid-name { font-size:32px; font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.7); }
 .cid-sub { margin-top:4px; font-size:13px; color:#dbeafe; }
 .cid-meta { position:absolute; right:28px; top:55px; z-index:4; display:flex; flex-direction:column; gap:18px; min-width:190px; }
@@ -79,27 +83,34 @@ html, body { background: #0b1628; height: 100%; }
 .cid-meta b { color:#e8edf5; font-size:13px; }
 .cid-body { padding:20px 24px 24px; background:#06152b; }
 .cid-kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-.cid-kpi { min-height:92px; background:rgba(255,255,255,.035); border:1px solid #1264a3; border-radius:13px; padding:16px 18px; }
+.cid-kpi { min-height:92px; background:rgba(255,255,255,.035); border:1px solid color-mix(in srgb, var(--country-primary) 65%, #1264a3); border-radius:13px; padding:16px 18px; transition:border-color .2s, box-shadow .2s; }
+.cid-kpi:hover { border-color:var(--country-accent); box-shadow:0 0 18px color-mix(in srgb, var(--country-primary) 12%, transparent); }
 .cid-kpi-label { color:#6fa9dc; font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
 .cid-kpi-value { margin-top:10px; color:#fff; font-size:24px; font-weight:800; }
-.cid-overview { margin-top:22px; padding:18px; border:1px solid #1e3d7a; border-radius:12px; text-align:center; background:rgba(255,255,255,.035); }
-.cid-overview-title { color:#c8d8f0; font-size:13px; font-weight:700; }
-.cid-overview-sub { color:#6a85b0; font-size:11px; margin-top:7px; }
+.cid-network { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:16px; }
+.cid-network-card { min-height:78px; background:rgba(255,255,255,.035); border:1px solid color-mix(in srgb, var(--country-primary) 55%, #1e3d7a); border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.cid-network-label { color:#7f9ac1; font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
+.cid-network-value { color:#fff; font-size:23px; font-weight:800; }
+.cid-network-sub { color:var(--country-accent); font-size:10px; margin-top:3px; }
 @media (max-width:1000px) { .cid-meta { position:static; display:none; } .cid-name { font-size:28px; } .cid-kpi-grid { grid-template-columns:repeat(2,1fr); } }
-@media (max-width:600px) { .country-inline-detail { margin:0 10px 18px; } .cid-hero { height:235px; } .cid-title { left:16px; bottom:18px; } .cid-name { font-size:22px; } .cid-flag { font-size:30px; width:42px; } .cid-kpi-grid { grid-template-columns:1fr; } .cid-body { padding:14px; } }
+@media (max-width:600px) { .country-inline-detail { margin:0 10px 18px; } .cid-hero { height:235px; } .cid-title { left:16px; bottom:18px; } .cid-name { font-size:22px; } .cid-flag { width:46px; height:36px; } .cid-flag img { width:44px; height:30px; } .cid-kpi-grid { grid-template-columns:1fr; } .cid-network { grid-template-columns:1fr; } .cid-body { padding:14px; } }
 .country-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:0 16px 16px; }
 .country-grid .c-card { flex:0 0 calc((100% - 56px)/5); }
-.c-card { height:138px; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:12px; padding:0; cursor:pointer; transition:all .18s ease; display:flex; align-items:flex-end; position:relative; overflow:hidden; min-width:0; }
+.c-card { height:138px; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:12px; padding:0; cursor:pointer; transition:all .22s ease; display:flex; align-items:flex-end; position:relative; overflow:hidden; min-width:0; }
 .c-card:hover,.c-card:focus { outline:none; transform:translateY(-2px); border-color:var(--cc,#2563eb); box-shadow:0 8px 22px rgba(0,0,0,.28),0 0 0 2px var(--cc,#2563eb)44; }
+.c-card.active { transform:translateY(-3px) scale(1.015); border-color:var(--cc,#2563eb); box-shadow:0 10px 28px rgba(0,0,0,.35),0 0 0 2px var(--cc,#2563eb),0 0 30px color-mix(in srgb, var(--cc,#2563eb) 28%, transparent); }
+.c-card.active .c-overlay { background:linear-gradient(to bottom,rgba(4,15,31,.02) 20%,rgba(4,15,31,.14) 45%,rgba(4,15,31,.90) 100%); }
+.c-card.active .c-accent { height:4px; box-shadow:0 0 14px var(--cc,#2563eb); }
 .c-landscape { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; transform:scale(1.01); transition:transform .25s ease,filter .25s ease; }
 .c-card:hover .c-landscape { transform:scale(1.04); filter:brightness(1.06); }
+.c-card.active .c-landscape { transform:scale(1.06); filter:brightness(1.08) saturate(1.05); }
 .c-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(4,15,31,.05) 25%,rgba(4,15,31,.18) 48%,rgba(4,15,31,.92) 100%); z-index:1; }
 .c-bottom { position:relative; z-index:2; width:100%; display:flex; align-items:center; gap:9px; padding:0 13px 11px; min-width:0; }
 .c-flag { width:30px; height:21px; flex:0 0 30px; display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 2px 4px rgba(0,0,0,.45)); }
 .c-flag img { width:30px; height:21px; object-fit:cover; object-position:center; display:block; border-radius:3px; border:1px solid rgba(255,255,255,.22); }
 .c-name { font-size:13px; font-weight:700; color:#fff; text-align:left; padding:0; flex:1; display:block; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 2px 5px rgba(0,0,0,.7); }
 .c-arrow { color:#fff; font-size:22px; line-height:1; flex:0 0 auto; opacity:.95; text-shadow:0 2px 5px rgba(0,0,0,.65); }
-.c-accent { position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--cc,#2563eb); z-index:3; }
+.c-accent { position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--cc,#2563eb); z-index:3; transition:height .2s, box-shadow .2s; }
 @media (max-width:1200px) { .country-grid .c-card { flex-basis:calc((100% - 42px)/4); } }
 @media (max-width:900px) { .country-grid .c-card { flex-basis:calc((100% - 28px)/3); } }
 @media (max-width:650px) { .country-grid { gap:10px; } .country-grid .c-card { flex-basis:calc((100% - 10px)/2); } .c-card { height:125px; } }
@@ -117,6 +128,7 @@ html, body { background: #0b1628; height: 100%; }
 .cd-kpi-val { font-size:20px; font-weight:800; color:#60a5fa; margin-top:6px; letter-spacing:.5px; }
 .cd-close { margin-left:auto; background:#1e3d7a; border:none; color:#c8d8f0; border-radius:8px; padding:6px 14px; cursor:pointer; font-size:12px; }
 .cd-close:hover { background:#2563eb; }
+
 /* Competitors by country */
 .country-filter-btn,.comp-threat-btn{padding:8px 12px;border-radius:9px;border:1px solid #1e3d7a;background:#1a2d4d;color:#c8d8f0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s ease}.country-filter-btn:hover,.comp-threat-btn:hover{border-color:#3b82f6;transform:translateY(-1px)}.country-filter-btn.comp-country-active,.comp-threat-btn.comp-threat-active{background:#2563eb;border-color:#3b82f6;color:#fff}.comp-country-title{font-size:16px;font-weight:700;color:#e8edf5}.comp-country-sub{font-size:10px;color:#6a85b0;margin-top:3px}.comp-summary{display:flex;flex-wrap:wrap;gap:8px}.comp-summary-pill{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:8px;padding:7px 10px;font-size:10px;color:#c8d8f0}.comp-card-new{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:all .18s ease}.comp-card-new:hover{border-color:#3b82f6;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}.comp-card-topline{position:absolute;top:0;left:0;right:0;height:3px}.comp-card-company{font-size:14px;font-weight:700;color:#fff}.comp-card-origin{font-size:10px;color:#6a85b0;margin-top:3px}.comp-threat-badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:700}.comp-share-row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 5px;font-size:10px;color:#94a3b8}.comp-share-value{color:#60a5fa;font-weight:700}.comp-share-bar{width:100%;height:6px;background:#081321;border-radius:99px;overflow:hidden;border:1px solid #14284b}.comp-share-fill{height:100%;border-radius:99px}.comp-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.comp-mini-box{background:#081321;border:1px solid #1e3d7a;border-radius:9px;padding:9px}.comp-mini-label{display:block;color:#6a85b0;font-size:8px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}.comp-mini-text{color:#e2e8f0;font-size:10px;line-height:1.35}.comp-edge{margin-top:11px;padding-top:10px;border-top:1px solid #1e3d7a;color:#34d399;font-size:10px;line-height:1.35}.comp-details-btn{width:100%;margin-top:11px;padding:8px 10px;border-radius:8px;border:1px solid #1e3d7a;background:#13274c;color:#60a5fa;font-size:10px;font-weight:700;cursor:pointer}.comp-details-btn:hover{background:#1a3a6e;border-color:#3b82f6}.comp-details-panel{display:none;margin-top:10px;padding:11px;background:#081321;border:1px solid #1e3d7a;border-radius:9px}.comp-details-panel.open{display:block}.comp-detail-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #14284b;font-size:10px}.comp-detail-row:last-child{border-bottom:none}.comp-detail-label{color:#6a85b0}.comp-detail-value{color:#e8edf5;text-align:right}
 /* Hot map */
@@ -976,9 +988,19 @@ function openCountry(code){
   const page = document.getElementById('page-countries');
   if(!d || !page) return;
 
-  // Same-page country detail: keep sidebar + Country Analysis page visible.
   const old = document.getElementById('country-inline-detail');
   if(old) old.remove();
+
+  // Apply the selected country's flag colors to the Country Analysis page.
+  page.classList.add('country-theme');
+  page.style.setProperty('--country-primary', d.colors.primary);
+  page.style.setProperty('--country-secondary', d.colors.secondary);
+  page.style.setProperty('--country-accent', d.colors.accent);
+
+  // Make the selected country card visibly active.
+  document.querySelectorAll('#page-countries .c-card').forEach(function(card){
+    card.classList.toggle('active', card.getAttribute('aria-label') === d.name);
+  });
 
   const detail = document.createElement('div');
   detail.id = 'country-inline-detail';
@@ -994,6 +1016,10 @@ function openCountry(code){
     jo:'MOH / RMS', lb:'MOH Lebanon', iq:'MOH / Kimadia'
   };
 
+  const networkValue = (d.kpi[7] && d.kpi[7].v) ? d.kpi[7].v.split('/') : ['—','—'];
+  const distributors = (networkValue[0] || '—').trim();
+  const kols = (networkValue[1] || '—').trim();
+
   detail.innerHTML = `
     <div class="cid-hero">
       <img class="cid-landscape" src="${d.landscape}" alt="${d.name} landscape"
@@ -1001,7 +1027,9 @@ function openCountry(code){
       <div class="cid-overlay"></div>
       <button class="cid-back" onclick="closeCountry()">← Back</button>
       <div class="cid-title">
-        <span class="cid-flag">${d.flag}</span>
+        <span class="cid-flag">
+          <img src="${d.flagImg}" alt="${d.name} flag" onerror="this.onerror=null;this.replaceWith(document.createTextNode('${d.flag}'))">
+        </span>
         <div>
           <div class="cid-name">${d.name}</div>
           <div class="cid-sub">${d.sub}</div>
@@ -1016,16 +1044,29 @@ function openCountry(code){
 
     <div class="cid-body">
       <div class="cid-kpi-grid">
-        ${d.kpi.map(k=>`
+        ${d.kpi.slice(0,7).map(k=>`
           <div class="cid-kpi">
             <div class="cid-kpi-label">${k.l}</div>
             <div class="cid-kpi-value">${k.v}</div>
           </div>
         `).join('')}
       </div>
-      <div class="cid-overview">
-        <div class="cid-overview-title">📊 Market Overview</div>
-        <div class="cid-overview-sub">Detailed market data coming soon...</div>
+
+      <div class="cid-network">
+        <div class="cid-network-card">
+          <div>
+            <div class="cid-network-label">🤝 Distributors</div>
+            <div class="cid-network-sub">Active Partners</div>
+          </div>
+          <div class="cid-network-value">${distributors}</div>
+        </div>
+        <div class="cid-network-card">
+          <div>
+            <div class="cid-network-label">⭐ KOLs</div>
+            <div class="cid-network-sub">Key Opinion Leaders</div>
+          </div>
+          <div class="cid-network-value">${kols}</div>
+        </div>
       </div>
     </div>
   `;
@@ -1035,12 +1076,24 @@ function openCountry(code){
   if(header) header.insertAdjacentElement('afterend', detail);
   else page.prepend(detail);
 
-  // Keep the country cards visible underneath, exactly like the reference design.
   if(grid) grid.scrollIntoView({behavior:'smooth', block:'start'});
   setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80);
 }
 
-function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
+function closeCountry(){
+  const page = document.getElementById('page-countries');
+  const detail = document.getElementById('country-inline-detail');
+  if(detail) detail.remove();
+  if(page){
+    page.classList.remove('country-theme');
+    page.style.removeProperty('--country-primary');
+    page.style.removeProperty('--country-secondary');
+    page.style.removeProperty('--country-accent');
+    page.querySelectorAll('.c-card').forEach(function(card){ card.classList.remove('active'); });
+  }
+  const cd = document.getElementById('cd-panel');
+  if(cd) cd.classList.remove('open');
+}
 
 const competitorCountries={"sa":{"flag":"🇸🇦","name":"Saudi Arabia","market":"Largest market in the workbook scope","hd":30000,"pd":2200,"facilities":360,"machines":18000,"demand":77530,"marketValue":9.3},"ae":{"flag":"🇦🇪","name":"UAE","market":"Major GCC regional hub","hd":3000,"pd":120,"facilities":60,"machines":4500,"demand":7638,"marketValue":0.99},"qa":{"flag":"🇶🇦","name":"Qatar","market":"Centralized procurement market","hd":1200,"pd":180,"facilities":18,"machines":1100,"demand":3207,"marketValue":0.42},"kw":{"flag":"🇰🇼","name":"Kuwait","market":"GCC dialysis market","hd":2156,"pd":294,"facilities":25,"machines":3000,"demand":5728,"marketValue":0.72},"om":{"flag":"🇴🇲","name":"Oman","market":"Growing GCC dialysis market","hd":2500,"pd":100,"facilities":20,"machines":2200,"demand":6365,"marketValue":0.76},"jo":{"flag":"🇯🇴","name":"Jordan","market":"Levant medical hub","hd":6400,"pd":110,"facilities":50,"machines":2500,"demand":16127,"marketValue":1.61},"lb":{"flag":"🇱🇧","name":"Lebanon","market":"Levant market under pressure","hd":4730,"pd":210,"facilities":85,"machines":3000,"demand":12067,"marketValue":1.21},"iq":{"flag":"🇮🇶","name":"Iraq","market":"High-volume expansion market","hd":10721,"pd":450,"facilities":130,"machines":9000,"demand":27320,"marketValue":2.46},"bh":{"flag":"🇧🇭","name":"Bahrain","market":"Small high-income GCC market","hd":4547,"pd":450,"facilities":14,"machines":750,"demand":11885,"marketValue":1.43}};
 const competitorData={"sa":[{"name":"Fresenius Medical Care","share":"~18–20% KSA HD catheter market businesswire+2","coverage":"⭐⭐⭐⭐⭐ (Nationwide via NUPCO + direct)","weakness":"Catheters bundled with machines/disposables; less catheter-focused innovation","advantage":"Dialysis ecosystem dominance; NUPCO framework winner","specializes":"HD catheters (tunneled/non-tunneled), dialysis machines, disposables","edge":"AMECATH: Dedicated HD catheter specialization + better pricing flexibility + faster supply"},{"name":"B. Braun Melsungen","share":"~12–14% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework + SFDA distributors)","weakness":"Large diversified portfolio; catheters secondary to dialyzers/machines","advantage":"Cost-competitive catheters + Aesculap brand; NUPCO presence","specializes":"HD catheters, dialyzers, vascular access, surgical devices","edge":"AMECATH: Agile regional supply + competitive pricing + focused HD catheter portfolio"},{"name":"Medtronic (Covidien)","share":"~10–12% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (NUPCO winner NPT0048-22, Apr 2026) scribd","weakness":"Premium pricing; peritoneal catheters stronger than HD","advantage":"Technology + clinical evidence + NUPCO tender wins","specializes":"Peritoneal/HD catheters, vascular access, cardiovascular devices","edge":"AMECATH: Specialized HD catheter company + cost advantage + regional agility (Egypt vs. US)"},{"name":"BD (Becton Dickinson)","share":"~8–10% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (SFDA-licensed, major NUPCO supplier)","weakness":"Premium pricing; vascular access broader than HD catheters","advantage":"Brand + clinical evidence + global distribution","specializes":"HD catheters, PICC, CVC, vascular access devices","edge":"AMECATH: Better value proposition + GCC manufacturing credibility + customization"},{"name":"Teleflex (Arrow)","share":"~6–8% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (NUPCO participant, SFDA-licensed)","weakness":"Premium positioning; Arrow brand vascular-focused","advantage":"Advanced HD catheter technology (Arrow brand)","specializes":"HD catheters (Arrow), vascular access, urology devices","edge":"AMECATH: Cost + product flexibility + regional proximity (Egypt vs. Ireland)"},{"name":"Baxter International","share":"~10–12% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework, SFDA-licensed)","weakness":"PD catheters stronger than HD; catheters not core focus","advantage":"Renal-care ecosystem (PD + HD catheters)","specializes":"PD/HD catheters, dialysis solutions, renal disposables","edge":"AMECATH: HD catheter specialization + competitive pricing + regional agility"},{"name":"Merit Medical","share":"~4–6% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Smaller scale vs. Fresenius/B. Braun; limited KSA distribution","advantage":"Strong HD catheter portfolio (Permcath, OptiFlow)","specializes":"HD catheters (tunneled/non-tunneled), interventional devices","edge":"AMECATH: Price + flexible supply/customization + GCC credibility"},{"name":"Nipro Corporation","share":"~5–7% KSA HD catheter market grandviewresearch+1","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Japan-based; slower supply chain; less regional presence","advantage":"Cost-competitive Japanese quality; dialysis disposables","specializes":"HD catheters, tubing sets, dialyzers","edge":"AMECATH: Regional proximity (Egypt vs. Japan) + faster supply + customization"},{"name":"AngioDynamics","share":"~2–3% KSA HD catheter market","coverage":"⭐⭐⭐ (Limited KSA distribution)","weakness":"Smaller footprint; vascular-focused, not HD-specific","advantage":"Specialty HD catheters (e.g., Groshong, Vectra)","specializes":"HD catheters, vascular access, oncology devices","edge":"AMECATH: Dedicated HD catheter focus + broader KSA distribution"},{"name":"Medcomp","share":"~1–2% KSA HD catheter market","coverage":"⭐⭐⭐ (Niche distributor presence)","weakness":"Limited brand recognition; small HD catheter portfolio","advantage":"Specialty HD catheter designs (Split-Step, Catheter Lock)","specializes":"HD catheters, vascular access locks","edge":"AMECATH: Better value + GCC manufacturing + regional support"}],"ae":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium pricing","advantage":"Brand + clinical evidence","specializes":"Vascular access / HD","edge":"Better value proposition + regional agility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization; less focused","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Specialized HD focus + competitive price"},{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Strong dialysis-access portfolio","specializes":"Dialysis access","edge":"Price + flexible supply/customization"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular-access specialization","specializes":"Vascular access","edge":"Regional proximity + value"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Large diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis / vascular access","edge":"Focused HD catheter company"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium positioning","advantage":"Advanced vascular access","specializes":"HD / vascular access","edge":"Cost + product flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐","weakness":"Cost-focused competitor","advantage":"Competitive pricing","specializes":"Dialysis catheters","edge":"AMECATH can compete on quality + GCC credibility"}],"qa":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Strong brand + evidence","specializes":"Vascular access","edge":"Price/value + responsiveness"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + infrastructure","specializes":"Vascular access","edge":"HD specialization + flexibility"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller corporate scale","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional supply"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium product positioning","advantage":"Vascular-access technology","specializes":"HD / vascular access","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional portfolio","advantage":"Interventional technology","specializes":"Vascular/interventional","edge":"HD-focused proposition"}],"kw":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong vascular-access brand","specializes":"Vascular access / HD","edge":"Value + pricing"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Global infrastructure","specializes":"Vascular access","edge":"Agility + HD focus"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller network","advantage":"Strong dialysis portfolio","specializes":"Dialysis access","edge":"Cost + regional supply"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Integrated dialysis offering","specializes":"Dialysis / vascular access","edge":"Specialization + price"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Cost-effective alternative"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Nipro","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Strong dialysis ecosystem can compete broadly","advantage":"Dialysis","specializes":"Dialysis products","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad portfolio","advantage":"Interventional","specializes":"Vascular","edge":"HD specialization"}],"om":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + clinical validation","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large corporate structure","advantage":"Technology","specializes":"Vascular access","edge":"Agility + HD specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply flexibility"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Competitive price"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price competition","advantage":"Cost-effective medical devices","specializes":"Catheters / vascular access","edge":"Quality + regional credibility"}],"jo":[{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium vs. low-cost suppliers","advantage":"Strong HD-access specialization","specializes":"Dialysis access","edge":"Price + regional manufacturing advantage"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand/clinical evidence","specializes":"Vascular access","edge":"Lower cost + flexibility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Specialized catheter proposition"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular/HD","edge":"Value pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-driven","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + Middle East positioning"},{"name":"Medcomp","share":"N/D","coverage":"⭐⭐⭐","weakness":"Less broad brand presence","advantage":"Dialysis access","specializes":"HD catheters","edge":"Regional reach + value"}],"lb":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong brand","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"Specialized HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional responsiveness"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD/vascular","edge":"Value proposition"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Scale","advantage":"Vascular access","specializes":"Vascular","edge":"Flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-oriented","advantage":"Cost","specializes":"Catheters","edge":"Quality + regional positioning"}],"iq":[{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Brand + technology","specializes":"Vascular access","edge":"Much stronger price/value argument"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Clinical reputation","specializes":"Vascular access","edge":"Lower-cost alternative"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium / diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Price + HD specialization"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional proximity"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular access","edge":"Cost advantage"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐","weakness":"Distribution dependence","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional supply flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less premium brand perception","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + regional reputation"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global brand","advantage":"Low-cost products","specializes":"Dialysis catheters","edge":"Quality + GCC/MENA positioning"},{"name":"Chinese manufacturers","share":"N/D","coverage":"⭐⭐⭐","weakness":"Variable clinical/brand perception","advantage":"Very low price","specializes":"Medical disposables/catheters","edge":"Better quality/clinical positioning at competitive price"}],"bh":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + vascular access","specializes":"Vascular access","edge":"Value + price"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Agility + specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused HD-catheter company"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow","specializes":"HD/vascular","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal care","specializes":"Renal care","edge":"HD catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional","advantage":"Interventional","specializes":"Vascular","edge":"HD focus"}]};
@@ -1091,6 +1144,7 @@ function navigate(el,pageId){
   if(!page) return;
   const overlay=document.getElementById('country-overlay');
   if(overlay) overlay.remove();
+  if(pageId !== 'countries') closeCountry();
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(el) el.classList.add('active');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
