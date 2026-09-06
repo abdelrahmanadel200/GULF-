@@ -96,7 +96,7 @@ dashboard_html = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #0b1628; height: 100%; }
 .dash { background: #0b1628; color: #e8edf5; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; }
-.sidebar { pointer-events:auto; position:sticky; width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; position: sticky; top: 0; height: 100vh; z-index: 99999; align-self: flex-start; }
+.sidebar { pointer-events:auto !important; position:relative; width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; top: 0; height: 100vh; z-index: 999999; align-self: flex-start; }
 .logo { padding: 0 16px 18px; border-bottom: 1px solid #1e3d7a; margin-bottom: 10px; }
 .logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
 .logo-sub { font-size: 10px; color: #3a5278; margin-top: 2px; }
@@ -220,6 +220,7 @@ html, body { background: #0b1628; height: 100%; }
 </style>
 </head>
 <body>
+<script>window.sidebarNavigate=function(pageId){try{var page=document.getElementById("page-"+pageId);if(!page)return false;document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});page.classList.add("active");document.querySelectorAll(".nav-item").forEach(function(n){n.classList.remove("active")});var nav=document.querySelector('.nav-item[data-page="'+pageId+'"]');if(nav)nav.classList.add("active");if(pageId!=="countries"&&typeof window.closeCountry==="function")window.closeCountry();if(pageId==="hotareas"&&typeof window.createMarketMap==="function")setTimeout(function(){try{window.createMarketMap();if(window.marketMap)window.marketMap.invalidateSize()}catch(e){}},200);return false}catch(e){console.error(e);return false}};</script>
 <div class="dash">
 
 <div class="sidebar">
@@ -228,17 +229,17 @@ html, body { background: #0b1628; height: 100%; }
     <div class="logo-sub">Market Intelligence</div>
   </div>
   <div class="nav-section-label">Main</div>
-  <div class="nav-item active" data-page="overview" role="button" tabindex="0"><span class="nav-icon">🏠</span><span>Overview</span></div>
-  <div class="nav-item" data-page="countries" role="button" tabindex="0"><span class="nav-icon">🌍</span><span>Country Analysis</span></div>
-  <div class="nav-item" data-page="forecast" role="button" tabindex="0"><span class="nav-icon">📈</span><span>Revenue Forecast</span></div>
+  <div class="nav-item active" data-page="overview" role="button" tabindex="0" onclick="return window.sidebarNavigate('overview');"><span class="nav-icon">🏠</span><span>Overview</span></div>
+  <div class="nav-item" data-page="countries" role="button" tabindex="0" onclick="return window.sidebarNavigate('countries');"><span class="nav-icon">🌍</span><span>Country Analysis</span></div>
+  <div class="nav-item" data-page="forecast" role="button" tabindex="0" onclick="return window.sidebarNavigate('forecast');"><span class="nav-icon">📈</span><span>Revenue Forecast</span></div>
   <div class="nav-section-label">Market</div>
-  <div class="nav-item" data-page="pricing" role="button" tabindex="0"><span class="nav-icon">💲</span><span>Pricing Intel</span></div>
-  <div class="nav-item" data-page="tenders" role="button" tabindex="0"><span class="nav-icon">📋</span><span>Tenders</span></div>
-  <div class="nav-item" data-page="competitors" role="button" tabindex="0"><span class="nav-icon">🏆</span><span>Competitors</span></div>
+  <div class="nav-item" data-page="pricing" role="button" tabindex="0" onclick="return window.sidebarNavigate('pricing');"><span class="nav-icon">💲</span><span>Pricing Intel</span></div>
+  <div class="nav-item" data-page="tenders" role="button" tabindex="0" onclick="return window.sidebarNavigate('tenders');"><span class="nav-icon">📋</span><span>Tenders</span></div>
+  <div class="nav-item" data-page="competitors" role="button" tabindex="0" onclick="return window.sidebarNavigate('competitors');"><span class="nav-icon">🏆</span><span>Competitors</span></div>
   <div class="nav-section-label">Field</div>
-  <div class="nav-item" data-page="hotareas" role="button" tabindex="0"><span class="nav-icon">📍</span><span>Hot Areas</span></div>
-  <div class="nav-item" data-page="exhibitions" role="button" tabindex="0"><span class="nav-icon">📅</span><span>Exhibitions</span></div>
-  <div class="nav-item" data-page="regulatory" role="button" tabindex="0"><span class="nav-icon">📜</span><span>Regulatory</span></div>
+  <div class="nav-item" data-page="hotareas" role="button" tabindex="0" onclick="return window.sidebarNavigate('hotareas');"><span class="nav-icon">📍</span><span>Hot Areas</span></div>
+  <div class="nav-item" data-page="exhibitions" role="button" tabindex="0" onclick="return window.sidebarNavigate('exhibitions');"><span class="nav-icon">📅</span><span>Exhibitions</span></div>
+  <div class="nav-item" data-page="regulatory" role="button" tabindex="0" onclick="return window.sidebarNavigate('regulatory');"><span class="nav-icon">📜</span><span>Regulatory</span></div>
 </div>
 
 <div class="main">
