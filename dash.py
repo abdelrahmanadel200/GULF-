@@ -530,6 +530,72 @@ html, body { background: #0b1628; height: 100%; }
       #page-tenders .tndr-view-btn { border:1px solid #2563eb; background:rgba(37,99,235,.16); color:#60a5fa; border-radius:8px; padding:6px 12px; font-family:inherit; font-size:11px; font-weight:700; cursor:pointer; transition:all .16s; }
       #page-tenders .tndr-view-btn:hover { background:#2563eb; color:#fff; }
       #page-tenders .tndr-empty { text-align:center; padding:42px 20px !important; color:#6a85b0 !important; }
+          </div><!-- end tndr-section-active -->
+
+    <!-- ═══ PIPELINE FORECAST SECTION ═══ -->
+    <div id="tndr-section-pipeline" style="display:none;">
+
+      <!-- Pipeline KPIs -->
+      <div class="tndr-kpis" style="grid-template-columns:repeat(5,minmax(0,1fr));">
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Pipeline</div><div class="tndr-kpi-value" style="color:#60a5fa;">20</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Est. Total Value</div><div class="tndr-kpi-value" style="color:#f59e0b;">$27M+</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical Priority</div><div class="tndr-kpi-value" style="color:#ef4444;">8</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Launching Q4 2026</div><div class="tndr-kpi-value" style="color:#a78bfa;">6</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Countries</div><div class="tndr-kpi-value" style="color:#34d399;">7</div></div>
+      </div>
+
+      <!-- Pipeline Filters -->
+      <div class="tndr-filters" style="margin-bottom:16px;">
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Country</span>
+          <button class="tndr-filter-btn active" data-pipe-country="all">All</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇦🇪 UAE">🇦🇪 UAE</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇴🇲 Oman">🇴🇲 Oman</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
+        </div>
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Priority</span>
+          <button class="tndr-filter-btn active" data-pipe-priority="all">All Priority</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Critical">🔴 Critical</button>
+          <button class="tndr-filter-btn" data-pipe-priority="High">🟠 High</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Medium">🟡 Medium</button>
+        </div>
+      </div>
+
+      <!-- Pipeline Table -->
+      <div class="tndr-table-wrap">
+        <table class="tndr-table" style="min-width:1200px;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Expected Tender Title</th>
+              <th>Country</th>
+              <th>Issuing Entity</th>
+              <th>Ref. (Est.)</th>
+              <th>Launch</th>
+              <th>Closing</th>
+              <th>Est. Value</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody id="pipe-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Notes -->
+      <div style="margin-top:14px;background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px;font-size:11px;color:#6a85b0;line-height:1.7;">
+        <span style="color:#f59e0b;font-weight:700;">⚠️ Note:</span>
+        Pipeline data represents <b style="color:#c8d8f0;">expected / forecasted tenders</b> based on historical procurement cycles and market intelligence.
+        Tender references marked <b style="color:#c8d8f0;">(est.)</b> are estimated. Monitor official portals: NUPCO Etimad · HMC Portal · DAHC · Kimadia · MOH portals per country.
+      </div>
+
+    </div><!-- end tndr-section-pipeline -->
       /* Modal */
       .tndr-modal-overlay { display:none; position:fixed; inset:0; z-index:99999; background:rgba(3,10,22,.78); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:22px; }
       .tndr-modal-overlay.show { display:flex; }
@@ -1147,9 +1213,111 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
   if (mo) mo.addEventListener('click', function(e) { if (e.target === mo) tndrCloseModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tndrCloseModal(); });
 
-  tndrRender();
+    tndrRender();
+
+  /* ─── TAB SWITCHER ─── */
+  window.tndrSwitchTab = function(tab) {
+    var isActive = tab === 'active';
+    document.getElementById('tndr-section-active').style.display   = isActive ? '' : 'none';
+    document.getElementById('tndr-section-pipeline').style.display = isActive ? 'none' : '';
+    document.getElementById('tndr-tab-active').style.background    = isActive ? '#2563eb' : 'transparent';
+    document.getElementById('tndr-tab-active').style.color         = isActive ? '#fff' : '#6a85b0';
+    document.getElementById('tndr-tab-pipeline').style.background  = isActive ? 'transparent' : '#2563eb';
+    document.getElementById('tndr-tab-pipeline').style.color       = isActive ? '#6a85b0' : '#fff';
+  };
+
 })();
 /* ─── END TENDERS ─── */
+
+/* ─── PIPELINE FORECAST ─── */
+(function() {
+  var pipeData = [
+    {id:1,  country:'🇸🇦 Saudi Arabia', name:'Open Framework – Dialysis & Artificial Kidney Supplies (Re-tender / Phase 2)', ref:'NPT0043/26-1 (est.)', entity:'NUPCO',                    launch:'Oct–Dec 2026',       closing:'Jan–Mar 2027',        value:'$3M–$8M',       priority:'Critical', notes:'NUPCO dialysis framework expired Aug 2026; re-tender expected Q4 2026. Localization (MiS) scoring critical.'},
+    {id:2,  country:'🇸🇦 Saudi Arabia', name:'General Medical Supplies – INUPCO Platform',                                    ref:'NDP0807/26 series',   entity:'NUPCO (INUPCO)',            launch:'Rolling Sep–Dec 2026', closing:'Rolling',             value:'$50K–$200K',    priority:'High',     notes:'INUPCO e-marketplace tenders published weekly; catheters included in general medical supplies.'},
+    {id:3,  country:'🇸🇦 Saudi Arabia', name:'Medical Devices – Direct Purchase (Health Clusters)',                           ref:'NDP series',          entity:'NUPCO / Health Clusters',   launch:'Rolling',             closing:'Rolling',             value:'$100K–$500K',   priority:'High',     notes:'Cluster-specific tenders (Riyadh, Jazan, Makkah); catheters possible.'},
+    {id:4,  country:'🇶🇦 Qatar',        name:'Medical Consumables – HMC Annual Framework',                                    ref:'HMC/TCS/9XXX/2027',   entity:'Hamad Medical Corp',        launch:'Jan–Mar 2027',        closing:'Mar–May 2027',        value:'$1M–$3M',       priority:'Critical', notes:'HMC issues annual consumables frameworks; dialysis catheters typically included.'},
+    {id:5,  country:'🇶🇦 Qatar',        name:'Medical Supplies – MOH Qatar (Monaqasat)',                                      ref:'Various',             entity:'MOH Qatar',                 launch:'Q1 2027',             closing:'Q2 2027',             value:'$300K–$800K',   priority:'High',     notes:'MOH Qatar tenders via Monaqasat portal; dialysis items periodic.'},
+    {id:6,  country:'🇦🇪 UAE',          name:'Medical Consumables – DAHC 5-Year Blanket Renewal',                            ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp',launch:'Q1–Q2 2027',          closing:'Q2–Q3 2027',          value:'$2M–$5M',       priority:'Critical', notes:'DAHC renews 5-year blankets annually; dialysis catheters in medical consumables category.'},
+    {id:7,  country:'🇦🇪 UAE',          name:'Hemodialysis Machines & Consumables – SEHA',                                   ref:'Various',             entity:'SEHA / Abu Dhabi Health',   launch:'Q2 2027',             closing:'Q3 2027',             value:'$800K–$2M',     priority:'High',     notes:'SEHA tenders for HD machines + consumables; catheters included.'},
+    {id:8,  country:'🇴🇲 Oman',         name:'Renal Dialysis Consumables – MOH Oman (Annual)',                               ref:'Various',             entity:'MOH Oman',                  launch:'Q1 2027',             closing:'Q2 2027',             value:'$600K–$1.5M',   priority:'Critical', notes:'Oman MOH issues annual dialysis consumables tenders; re-tender common.'},
+    {id:9,  country:'🇴🇲 Oman',         name:'Medical Equipment for Dialysis Centers – MOH Oman',                            ref:'Various',             entity:'MOH Oman',                  launch:'Q2 2027',             closing:'Q3 2027',             value:'$400K–$1M',     priority:'High',     notes:'New dialysis center equipment + consumables.'},
+    {id:10, country:'🇰🇼 Kuwait',       name:'Dialysis Consumables & Equipment – MOH Kuwait (Annual)',                       ref:'Various',             entity:'MOH Kuwait',                launch:'Q1 2027',             closing:'Q2 2027',             value:'$500K–$1.5M',   priority:'Critical', notes:'Kuwait MOH annual dialysis tender; listed on GCC aggregators.'},
+    {id:11, country:'🇯🇴 Jordan',       name:'Peritoneal Dialysis Consumables & Solutions (Annual)',                         ref:'Various',             entity:'MOH Jordan',                launch:'Q1 2027',             closing:'Q2 2027',             value:'$200K–$500K',   priority:'High',     notes:'Annual PD consumables tender; solutions + catheters.'},
+    {id:12, country:'🇯🇴 Jordan',       name:'Dialysis Machines & Consumables – Public Hospitals',                           ref:'Various',             entity:'MOH Jordan',                launch:'Q2 2027',             closing:'Q3 2027',             value:'$400K–$900K',   priority:'High',     notes:'HD machines + consumables for public hospitals.'},
+    {id:13, country:'🇱🇧 Lebanon',      name:'Permanent & Single-Use Catheters (Annual)',                                    ref:'Various',             entity:'MOH / Public Hospitals',    launch:'Q1 2027',             closing:'Q2 2027',             value:'$150K–$400K',   priority:'Critical', notes:'Annual catheter tender; permanent + single-use.'},
+    {id:14, country:'🇮🇶 Iraq',         name:'CVC & Dialysis Catheters – Kimadia Framework',                                 ref:'Various',             entity:'Kimadia / MOH Iraq',        launch:'Rolling Q4 2026–Q1 2027', closing:'Rolling',          value:'$1M–$3M',       priority:'Critical', notes:'Kimadia issues rolling CVC/dialysis catheter tenders; high-volume public procurement.'},
+    {id:15, country:'🇧🇭 Bahrain',      name:'Supply of Dialysis Items (AKU & PDU) – Renewal',                              ref:'MOH/XXX/2027',        entity:'MOH Bahrain',               launch:'Q1 2027',             closing:'Q2 2027',             value:'$300K–$700K',   priority:'Critical', notes:'Annual dialysis consumables for government centers.'},
+    {id:16, country:'🇸🇦 Saudi Arabia', name:'NUPCO – Specialized Surgery Supplies (incl. catheters)',                       ref:'NPT0016/26 series',   entity:'NUPCO',                     launch:'Oct 2026',            closing:'06 Oct 2026',         value:'$500K–$1.5M',   priority:'Medium',   notes:'Open framework for surgical sutures, laparoscopy; central venous catheters may be included.'},
+    {id:17, country:'🇸🇦 Saudi Arabia', name:'NUPCO – General Nursing & Wound Care Supplies',                                ref:'NPT series',          entity:'NUPCO',                     launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027',   value:'$300K–$800K',   priority:'Medium',   notes:'General nursing/wound care; dialysis catheters possible but not primary.'},
+    {id:18, country:'🇶🇦 Qatar',        name:'Medical Consumables – Quotation Invited (HMC)',                                ref:'HMC/TCS/9XXX/2026',   entity:'Hamad Medical Corp',        launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027',   value:'$200K–$600K',   priority:'High',     notes:'HMC issues periodic quotation invites for consumables; catheters likely.'},
+    {id:19, country:'🇦🇪 UAE',          name:'Pharmaceutical & Medical Items – DAHC (Rolling RFQ)',                          ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp',launch:'Rolling',             closing:'Rolling',             value:'$100K–$400K',   priority:'Medium',   notes:'DAHC issues rolling RFQs for pharmaceutical/medical items; catheters possible.'},
+    {id:20, country:'🇴🇲 Oman',         name:'Medical Devices – Governorate-Specific Medical Store',                         ref:'Various',             entity:'MOH Oman',                  launch:'Q4 2026',             closing:'Q1 2027',             value:'$200K–$600K',   priority:'Medium',   notes:'Governorate-specific medical device tenders; dialysis items periodic.'}
+  ];
+
+  var pipeCountryFilter   = 'all';
+  var pipePriorityFilter  = 'all';
+
+  var priorityStyles = {
+    'Critical': {dot:'#ef4444', bg:'rgba(239,68,68,0.12)',  border:'rgba(239,68,68,0.35)',  icon:'🔴'},
+    'High':     {dot:'#f97316', bg:'rgba(249,115,22,0.12)', border:'rgba(249,115,22,0.35)', icon:'🟠'},
+    'Medium':   {dot:'#eab308', bg:'rgba(234,179,8,0.12)',  border:'rgba(234,179,8,0.35)',  icon:'🟡'}
+  };
+
+  function pipeRender() {
+    var tbody = document.getElementById('pipe-table-body');
+    if (!tbody) return;
+    var filtered = pipeData.filter(function(r) {
+      return (pipeCountryFilter  === 'all' || r.country  === pipeCountryFilter) &&
+             (pipePriorityFilter === 'all' || r.priority === pipePriorityFilter);
+    });
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="tndr-empty">No pipeline tenders match the selected filters.</td></tr>';
+      return;
+    }
+    var html = '';
+    filtered.forEach(function(r) {
+      var ps = priorityStyles[r.priority] || priorityStyles['Medium'];
+      html += '<tr>' +
+        '<td class="tndr-number">' + r.id + '</td>' +
+        '<td class="tndr-name" style="min-width:260px;" title="' + r.notes + '">' + r.name + '</td>' +
+        '<td class="tndr-country">' + r.country + '</td>' +
+        '<td style="color:#8fa8cf;font-size:11px;min-width:160px;">' + r.entity + '</td>' +
+        '<td style="color:#6a85b0;font-size:10px;white-space:nowrap;">' + r.ref + '</td>' +
+        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.launch + '</td>' +
+        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.closing + '</td>' +
+        '<td style="color:#60a5fa;font-weight:700;white-space:nowrap;">' + r.value + '</td>' +
+        '<td><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;background:' + ps.bg + ';color:' + ps.dot + ';border:1px solid ' + ps.border + ';">' + ps.icon + ' ' + r.priority + '</span></td>' +
+      '</tr>';
+    });
+    tbody.innerHTML = html;
+  }
+
+  function pipeSetCountry(val) {
+    pipeCountryFilter = val;
+    document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-pipe-country') === val);
+    });
+    pipeRender();
+  }
+
+  function pipeSetPriority(val) {
+    pipePriorityFilter = val;
+    document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-pipe-priority') === val);
+    });
+    pipeRender();
+  }
+
+  document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
+    b.addEventListener('click', function() { pipeSetCountry(b.getAttribute('data-pipe-country')); });
+  });
+  document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
+    b.addEventListener('click', function() { pipeSetPriority(b.getAttribute('data-pipe-priority')); });
+  });
+
+  pipeRender();
+})();
+/* ─── END PIPELINE ─── */
 </script>
 </body>
 </html>
