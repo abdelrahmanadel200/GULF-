@@ -63,6 +63,30 @@ html, body { background: #0b1628; height: 100%; }
 .placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
 .placeholder-sub { font-size: 13px; color: #3a5278; }
 /* Country page */
+.country-inline-detail { margin:0 16px 24px; border:1px solid #1e3d7a; border-radius:14px; overflow:hidden; background:#0b1628; box-shadow:0 14px 40px rgba(0,0,0,.30); animation:fadeIn .22s ease; }
+.cid-hero { position:relative; height:300px; overflow:hidden; background:#071426; }
+.cid-landscape { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
+.cid-overlay { position:absolute; inset:0; background:linear-gradient(90deg,rgba(4,15,30,.86) 0%,rgba(4,15,30,.35) 45%,rgba(4,15,30,.15) 100%),linear-gradient(0deg,rgba(7,20,38,.94) 0%,rgba(7,20,38,.05) 48%); }
+.cid-back { position:absolute; top:18px; left:20px; z-index:4; background:rgba(3,12,24,.72); border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:12px; backdrop-filter:blur(7px); }
+.cid-title { position:absolute; left:28px; bottom:24px; z-index:4; display:flex; align-items:center; gap:14px; }
+.cid-flag { width:58px; height:44px; display:flex; align-items:center; justify-content:center; font-size:40px; line-height:1; filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
+.cid-name { font-size:32px; font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.7); }
+.cid-sub { margin-top:4px; font-size:13px; color:#dbeafe; }
+.cid-meta { position:absolute; right:28px; top:55px; z-index:4; display:flex; flex-direction:column; gap:18px; min-width:190px; }
+.cid-meta div { display:grid; grid-template-columns:24px 1fr; column-gap:8px; align-items:center; }
+.cid-meta span { grid-row:1 / span 2; font-size:20px; }
+.cid-meta small { color:#7f9ac1; font-size:10px; }
+.cid-meta b { color:#e8edf5; font-size:13px; }
+.cid-body { padding:20px 24px 24px; background:#06152b; }
+.cid-kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.cid-kpi { min-height:92px; background:rgba(255,255,255,.035); border:1px solid #1264a3; border-radius:13px; padding:16px 18px; }
+.cid-kpi-label { color:#6fa9dc; font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
+.cid-kpi-value { margin-top:10px; color:#fff; font-size:24px; font-weight:800; }
+.cid-overview { margin-top:22px; padding:18px; border:1px solid #1e3d7a; border-radius:12px; text-align:center; background:rgba(255,255,255,.035); }
+.cid-overview-title { color:#c8d8f0; font-size:13px; font-weight:700; }
+.cid-overview-sub { color:#6a85b0; font-size:11px; margin-top:7px; }
+@media (max-width:1000px) { .cid-meta { position:static; display:none; } .cid-name { font-size:28px; } .cid-kpi-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px) { .country-inline-detail { margin:0 10px 18px; } .cid-hero { height:235px; } .cid-title { left:16px; bottom:18px; } .cid-name { font-size:22px; } .cid-flag { font-size:30px; width:42px; } .cid-kpi-grid { grid-template-columns:1fr; } .cid-body { padding:14px; } }
 .country-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:0 16px 16px; }
 .country-grid .c-card { flex:0 0 calc((100% - 56px)/5); }
 .c-card { height:138px; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:12px; padding:0; cursor:pointer; transition:all .18s ease; display:flex; align-items:flex-end; position:relative; overflow:hidden; min-width:0; }
@@ -949,53 +973,71 @@ const countryData = {
 
 function openCountry(code){
   const d = countryData[code];
-  if(!d) return;
-  const existing = document.getElementById('country-overlay');
-  if(existing) existing.remove();
-  const overlay = document.createElement('div');
-  overlay.id = 'country-overlay';
-  overlay.style.cssText = `
-    position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
-    display:flex;flex-direction:column;overflow-y:auto;
-    background:linear-gradient(180deg,${d.colors.primary}dd 0%,#0b1628 45%);
-  `;
-  overlay.innerHTML = `
-    <div style="position:relative;width:100%;height:300px;overflow:hidden;flex-shrink:0;background:#071426;">
-      <div style="position:absolute;inset:-18px;background-image:url('${d.landscape}');background-position:center;background-size:cover;filter:blur(16px);opacity:.30;transform:scale(1.06);"></div>
-      <img src="${d.landscape}" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;opacity:.94;display:block;"/>
-      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,20,38,.05) 15%,rgba(7,20,38,.22) 50%,#0b1628 100%);"></div>
-      <div style="position:absolute;top:20px;left:24px;z-index:3;">
-        <button onclick="document.getElementById('country-overlay').remove()"
-          style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;backdrop-filter:blur(6px);">
-          ← Back
-        </button>
-      </div>
-      <div style="position:absolute;bottom:24px;left:32px;display:flex;align-items:center;gap:14px;z-index:3;">
-        <span style="width:44px;height:30px;display:flex;align-items:center;justify-content:center;flex:0 0 44px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.55));"><img src="${d.flagImg}" alt="${d.name} flag" onerror="this.style.display='none'" style="width:44px;height:30px;object-fit:cover;object-position:center;border-radius:4px;border:1px solid rgba(255,255,255,.2);display:block;"/></span>
+  const page = document.getElementById('page-countries');
+  if(!d || !page) return;
+
+  // Same-page country detail: keep sidebar + Country Analysis page visible.
+  const old = document.getElementById('country-inline-detail');
+  if(old) old.remove();
+
+  const detail = document.createElement('div');
+  detail.id = 'country-inline-detail';
+  detail.className = 'country-inline-detail';
+
+  const capitalMap = {
+    sa:'Riyadh', ae:'Abu Dhabi', kw:'Kuwait City', qa:'Doha', om:'Muscat',
+    bh:'Manama', jo:'Amman', lb:'Beirut', iq:'Baghdad'
+  };
+  const systemMap = {
+    sa:'MOH / NUPCO / SFDA', ae:'MOH / DHA / DOH', kw:'MOH Kuwait',
+    qa:'HMC / PHCC', om:'MOH Oman', bh:'MOH Bahrain',
+    jo:'MOH / RMS', lb:'MOH Lebanon', iq:'MOH / Kimadia'
+  };
+
+  detail.innerHTML = `
+    <div class="cid-hero">
+      <img class="cid-landscape" src="${d.landscape}" alt="${d.name} landscape"
+           onerror="this.style.display='none'">
+      <div class="cid-overlay"></div>
+      <button class="cid-back" onclick="closeCountry()">← Back</button>
+      <div class="cid-title">
+        <span class="cid-flag">${d.flag}</span>
         <div>
-          <div style="font-size:32px;font-weight:800;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,0.7);">${d.name}</div>
-          <div style="font-size:13px;color:${d.colors.accent};filter:brightness(1.8);margin-top:4px;">${d.sub}</div>
+          <div class="cid-name">${d.name}</div>
+          <div class="cid-sub">${d.sub}</div>
         </div>
       </div>
+      <div class="cid-meta">
+        <div><span>📍</span><small>Capital</small><b>${capitalMap[code] || '—'}</b></div>
+        <div><span>👥</span><small>Population</small><b>${d.kpi[0]?.v || '—'}</b></div>
+        <div><span>🏥</span><small>Healthcare System</small><b>${systemMap[code] || '—'}</b></div>
+      </div>
     </div>
-    <div style="padding:24px 32px;flex:1;">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+
+    <div class="cid-body">
+      <div class="cid-kpi-grid">
         ${d.kpi.map(k=>`
-          <div style="background:rgba(255,255,255,0.06);border:1px solid ${d.colors.primary}55;border-top:3px solid ${d.colors.primary};border-radius:14px;padding:20px;text-align:center;backdrop-filter:blur(8px);">
-            <div style="font-size:10px;color:#a0b0c8;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;">${k.l}</div>
-            <div style="font-size:28px;font-weight:800;color:#ffffff;margin-top:10px;">${k.v}</div>
+          <div class="cid-kpi">
+            <div class="cid-kpi-label">${k.l}</div>
+            <div class="cid-kpi-value">${k.v}</div>
           </div>
         `).join('')}
       </div>
-      <div onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px ${d.colors.primary}44';this.style.borderColor='${d.colors.primary}'"
-     onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor='${d.colors.primary}55'"
-     style="background:rgba(255,255,255,0.06);border:1px solid ${d.colors.primary}55;border-top:3px solid ${d.colors.primary};border-radius:14px;padding:20px;text-align:center;backdrop-filter:blur(8px);transition:all 0.2s;cursor:default;">
-        <div style="font-size:13px;font-weight:600;color:#c8d8f0;margin-bottom:10px;">📊 Market Overview</div>
-        <div style="color:#6a85b0;font-size:12px;">Detailed market data coming soon...</div>
+      <div class="cid-overview">
+        <div class="cid-overview-title">📊 Market Overview</div>
+        <div class="cid-overview-sub">Detailed market data coming soon...</div>
       </div>
     </div>
   `;
-  document.body.appendChild(overlay);
+
+  const header = page.querySelector('.section-header');
+  const grid = page.querySelector('.country-grid');
+  if(header) header.insertAdjacentElement('afterend', detail);
+  else page.prepend(detail);
+
+  // Keep the country cards visible underneath, exactly like the reference design.
+  if(grid) grid.scrollIntoView({behavior:'smooth', block:'start'});
+  setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80);
 }
 
 function closeCountry(){document.getElementById('cd-panel').classList.remove('open');}
