@@ -596,6 +596,68 @@ html, body { background: #0b1628; height: 100%; }
       </div>
 
     </div><!-- end tndr-section-pipeline -->
+        </div><!-- end tndr-section-active -->
+
+    <!-- ═══ PIPELINE FORECAST SECTION ═══ -->
+    <div id="tndr-section-pipeline" style="display:none;">
+
+      <div class="tndr-kpis">
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Total Pipeline</div><div class="tndr-kpi-value" style="color:#60a5fa;">20</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Est. Total Value</div><div class="tndr-kpi-value" style="color:#f59e0b;">$27M+</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Critical Priority</div><div class="tndr-kpi-value" style="color:#ef4444;">8</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Launching Q4 2026</div><div class="tndr-kpi-value" style="color:#a78bfa;">6</div></div>
+        <div class="tndr-kpi"><div class="tndr-kpi-label">Countries</div><div class="tndr-kpi-value" style="color:#34d399;">7</div></div>
+      </div>
+
+      <div class="tndr-filters" style="margin-bottom:16px;">
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Country</span>
+          <button class="tndr-filter-btn active" data-pipe-country="all">All</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇦🇪 UAE">🇦🇪 UAE</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇴🇲 Oman">🇴🇲 Oman</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
+          <button class="tndr-filter-btn" data-pipe-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
+        </div>
+        <div class="tndr-filter-group">
+          <span class="tndr-filter-label">Priority</span>
+          <button class="tndr-filter-btn active" data-pipe-priority="all">All Priority</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Critical">🔴 Critical</button>
+          <button class="tndr-filter-btn" data-pipe-priority="High">🟠 High</button>
+          <button class="tndr-filter-btn" data-pipe-priority="Medium">🟡 Medium</button>
+        </div>
+      </div>
+
+      <div class="tndr-table-wrap">
+        <table class="tndr-table" style="min-width:1200px;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Expected Tender Title</th>
+              <th>Country</th>
+              <th>Issuing Entity</th>
+              <th>Ref. (Est.)</th>
+              <th>Launch</th>
+              <th>Closing</th>
+              <th>Est. Value</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody id="pipe-table-body"></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:14px;background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px;font-size:11px;color:#6a85b0;line-height:1.7;">
+        <span style="color:#f59e0b;font-weight:700;">⚠️ Note:</span>
+        Pipeline data represents <b style="color:#c8d8f0;">expected / forecasted tenders</b> based on historical procurement cycles and market intelligence.
+        Tender references marked <b style="color:#c8d8f0;">(est.)</b> are estimated. Monitor: NUPCO Etimad · HMC Portal · DAHC · Kimadia · MOH portals per country.
+      </div>
+
+    </div><!-- end tndr-section-pipeline -->
       /* Modal */
       .tndr-modal-overlay { display:none; position:fixed; inset:0; z-index:99999; background:rgba(3,10,22,.78); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:22px; }
       .tndr-modal-overlay.show { display:flex; }
