@@ -64,10 +64,13 @@ html, body { background: #0b1628; height: 100%; }
 .placeholder-sub { font-size: 13px; color: #3a5278; }
 /* Country page */
 .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 16px 16px; }
-.c-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 0; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: stretch; position: relative; overflow: hidden; height: 180px; }
+@media (max-width: 900px) { .country-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .country-grid { grid-template-columns: 1fr; } .c-card { height: 72px; } }
+.c-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 0 16px; cursor: pointer; transition: all .18s; display: flex; align-items: center; position: relative; overflow: hidden; height: 78px; }
 .c-card:hover, .c-card:focus { outline: none; transform: translateY(-2px); border-color: var(--cc, #2563eb); box-shadow: 0 0 0 3px var(--cc, #2563eb)55; }
-.c-img { width: 100%; height: 140px; object-fit: contain; object-position: center; display: block; border-radius: 0; background: #0a1628; }
-.c-name { font-size: 13px; font-weight: 700; color: #e8edf5; text-align: center; padding: 8px 0 10px; flex: 1; display: flex; align-items: center; justify-content: center; }
+.c-img { width: 34px; height: 24px; object-fit: cover; object-position: center; display: block; flex: 0 0 34px; border-radius: 4px; background: #0a1628; border: 1px solid rgba(255,255,255,.12); }
+.c-flag { width: 34px; height: 28px; flex: 0 0 34px; display: flex; align-items: center; justify-content: center; font-size: 25px; line-height: 1; }
+.c-name { font-size: 13px; font-weight: 700; color: #e8edf5; text-align: left; padding: 0 0 0 11px; flex: 1; display: flex; align-items: center; justify-content: flex-start; min-width: 0; }
 .c-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--cc, #2563eb); }
 .cd-panel { display: none; margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px; animation: fadeIn .2s; }
 .cd-panel.open { display: block; }
@@ -158,42 +161,34 @@ html, body { background: #0b1628; height: 100%; }
   <div class="section-header"><span style="font-size:16px">🌍</span><span class="section-title">Country Analysis — 9 Markets</span></div>
   <div class="country-grid" role="list">
   <div class="c-card" style="--cc:#10b981" role="listitem" tabindex="0" onclick="openCountry('sa')" onkeydown="if(event.key==='Enter')openCountry('sa')" aria-label="Saudi Arabia">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_arabia_flag.jpeg" class="c-img"/>
-    <div class="c-name">Saudi Arabia</div><div class="c-accent"></div>
+    <span class="c-flag">🇸🇦</span><div class="c-name">Saudi Arabia</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#f59e0b" role="listitem" tabindex="0" onclick="openCountry('ae')" onkeydown="if(event.key==='Enter')openCountry('ae')" aria-label="UAE">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_flag.jpeg" class="c-img"/>
-    <div class="c-name">UAE</div><div class="c-accent"></div>
+    <span class="c-flag">🇦🇪</span><div class="c-name">UAE</div><div class="c-accent"></div>
   </div>
-<div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg" class="c-img" onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'🇰🇼',style:'font-size:60px;padding:20px'}))"/>
-    <div class="c-name">Kuwait</div><div class="c-accent"></div>
-</div>
+  <div class="c-card" style="--cc:#3b82f6" role="listitem" tabindex="0" onclick="openCountry('kw')" onkeydown="if(event.key==='Enter')openCountry('kw')" aria-label="Kuwait">
+    <span class="c-flag">🇰🇼</span><div class="c-name">Kuwait</div><div class="c-accent"></div>
+  </div>
   <div class="c-card" style="--cc:#8b5cf6" role="listitem" tabindex="0" onclick="openCountry('qa')" onkeydown="if(event.key==='Enter')openCountry('qa')" aria-label="Qatar">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_flag.jpeg" class="c-img"/>
-    <div class="c-name">Qatar</div><div class="c-accent"></div>
+    <span class="c-flag">🇶🇦</span><div class="c-name">Qatar</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#ef4444" role="listitem" tabindex="0" onclick="openCountry('om')" onkeydown="if(event.key==='Enter')openCountry('om')" aria-label="Oman">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_flag.jpeg" class="c-img"/>
-    <div class="c-name">Oman</div><div class="c-accent"></div>
+    <span class="c-flag">🇴🇲</span><div class="c-name">Oman</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#ec4899" role="listitem" tabindex="0" onclick="openCountry('bh')" onkeydown="if(event.key==='Enter')openCountry('bh')" aria-label="Bahrain">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahraien_flag.jpeg" class="c-img"/>
-    <div class="c-name">Bahrain</div><div class="c-accent"></div>
+    <span class="c-flag">🇧🇭</span><div class="c-name">Bahrain</div><div class="c-accent"></div>
   </div>
- <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
-  <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpeg" class="c-img" onerror="this.style.display='none'"/>
-    <div class="c-name">Iraq</div><div class="c-accent"></div>
-</div>
+  <div class="c-card" style="--cc:#f97316" role="listitem" tabindex="0" onclick="openCountry('iq')" onkeydown="if(event.key==='Enter')openCountry('iq')" aria-label="Iraq">
+    <span class="c-flag">🇮🇶</span><div class="c-name">Iraq</div><div class="c-accent"></div>
+  </div>
   <div class="c-card" style="--cc:#06b6d4" role="listitem" tabindex="0" onclick="openCountry('jo')" onkeydown="if(event.key==='Enter')openCountry('jo')" aria-label="Jordan">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_flag.jpeg" class="c-img"/>
-    <div class="c-name">Jordan</div><div class="c-accent"></div>
+    <span class="c-flag">🇯🇴</span><div class="c-name">Jordan</div><div class="c-accent"></div>
   </div>
   <div class="c-card" style="--cc:#a3e635" role="listitem" tabindex="0" onclick="openCountry('lb')" onkeydown="if(event.key==='Enter')openCountry('lb')" aria-label="Lebanon">
-    <img src="https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_flag.jpeg" class="c-img"/>
-    <div class="c-name">Lebanon</div><div class="c-accent"></div>
+    <span class="c-flag">🇱🇧</span><div class="c-name">Lebanon</div><div class="c-accent"></div>
   </div>
 </div>
+
   <div class="cd-panel" id="cd-panel" role="region" aria-live="polite">
     <div class="cd-header">
       <div class="cd-flag" id="cd-flag"></div>
@@ -904,10 +899,10 @@ const countryData = {
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_landscape.jpeg',colors:{primary:'#db161b',secondary:'#ffffff',accent:'#008000'},
     kpi:[{l:'Population 2026',v:'5,494,691'},{l:'HD Patients',v:'2,500'},{l:'PD Patients',v:'100'},{l:'Dialysis Facilities',v:'20'},{l:'HD Machines',v:'2,200'},{l:'Annual Catheter Demand',v:'6,365'},{l:'Market Value',v:'$0.76M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
   bh:{flag:'🇧🇭',name:'Bahrain',sub:'GCC — Small High-Income',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpeg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
     kpi:[{l:'Population 2026',v:'1,675,572'},{l:'HD Patients',v:'4,547'},{l:'PD Patients',v:'450'},{l:'Dialysis Facilities',v:'14'},{l:'HD Machines',v:'750'},{l:'Annual Catheter Demand',v:'11,885'},{l:'Market Value',v:'$1.43M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
   iq:{flag:'🇮🇶',name:'Iraq',sub:'ME — High Volume Opportunity',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpeg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ffffff'},
+    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ffffff'},
     kpi:[{l:'Population 2026',v:'48,007,437'},{l:'HD Patients',v:'10,721'},{l:'PD Patients',v:'450'},{l:'Dialysis Facilities',v:'130'},{l:'HD Machines',v:'9,000'},{l:'Annual Catheter Demand',v:'27,320'},{l:'Market Value',v:'$2.46M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
   jo:{flag:'🇯🇴',name:'Jordan',sub:'ME — Medical Hub',
     landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_landscape.jpeg',colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
@@ -930,17 +925,18 @@ function openCountry(code){
     background:linear-gradient(180deg,${d.colors.primary}dd 0%,#0b1628 45%);
   `;
   overlay.innerHTML = `
-    <div style="position:relative;width:100%;height:320px;overflow:hidden;flex-shrink:0;">
-      <img src="${d.landscape}" style="width:100%;height:100%;object-fit:cover;opacity:0.4;display:block;"/>
-      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,#0b1628 100%);"></div>
-      <div style="position:absolute;top:20px;left:24px;">
+    <div style="position:relative;width:100%;height:300px;overflow:hidden;flex-shrink:0;background:#071426;">
+      <div style="position:absolute;inset:-18px;background-image:url('${d.landscape}');background-position:center;background-size:cover;filter:blur(16px);opacity:.30;transform:scale(1.06);"></div>
+      <img src="${d.landscape}" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:18px 44px;opacity:.92;display:block;"/>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,20,38,.05) 15%,rgba(7,20,38,.22) 50%,#0b1628 100%);"></div>
+      <div style="position:absolute;top:20px;left:24px;z-index:3;">
         <button onclick="document.getElementById('country-overlay').remove()"
           style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;backdrop-filter:blur(6px);">
           ← Back
         </button>
       </div>
-      <div style="position:absolute;bottom:24px;left:32px;display:flex;align-items:center;gap:16px;">
-        <span style="font-size:64px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));">${d.flag}</span>
+      <div style="position:absolute;bottom:24px;left:32px;display:flex;align-items:center;gap:14px;z-index:3;">
+        <span style="width:46px;height:34px;display:flex;align-items:center;justify-content:center;font-size:32px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.55));">${d.flag}</span>
         <div>
           <div style="font-size:32px;font-weight:800;color:#ffffff;text-shadow:0 2px 12px rgba(0,0,0,0.7);">${d.name}</div>
           <div style="font-size:13px;color:${d.colors.accent};filter:brightness(1.8);margin-top:4px;">${d.sub}</div>
