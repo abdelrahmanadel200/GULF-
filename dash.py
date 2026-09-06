@@ -96,7 +96,7 @@ dashboard_html = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #0b1628; height: 100%; }
 .dash { background: #0b1628; color: #e8edf5; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; }
-.sidebar { width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; position: sticky; top: 0; height: 100vh; z-index: 10; align-self: flex-start; }
+.sidebar { pointer-events:auto; position:sticky; width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; position: sticky; top: 0; height: 100vh; z-index: 99999; align-self: flex-start; }
 .logo { padding: 0 16px 18px; border-bottom: 1px solid #1e3d7a; margin-bottom: 10px; }
 .logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
 .logo-sub { font-size: 10px; color: #3a5278; margin-top: 2px; }
@@ -1351,18 +1351,51 @@ function navigate(el,pageId){
   if(pageId==="hotareas"){setTimeout(()=>{createMarketMap();if(marketMap)marketMap.invalidateSize();},200);}
 }
 
-// Robust navigation: use real event listeners instead of inline onclick handlers.
+// ROBUST SIDEBAR NAVIGATION
+// Use delegated events + explicit pointer handling so the sidebar keeps working
+// even when other dashboard components are dynamically re-rendered.
 window.navigate = navigate;
 window.openCountry = openCountry;
 window.closeCountry = closeCountry;
 
-document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
-  const go=function(){ navigate(item,item.getAttribute('data-page')); };
-  item.addEventListener('click',go);
-  item.addEventListener('keydown',function(e){
-    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); }
-  });
-});
+function initSidebarNavigation(){
+  var sidebar = document.querySelector('.sidebar');
+  if(!sidebar || sidebar.dataset.navReady === '1') return;
+  sidebar.dataset.navReady = '1';
+  sidebar.style.pointerEvents = 'auto';
+  sidebar.style.position = 'sticky';
+  sidebar.style.zIndex = '99999';
+
+  sidebar.addEventListener('click', function(e){
+    var item = e.target.closest('.nav-item[data-page]');
+    if(!item) return;
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(item, item.getAttribute('data-page'));
+  }, true);
+
+  sidebar.addEventListener('keydown', function(e){
+    var item = e.target.closest('.nav-item[data-page]');
+    if(!item) return;
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      e.stopPropagation();
+      navigate(item, item.getAttribute('data-page'));
+    }
+  }, true);
+}
+
+if(document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSidebarNavigation);
+} else {
+  initSidebarNavigation();
+}
+
+// Also expose a simple direct handler for debugging / future buttons.
+window.sidebarGo = function(pageId){
+  var item = document.querySelector('.nav-item[data-page="'+pageId+'"]');
+  if(item) navigate(item, pageId);
+};
 /* ─── TENDERS ─── */
 (function () {
   var tndrData = [
