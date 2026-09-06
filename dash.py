@@ -1213,17 +1213,19 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
   if (mo) mo.addEventListener('click', function(e) { if (e.target === mo) tndrCloseModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tndrCloseModal(); });
 
-    tndrRender();
+      tndrRender();
 
   /* ─── TAB SWITCHER ─── */
   window.tndrSwitchTab = function(tab) {
     var isActive = tab === 'active';
-    document.getElementById('tndr-section-active').style.display   = isActive ? '' : 'none';
-    document.getElementById('tndr-section-pipeline').style.display = isActive ? 'none' : '';
-    document.getElementById('tndr-tab-active').style.background    = isActive ? '#2563eb' : 'transparent';
-    document.getElementById('tndr-tab-active').style.color         = isActive ? '#fff' : '#6a85b0';
-    document.getElementById('tndr-tab-pipeline').style.background  = isActive ? 'transparent' : '#2563eb';
-    document.getElementById('tndr-tab-pipeline').style.color       = isActive ? '#6a85b0' : '#fff';
+    var sa = document.getElementById('tndr-section-active');
+    var sp = document.getElementById('tndr-section-pipeline');
+    var ta = document.getElementById('tndr-tab-active');
+    var tp = document.getElementById('tndr-tab-pipeline');
+    if (sa) sa.style.display = isActive ? '' : 'none';
+    if (sp) sp.style.display = isActive ? 'none' : '';
+    if (ta) { ta.style.background = isActive ? '#2563eb' : 'transparent'; ta.style.color = isActive ? '#fff' : '#6a85b0'; }
+    if (tp) { tp.style.background = isActive ? 'transparent' : '#2563eb'; tp.style.color = isActive ? '#6a85b0' : '#fff'; }
   };
 
 })();
@@ -1232,32 +1234,32 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
 /* ─── PIPELINE FORECAST ─── */
 (function() {
   var pipeData = [
-    {id:1,  country:'🇸🇦 Saudi Arabia', name:'Open Framework – Dialysis & Artificial Kidney Supplies (Re-tender / Phase 2)', ref:'NPT0043/26-1 (est.)', entity:'NUPCO',                    launch:'Oct–Dec 2026',       closing:'Jan–Mar 2027',        value:'$3M–$8M',       priority:'Critical', notes:'NUPCO dialysis framework expired Aug 2026; re-tender expected Q4 2026. Localization (MiS) scoring critical.'},
-    {id:2,  country:'🇸🇦 Saudi Arabia', name:'General Medical Supplies – INUPCO Platform',                                    ref:'NDP0807/26 series',   entity:'NUPCO (INUPCO)',            launch:'Rolling Sep–Dec 2026', closing:'Rolling',             value:'$50K–$200K',    priority:'High',     notes:'INUPCO e-marketplace tenders published weekly; catheters included in general medical supplies.'},
-    {id:3,  country:'🇸🇦 Saudi Arabia', name:'Medical Devices – Direct Purchase (Health Clusters)',                           ref:'NDP series',          entity:'NUPCO / Health Clusters',   launch:'Rolling',             closing:'Rolling',             value:'$100K–$500K',   priority:'High',     notes:'Cluster-specific tenders (Riyadh, Jazan, Makkah); catheters possible.'},
-    {id:4,  country:'🇶🇦 Qatar',        name:'Medical Consumables – HMC Annual Framework',                                    ref:'HMC/TCS/9XXX/2027',   entity:'Hamad Medical Corp',        launch:'Jan–Mar 2027',        closing:'Mar–May 2027',        value:'$1M–$3M',       priority:'Critical', notes:'HMC issues annual consumables frameworks; dialysis catheters typically included.'},
-    {id:5,  country:'🇶🇦 Qatar',        name:'Medical Supplies – MOH Qatar (Monaqasat)',                                      ref:'Various',             entity:'MOH Qatar',                 launch:'Q1 2027',             closing:'Q2 2027',             value:'$300K–$800K',   priority:'High',     notes:'MOH Qatar tenders via Monaqasat portal; dialysis items periodic.'},
-    {id:6,  country:'🇦🇪 UAE',          name:'Medical Consumables – DAHC 5-Year Blanket Renewal',                            ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp',launch:'Q1–Q2 2027',          closing:'Q2–Q3 2027',          value:'$2M–$5M',       priority:'Critical', notes:'DAHC renews 5-year blankets annually; dialysis catheters in medical consumables category.'},
-    {id:7,  country:'🇦🇪 UAE',          name:'Hemodialysis Machines & Consumables – SEHA',                                   ref:'Various',             entity:'SEHA / Abu Dhabi Health',   launch:'Q2 2027',             closing:'Q3 2027',             value:'$800K–$2M',     priority:'High',     notes:'SEHA tenders for HD machines + consumables; catheters included.'},
-    {id:8,  country:'🇴🇲 Oman',         name:'Renal Dialysis Consumables – MOH Oman (Annual)',                               ref:'Various',             entity:'MOH Oman',                  launch:'Q1 2027',             closing:'Q2 2027',             value:'$600K–$1.5M',   priority:'Critical', notes:'Oman MOH issues annual dialysis consumables tenders; re-tender common.'},
-    {id:9,  country:'🇴🇲 Oman',         name:'Medical Equipment for Dialysis Centers – MOH Oman',                            ref:'Various',             entity:'MOH Oman',                  launch:'Q2 2027',             closing:'Q3 2027',             value:'$400K–$1M',     priority:'High',     notes:'New dialysis center equipment + consumables.'},
-    {id:10, country:'🇰🇼 Kuwait',       name:'Dialysis Consumables & Equipment – MOH Kuwait (Annual)',                       ref:'Various',             entity:'MOH Kuwait',                launch:'Q1 2027',             closing:'Q2 2027',             value:'$500K–$1.5M',   priority:'Critical', notes:'Kuwait MOH annual dialysis tender; listed on GCC aggregators.'},
-    {id:11, country:'🇯🇴 Jordan',       name:'Peritoneal Dialysis Consumables & Solutions (Annual)',                         ref:'Various',             entity:'MOH Jordan',                launch:'Q1 2027',             closing:'Q2 2027',             value:'$200K–$500K',   priority:'High',     notes:'Annual PD consumables tender; solutions + catheters.'},
-    {id:12, country:'🇯🇴 Jordan',       name:'Dialysis Machines & Consumables – Public Hospitals',                           ref:'Various',             entity:'MOH Jordan',                launch:'Q2 2027',             closing:'Q3 2027',             value:'$400K–$900K',   priority:'High',     notes:'HD machines + consumables for public hospitals.'},
-    {id:13, country:'🇱🇧 Lebanon',      name:'Permanent & Single-Use Catheters (Annual)',                                    ref:'Various',             entity:'MOH / Public Hospitals',    launch:'Q1 2027',             closing:'Q2 2027',             value:'$150K–$400K',   priority:'Critical', notes:'Annual catheter tender; permanent + single-use.'},
-    {id:14, country:'🇮🇶 Iraq',         name:'CVC & Dialysis Catheters – Kimadia Framework',                                 ref:'Various',             entity:'Kimadia / MOH Iraq',        launch:'Rolling Q4 2026–Q1 2027', closing:'Rolling',          value:'$1M–$3M',       priority:'Critical', notes:'Kimadia issues rolling CVC/dialysis catheter tenders; high-volume public procurement.'},
-    {id:15, country:'🇧🇭 Bahrain',      name:'Supply of Dialysis Items (AKU & PDU) – Renewal',                              ref:'MOH/XXX/2027',        entity:'MOH Bahrain',               launch:'Q1 2027',             closing:'Q2 2027',             value:'$300K–$700K',   priority:'Critical', notes:'Annual dialysis consumables for government centers.'},
-    {id:16, country:'🇸🇦 Saudi Arabia', name:'NUPCO – Specialized Surgery Supplies (incl. catheters)',                       ref:'NPT0016/26 series',   entity:'NUPCO',                     launch:'Oct 2026',            closing:'06 Oct 2026',         value:'$500K–$1.5M',   priority:'Medium',   notes:'Open framework for surgical sutures, laparoscopy; central venous catheters may be included.'},
-    {id:17, country:'🇸🇦 Saudi Arabia', name:'NUPCO – General Nursing & Wound Care Supplies',                                ref:'NPT series',          entity:'NUPCO',                     launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027',   value:'$300K–$800K',   priority:'Medium',   notes:'General nursing/wound care; dialysis catheters possible but not primary.'},
-    {id:18, country:'🇶🇦 Qatar',        name:'Medical Consumables – Quotation Invited (HMC)',                                ref:'HMC/TCS/9XXX/2026',   entity:'Hamad Medical Corp',        launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027',   value:'$200K–$600K',   priority:'High',     notes:'HMC issues periodic quotation invites for consumables; catheters likely.'},
-    {id:19, country:'🇦🇪 UAE',          name:'Pharmaceutical & Medical Items – DAHC (Rolling RFQ)',                          ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp',launch:'Rolling',             closing:'Rolling',             value:'$100K–$400K',   priority:'Medium',   notes:'DAHC issues rolling RFQs for pharmaceutical/medical items; catheters possible.'},
-    {id:20, country:'🇴🇲 Oman',         name:'Medical Devices – Governorate-Specific Medical Store',                         ref:'Various',             entity:'MOH Oman',                  launch:'Q4 2026',             closing:'Q1 2027',             value:'$200K–$600K',   priority:'Medium',   notes:'Governorate-specific medical device tenders; dialysis items periodic.'}
+    {id:1,  country:'🇸🇦 Saudi Arabia', name:'Open Framework – Dialysis & Artificial Kidney Supplies (Re-tender / Phase 2)', ref:'NPT0043/26-1 (est.)', entity:'NUPCO',                     launch:'Oct–Dec 2026',        closing:'Jan–Mar 2027',      value:'$3M–$8M',     priority:'Critical', notes:'NUPCO dialysis framework expired Aug 2026; re-tender expected Q4 2026. Localization (MiS) scoring critical.'},
+    {id:2,  country:'🇸🇦 Saudi Arabia', name:'General Medical Supplies – INUPCO Platform',                                    ref:'NDP0807/26 series',   entity:'NUPCO (INUPCO)',             launch:'Rolling Sep–Dec 2026', closing:'Rolling',           value:'$50K–$200K',  priority:'High',     notes:'INUPCO e-marketplace tenders published weekly; catheters included in general medical supplies.'},
+    {id:3,  country:'🇸🇦 Saudi Arabia', name:'Medical Devices – Direct Purchase (Health Clusters)',                           ref:'NDP series',          entity:'NUPCO / Health Clusters',    launch:'Rolling',             closing:'Rolling',           value:'$100K–$500K', priority:'High',     notes:'Cluster-specific tenders (Riyadh, Jazan, Makkah); catheters possible.'},
+    {id:4,  country:'🇶🇦 Qatar',        name:'Medical Consumables – HMC Annual Framework',                                    ref:'HMC/TCS/9XXX/2027',   entity:'Hamad Medical Corp',         launch:'Jan–Mar 2027',        closing:'Mar–May 2027',      value:'$1M–$3M',     priority:'Critical', notes:'HMC issues annual consumables frameworks; dialysis catheters typically included.'},
+    {id:5,  country:'🇶🇦 Qatar',        name:'Medical Supplies – MOH Qatar (Monaqasat)',                                      ref:'Various',             entity:'MOH Qatar',                  launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$800K', priority:'High',     notes:'MOH Qatar tenders via Monaqasat portal; dialysis items periodic.'},
+    {id:6,  country:'🇦🇪 UAE',          name:'Medical Consumables – DAHC 5-Year Blanket Renewal',                            ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Q1–Q2 2027',          closing:'Q2–Q3 2027',        value:'$2M–$5M',     priority:'Critical', notes:'DAHC renews 5-year blankets annually; dialysis catheters in medical consumables category.'},
+    {id:7,  country:'🇦🇪 UAE',          name:'Hemodialysis Machines & Consumables – SEHA',                                   ref:'Various',             entity:'SEHA / Abu Dhabi Health',    launch:'Q2 2027',             closing:'Q3 2027',           value:'$800K–$2M',   priority:'High',     notes:'SEHA tenders for HD machines + consumables; catheters included.'},
+    {id:8,  country:'🇴🇲 Oman',         name:'Renal Dialysis Consumables – MOH Oman (Annual)',                               ref:'Various',             entity:'MOH Oman',                   launch:'Q1 2027',             closing:'Q2 2027',           value:'$600K–$1.5M', priority:'Critical', notes:'Oman MOH issues annual dialysis consumables tenders; re-tender common.'},
+    {id:9,  country:'🇴🇲 Oman',         name:'Medical Equipment for Dialysis Centers – MOH Oman',                            ref:'Various',             entity:'MOH Oman',                   launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$1M',   priority:'High',     notes:'New dialysis center equipment + consumables.'},
+    {id:10, country:'🇰🇼 Kuwait',       name:'Dialysis Consumables & Equipment – MOH Kuwait (Annual)',                       ref:'Various',             entity:'MOH Kuwait',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$500K–$1.5M', priority:'Critical', notes:'Kuwait MOH annual dialysis tender; listed on GCC aggregators.'},
+    {id:11, country:'🇯🇴 Jordan',       name:'Peritoneal Dialysis Consumables & Solutions (Annual)',                         ref:'Various',             entity:'MOH Jordan',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$200K–$500K', priority:'High',     notes:'Annual PD consumables tender; solutions + catheters.'},
+    {id:12, country:'🇯🇴 Jordan',       name:'Dialysis Machines & Consumables – Public Hospitals',                           ref:'Various',             entity:'MOH Jordan',                 launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$900K', priority:'High',     notes:'HD machines + consumables for public hospitals.'},
+    {id:13, country:'🇱🇧 Lebanon',      name:'Permanent & Single-Use Catheters (Annual)',                                    ref:'Various',             entity:'MOH / Public Hospitals',     launch:'Q1 2027',             closing:'Q2 2027',           value:'$150K–$400K', priority:'Critical', notes:'Annual catheter tender; permanent + single-use.'},
+    {id:14, country:'🇮🇶 Iraq',         name:'CVC & Dialysis Catheters – Kimadia Framework',                                 ref:'Various',             entity:'Kimadia / MOH Iraq',         launch:'Rolling Q4 2026',     closing:'Rolling',           value:'$1M–$3M',     priority:'Critical', notes:'Kimadia issues rolling CVC/dialysis catheter tenders; high-volume public procurement.'},
+    {id:15, country:'🇧🇭 Bahrain',      name:'Supply of Dialysis Items (AKU & PDU) – Renewal',                              ref:'MOH/XXX/2027',        entity:'MOH Bahrain',                launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$700K', priority:'Critical', notes:'Annual dialysis consumables for government centers.'},
+    {id:16, country:'🇸🇦 Saudi Arabia', name:'NUPCO – Specialized Surgery Supplies (incl. catheters)',                       ref:'NPT0016/26 series',   entity:'NUPCO',                      launch:'Oct 2026',            closing:'06 Oct 2026',       value:'$500K–$1.5M', priority:'Medium',   notes:'Open framework for surgical sutures, laparoscopy; central venous catheters may be included.'},
+    {id:17, country:'🇸🇦 Saudi Arabia', name:'NUPCO – General Nursing & Wound Care Supplies',                                ref:'NPT series',          entity:'NUPCO',                      launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$300K–$800K', priority:'Medium',   notes:'General nursing/wound care; dialysis catheters possible but not primary.'},
+    {id:18, country:'🇶🇦 Qatar',        name:'Medical Consumables – Quotation Invited (HMC)',                                ref:'HMC/TCS/9XXX/2026',   entity:'Hamad Medical Corp',         launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$200K–$600K', priority:'High',     notes:'HMC issues periodic quotation invites for consumables; catheters likely.'},
+    {id:19, country:'🇦🇪 UAE',          name:'Pharmaceutical & Medical Items – DAHC (Rolling RFQ)',                          ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Rolling',             closing:'Rolling',           value:'$100K–$400K', priority:'Medium',   notes:'DAHC issues rolling RFQs for pharmaceutical/medical items; catheters possible.'},
+    {id:20, country:'🇴🇲 Oman',         name:'Medical Devices – Governorate-Specific Medical Store',                         ref:'Various',             entity:'MOH Oman',                   launch:'Q4 2026',             closing:'Q1 2027',           value:'$200K–$600K', priority:'Medium',   notes:'Governorate-specific medical device tenders; dialysis items periodic.'}
   ];
 
-  var pipeCountryFilter   = 'all';
-  var pipePriorityFilter  = 'all';
+  var pipeCountryFilter  = 'all';
+  var pipePriorityFilter = 'all';
 
-  var priorityStyles = {
+  var pipeStyles = {
     'Critical': {dot:'#ef4444', bg:'rgba(239,68,68,0.12)',  border:'rgba(239,68,68,0.35)',  icon:'🔴'},
     'High':     {dot:'#f97316', bg:'rgba(249,115,22,0.12)', border:'rgba(249,115,22,0.35)', icon:'🟠'},
     'Medium':   {dot:'#eab308', bg:'rgba(234,179,8,0.12)',  border:'rgba(234,179,8,0.35)',  icon:'🟡'}
@@ -1276,7 +1278,7 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
     }
     var html = '';
     filtered.forEach(function(r) {
-      var ps = priorityStyles[r.priority] || priorityStyles['Medium'];
+      var ps = pipeStyles[r.priority] || pipeStyles['Medium'];
       html += '<tr>' +
         '<td class="tndr-number">' + r.id + '</td>' +
         '<td class="tndr-name" style="min-width:260px;" title="' + r.notes + '">' + r.name + '</td>' +
@@ -1292,27 +1294,20 @@ document.querySelectorAll('.nav-item[data-page]').forEach(function(item){
     tbody.innerHTML = html;
   }
 
-  function pipeSetCountry(val) {
-    pipeCountryFilter = val;
-    document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-pipe-country') === val);
-    });
-    pipeRender();
-  }
-
-  function pipeSetPriority(val) {
-    pipePriorityFilter = val;
-    document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-pipe-priority') === val);
-    });
-    pipeRender();
-  }
-
   document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
-    b.addEventListener('click', function() { pipeSetCountry(b.getAttribute('data-pipe-country')); });
+    b.addEventListener('click', function() {
+      pipeCountryFilter = b.getAttribute('data-pipe-country');
+      document.querySelectorAll('[data-pipe-country]').forEach(function(x) { x.classList.toggle('active', x === b); });
+      pipeRender();
+    });
   });
+
   document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
-    b.addEventListener('click', function() { pipeSetPriority(b.getAttribute('data-pipe-priority')); });
+    b.addEventListener('click', function() {
+      pipePriorityFilter = b.getAttribute('data-pipe-priority');
+      document.querySelectorAll('[data-pipe-priority]').forEach(function(x) { x.classList.toggle('active', x === b); });
+      pipeRender();
+    });
   });
 
   pipeRender();
