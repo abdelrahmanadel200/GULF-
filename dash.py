@@ -490,7 +490,178 @@ html, body { background: #0b1628; height: 100%; }
 
 <!-- TENDERS -->
 <div class="page" id="page-tenders">
-  <div class="placeholder-page"><div class="placeholder-icon">📋</div><div class="placeholder-title">Tenders</div><div class="placeholder-sub">Coming soon</div></div>
+  <div style="padding: 0 16px 32px;">
+
+    <style>
+      #page-tenders * { box-sizing: border-box; }
+      #page-tenders .tndr-kpis { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+      #page-tenders .tndr-kpi { background:#0f1f3d; border:1px solid #1e3d7a; border-radius:13px; padding:17px 18px; position:relative; overflow:hidden; }
+      #page-tenders .tndr-kpi::after { content:""; position:absolute; left:0; top:0; width:3px; height:100%; background:#2563eb; }
+      #page-tenders .tndr-kpi:nth-child(2)::after { background:#60a5fa; }
+      #page-tenders .tndr-kpi:nth-child(3)::after { background:#f59e0b; }
+      #page-tenders .tndr-kpi:nth-child(4)::after { background:#3b82f6; }
+      #page-tenders .tndr-kpi:nth-child(5)::after { background:#34d399; }
+      #page-tenders .tndr-kpi-label { color:#6a85b0; font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+      #page-tenders .tndr-kpi-value { color:#e8edf5; font-size:24px; font-weight:700; }
+      #page-tenders .tndr-filters { background:#0f1f3d; border:1px solid #1e3d7a; border-radius:13px; padding:15px; margin-bottom:16px; }
+      #page-tenders .tndr-filter-group { display:flex; align-items:center; flex-wrap:wrap; gap:7px; }
+      #page-tenders .tndr-filter-group + .tndr-filter-group { margin-top:11px; padding-top:11px; border-top:1px solid rgba(30,61,122,.55); }
+      #page-tenders .tndr-filter-label { color:#6a85b0; font-size:11px; font-weight:700; min-width:72px; text-transform:uppercase; }
+      #page-tenders .tndr-filter-btn { border:1px solid #1e3d7a; background:#0b1628; color:#8fa8cf; border-radius:9px; padding:7px 11px; font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; transition:all .16s; }
+      #page-tenders .tndr-filter-btn:hover { border-color:#3b82f6; color:#e8edf5; background:#10264a; }
+      #page-tenders .tndr-filter-btn.active { background:rgba(37,99,235,.22); border-color:#3b82f6; color:#e8edf5; }
+      #page-tenders .tndr-table-wrap { width:100%; overflow-x:auto; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:13px; }
+      #page-tenders .tndr-table { width:100%; min-width:1050px; border-collapse:separate; border-spacing:0; font-size:12px; }
+      #page-tenders .tndr-table thead th { background:#10264a; color:#6a85b0; text-align:left; padding:13px 14px; font-size:10px; text-transform:uppercase; letter-spacing:.55px; font-weight:700; border-bottom:1px solid #1e3d7a; white-space:nowrap; }
+      #page-tenders .tndr-table tbody td { padding:13px 14px; border-bottom:1px solid rgba(30,61,122,.55); color:#cbd6e8; vertical-align:middle; }
+      #page-tenders .tndr-table tbody tr { transition:background .14s; }
+      #page-tenders .tndr-table tbody tr:hover { background:rgba(37,99,235,.07); }
+      #page-tenders .tndr-table tbody tr:last-child td { border-bottom:0; }
+      #page-tenders .tndr-number { width:40px; color:#6a85b0 !important; font-weight:700; }
+      #page-tenders .tndr-name { color:#e8edf5 !important; font-weight:700; min-width:245px; }
+      #page-tenders .tndr-value { color:#e8edf5 !important; font-weight:700; white-space:nowrap; }
+      #page-tenders .tndr-country, #page-tenders .tndr-deadline { white-space:nowrap; }
+      #page-tenders .tndr-authority { min-width:155px; }
+      #page-tenders .tndr-status { display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px; font-size:10px; font-weight:700; white-space:nowrap; border:1px solid; }
+      #page-tenders .tndr-status-open     { color:#fbbf24; background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.5); }
+      #page-tenders .tndr-status-submitted { color:#60a5fa; background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.5); }
+      #page-tenders .tndr-status-won      { color:#34d399; background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.5); }
+      #page-tenders .tndr-status-closed   { color:#8fa8cf; background:rgba(106,133,176,.12); border-color:rgba(106,133,176,.5); }
+      #page-tenders .tndr-view-btn { border:1px solid #2563eb; background:rgba(37,99,235,.16); color:#60a5fa; border-radius:8px; padding:6px 12px; font-family:inherit; font-size:11px; font-weight:700; cursor:pointer; transition:all .16s; }
+      #page-tenders .tndr-view-btn:hover { background:#2563eb; color:#fff; }
+      #page-tenders .tndr-empty { text-align:center; padding:42px 20px !important; color:#6a85b0 !important; }
+      /* Modal */
+      .tndr-modal-overlay { display:none; position:fixed; inset:0; z-index:99999; background:rgba(3,10,22,.78); backdrop-filter:blur(5px); align-items:center; justify-content:center; padding:22px; }
+      .tndr-modal-overlay.show { display:flex; }
+      .tndr-modal-card { width:min(650px,100%); max-height:min(760px,92vh); overflow-y:auto; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:14px; box-shadow:0 25px 80px rgba(0,0,0,.48); }
+      .tndr-modal-header { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding:20px 21px; border-bottom:1px solid #1e3d7a; background:#10264a; }
+      .tndr-modal-title { margin:0; color:#e8edf5; font-size:17px; font-weight:700; line-height:1.35; }
+      .tndr-modal-kicker { margin:0 0 5px; color:#60a5fa; font-size:10px; text-transform:uppercase; letter-spacing:.65px; font-weight:800; }
+      .tndr-modal-x { border:1px solid #1e3d7a; background:#0b1628; color:#8fa8cf; width:31px; height:31px; border-radius:8px; cursor:pointer; font-size:17px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+      .tndr-modal-x:hover { color:#e8edf5; border-color:#3b82f6; }
+      .tndr-modal-body { padding:20px 21px; }
+      .tndr-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+      .tndr-detail { background:#0b1628; border:1px solid rgba(30,61,122,.75); border-radius:10px; padding:13px 14px; }
+      .tndr-detail-full { grid-column:1/-1; }
+      .tndr-detail-label { color:#6a85b0; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.55px; margin-bottom:6px; }
+      .tndr-detail-value { color:#e8edf5; font-size:13px; font-weight:600; line-height:1.45; }
+      .tndr-notes { color:#8fa8cf !important; font-weight:500 !important; }
+      .tndr-modal-footer { padding:15px 21px 20px; display:flex; justify-content:flex-end; border-top:1px solid rgba(30,61,122,.65); }
+      .tndr-close-btn { border:1px solid #1e3d7a; background:#10264a; color:#e8edf5; border-radius:9px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+      .tndr-close-btn:hover { border-color:#3b82f6; background:#15305c; }
+    </style>
+
+    <!-- Header -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:15px;font-weight:600;color:#c8d8f0;display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span>📋</span> Active Tenders &amp; Procurement Opportunities
+      </div>
+      <div style="font-size:11px;color:#3a5278;">Gulf &amp; Middle East — 2026/2027 Tender Pipeline</div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="tndr-kpis">
+      <div class="tndr-kpi"><div class="tndr-kpi-label">Total Active Tenders</div><div class="tndr-kpi-value">14</div></div>
+      <div class="tndr-kpi"><div class="tndr-kpi-label">Estimated Total Value</div><div class="tndr-kpi-value" style="color:#60a5fa;">$4.2M</div></div>
+      <div class="tndr-kpi"><div class="tndr-kpi-label">Critical / Urgent</div><div class="tndr-kpi-value" style="color:#f59e0b;">4</div></div>
+      <div class="tndr-kpi"><div class="tndr-kpi-label">Submitted / Pending</div><div class="tndr-kpi-value" style="color:#3b82f6;">6</div></div>
+      <div class="tndr-kpi"><div class="tndr-kpi-label">Won YTD</div><div class="tndr-kpi-value" style="color:#34d399;">3</div></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="tndr-filters">
+      <div class="tndr-filter-group">
+        <span class="tndr-filter-label">Country</span>
+        <button class="tndr-filter-btn active" data-tndr-country="all">All</button>
+        <button class="tndr-filter-btn" data-tndr-country="Saudi Arabia">🇸🇦 KSA</button>
+        <button class="tndr-filter-btn" data-tndr-country="Iraq">🇮🇶 Iraq</button>
+        <button class="tndr-filter-btn" data-tndr-country="Jordan">🇯🇴 Jordan</button>
+        <button class="tndr-filter-btn" data-tndr-country="Lebanon">🇱🇧 Lebanon</button>
+        <button class="tndr-filter-btn" data-tndr-country="Bahrain">🇧🇭 Bahrain</button>
+        <button class="tndr-filter-btn" data-tndr-country="Oman">🇴🇲 Oman</button>
+        <button class="tndr-filter-btn" data-tndr-country="UAE">🇦🇪 UAE</button>
+        <button class="tndr-filter-btn" data-tndr-country="Qatar">🇶🇦 Qatar</button>
+        <button class="tndr-filter-btn" data-tndr-country="Kuwait">🇰🇼 Kuwait</button>
+      </div>
+      <div class="tndr-filter-group">
+        <span class="tndr-filter-label">Status</span>
+        <button class="tndr-filter-btn active" data-tndr-status="all">All Status</button>
+        <button class="tndr-filter-btn" data-tndr-status="Open">Open</button>
+        <button class="tndr-filter-btn" data-tndr-status="Submitted">Submitted</button>
+        <button class="tndr-filter-btn" data-tndr-status="Won">Won ✅</button>
+        <button class="tndr-filter-btn" data-tndr-status="Closed">Closed</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="tndr-table-wrap">
+      <table class="tndr-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tender Name</th>
+            <th>Country</th>
+            <th>Authority</th>
+            <th>Est. Value</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tndr-table-body"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Modal (outside padding div, fixed to viewport) -->
+  <div class="tndr-modal-overlay" id="tndr-modal">
+    <div class="tndr-modal-card">
+      <div class="tndr-modal-header">
+        <div>
+          <p class="tndr-modal-kicker">Tender Details</p>
+          <h3 class="tndr-modal-title" id="tndr-modal-title">—</h3>
+        </div>
+        <button class="tndr-modal-x" id="tndr-modal-x">×</button>
+      </div>
+      <div class="tndr-modal-body">
+        <div class="tndr-detail-grid">
+          <div class="tndr-detail tndr-detail-full">
+            <div class="tndr-detail-label">Tender Name</div>
+            <div class="tndr-detail-value" id="tndr-d-name"></div>
+          </div>
+          <div class="tndr-detail">
+            <div class="tndr-detail-label">Country</div>
+            <div class="tndr-detail-value" id="tndr-d-country"></div>
+          </div>
+          <div class="tndr-detail">
+            <div class="tndr-detail-label">Authority</div>
+            <div class="tndr-detail-value" id="tndr-d-authority"></div>
+          </div>
+          <div class="tndr-detail">
+            <div class="tndr-detail-label">Estimated Value</div>
+            <div class="tndr-detail-value" style="color:#60a5fa;font-size:18px;" id="tndr-d-value"></div>
+          </div>
+          <div class="tndr-detail">
+            <div class="tndr-detail-label">Deadline</div>
+            <div class="tndr-detail-value" id="tndr-d-deadline"></div>
+          </div>
+          <div class="tndr-detail">
+            <div class="tndr-detail-label">Status</div>
+            <div class="tndr-detail-value" id="tndr-d-status"></div>
+          </div>
+          <div class="tndr-detail tndr-detail-full">
+            <div class="tndr-detail-label">Notes</div>
+            <div class="tndr-detail-value tndr-notes" id="tndr-d-notes"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tndr-modal-footer">
+        <button class="tndr-close-btn" id="tndr-modal-close">✕ Close</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- COMPETITORS -->
