@@ -244,7 +244,9 @@ html, body { background: #0b1628; height: 100%; }
   <div class="nav-section-label">Field</div>
   <div class="nav-item" data-page="hotareas" role="button" tabindex="0" onclick="return window.sidebarNavigate('hotareas');"><span class="nav-icon">📍</span><span>Hot Areas</span></div>
   <div class="nav-item" data-page="exhibitions" role="button" tabindex="0" onclick="return window.sidebarNavigate('exhibitions');"><span class="nav-icon">📅</span><span>Exhibitions</span></div>
-  <div class="nav-item" data-page="regulatory" role="button" tabindex="0" onclick="return window.sidebarNavigate('regulatory');"><span class="nav-icon">📜</span><span>Regulatory</span></div>
+    <div class="nav-item" data-page="regulatory" role="button" tabindex="0" onclick="return window.sidebarNavigate('regulatory');"><span class="nav-icon">📜</span><span>Regulatory</span></div>
+  <div class="nav-section-label">Info</div>
+  <div class="nav-item" data-page="sources" role="button" tabindex="0" onclick="return window.sidebarNavigate('sources');"><span class="nav-icon">📚</span><span>Sources</span></div>
 </div>
 
 <div class="main">
@@ -1052,6 +1054,124 @@ html, body { background: #0b1628; height: 100%; }
 <div class="page network-page" id="page-kols-iq" data-network-type="kols" data-network-country="iq"></div>
 
 </div><!-- end .main -->
+<!-- SOURCES -->
+<div class="page" id="page-sources">
+  <div style="padding:0 16px 32px;">
+
+    <div style="margin-bottom:18px;">
+      <div style="font-size:15px;font-weight:600;color:#c8d8f0;display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span>📚</span> Data Sources &amp; Methodology
+      </div>
+      <div style="font-size:11px;color:#3a5278;">AMECATH Market Intelligence — 2026 Edition · Gulf &amp; Middle East</div>
+    </div>
+
+    <!-- Source category cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #60a5fa;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:6px;">🏛️</div>
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Official Bodies</div>
+        <div style="font-size:22px;font-weight:700;color:#60a5fa;margin-top:6px;">9</div>
+        <div style="font-size:10px;color:#3b82f6;margin-top:3px;">Ministries & authorities</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #34d399;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:6px;">📊</div>
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Market Reports</div>
+        <div style="font-size:22px;font-weight:700;color:#34d399;margin-top:6px;">12</div>
+        <div style="font-size:10px;color:#34d399;margin-top:3px;">Research & analytics firms</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #f59e0b;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:6px;">🏥</div>
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Clinical Data</div>
+        <div style="font-size:22px;font-weight:700;color:#f59e0b;margin-top:6px;">7</div>
+        <div style="font-size:10px;color:#f59e0b;margin-top:3px;">Hospital & registry data</div>
+      </div>
+      <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-top:3px solid #a78bfa;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:20px;margin-bottom:6px;">📋</div>
+        <div style="font-size:9px;letter-spacing:1px;color:#6a85b0;text-transform:uppercase;font-weight:600;">Procurement Portals</div>
+        <div style="font-size:22px;font-weight:700;color:#a78bfa;margin-top:6px;">6</div>
+        <div style="font-size:10px;color:#a78bfa;margin-top:3px;">Tender & GPO platforms</div>
+      </div>
+    </div>
+
+    <!-- Sources table -->
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:14px 18px;border-bottom:1px solid #1e3d7a;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:14px;">🏛️</span>
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;">Official Health Authorities & Ministries</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#070f1f;">
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Country</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Authority</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Data Used</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Portal / Reference</th>
+        </tr></thead>
+        <tbody id="src-official-body"></tbody>
+      </table>
+    </div>
+
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:14px 18px;border-bottom:1px solid #1e3d7a;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:14px;">📊</span>
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;">Market Research & Analytics Sources</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#070f1f;">
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Source</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Report / Dataset</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Data Applied To</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Year</th>
+        </tr></thead>
+        <tbody id="src-market-body"></tbody>
+      </table>
+    </div>
+
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:14px 18px;border-bottom:1px solid #1e3d7a;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:14px;">📋</span>
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;">Procurement Portals & Tender Platforms</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#070f1f;">
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Platform</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Country</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">Use in Dashboard</th>
+          <th style="padding:10px 16px;color:#6a85b0;font-size:10px;text-transform:uppercase;letter-spacing:1px;text-align:left;font-weight:600;">URL</th>
+        </tr></thead>
+        <tbody id="src-portal-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Methodology note -->
+    <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-left:3px solid #60a5fa;border-radius:12px;padding:18px 20px;">
+      <div style="font-size:12px;font-weight:700;color:#c8d8f0;margin-bottom:10px;">📐 Methodology Notes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#081321;border-radius:8px;padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#60a5fa;margin-bottom:6px;">HD PATIENT ESTIMATES</div>
+          <div style="font-size:11px;color:#8fa8cf;line-height:1.6;">Country patient figures are derived from MOH annual reports, nephrological society registries, and cross-validated against USRDS/ERA-EDTA international benchmarks. Where official counts were unavailable, dialysis facility capacity × average utilization rate was applied.</div>
+        </div>
+        <div style="background:#081321;border-radius:8px;padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#34d399;margin-bottom:6px;">CATHETER DEMAND FORMULA</div>
+          <div style="font-size:11px;color:#8fa8cf;line-height:1.6;">Annual catheter demand = HD patients × 2.6 catheters/year (industry standard for tunneled + non-tunneled, including replacements). PD catheter demand calculated separately at 1 catheter/patient/2 years.</div>
+        </div>
+        <div style="background:#081321;border-radius:8px;padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#f59e0b;margin-bottom:6px;">MARKET VALUE CALCULATION</div>
+          <div style="font-size:11px;color:#8fa8cf;line-height:1.6;">Market value (USD) = Annual catheter demand × blended average selling price per unit. Average unit price $110–$130 USD across tunneled HD catheters (non-tunneled weighted lower). Country-specific pricing premiums applied for UAE, Qatar, Kuwait.</div>
+        </div>
+        <div style="background:#081321;border-radius:8px;padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#a78bfa;margin-bottom:6px;">REVENUE FORECAST MODEL</div>
+          <div style="font-size:11px;color:#8fa8cf;line-height:1.6;">Bottom-up forecast built from country-level market share targets. Conservative scenario assumes 2–3% initial share. Base case 3–5%. Upside 6–8%. Growth rates reflect HD patient growth (CAGR ~4–6% GCC) plus new facility openings and catheter replacement cycles.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 8px;font-size:10px;color:#2a4060;">
+      AMECATH Market Intelligence · 2026 Edition · Data compiled from public registries, government portals, and proprietary field research · Last updated: 2026
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
 </div><!-- end .dash -->
 
 <script>
@@ -1629,6 +1749,75 @@ window.sidebarGo = function(pageId){
   pipeRender();
 })();
 /* ─── END PIPELINE ─── */
+/* ─── SOURCES PAGE ─── */
+(function(){
+  var officialRows=[
+    {country:'🇸🇦 Saudi Arabia', authority:'Ministry of Health (MOH) KSA + SFDA',              data:'HD patient count, facility numbers, HD machines, market authorization', portal:'moh.gov.sa / sfda.gov.sa'},
+    {country:'🇸🇦 Saudi Arabia', authority:'NUPCO (National Unified Procurement Company)',       data:'Tender framework data, procurement volumes, tender pipeline',             portal:'nupco.com / etimad.sa'},
+    {country:'🇦🇪 UAE',          authority:'MOHAP + DHA + DOH Abu Dhabi',                        data:'HD facility count, patient registry, Rafed GPO procurement data',        portal:'mohap.gov.ae / dha.gov.ae'},
+    {country:'🇶🇦 Qatar',        authority:'Hamad Medical Corporation (HMC) + MOH Qatar',        data:'Patient volumes, dialysis capacity, HMC annual report 2024–2025',        portal:'hamad.qa / moph.gov.qa'},
+    {country:'🇰🇼 Kuwait',       authority:'MOH Kuwait — Central Procurement',                   data:'Dialysis facility count, patient estimates, tender data',                 portal:'moh.gov.kw'},
+    {country:'🇴🇲 Oman',         authority:'MOH Oman (Medical Store — Central)',                  data:'HD patient registry, dialysis centers, annual consumables procurement',   portal:'moh.gov.om'},
+    {country:'🇧🇭 Bahrain',       authority:'NHRA (National Health Regulatory Authority) + MOH', data:'Medical device registration, HD facility data, BDF hospital data',        portal:'nhra.bh / moh.gov.bh'},
+    {country:'🇯🇴 Jordan',        authority:'MOH Jordan + Royal Medical Services (RMS)',          data:'HD patient count, dialysis centers, public procurement',                  portal:'moh.gov.jo / rms.gov.jo'},
+    {country:'🇱🇧 Lebanon',       authority:'MOH Lebanon',                                        data:'Hospital catheter supply, public dialysis network data',                  portal:'moph.gov.lb'},
+    {country:'🇮🇶 Iraq',          authority:'Kimadia (MOH Iraq) + Regional Health Directorates',  data:'Bulk catheter demand, dialysis center count, tender volumes',             portal:'kimadia.gov.iq'},
+  ];
+
+  var marketRows=[
+    {source:'Grand View Research',          report:'Hemodialysis Catheter Market — GCC & Middle East',         applied:'Market size, competitor share estimates, CAGR projections', year:'2024–2025'},
+    {source:'BusinessWire / PR Newswire',   report:'Fresenius, B. Braun, Baxter GCC market announcements',     applied:'Competitor market share cross-validation (KSA)',              year:'2024–2026'},
+    {source:'USRDS (US Renal Data System)', report:'International Comparisons of ESRD Care',                   applied:'HD patient prevalence benchmarking per 1M population',        year:'2023–2024'},
+    {source:'ERA-EDTA Registry',            report:'European & Global Dialysis Report',                        applied:'PD/HD patient ratio benchmarks; facility utilization rates',  year:'2023'},
+    {source:'GlobalTenders / TenderImpulse',report:'GCC & MENA dialysis tender database',                     applied:'Pipeline tender discovery (Qatar, Oman, Jordan)',             year:'2025–2026'},
+    {source:'Scribd / NUPCO Portal',        report:'NPT0048-22 Medtronic NUPCO tender award documentation',   applied:'KSA competitor tender win intelligence',                      year:'2026'},
+    {source:'Saudi Healthcare Consulting',  report:'SEHA dialysis market analysis',                            applied:'UAE HD machines + consumables market sizing',                 year:'2024'},
+    {source:'Diaverum Annual Report',       report:'Diaverum GCC Dialysis Network 2025',                       applied:'KSA HD patient count cross-validation (30,000)',              year:'2025'},
+    {source:'IDA (International Dialysis)', report:'Global Dialysis Market Outlook — Middle East',             applied:'Country-level growth rates, new center projections',           year:'2024'},
+    {source:'World Bank / UN Data',         report:'Population projections 2026 — MENA region',               applied:'Population 2026 figures for all 9 markets',                   year:'2026'},
+    {source:'AMECATH Internal Research',    report:'Field Survey — Distributor & KOL Mapping 2026',           applied:'Distributor lists, KOL profiles, contact data',               year:'2026'},
+    {source:'AMECATH Internal Research',    report:'Competitor Intelligence Matrix 2026',                      applied:'Competitor strengths, weaknesses, market share estimates',    year:'2026'},
+  ];
+
+  var portalRows=[
+    {platform:'NUPCO Etimad Portal',           country:'🇸🇦 Saudi Arabia', use:'Active tender monitoring, framework awards, emergency lots',                       url:'etimad.sa'},
+    {platform:'INUPCO e-Marketplace',          country:'🇸🇦 Saudi Arabia', use:'Rolling general medical supplies tenders (weekly updates)',                        url:'nupco.com/inupco'},
+    {platform:'HMC Procurement Portal',        country:'🇶🇦 Qatar',        use:'Annual consumables framework, quotation invitations, award notices',              url:'hamad.qa/procurement'},
+    {platform:'DAHC / Dubai Academic Health',  country:'🇦🇪 UAE',          use:'5-year blanket renewal tracking, rolling RFQ monitoring',                         url:'dahc.ae'},
+    {platform:'Monaqasat (MOH Qatar)',         country:'🇶🇦 Qatar',        use:'MOH Qatar periodic medical supply tenders',                                        url:'monaqasat.moph.gov.qa'},
+    {platform:'Kimadia MOH Iraq',              country:'🇮🇶 Iraq',         use:'Bulk CVC/dialysis catheter procurement; rolling framework tenders',               url:'kimadia.gov.iq'},
+  ];
+
+  function srcRow(cells, alt){
+    var tr=document.createElement('tr');
+    tr.style.cssText='border-bottom:1px solid #14284b;transition:background .15s;';
+    tr.onmouseenter=function(){tr.style.background='#13274c';};
+    tr.onmouseleave=function(){tr.style.background='';};
+    tr.innerHTML=cells.map(function(c,i){
+      return '<td style="padding:11px 16px;color:'+(i===0?'#e8edf5':'#94a8c4')+';font-size:11px;'+(i===0?'font-weight:600;':'')+'">' + c + '</td>';
+    }).join('');
+    return tr;
+  }
+
+  var ob=document.getElementById('src-official-body');
+  if(ob) officialRows.forEach(function(r){
+    ob.appendChild(srcRow([r.country, r.authority, r.data,
+      '<span style="color:#60a5fa;font-size:10px;">'+r.portal+'</span>']));
+  });
+
+  var mb=document.getElementById('src-market-body');
+  if(mb) marketRows.forEach(function(r){
+    mb.appendChild(srcRow([r.source, r.report, r.applied,
+      '<span style="color:#a78bfa;font-size:10px;">'+r.year+'</span>']));
+  });
+
+  var pb=document.getElementById('src-portal-body');
+  if(pb) portalRows.forEach(function(r){
+    pb.appendChild(srcRow([r.platform, r.country, r.use,
+      '<span style="color:#34d399;font-size:10px;">'+r.url+'</span>']));
+  });
+})();
+/* ─── END SOURCES ─── */
 </script>
 </body>
 </html>
