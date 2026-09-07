@@ -934,10 +934,7 @@ html, body { background: #0b1628; height: 100%; }
         <button onclick="setCompetitorCountry('lb',this)" class="country-filter-btn">🇱🇧 Lebanon</button>
       </div>
     </div>
-    <div id="competitor-country-header" class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-4"></div>
-    <div id="competitor-share-chart" class="cid-comp-chart" style="margin-top:0;">
-      <div class="cid-section-head"><div><div class="cid-section-title">Market Share by Competitor</div><div class="cid-section-sub">HD catheter market · selected country · Source: Competitor_Matrix</div></div></div>
-      <div id="competitor-share-chart-body"></div>
+
     </div>
     <div class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-3 text-xs text-slate-400">
       📌 Competitor data below is taken directly from the <b class="text-slate-200">Competitor_Matrix</b> sheet. Market-share figures are pulled directly from the workbook <b class="text-slate-200">Competitor_Matrix</b> by country.
