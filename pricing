@@ -1,0 +1,37 @@
+"""Pricing normalization utilities.
+
+AMECATH source prices are treated as distributor ex-factory prices.
+Competitor benchmarks are treated as hospital / end-user prices.
+"""
+
+from __future__ import annotations
+
+
+def calculate_fair_price(
+    amecath_distrib_price: float,
+    margin_pct: float = 0.35,
+) -> float:
+    """Estimate an AMECATH hospital/end-user price from distributor price.
+
+    Formula:
+        Estimated Hospital Price = Distributor Price * (1 + margin_pct)
+
+    margin_pct is expressed as a decimal (0.35 = 35%).
+    """
+    price = float(amecath_distrib_price)
+    margin = float(margin_pct)
+
+    if price < 0:
+        raise ValueError("amecath_distrib_price cannot be negative.")
+    if not 0.20 <= margin <= 0.60:
+        raise ValueError("margin_pct must be between 0.20 and 0.60.")
+
+    return round(price * (1 + margin), 2)
+
+
+def normalize_margin_percent(margin_percent: float) -> float:
+    """Convert a UI percentage (20-60) to a decimal (0.20-0.60)."""
+    value = float(margin_percent) / 100
+    if not 0.20 <= value <= 0.60:
+        raise ValueError("Margin must be between 20% and 60%.")
+    return value
