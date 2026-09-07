@@ -15,6 +15,25 @@ if not WORKBOOK_PATH.exists():
 
 _wb = openpyxl.load_workbook(WORKBOOK_PATH, data_only=True)
 
+REQUIRED_SHEETS = [
+    "Macro_Summary",
+    "Competitor_Matrix",
+    "Financials_Tenders",
+    "Hot_Areas",
+    "our ASP",
+    "Competitor_Aspiration",
+]
+
+missing_sheets = [s for s in REQUIRED_SHEETS if s not in _wb.sheetnames]
+
+if missing_sheets:
+    st.error(
+        "Excel workbook is missing required sheets: "
+        + ", ".join(missing_sheets)
+    )
+    st.write("Sheets found in workbook:", _wb.sheetnames)
+    st.stop()
+
 def _country_code(label):
     s = re.sub(r"^[^\\w]+", "", str(label or ""))
     return {"Saudi Arabia":"sa","UAE":"ae","Qatar":"qa","Kuwait":"kw","Oman":"om",
