@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import openpyxl
 
-WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash - corrected.xlsx")
+WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash.xlsx")
 if not WORKBOOK_PATH.exists():
     WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash(3).xlsx")
 if not WORKBOOK_PATH.exists():
