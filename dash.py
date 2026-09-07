@@ -5,8 +5,8 @@ from pathlib import Path
 import streamlit as st
 
 from executive import inject_theme_css
-from data.loader import get_default_data
-from pages import executive_overview, pricing
+from loader import get_default_data
+from executive_overview, pricing
 from config import APP_TITLE
 
 
