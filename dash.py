@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import openpyxl
 
-WORKBOOK_CANDIDATES = ["Amecath Dash.xlsx","Amecath Dash.xlsx","Amecath Dash.xlsx"]
+WORKBOOK_CANDIDATES = ["Amecath Dash - corrected.xlsx","Amecath Dash(4).xlsx","Amecath Dash(3).xlsx"]
 WORKBOOK_PATH = next((Path(__file__).with_name(name) for name in WORKBOOK_CANDIDATES if Path(__file__).with_name(name).exists()), None)
 if WORKBOOK_PATH is None:
     st.error("Workbook not found. Add the Amecath Dash Excel file next to dash.py.")
@@ -85,6 +85,17 @@ st.markdown("""
     [data-testid="stAppViewContainer"] { background: #0b1628; }
 
 /* Network intelligence pages */
+/* Country Analysis — individual KPI cards */
+#page-countries .cid-macro-section{margin-top:4px}
+#page-countries .cid-macro-group{margin:18px 0 0}
+#page-countries .cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#72a9df;font-weight:900;margin:0 0 9px}
+#page-countries .cid-macro-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important;margin-top:0!important}
+#page-countries .cid-macro-card{min-height:104px!important;padding:15px!important;background:linear-gradient(145deg,#0d2341,#08172b)!important;border:1px solid color-mix(in srgb,var(--country-primary,#2563eb) 52%,#18365f)!important;border-top:3px solid var(--country-accent,#60a5fa)!important;border-radius:13px!important;display:flex;flex-direction:column;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.18)!important}
+#page-countries .cid-macro-card:hover{transform:translateY(-3px);border-color:var(--country-accent,#60a5fa)!important;box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 20px color-mix(in srgb,var(--country-primary,#2563eb) 16%,transparent)!important}
+#page-countries .cid-macro-card .cid-kpi-label{font-size:9px!important;color:#73a6d8!important;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+#page-countries .cid-macro-card .cid-kpi-value{font-size:23px!important;color:#f5f8ff!important;font-weight:900!important;margin-top:8px!important;line-height:1.15!important}
+@media(max-width:1000px){#page-countries .cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:600px){#page-countries .cid-macro-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}#page-countries .cid-macro-card{min-height:84px!important;padding:11px!important}#page-countries .cid-macro-card .cid-kpi-value{font-size:17px!important}}
 .network-page{--net-primary:#2563eb;--net-accent:#60a5fa;--net-secondary:#ffffff;background:
   radial-gradient(circle at 85% 0%,color-mix(in srgb,var(--net-primary) 18%,transparent),transparent 34%),
   linear-gradient(180deg,color-mix(in srgb,var(--net-primary) 7%,transparent),transparent 40%);
@@ -137,6 +148,7 @@ st.markdown("""
 .network-detail-value{font-size:10px;color:#e2e8f0;line-height:1.4;word-break:break-word}
 .network-contact{grid-column:1/-1}
 .network-footer{padding:0 20px 20px;color:#4e688d;font-size:9px}
+.network-view-toggle-wrap{display:flex;align-items:center;justify-content:center;gap:10px;padding:0 20px 16px}.network-view-toggle{border:1px solid color-mix(in srgb,var(--net-primary) 65%,#1e3d7a);background:color-mix(in srgb,var(--net-primary) 13%,#081321);color:#dcecff;padding:9px 16px;border-radius:10px;cursor:pointer;font-size:10px;font-weight:800;transition:.2s ease}.network-view-toggle:hover{transform:translateY(-1px);border-color:var(--net-accent);box-shadow:0 0 18px color-mix(in srgb,var(--net-primary) 16%,transparent)}.network-view-count{font-size:9px;color:#607a9f}
 .network-footer b{color:#7893b9}
 @media(max-width:900px){.network-grid{grid-template-columns:1fr}.network-summary{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.network-hero{padding:18px}.network-title{font-size:19px}.network-theme-chip{display:none}.network-summary,.network-grid{padding-left:12px;padding-right:12px}.network-toolbar{padding-left:12px;padding-right:12px}.network-summary{grid-template-columns:1fr 1fr}.network-shell{margin:10px}.network-details{grid-template-columns:1fr}}
@@ -1321,10 +1333,20 @@ function networkContactParts(contact){
   return {phones,emails,route};
 }
 
-function openNetwork(type,code){
+const networkViewState={};
+function toggleNetworkList(type,code,btn){
+  const key=type+'-'+code;
+  networkViewState[key]=!networkViewState[key];
+  openNetwork(type,code,networkViewState[key]);
+}
+
+function openNetwork(type,code,expandedOverride){
   const meta=networkCountryMeta[code], d=countryData[code];
   const page=document.getElementById('page-'+type+'-'+code);
   if(!meta||!d||!page)return;
+  const stateKey=type+'-'+code;
+  const expanded=(typeof expandedOverride==='boolean') ? expandedOverride : !!networkViewState[stateKey];
+  networkViewState[stateKey]=expanded;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   page.classList.add('active');
@@ -1368,7 +1390,7 @@ function openNetwork(type,code){
       </div>
 
       <div class="network-grid">
-        ${rows.map(r=>{
+        ${(expanded ? rows : rows.slice(0,5)).map(r=>{
           const cp=networkContactParts(r.contact);
           const priority=String(r._extra||'Not rated');
           return `<div class="network-card">
@@ -1406,6 +1428,8 @@ function openNetwork(type,code){
           </div>`;
         }).join('')||'<div class="placeholder-page">No records available for this country.</div>'}
       </div>
+
+      ${rows.length>5 ? `<div class="network-view-toggle-wrap"><button class="network-view-toggle" onclick="toggleNetworkList('${type}','${code}',this)">${expanded ? '↑ Show top 5' : `↓ View all ${rows.length} ${label}`}</button><span class="network-view-count">Showing ${expanded ? rows.length : Math.min(5,rows.length)} of ${rows.length}</span></div>` : ''}
 
       <div class="network-footer">Data displayed exactly from the uploaded workbook. <b>No missing contact fields were invented.</b> If a phone/email was not present, the original contact route is shown instead.</div>
     </div>`;
