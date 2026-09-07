@@ -4,10 +4,14 @@ from pathlib import Path
 
 import streamlit as st
 
-from executive import inject_theme_css
+from pathlib import Path
+import streamlit as st
+
+# Fix imports
+from config import APP_TITLE  # Add inject_theme_css here if it lives in config.py
 from loader import get_default_data
-from executive_overview, pricing
-from config import APP_TITLE
+import executive_overview
+import pricing
 
 
 st.set_page_config(
