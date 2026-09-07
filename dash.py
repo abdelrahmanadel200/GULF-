@@ -1736,6 +1736,7 @@ function buildDistributors() {
 
 function renderDist(rows) {
   const tbody = document.getElementById('dist-tbody');
+  if(!tbody) return;
   if(!rows.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#3a5278">No results</td></tr>'; return; }
   tbody.innerHTML = rows.map((r,i)=>`
     <tr>
@@ -1749,9 +1750,13 @@ function renderDist(rows) {
 }
 
 function filterDist() {
-  const q = document.getElementById('dist-search').value.toLowerCase();
-  const country = document.getElementById('dist-country').value;
-  const pri = document.getElementById('dist-pri').value;
+  const search = document.getElementById('dist-search');
+  const countryEl = document.getElementById('dist-country');
+  const priEl = document.getElementById('dist-pri');
+  if(!search || !countryEl || !priEl) return;
+  const q = search.value.toLowerCase();
+  const country = countryEl.value;
+  const pri = priEl.value;
   const filtered = allDist.filter(r=>{
     const matchQ = !q || r.n.toLowerCase().includes(q) || r.country.toLowerCase().includes(q);
     const matchC = !country || r.country === country;
@@ -1774,6 +1779,7 @@ function buildKols() {
 
 function renderKol(rows) {
   const tbody = document.getElementById('kol-tbody');
+  if(!tbody) return;
   if(!rows.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#3a5278">No results</td></tr>'; return; }
   tbody.innerHTML = rows.map((r,i)=>`
     <tr>
@@ -1788,8 +1794,11 @@ function renderKol(rows) {
 }
 
 function filterKol() {
-  const q = document.getElementById('kol-search').value.toLowerCase();
-  const country = document.getElementById('kol-country').value;
+  const search = document.getElementById('kol-search');
+  const countryEl = document.getElementById('kol-country');
+  if(!search || !countryEl) return;
+  const q = search.value.toLowerCase();
+  const country = countryEl.value;
   const filtered = allKols.filter(r=>{
     const matchQ = !q || r.n.toLowerCase().includes(q) || r.spec.toLowerCase().includes(q) || r.country.toLowerCase().includes(q);
     const matchC = !country || r.country === country;
