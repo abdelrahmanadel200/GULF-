@@ -9,140 +9,144 @@ import streamlit as st
 
 # Fix imports
 from config import APP_TITLE  def inject_theme_css() -> None:
-    """Inject the enterprise dark executive theme once per page."""
-    st.markdown(
-        f"""
-        <style>
-        :root {{
-            --amecath-bg: {THEME.background};
-            --amecath-card: {THEME.card};
-            --amecath-gold: {THEME.gold};
-            --amecath-blue: {THEME.blue};
-            --amecath-text: {THEME.text};
-            --amecath-muted: {THEME.muted};
-            --amecath-border: {THEME.border};
-        }}
+from config import APP_TITLE
 
-        .stApp {{
-            background: var(--amecath-bg);
-            color: var(--amecath-text);
-        }}
+def inject_theme_css() -> None:
+     """Inject the enterprise dark executive theme once per page."""
+    st.markdown(
+        f"""
+        <style>
+        :root {{
+            --amecath-bg: {THEME.background};
+            --amecath-card: {THEME.card};
+            --amecath-gold: {THEME.gold};
+            --amecath-blue: {THEME.blue};
+            --amecath-text: {THEME.text};
+            --amecath-muted: {THEME.muted};
+            --amecath-border: {THEME.border};
+        }}
 
-        [data-testid="stHeader"] {{
-            background: transparent;
-        }}
+        .stApp {{
+            background: var(--amecath-bg);
+            color: var(--amecath-text);
+        }}
 
-        .block-container {{
-            max-width: 1500px;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-        }}
+        [data-testid="stHeader"] {{
+            background: transparent;
+        }}
 
-        .amecath-brand {{
-            color: var(--amecath-gold);
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            margin-bottom: 0.2rem;
-        }}
+        .block-container {{
+            max-width: 1500px;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }}
 
-        .amecath-page-title {{
-            color: var(--amecath-text);
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.35rem;
-        }}
+        .amecath-brand {{
+            color: var(--amecath-gold);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }}
 
-        .amecath-subtitle {{
-            color: var(--amecath-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.4rem;
-        }}
+        .amecath-page-title {{
+            color: var(--amecath-text);
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+        }}
 
-        .executive-banner {{
-            background: linear-gradient(135deg, #0e2343 0%, #13274c 100%);
-            border: 1px solid rgba(245,158,11,.45);
-            border-left: 5px solid var(--amecath-gold);
-            border-radius: 14px;
-            padding: 1.1rem 1.25rem;
-            margin: 0 0 1.25rem 0;
-            box-shadow: 0 12px 30px rgba(0,0,0,.22);
-        }}
+        .amecath-subtitle {{
+            color: var(--amecath-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.4rem;
+        }}
 
-        .executive-banner h3 {{
-            margin: 0 0 .65rem 0;
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 800;
-        }}
+        .executive-banner {{
+            background: linear-gradient(135deg, #0e2343 0%, #13274c 100%);
+            border: 1px solid rgba(245,158,11,.45);
+            border-left: 5px solid var(--amecath-gold);
+            border-radius: 14px;
+            padding: 1.1rem 1.25rem;
+            margin: 0 0 1.25rem 0;
+            box-shadow: 0 12px 30px rgba(0,0,0,.22);
+        }}
 
-        .executive-banner ul {{
-            margin: 0;
-            padding-left: 1.15rem;
-        }}
+        .executive-banner h3 {{
+            margin: 0 0 .65rem 0;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 800;
+        }}
 
-        .executive-banner li {{
-            color: var(--amecath-text);
-            margin: .32rem 0;
-            font-size: .9rem;
-            line-height: 1.45;
-        }}
+        .executive-banner ul {{
+            margin: 0;
+            padding-left: 1.15rem;
+        }}
 
-        .source-badge {{
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            padding: .28rem .55rem;
-            border-radius: 999px;
-            background: rgba(59,130,246,.10);
-            border: 1px solid rgba(59,130,246,.35);
-            color: #bfdbfe;
-            font-size: .72rem;
-            font-weight: 700;
-        }}
+        .executive-banner li {{
+            color: var(--amecath-text);
+            margin: .32rem 0;
+            font-size: .9rem;
+            line-height: 1.45;
+        }}
 
-        .source-dot {{
-            width: .42rem;
-            height: .42rem;
-            border-radius: 50%;
-            background: var(--amecath-blue);
-            display: inline-block;
-        }}
+        .source-badge {{
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .28rem .55rem;
+            border-radius: 999px;
+            background: rgba(59,130,246,.10);
+            border: 1px solid rgba(59,130,246,.35);
+            color: #bfdbfe;
+            font-size: .72rem;
+            font-weight: 700;
+        }}
 
-        .decision-card {{
-            background: var(--amecath-card);
-            border: 1px solid var(--amecath-border);
-            border-radius: 14px;
-            padding: 1rem;
-            min-height: 115px;
-        }}
+        .source-dot {{
+            width: .42rem;
+            height: .42rem;
+            border-radius: 50%;
+            background: var(--amecath-blue);
+            display: inline-block;
+        }}
 
-        .decision-label {{
-            color: var(--amecath-muted);
-            font-size: .72rem;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            font-weight: 800;
-        }}
+        .decision-card {{
+            background: var(--amecath-card);
+            border: 1px solid var(--amecath-border);
+            border-radius: 14px;
+            padding: 1rem;
+            min-height: 115px;
+        }}
 
-        .decision-value {{
-            color: #ffffff;
-            font-size: 1.55rem;
-            font-weight: 850;
-            margin-top: .35rem;
-        }}
+        .decision-label {{
+            color: var(--amecath-muted);
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-weight: 800;
+        }}
 
-        .decision-note {{
-            color: #93c5fd;
-            font-size: .78rem;
-            margin-top: .3rem;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+        .decision-value {{
+            color: #ffffff;
+            font-size: 1.55rem;
+            font-weight: 850;
+            margin-top: .35rem;
+        }}
+
+        .decision-note {{
+            color: #93c5fd;
+            font-size: .78rem;
+            margin-top: .3rem;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown("<style>...</style>", unsafe_allow_html=True)
 from loader import get_default_data
 import executive_overview
 import pricing
