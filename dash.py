@@ -4,6 +4,7 @@ from pathlib import Path
 import streamlit as st
 
 # Core imports
+from config import APP_TITLE, THEME
 from executive import render_executive_banner, render_source_badge
 from loader import get_default_data
 import executive_overview
@@ -147,7 +148,7 @@ def inject_theme_css() -> None:
     )
 
 
-# Page Configuration
+# 1. Page Configuration (Executed once at startup)
 st.set_page_config(
     page_title=APP_TITLE,
     page_icon="🩺",
@@ -155,38 +156,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Apply Theme
+# 2. Inject Theme CSS
 inject_theme_css()
 
-# Render Header UI
-st.markdown('<div class="amecath-brand">AMECATH</div>', unsafe_allow_html=True)
-st.markdown('<div class="amecath-page-title">Executive Decision Engine</div>', unsafe_allow_html=True)
-
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio(
-    "Select Module:",
-    ["Executive Overview", "Pricing Analysis"]
-)
-
-# Load Central Data
-data = get_default_data()
-
-# Route Pages
-if page == "Executive Overview":
-    executive_overview.render(data)
-elif page == "Pricing Analysis":
-    pricing.render(data)
-
-st.set_page_config(
-    page_title=APP_TITLE,
-    page_icon="🩺",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-inject_theme_css()
-
+# 3. Main Header UI
 st.markdown('<div class="amecath-brand">AMECATH</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="amecath-page-title">Executive Decision Engine</div>',
@@ -197,20 +170,22 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# 4. Load Data
 data = get_default_data()
 
+# 5. Sidebar Navigation
 with st.sidebar:
     st.markdown("### Decision Engine")
     page = st.radio(
         "Navigate",
-        ["Executive Overview", "Normalized Pricing"],
+        ["Executive Overview", "Pricing Analysis"],
         label_visibility="collapsed",
     )
     st.divider()
     st.caption("Foundation build")
     st.caption("Data source: centralized seed DataFrames")
-    st.caption("Next modules: country scoring, competitor attack, revenue forecast")
 
+# 6. Page Routing
 if page == "Executive Overview":
     executive_overview.render(data)
 else:
