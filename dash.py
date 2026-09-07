@@ -1,192 +1,272 @@
-"""AMECATH Executive Decision Engine — modular Streamlit foundation."""
-
-from pathlib import Path
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
-# Core imports
-from config import APP_TITLE, THEME
-from executive import render_executive_banner, render_source_badge
-from loader import get_default_data
-import executive_overview
-import pricing
-
-
-def inject_theme_css() -> None:
-    """Inject the enterprise dark executive theme once per page."""
-    st.markdown(
-        f"""
-        <style>
-        :root {{
-            --amecath-bg: {THEME.background};
-            --amecath-card: {THEME.card};
-            --amecath-gold: {THEME.gold};
-            --amecath-blue: {THEME.blue};
-            --amecath-text: {THEME.text};
-            --amecath-muted: {THEME.muted};
-            --amecath-border: {THEME.border};
-        }}
-
-        .stApp {{
-            background: var(--amecath-bg);
-            color: var(--amecath-text);
-        }}
-
-        [data-testid="stHeader"] {{
-            background: transparent;
-        }}
-
-        .block-container {{
-            max-width: 1500px;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-        }}
-
-        .amecath-brand {{
-            color: var(--amecath-gold);
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            margin-bottom: 0.2rem;
-        }}
-
-        .amecath-page-title {{
-            color: var(--amecath-text);
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.35rem;
-        }}
-
-        .amecath-subtitle {{
-            color: var(--amecath-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.4rem;
-        }}
-
-        .executive-banner {{
-            background: linear-gradient(135deg, #0e2343 0%, #13274c 100%);
-            border: 1px solid rgba(245,158,11,.45);
-            border-left: 5px solid var(--amecath-gold);
-            border-radius: 14px;
-            padding: 1.1rem 1.25rem;
-            margin: 0 0 1.25rem 0;
-            box-shadow: 0 12px 30px rgba(0,0,0,.22);
-        }}
-
-        .executive-banner h3 {{
-            margin: 0 0 .65rem 0;
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 800;
-        }}
-
-        .executive-banner ul {{
-            margin: 0;
-            padding-left: 1.15rem;
-        }}
-
-        .executive-banner li {{
-            color: var(--amecath-text);
-            margin: .32rem 0;
-            font-size: .9rem;
-            line-height: 1.45;
-        }}
-
-        .source-badge {{
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            padding: .28rem .55rem;
-            border-radius: 999px;
-            background: rgba(59,130,246,.10);
-            border: 1px solid rgba(59,130,246,.35);
-            color: #bfdbfe;
-            font-size: .72rem;
-            font-weight: 700;
-        }}
-
-        .source-dot {{
-            width: .42rem;
-            height: .42rem;
-            border-radius: 50%;
-            background: var(--amecath-blue);
-            display: inline-block;
-        }}
-
-        .decision-card {{
-            background: var(--amecath-card);
-            border: 1px solid var(--amecath-border);
-            border-radius: 14px;
-            padding: 1rem;
-            min-height: 115px;
-        }}
-
-        .decision-label {{
-            color: var(--amecath-muted);
-            font-size: .72rem;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            font-weight: 800;
-        }}
-
-        .decision-value {{
-            color: #ffffff;
-            font-size: 1.55rem;
-            font-weight: 850;
-            margin-top: .35rem;
-        }}
-
-        .decision-note {{
-            color: #93c5fd;
-            font-size: .78rem;
-            margin-top: .3rem;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-# 1. Page Configuration (Executed once at startup)
+# ==========================================
+# 1. PAGE CONFIGURATION & DARK THEME TOKENS
+# ==========================================
 st.set_page_config(
-    page_title=APP_TITLE,
-    page_icon="🩺",
+    page_title="Executive Decision Engine & Market Intelligence",
+    page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="expanded"
 )
 
-# 2. Inject Theme CSS
-inject_theme_css()
+# Custom Design Tokens CSS
+st.markdown("""
+    <style>
+        .stApp {
+            background-color: #0b1628;
+            color: #f1f5f9;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #070e1a;
+            border-right: 1px solid #1e293b;
+        }
+        div[data-testid="metric-container"] {
+            background-color: #13274c;
+            border: 1px solid #1e3a8a;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        label[data-testid="stMetricLabel"] {
+            color: #94a3b8 !important;
+            font-weight: 600;
+        }
+        div[data-testid="stMetricValue"] {
+            color: #f59e0b !important;
+            font-size: 1.8rem !important;
+            font-weight: 700;
+        }
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+            background-color: #070e1a;
+            padding: 6px;
+            border-radius: 8px;
+        }
+        .stTabs [data-baseweb="tab"] {
+            height: 45px;
+            background-color: #13274c;
+            border-radius: 6px;
+            color: #cbd5e1;
+        }
+        .stTabs [aria-selected="true"] {
+            background-color: #f59e0b !important;
+            color: #0b1628 !important;
+            font-weight: bold;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-# 3. Main Header UI
-st.markdown('<div class="amecath-brand">AMECATH</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="amecath-page-title">Executive Decision Engine</div>',
-    unsafe_allow_html=True,
+# ==========================================
+# 2. DATA LOADERS & CACHING
+# ==========================================
+@st.cache_data
+def load_market_intelligence():
+    macro_data = pd.DataFrame({
+        "Country": ["Saudi Arabia", "UAE", "Qatar", "Kuwait", "Oman", "Jordan", "Lebanon", "Iraq", "Bahrain"],
+        "Code": ["SAU", "ARE", "QAT", "KWT", "OMN", "JOR", "LBN", "IRQ", "BHR"],
+        "HD_Patients": [18500, 4200, 1100, 2400, 1800, 3100, 1500, 8900, 750],
+        "PD_Patients": [1200, 310, 95, 180, 210, 120, 80, 340, 60],
+        "Public_Coverage_Pct": [92, 88, 95, 90, 85, 75, 55, 65, 90],
+        "Market_Value_USD_M": [45.2, 18.6, 6.8, 9.4, 7.1, 5.8, 3.2, 14.5, 2.9]
+    })
+    
+    tenders_data = pd.DataFrame({
+        "Tender_ID": [f"TND-2026-00{i}" for i in range(1, 10)],
+        "Authority": ["NUPCO", "DAHC", "HMC", "MOH Kuwait", "MOH Oman", "RMS Jordan", "MOH Lebanon", "Kimadia", "MOH Bahrain"],
+        "Country": ["Saudi Arabia", "UAE", "Qatar", "Kuwait", "Oman", "Jordan", "Lebanon", "Iraq", "Bahrain"],
+        "Value_USD_M": [12.5, 4.8, 2.1, 3.5, 2.0, 1.8, 0.9, 6.2, 1.1],
+        "Status": ["Open", "Under Evaluation", "Awarded", "Open", "Drafting", "Open", "On Hold", "Under Evaluation", "Awarded"],
+        "Priority": ["High", "High", "Medium", "High", "Low", "Medium", "Low", "Critical", "Low"]
+    })
+
+    competitor_data = pd.DataFrame({
+        "Competitor": ["Fresenius", "B. Braun", "Medtronic", "BD", "Baxter", "Teleflex"],
+        "Market_Share_Pct": [34, 22, 15, 12, 10, 7],
+        "Avg_Catheter_ASP": [85, 78, 92, 70, 88, 95],
+        "Primary_Edge": ["Dialyser Bundles", "Pricing", "Brand/ICU Tech", "Distribution", "PD Focus", "Vascular Access"]
+    })
+    return macro_data, tenders_data, competitor_data
+
+macro_df, tenders_df, competitor_df = load_market_intelligence()
+
+# ==========================================
+# 3. SIDEBAR CONTROLS
+# ==========================================
+st.sidebar.image("https://img.icons8.com/color/96/analytics.png", width=64)
+st.sidebar.title("Decision Engine")
+st.sidebar.markdown("---")
+
+selected_countries = st.sidebar.multiselect(
+    "Select Target Markets",
+    options=macro_df["Country"].unique(),
+    default=macro_df["Country"].unique()
 )
-st.markdown(
-    '<div class="amecath-subtitle">Market intelligence → decision → action → revenue</div>',
-    unsafe_allow_html=True,
+
+st.sidebar.markdown("### Strategic ASP Margin Rules")
+min_margin, max_margin = st.sidebar.slider(
+    "Target Margin Threshold (%)",
+    min_value=10,
+    max_value=80,
+    value=(20, 60),
+    step=5
 )
 
-# 4. Load Data
-data = get_default_data()
+st.sidebar.caption(f"Configured Operating Range: **{min_margin}%** to **{max_margin}%**")
 
-# 5. Sidebar Navigation
-with st.sidebar:
-    st.markdown("### Decision Engine")
-    page = st.radio(
-        "Navigate",
-        ["Executive Overview", "Pricing Analysis"],
-        label_visibility="collapsed",
+# Filtering Data
+filtered_macro = macro_df[macro_df["Country"].isin(selected_countries)]
+filtered_tenders = tenders_df[tenders_df["Country"].isin(selected_countries)]
+
+# ==========================================
+# 4. EXECUTIVE DASHBOARD HEADER & KPIS
+# ==========================================
+st.title("AMECATH Executive Decision Engine")
+st.markdown("Regional Dialysis Market Intelligence & Pricing Strategy Dashboard")
+
+col1, col2, col3, col4 = st.columns(4)
+
+total_market_val = filtered_macro["Market_Value_USD_M"].sum()
+total_hd_patients = filtered_macro["HD_Patients"].sum()
+active_tenders_val = filtered_tenders[filtered_tenders["Status"].isin(["Open", "Under Evaluation"])]["Value_USD_M"].sum()
+avg_coverage = filtered_macro["Public_Coverage_Pct"].mean()
+
+col1.metric("Total Market Addressable", f"${total_market_val:.1f} M")
+col2.metric("Total HD Patient Base", f"{total_hd_patients:,}")
+col3.metric("Active Tender Pipeline", f"${active_tenders_val:.1f} M")
+col4.metric("Avg Public Coverage", f"{avg_coverage:.1f}%")
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ==========================================
+# 5. TABULAR MODULE ROUTING
+# ==========================================
+tab_macro, tab_tenders, tab_competitors, tab_pricing = st.tabs([
+    "📍 Regional Macro Overview", 
+    "📑 Tender Pipeline", 
+    "⚔️ Competitor Intelligence", 
+    "💲 ASP & Margin Simulator"
+])
+
+# ---------------- TAB 1: MACRO OVERVIEW ----------------
+with tab_macro:
+    col_map, col_chart = st.columns([1.2, 1])
+    
+    with col_map:
+        st.subheader("Regional Patient Concentration")
+        fig_map = px.choropleth(
+            filtered_macro,
+            locations="Code",
+            color="HD_Patients",
+            hover_name="Country",
+            hover_data=["PD_Patients", "Market_Value_USD_M"],
+            color_continuous_scale="YlOrBr",
+            template="plotly_dark"
+        )
+        fig_map.update_geos(fitbounds="locations", visible=False)
+        fig_map.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            margin=dict(l=0, r=0, t=10, b=10)
+        )
+        st.plotly_chart(fig_map, use_container_width=True)
+        
+    with col_chart:
+        st.subheader("Market Value vs Patient Volume")
+        fig_bar = px.bar(
+            filtered_macro,
+            x="Country",
+            y="Market_Value_USD_M",
+            color="Public_Coverage_Pct",
+            color_continuous_scale="Teal",
+            text_auto=".1f",
+            template="plotly_dark"
+        )
+        fig_bar.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            yaxis_title="Market Value ($ Millions)"
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+# ---------------- TAB 2: TENDER PIPELINE ----------------
+with tab_tenders:
+    st.subheader("Regional Tender Procurement Opportunities")
+    
+    status_filter = st.multiselect(
+        "Filter Status",
+        options=tenders_df["Status"].unique(),
+        default=tenders_df["Status"].unique()
     )
-    st.divider()
-    st.caption("Foundation build")
-    st.caption("Data source: centralized seed DataFrames")
+    
+    tender_display = filtered_tenders[filtered_tenders["Status"].isin(status_filter)]
+    
+    st.dataframe(
+        tender_display,
+        column_config={
+            "Value_USD_M": st.column_config.NumberColumn("Value ($M)", format="$%.2f M"),
+            "Priority": st.column_config.SelectboxColumn("Priority Level", options=["Low", "Medium", "High", "Critical"])
+        },
+        use_container_width=True,
+        hide_index=True
+    )
 
-# 6. Page Routing
-if page == "Executive Overview":
-    executive_overview.render(data)
-else:
-    pricing.render(data)
+# ---------------- TAB 3: COMPETITOR INTELLIGENCE ----------------
+with tab_competitors:
+    col_comp_share, col_comp_asp = st.columns(2)
+    
+    with col_comp_share:
+        st.subheader("Market Share Distribution")
+        fig_pie = px.pie(
+            competitor_df,
+            names="Competitor",
+            values="Market_Share_Pct",
+            hole=0.4,
+            color_discrete_sequence=px.colors.qualitative.Dark24,
+            template="plotly_dark"
+        )
+        fig_pie.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+        st.plotly_chart(fig_pie, use_container_width=True)
+        
+    with col_comp_asp:
+        st.subheader("Competitor ASP Benchmark ($)")
+        fig_asp = px.bar(
+            competitor_df,
+            x="Competitor",
+            y="Avg_Catheter_ASP",
+            color="Avg_Catheter_ASP",
+            color_continuous_scale="Gold",
+            template="plotly_dark"
+        )
+        fig_asp.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+        st.plotly_chart(fig_asp, use_container_width=True)
+
+# ---------------- TAB 4: PRICING & MARGIN CALCULATOR ----------------
+with tab_pricing:
+    st.subheader("Dynamic Average Selling Price (ASP) Model")
+    
+    col_calc1, col_calc2 = st.columns(2)
+    
+    with col_calc1:
+        unit_cogs = st.number_input("Unit COGS ($)", min_value=1.0, max_value=200.0, value=35.0, step=2.5)
+        distributor_margin = st.slider("Distributor Margin (%)", 5, 40, 15)
+        
+    with col_calc2:
+        target_margin = st.slider("Target Internal Margin (%)", min_value=min_margin, max_value=max_margin, value=int((min_margin + max_margin) / 2))
+        
+        # Financial Calculations
+        floor_price = unit_cogs / (1 - (min_margin / 100))
+        target_asp = unit_cogs / (1 - (target_margin / 100))
+        tender_list_price = target_asp / (1 - (distributor_margin / 100))
+        
+        st.markdown(f"""
+        <div style="background-color: #13274c; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+            <p style="margin:0; color:#94a3b8;">Floor ASP (Min {min_margin}% Margin): <b>${floor_price:.2f}</b></p>
+            <h3 style="margin:5px 0; color:#f59e0b;">Target ASP: ${target_asp:.2f}</h3>
+            <p style="margin:0; color:#cbd5e1;">Suggested Tender List Price: <b>${tender_list_price:.2f}</b></p>
+        </div>
+        """, unsafe_allow_html=True)
