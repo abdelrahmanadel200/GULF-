@@ -4,7 +4,7 @@ from pathlib import Path
 import streamlit as st
 
 # Core imports
-from config import APP_TITLE, THEME
+from executive import render_executive_banner, render_source_badge
 from loader import get_default_data
 import executive_overview
 import pricing
