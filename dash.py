@@ -81,8 +81,55 @@ st.markdown("""
 #page-countries.country-theme .cid-network-card{cursor:pointer}
 #page-countries.country-theme .cid-network-card:hover{transform:translateY(-2px);border-color:var(--country-accent);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary) 22%,transparent)}
 
+</style>
+""", unsafe_allow_html=True)
 
-/* ===== ENHANCED COUNTRY ANALYSIS CSS ===== */
+dashboard_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0b1628; height: 100%; }
+.dash { background: #0b1628; color: #e8edf5; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; }
+.sidebar { pointer-events:auto !important; position:relative; width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; top: 0; height: 100vh; z-index: 999999; align-self: flex-start; }
+.logo { padding: 0 16px 18px; border-bottom: 1px solid #1e3d7a; margin-bottom: 10px; }
+.logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
+.logo-sub { font-size: 10px; color: #3a5278; margin-top: 2px; }
+.nav-section-label { font-size: 9px; letter-spacing: 1.5px; color: #2a4060; text-transform: uppercase; padding: 14px 16px 6px; font-weight: 700; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; font-size: 12px; color: #6a85b0; border-left: 3px solid transparent; transition: all 0.15s; user-select: none; }
+.nav-item:hover { background: #0f1f3d; color: #c8d8f0; }
+.nav-item.active { background: #0f1f3d; color: #60a5fa; border-left-color: #2563eb; font-weight: 600; }
+.nav-icon { font-size: 15px; width: 18px; text-align: center; }
+.main { flex: 1; min-height: 100vh; overflow-y: auto; }
+.top-banner { background: linear-gradient(135deg, #0d2145 0%, #1a3a6e 50%, #0d2145 100%); border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px 32px; margin: 16px 16px 0; text-align: center; }
+.banner-title { font-size: 18px; font-weight: 700; letter-spacing: 2px; color: #e8edf5; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.banner-sub { font-size: 11px; color: #f59e0b; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.section-header { display: flex; align-items: center; gap: 10px; margin: 18px 16px 12px; }
+.section-title { font-size: 15px; font-weight: 600; color: #c8d8f0; }
+.kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 0 16px 10px; }
+.kpi-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 12px; padding: 16px 12px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; transition: border-color 0.2s, transform 0.15s; cursor: default; }
+.kpi-card:hover { border-color: #2563eb; transform: translateY(-1px); }
+.kpi-icon { font-size: 20px; margin-bottom: 2px; }
+.kpi-label { font-size: 9px; letter-spacing: 1px; color: #6a85b0; text-transform: uppercase; font-weight: 600; }
+.kpi-value { font-size: 22px; font-weight: 700; color: #e8edf5; line-height: 1.1; }
+.kpi-value.accent { color: #60a5fa; }
+.kpi-value.gold { color: #f59e0b; }
+.kpi-sub { font-size: 10px; color: #3b82f6; font-weight: 500; }
+.kpi-sub.muted { color: #6a85b0; }
+.kpi-sub.green { color: #34d399; }
+.kpi-sub.amber { color: #f59e0b; }
+.divider { height: 1px; background: #1e3d7a; margin: 4px 16px 10px; }
+.page { display: none; }
+.page.active { display: block; }
+.placeholder-page { margin: 16px; background: #0f1f3d; border: 1px dashed #1e3d7a; border-radius: 14px; padding: 60px 32px; text-align: center; color: #3a5278; }
+.placeholder-icon { font-size: 40px; margin-bottom: 14px; }
+.placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
+.placeholder-sub { font-size: 13px; color: #3a5278; }
 /* ── COUNTRY GRID ── */
 .country-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:0 16px 20px}
 .c-card{flex:0 0 calc((100% - 56px)/5);height:150px;background:linear-gradient(145deg,#10223f,#0a172b);border:1px solid color-mix(in srgb,var(--cc,#2563eb) 48%,#1e3d7a);border-radius:16px;cursor:pointer;transition:all .25s ease;display:flex;align-items:flex-end;position:relative;overflow:hidden;min-width:0;box-shadow:0 8px 24px rgba(0,0,0,.20);isolation:isolate}
@@ -175,128 +222,7 @@ st.markdown("""
 .search-input::placeholder{color:#3a5278}
 .filter-sel{background:#0b1628;border:1px solid #1e3d7a;color:#c8d8f0;padding:9px 12px;border-radius:9px;font-size:12px;font-family:inherit;cursor:pointer;outline:none}
 .filter-sel:focus{border-color:#3b82f6}
-
 </style>
-""", unsafe_allow_html=True)
-
-dashboard_html = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #0b1628; height: 100%; }
-.dash { background: #0b1628; color: #e8edf5; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; }
-.sidebar { pointer-events:auto !important; position:relative; width: 200px; min-width: 200px; background: #070f1f; border-right: 1px solid #1e3d7a; display: flex; flex-direction: column; padding: 18px 0; top: 0; height: 100vh; z-index: 999999; align-self: flex-start; }
-.logo { padding: 0 16px 18px; border-bottom: 1px solid #1e3d7a; margin-bottom: 10px; }
-.logo-text { font-size: 15px; font-weight: 700; color: #60a5fa; letter-spacing: 1.5px; }
-.logo-sub { font-size: 10px; color: #3a5278; margin-top: 2px; }
-.nav-section-label { font-size: 9px; letter-spacing: 1.5px; color: #2a4060; text-transform: uppercase; padding: 14px 16px 6px; font-weight: 700; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; font-size: 12px; color: #6a85b0; border-left: 3px solid transparent; transition: all 0.15s; user-select: none; }
-.nav-item:hover { background: #0f1f3d; color: #c8d8f0; }
-.nav-item.active { background: #0f1f3d; color: #60a5fa; border-left-color: #2563eb; font-weight: 600; }
-.nav-icon { font-size: 15px; width: 18px; text-align: center; }
-.main { flex: 1; min-height: 100vh; overflow-y: auto; }
-.top-banner { background: linear-gradient(135deg, #0d2145 0%, #1a3a6e 50%, #0d2145 100%); border: 1px solid #1e3d7a; border-radius: 14px; padding: 20px 32px; margin: 16px 16px 0; text-align: center; }
-.banner-title { font-size: 18px; font-weight: 700; letter-spacing: 2px; color: #e8edf5; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.banner-sub { font-size: 11px; color: #f59e0b; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-.section-header { display: flex; align-items: center; gap: 10px; margin: 18px 16px 12px; }
-.section-title { font-size: 15px; font-weight: 600; color: #c8d8f0; }
-.kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 0 16px 10px; }
-.kpi-card { background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 12px; padding: 16px 12px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; transition: border-color 0.2s, transform 0.15s; cursor: default; }
-.kpi-card:hover { border-color: #2563eb; transform: translateY(-1px); }
-.kpi-icon { font-size: 20px; margin-bottom: 2px; }
-.kpi-label { font-size: 9px; letter-spacing: 1px; color: #6a85b0; text-transform: uppercase; font-weight: 600; }
-.kpi-value { font-size: 22px; font-weight: 700; color: #e8edf5; line-height: 1.1; }
-.kpi-value.accent { color: #60a5fa; }
-.kpi-value.gold { color: #f59e0b; }
-.kpi-sub { font-size: 10px; color: #3b82f6; font-weight: 500; }
-.kpi-sub.muted { color: #6a85b0; }
-.kpi-sub.green { color: #34d399; }
-.kpi-sub.amber { color: #f59e0b; }
-.divider { height: 1px; background: #1e3d7a; margin: 4px 16px 10px; }
-.page { display: none; }
-.page.active { display: block; }
-.placeholder-page { margin: 16px; background: #0f1f3d; border: 1px dashed #1e3d7a; border-radius: 14px; padding: 60px 32px; text-align: center; color: #3a5278; }
-.placeholder-icon { font-size: 40px; margin-bottom: 14px; }
-.placeholder-title { font-size: 18px; font-weight: 600; color: #6a85b0; margin-bottom: 8px; }
-.placeholder-sub { font-size: 13px; color: #3a5278; }
-/* Country page */
-#page-countries { --country-primary:#2563eb; --country-secondary:#ffffff; --country-accent:#60a5fa; transition:background .35s ease, box-shadow .35s ease; }
-#page-countries.country-theme { background:linear-gradient(180deg, color-mix(in srgb, var(--country-primary) 9%, transparent) 0%, transparent 32%); }
-.country-inline-detail { margin:0 16px 24px; border:1px solid color-mix(in srgb, var(--country-primary) 70%, #1e3d7a); border-radius:14px; overflow:hidden; background:#0b1628; box-shadow:0 14px 40px rgba(0,0,0,.30),0 0 28px color-mix(in srgb, var(--country-primary) 16%, transparent); animation:fadeIn .22s ease; }
-.cid-hero { position:relative; height:300px; overflow:hidden; background:#071426; }
-.cid-landscape { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
-.cid-overlay { position:absolute; inset:0; background:linear-gradient(90deg,rgba(4,15,30,.86) 0%,rgba(4,15,30,.35) 45%,rgba(4,15,30,.15) 100%),linear-gradient(0deg,rgba(7,20,38,.94) 0%,rgba(7,20,38,.05) 48%); }
-.cid-back { position:absolute; top:18px; left:20px; z-index:4; background:rgba(3,12,24,.72); border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:12px; backdrop-filter:blur(7px); transition:.2s ease; }
-.cid-back:hover { border-color:var(--country-accent); background:rgba(3,12,24,.88); }
-.cid-title { position:absolute; left:28px; bottom:24px; z-index:4; display:flex; align-items:center; gap:14px; }
-.cid-flag { width:58px; height:42px; display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)); }
-.cid-flag img { width:56px; height:38px; object-fit:cover; object-position:center; border-radius:7px; border:1px solid rgba(255,255,255,.35); display:block; }
-.cid-name { font-size:32px; font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.7); }
-.cid-sub { margin-top:4px; font-size:13px; color:#dbeafe; }
-.cid-meta { position:absolute; right:28px; top:55px; z-index:4; display:flex; flex-direction:column; gap:18px; min-width:190px; }
-.cid-meta div { display:grid; grid-template-columns:24px 1fr; column-gap:8px; align-items:center; }
-.cid-meta span { grid-row:1 / span 2; font-size:20px; }
-.cid-meta small { color:#7f9ac1; font-size:10px; }
-.cid-meta b { color:#e8edf5; font-size:13px; }
-.cid-body { padding:20px 24px 24px; background:#06152b; }
-.cid-kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-.cid-kpi { min-height:92px; background:rgba(255,255,255,.035); border:1px solid color-mix(in srgb, var(--country-primary) 65%, #1264a3); border-radius:13px; padding:16px 18px; transition:border-color .2s, box-shadow .2s; }
-.cid-kpi:hover { border-color:var(--country-accent); box-shadow:0 0 18px color-mix(in srgb, var(--country-primary) 12%, transparent); }
-.cid-kpi-label { color:#6fa9dc; font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
-.cid-kpi-value { margin-top:10px; color:#fff; font-size:24px; font-weight:800; }
-.cid-network { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:16px; }
-.cid-network-card { min-height:78px; background:rgba(255,255,255,.035); border:1px solid color-mix(in srgb, var(--country-primary) 55%, #1e3d7a); border-radius:12px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.cid-network-label { color:#7f9ac1; font-size:10px; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
-.cid-network-value { color:#fff; font-size:23px; font-weight:800; }
-.cid-network-sub { color:var(--country-accent); font-size:10px; margin-top:3px; }
-@media (max-width:1000px) { .cid-meta { position:static; display:none; } .cid-name { font-size:28px; } .cid-kpi-grid { grid-template-columns:repeat(2,1fr); } }
-@media (max-width:600px) { .country-inline-detail { margin:0 10px 18px; } .cid-hero { height:235px; } .cid-title { left:16px; bottom:18px; } .cid-name { font-size:22px; } .cid-flag { width:46px; height:36px; } .cid-flag img { width:44px; height:30px; } .cid-kpi-grid { grid-template-columns:1fr; } .cid-network { grid-template-columns:1fr; } .cid-body { padding:14px; } }
-.country-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:0 16px 16px; }
-.country-grid .c-card { flex:0 0 calc((100% - 56px)/5); }
-.c-card { height:150px; background:linear-gradient(145deg,#10223f,#0a172b); border:1px solid color-mix(in srgb,var(--cc,#2563eb) 48%,#1e3d7a); border-radius:16px; padding:0; cursor:pointer; transition:all .25s ease; display:flex; align-items:flex-end; position:relative; overflow:hidden; min-width:0; box-shadow:0 8px 24px rgba(0,0,0,.20); isolation:isolate; }
-.c-card:after { content:""; position:absolute; inset:0; z-index:0; pointer-events:none; background:radial-gradient(circle at 88% 12%,color-mix(in srgb,var(--cc,#2563eb) 28%,transparent),transparent 45%); opacity:.7; transition:opacity .25s; }
-.c-card:hover,.c-card:focus-visible { outline:none; transform:translateY(-5px) scale(1.015); border-color:var(--cc,#2563eb); box-shadow:0 14px 32px rgba(0,0,0,.35),0 0 0 2px color-mix(in srgb,var(--cc,#2563eb) 72%,transparent),0 0 34px color-mix(in srgb,var(--cc,#2563eb) 30%,transparent); }
-.c-card.active { transform:translateY(-6px) scale(1.025); border:2px solid var(--cc,#2563eb); box-shadow:0 18px 38px rgba(0,0,0,.42),0 0 0 3px color-mix(in srgb,var(--cc,#2563eb) 30%,transparent),0 0 42px color-mix(in srgb,var(--cc,#2563eb) 42%,transparent); }
-.c-card.active:after { opacity:1; }
-.c-card.active .c-overlay { background:linear-gradient(to bottom,rgba(4,15,31,.00) 10%,rgba(4,15,31,.10) 42%,rgba(4,15,31,.94) 100%); }
-.c-card.active .c-accent { height:5px; box-shadow:0 0 18px var(--cc,#2563eb),0 0 32px var(--cc,#2563eb); }
-.c-card.active .c-flag img { transform:scale(1.08); border-color:rgba(255,255,255,.8); box-shadow:0 0 14px color-mix(in srgb,var(--cc,#2563eb) 55%,transparent); }
-.c-landscape { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; transform:scale(1.01); transition:transform .25s ease,filter .25s ease; }
-.c-card:hover .c-landscape { transform:scale(1.04); filter:brightness(1.06); }
-.c-card.active .c-landscape { transform:scale(1.06); filter:brightness(1.08) saturate(1.05); }
-.c-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(4,15,31,.05) 25%,rgba(4,15,31,.18) 48%,rgba(4,15,31,.92) 100%); z-index:1; }
-.c-bottom { position:relative; z-index:4; width:100%; display:flex; align-items:center; gap:10px; padding:0 14px 13px; min-width:0; }
-.c-flag { width:38px; height:27px; flex:0 0 38px; display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 3px 7px rgba(0,0,0,.55)); }
-.c-flag img { width:38px; height:27px; object-fit:cover; object-position:center; display:block; border-radius:5px; border:1px solid rgba(255,255,255,.28); transition:all .2s ease; }
-.c-country-code { position:absolute; top:12px; right:12px; z-index:4; padding:4px 7px; border-radius:999px; font-size:8px; font-weight:900; letter-spacing:1px; color:#fff; background:rgba(3,12,24,.58); border:1px solid color-mix(in srgb,var(--cc,#2563eb) 70%,transparent); backdrop-filter:blur(6px); }
-.c-card.active .c-country-code { background:var(--cc,#2563eb); border-color:rgba(255,255,255,.45); box-shadow:0 0 16px color-mix(in srgb,var(--cc,#2563eb) 55%,transparent); }
-.c-name { font-size:13px; font-weight:700; color:#fff; text-align:left; padding:0; flex:1; display:block; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 2px 5px rgba(0,0,0,.7); }
-.c-arrow { color:#fff; font-size:22px; line-height:1; flex:0 0 auto; opacity:.95; text-shadow:0 2px 5px rgba(0,0,0,.65); }
-.c-accent { position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--cc,#2563eb); z-index:3; transition:height .2s, box-shadow .2s; }
-@media (max-width:1200px) { .country-grid .c-card { flex-basis:calc((100% - 42px)/4); } }
-@media (max-width:900px) { .country-grid .c-card { flex-basis:calc((100% - 28px)/3); } }
-@media (max-width:650px) { .country-grid { gap:10px; } .country-grid .c-card { flex-basis:calc((100% - 10px)/2); } .c-card { height:125px; } }
-@media (max-width:430px) { .country-grid .c-card { flex-basis:100%; } }
-.cd-panel { display:none; margin:0 16px 16px; background:#0f1f3d; border:1px solid #1e3d7a; border-radius:14px; padding:20px; animation:fadeIn .2s; }
-.cd-panel.open { display:block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-.cd-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-.cd-flag { font-size:44px; }
-.cd-title { font-size:18px; font-weight:700; color:#e8edf5; }
-.cd-sub { font-size:11px; color:#6a85b0; margin-top:2px; }
-.cd-kpi { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
-.cd-kpi-item { background:#0b1628; border:1px solid #1e3d7a; border-radius:10px; padding:14px 12px; text-align:center; border-top:2px solid #2563eb; }
-.cd-kpi-label { font-size:9px; color:#6a85b0; text-transform:uppercase; letter-spacing:1.2px; font-weight:600; }
-.cd-kpi-val { font-size:20px; font-weight:800; color:#60a5fa; margin-top:6px; letter-spacing:.5px; }
-.cd-close { margin-left:auto; background:#1e3d7a; border:none; color:#c8d8f0; border-radius:8px; padding:6px 14px; cursor:pointer; font-size:12px; }
-.cd-close:hover { background:#2563eb; }
-
 /* Competitors by country */
 .country-filter-btn,.comp-threat-btn{padding:8px 12px;border-radius:9px;border:1px solid #1e3d7a;background:#1a2d4d;color:#c8d8f0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s ease}.country-filter-btn:hover,.comp-threat-btn:hover{border-color:#3b82f6;transform:translateY(-1px)}.country-filter-btn.comp-country-active,.comp-threat-btn.comp-threat-active{background:#2563eb;border-color:#3b82f6;color:#fff}.comp-country-title{font-size:16px;font-weight:700;color:#e8edf5}.comp-country-sub{font-size:10px;color:#6a85b0;margin-top:3px}.comp-summary{display:flex;flex-wrap:wrap;gap:8px}.comp-summary-pill{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:8px;padding:7px 10px;font-size:10px;color:#c8d8f0}.comp-card-new{background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:all .18s ease}.comp-card-new:hover{border-color:#3b82f6;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}.comp-card-topline{position:absolute;top:0;left:0;right:0;height:3px}.comp-card-company{font-size:14px;font-weight:700;color:#fff}.comp-card-origin{font-size:10px;color:#6a85b0;margin-top:3px}.comp-threat-badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:700}.comp-share-row{display:flex;justify-content:space-between;align-items:center;margin:12px 0 5px;font-size:10px;color:#94a3b8}.comp-share-value{color:#60a5fa;font-weight:700}.comp-share-bar{width:100%;height:6px;background:#081321;border-radius:99px;overflow:hidden;border:1px solid #14284b}.comp-share-fill{height:100%;border-radius:99px}.comp-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.comp-mini-box{background:#081321;border:1px solid #1e3d7a;border-radius:9px;padding:9px}.comp-mini-label{display:block;color:#6a85b0;font-size:8px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}.comp-mini-text{color:#e2e8f0;font-size:10px;line-height:1.35}.comp-edge{margin-top:11px;padding-top:10px;border-top:1px solid #1e3d7a;color:#34d399;font-size:10px;line-height:1.35}.comp-details-btn{width:100%;margin-top:11px;padding:8px 10px;border-radius:8px;border:1px solid #1e3d7a;background:#13274c;color:#60a5fa;font-size:10px;font-weight:700;cursor:pointer}.comp-details-btn:hover{background:#1a3a6e;border-color:#3b82f6}.comp-details-panel{display:none;margin-top:10px;padding:11px;background:#081321;border:1px solid #1e3d7a;border-radius:9px}.comp-details-panel.open{display:block}.comp-detail-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #14284b;font-size:10px}.comp-detail-row:last-child{border-bottom:none}.comp-detail-label{color:#6a85b0}.comp-detail-value{color:#e8edf5;text-align:right}
 /* Hot map */
@@ -371,13 +297,12 @@ html, body { background: #0b1628; height: 100%; }
   <div style="text-align:center;padding:8px 16px 16px;font-size:10px;color:#2a4060;">Data source: Amecath_Dash.xlsx &nbsp;·&nbsp; 2026 Edition &nbsp;·&nbsp; 9 Markets</div>
 </div>
 
-<!-- COUNTRIES -->
+<!-- ══ COUNTRIES ══ -->
 <div class="page" id="page-countries">
   <div class="section-header"><span style="font-size:16px">🌍</span><span class="section-title">Country Analysis — 9 Markets</span></div>
   <div class="country-grid" id="country-grid"></div>
   <div id="country-detail"></div>
 </div>
-
 <!-- FORECAST -->
 <div class="page" id="page-forecast">
 <div style="padding:0 16px 24px;">
@@ -1198,657 +1123,6 @@ html, body { background: #0b1628; height: 100%; }
 </div><!-- end .dash -->
 
 <script>
-const countryData = {
-  sa:{flag:'🇸🇦',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_arabia_flag.jpeg',name:'Saudi Arabia',sub:'GCC — Largest Market',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/saudi_landscape.jpeg',colors:{primary:'#006400',secondary:'#ffffff',accent:'#ffffff'},
-    kpi:[{l:'Population 2026',v:'35,165,787'},{l:'HD Patients',v:'30,000'},{l:'PD Patients',v:'2,200'},{l:'Dialysis Facilities',v:'360'},{l:'HD Machines',v:'18,000'},{l:'Annual Catheter Demand',v:'77,530'},{l:'Market Value',v:'$9.30M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  ae:{flag:'🇦🇪',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_flag.jpeg',name:'UAE',sub:'GCC — Premium Segment',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/uae_landscape.jpeg',colors:{primary:'#00732f',secondary:'#ff0000',accent:'#ffffff'},
-    kpi:[{l:'Population 2026',v:'11,574,682'},{l:'HD Patients',v:'3,000'},{l:'PD Patients',v:'120'},{l:'Dialysis Facilities',v:'60'},{l:'HD Machines',v:'4,500'},{l:'Annual Catheter Demand',v:'7,638'},{l:'Market Value',v:'$0.99M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  kw:{flag:'🇰🇼',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_flag.jpeg',name:'Kuwait',sub:'GCC — High Spend Per Patient',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/kuwait_landscape.jpeg',colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'Population 2026',v:'5,102,773'},{l:'HD Patients',v:'2,156'},{l:'PD Patients',v:'294'},{l:'Dialysis Facilities',v:'25'},{l:'HD Machines',v:'3,000'},{l:'Annual Catheter Demand',v:'5,728'},{l:'Market Value',v:'$0.72M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  qa:{flag:'🇶🇦',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_flag.jpeg',name:'Qatar',sub:'GCC — Centralized Procurement',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/qatar_landscape.jpeg',colors:{primary:'#8d1b3d',secondary:'#ffffff',accent:'#8d1b3d'},
-    kpi:[{l:'Population 2026',v:'3,173,559'},{l:'HD Patients',v:'1,200'},{l:'PD Patients',v:'180'},{l:'Dialysis Facilities',v:'18'},{l:'HD Machines',v:'1,100'},{l:'Annual Catheter Demand',v:'3,207'},{l:'Market Value',v:'$0.42M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  om:{flag:'🇴🇲',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_flag.jpeg',name:'Oman',sub:'GCC — Growing Market',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/oman_landscape.jpeg',colors:{primary:'#db161b',secondary:'#ffffff',accent:'#008000'},
-    kpi:[{l:'Population 2026',v:'5,494,691'},{l:'HD Patients',v:'2,500'},{l:'PD Patients',v:'100'},{l:'Dialysis Facilities',v:'20'},{l:'HD Machines',v:'2,200'},{l:'Annual Catheter Demand',v:'6,365'},{l:'Market Value',v:'$0.76M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  bh:{flag:'🇧🇭',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahraien_flag.jpeg',name:'Bahrain',sub:'GCC — Small High-Income',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/bahrain_landscape.jpg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'Population 2026',v:'1,675,572'},{l:'HD Patients',v:'4,547'},{l:'PD Patients',v:'450'},{l:'Dialysis Facilities',v:'14'},{l:'HD Machines',v:'750'},{l:'Annual Catheter Demand',v:'11,885'},{l:'Market Value',v:'$1.43M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  iq:{flag:'🇮🇶',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_flag.jpg',name:'Iraq',sub:'ME — High Volume Opportunity',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/iraq_landscape.jpg',colors:{primary:'#ce1126',secondary:'#ffffff',accent:'#ffffff'},
-    kpi:[{l:'Population 2026',v:'48,007,437'},{l:'HD Patients',v:'10,721'},{l:'PD Patients',v:'450'},{l:'Dialysis Facilities',v:'130'},{l:'HD Machines',v:'9,000'},{l:'Annual Catheter Demand',v:'27,320'},{l:'Market Value',v:'$2.46M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  jo:{flag:'🇯🇴',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_flag.jpeg',name:'Jordan',sub:'ME — Medical Hub',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/jordon_landscape.jpeg',colors:{primary:'#007a3d',secondary:'#ffffff',accent:'#ce1126'},
-    kpi:[{l:'Population 2026',v:'11,589,532'},{l:'HD Patients',v:'6,400'},{l:'PD Patients',v:'110'},{l:'Dialysis Facilities',v:'50'},{l:'HD Machines',v:'2,500'},{l:'Annual Catheter Demand',v:'16,127'},{l:'Market Value',v:'$1.61M'},{l:'Distributors / KOLs',v:'10 / 10'}]},
-  lb:{flag:'🇱🇧',flagImg:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_flag.jpeg',name:'Lebanon',sub:'ME — Under Renewal',
-    landscape:'https://raw.githubusercontent.com/abdelrahmanadel200/GULF-/main/assets/landscapes/lebanon_landscape.jpeg',colors:{primary:'#ee161f',secondary:'#ffffff',accent:'#00a650'},
-    kpi:[{l:'Population 2026',v:'5,897,467'},{l:'HD Patients',v:'4,730'},{l:'PD Patients',v:'210'},{l:'Dialysis Facilities',v:'85'},{l:'HD Machines',v:'3,000'},{l:'Annual Catheter Demand',v:'12,067'},{l:'Market Value',v:'$1.21M'},{l:'Distributors / KOLs',v:'10 / 10'}]}
-};
-
-
-const networkData = {"distributors":{"sa":[{"num":1,"name":"AMHSCO – Arabian Medical Hospital Supply","relevance":"Very High — medical devices, life-sciences, specifically has a renal division","specialty":null,"institution":null,"contact":"☎️ +966 11 462 1188 · ✉️ sales@amhsco.com","extra":"AMHSCO","extra_label":"Website"},{"num":2,"name":"AlwanMed","relevance":"Very High — licensed medical-device distributor; serves major government/private hospitals; tender submissions","specialty":null,"institution":null,"contact":"Contact through website","extra":"AlwanMed","extra_label":"Website"},{"num":3,"name":"Aman Medical","relevance":"Very High — explicitly supplies dialysis systems and medical devices","specialty":null,"institution":null,"contact":"☎️ +966 54 882 1508 · ✉️ info@amanmedical.com","extra":"Aman Medical","extra_label":"Website"},{"num":4,"name":"FUMEDCO / MNAF3 Arabia","relevance":"High — medical equipment, devices & disposables; supplies large government hospitals","specialty":null,"institution":null,"contact":"☎️ +966 11 400 3493 · ✉️ info@mnaf3arabia.com","extra":"FUMEDCO","extra_label":"Website"},{"num":5,"name":"House of Rays Medical","relevance":"High — 350+ healthcare clients; medical consumables; nationwide coverage","specialty":null,"institution":null,"contact":"Website / WhatsApp","extra":"House of Rays Medical","extra_label":"Website"},{"num":6,"name":"Nipras AlSalhiya Medical","relevance":"High — medical equipment/devices/accessories; branches Dammam, Riyadh, Jeddah, Tabuk, Khamis","specialty":null,"institution":null,"contact":"Website contact","extra":"Nipras Medical","extra_label":"Website"},{"num":7,"name":"Jama Medical","relevance":"High — nationwide logistics; Riyadh/Jeddah/Dammam/Qassim facilities","specialty":null,"institution":null,"contact":"Website contact","extra":"Jama Medical","extra_label":"Website"},{"num":8,"name":"Watan Medical Company","relevance":"High — medical devices, supplies & equipment across KSA","specialty":null,"institution":null,"contact":"☎️ +966 13 833 3606 · ✉️ info@watanmedical.com","extra":"Watan Medical","extra_label":"Website"},{"num":9,"name":"Healthcare Systems Saudi","relevance":"Medium–High — medical consumables, hospital supplies; serves MOH, military, National Guard and private hospitals","specialty":null,"institution":null,"contact":"☎️ +966 92 000 4438 · ✉️ sales@hs-saudi.com","extra":"Healthcare Systems Saudi","extra_label":"Website"},{"num":10,"name":"Raqwani Medicals","relevance":"Medium–High — medical devices, equipment, surgical supplies and hospital products","specialty":null,"institution":null,"contact":"☎️ +966 56 393 3574 / +966 50 124 3758 · ✉️ info@raqwanimedicals.com","extra":"Raqwani Medicals","extra_label":"Website"}],"ae":[{"num":1,"name":"Majestic Medical & Technical Supplies","relevance":"Dialysis-specific; explicitly has a dialysis division","specialty":null,"institution":null,"contact":"☎️ +971 2 632 6999 / +971 4 227 8883 · ✉️ info@majesticmedical.ae","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Samir Medical Supplies","relevance":"Medical equipment/distribution; Dubai + Abu Dhabi","specialty":null,"institution":null,"contact":"☎️ +971 4 442 1118 / +971 2 445 3228 · ✉️ info@sdtdxb.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Unicare Medical Trading","relevance":"Healthcare distribution + UAE-wide logistics","specialty":null,"institution":null,"contact":"☎️ +971 4 255 3999 · Abu Dhabi +971 2 443 5500","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Al Naghi Medical","relevance":"Major medical distribution; Dubai + Abu Dhabi","specialty":null,"institution":null,"contact":"☎️ +971 4 512 6500 · +971 2 691 3222 · ✉️ naghi@naghimedical.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"MAS Medical Equipment & Supplies","relevance":"Hospital/medical equipment supplier; Dubai + Abu Dhabi","specialty":null,"institution":null,"contact":"☎️ +971 4 399 4919 · +971 2 554 4094 · ✉️ info@mas-uae.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":6,"name":"Olive Medical Equipment Trading","relevance":"Medical/surgical supplies, devices & consumables; UAE-wide","specialty":null,"institution":null,"contact":"☎️ +971 55 900 3182 · ✉️ sales@olivemed.ae","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"Dupharm","relevance":"Medical consumables + equipment; established UAE distributor","specialty":null,"institution":null,"contact":"☎️ +971 4 268 5054 · ✉️ dupharm@dupharm.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Life World Medical Supplies","relevance":"Medical supplies with Abu Dhabi, Al Ain & Dubai presence","specialty":null,"institution":null,"contact":"☎️ +971 50 777 1462 · ✉️ sales2@lifewrld.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"MEDINOVA Medical Supplies LLC","relevance":"Medical-supply company in Abu Dhabi","specialty":null,"institution":null,"contact":"☎️ +971 2 559 7275","extra":"🟡 3/5","extra_label":"Priority"},{"num":10,"name":"Westfort Trading LLC","relevance":"Medical-equipment supplier in Abu Dhabi","specialty":null,"institution":null,"contact":"☎️ +971 2 554 7371","extra":"🟡 3/5","extra_label":"Priority"}],"qa":[{"num":1,"name":"Fayn Al Tbyh / Fayn Medical","relevance":"Vascular access + medical consumables + distribution; explicitly offers vascular-access products and partnership/distribution services","specialty":null,"institution":null,"contact":"☎️ +974 4491 9296 / +974 4431 0911 · ✉️ info@fayn.qa","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Care Medical Trading","relevance":"Established medical-equipment distributor serving healthcare, diagnostics & life sciences","specialty":null,"institution":null,"contact":"Website/contact form","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Universal Trade Line (UTL)","relevance":"20+ years distributing medical equipment, consumables & laboratory products to government/private sectors","specialty":null,"institution":null,"contact":"Website/contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Barzan Medical Supplies","relevance":"Major Qatar healthcare distributor; medical equipment, hospital disposables & consumables","specialty":null,"institution":null,"contact":"☎️ +974 4441 0270 · ✉️ info@barzanmedical.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Origin Trading & Contracting WLL","relevance":"Medical equipment + consumables + procurement/logistics; 13+ years","specialty":null,"institution":null,"contact":"☎️ +974 4002 0246 · ✉️ info@originqatar.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":6,"name":"Gulfmed Medical Supplies","relevance":"Medical-supply company in Doha","specialty":null,"institution":null,"contact":"☎️ +974 4486 6216","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"Ibn Al Haytham Centre","relevance":"Medical devices/equipment + consumables + surgical instruments","specialty":null,"institution":null,"contact":"☎️ +974 4431 2283 · ✉️ sales@ibncentre.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Novel Medical Solutions W.L.L.","relevance":"Healthcare supply & distribution company; wholesale medical supplies","specialty":null,"institution":null,"contact":"☎️ +974 4467 5151 · ✉️ info@novelmedsolution.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"GerminMED","relevance":"Medical-equipment supplier in Doha","specialty":null,"institution":null,"contact":"☎️ +974 4427 2148","extra":"🟡 3/5","extra_label":"Priority"},{"num":10,"name":"Dynamic Medical Supplies","relevance":"Medical equipment + medical supplies; Doha","specialty":null,"institution":null,"contact":"☎️ +974 7057 0595","extra":"🟡 3/5","extra_label":"Priority"}],"kw":[{"num":1,"name":"Leader Medical Company for Equipment and Medical Supplies W.L.L","relevance":"Medical equipment + supplies","specialty":null,"institution":null,"contact":"☎️ +965 2246 1967","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"DMC Trading Co.","relevance":"25+ years; supplies MOH, Ministry of Defense & private hospitals","specialty":null,"institution":null,"contact":"☎️ +965 6515 0700 · ✉️ info@dmc-kw.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"United Medical Commodities (UMC)","relevance":"20+ years; represents international medical manufacturers","specialty":null,"institution":null,"contact":"☎️ +965 2245 0815/6 · ✉️ info@medcom.com.kw","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Arabi Medical & Scientific Equipment","relevance":"Major healthcare supplier; explicitly supplies dialysis equipment + consumables","specialty":null,"institution":null,"contact":"Arabi Holding contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Medical Means Co. / Al Redwan Group","relevance":"Major GCC dialysis/medical-supply organization","specialty":null,"institution":null,"contact":"Regional contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Warba Medical Supplies Co","relevance":"Medical supplies","specialty":null,"institution":null,"contact":"☎️ +965 2232 3850","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"Ahmed Company for Wholesale","relevance":"30+ years; clinical disposables, surgical tools & medical consumables; handles tenders","specialty":null,"institution":null,"contact":"Sales team / website","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Revan Middle East","relevance":"Medical equipment, surgical supplies & distribution","specialty":null,"institution":null,"contact":"☎️ +965 2573 7373 · ✉️ info@revankw.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"QuipMed","relevance":"Procurement + distribution of medical products","specialty":null,"institution":null,"contact":"☎️ +965 6902 8587 · ✉️ info@quipmed.co","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Dmetco","relevance":"Medical equipment + laboratory + pharmaceutical supplies","specialty":null,"institution":null,"contact":"☎️ +965 2241 6184","extra":"🟡 3/5","extra_label":"Priority"}],"om":[{"num":1,"name":"Oman Medical Supplies & Services (OMANMED)","relevance":"Medical equipment + surgical/general consumables; established hospital-supply operation","specialty":null,"institution":null,"contact":"☎️ +968 2459 3395 / +968 9012 6075 · ✉️ medical@omanmed.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Medical & Scientific Supplies LLC","relevance":"Imports/markets hospital equipment, surgical products, pharmaceuticals & consumables","specialty":null,"institution":null,"contact":"☎️ +968 2449 7844","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Al Farsi Medical Supplies (AFMS)","relevance":"Established importer/distributor; surgical consumables + medical equipment","specialty":null,"institution":null,"contact":"☎️ +968 2448 5625 · WhatsApp +968 9225 8225","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Niemath Al Noor Trading LLC (NieMed)","relevance":"Nationwide medical equipment + consumables; hospital/clinic supply","specialty":null,"institution":null,"contact":"☎️ +968 7928 3733 / +968 7952 7382 · ✉️ info@niemathalnoor.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"MSTE LLC","relevance":"Medical devices, consumables & disposables; large Muscat warehouse","specialty":null,"institution":null,"contact":"☎️ +968 2423 8417 · ✉️ info@msteoman.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Seha Medical Supplies","relevance":"Medical equipment; cardiac & vascular solutions","specialty":null,"institution":null,"contact":"☎️ +968 2411 2944 · ✉️ info@seha.om","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"MuscatMed / HUI Medical Supplies","relevance":"Importer/distributor of medical equipment & surgical disposables","specialty":null,"institution":null,"contact":"☎️ +968 7909 8973 / +968 9257 5465","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Mazoon Medical Supplies","relevance":"Public/private healthcare supply; consumables including catheters","specialty":null,"institution":null,"contact":"☎️ +968 9644 2500 · ✉️ info@mazoonmedical.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Advanced Medical Instruments Co. (AMICO)","relevance":"Medical equipment, medical supplies & consumables","specialty":null,"institution":null,"contact":"Oman Yellow Pages / company contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"IBN Sina Medical Supply","relevance":"Hospital equipment, medical equipment & consumables","specialty":null,"institution":null,"contact":"Oman Yellow Pages / company contact","extra":"🟡 3/5","extra_label":"Priority"}],"jo":[{"num":1,"name":"Greenland Medical","relevance":"⭐ Vascular Access + Interventional Radiology specifically listed","specialty":null,"institution":null,"contact":"☎️ +962 6 515 6480 · +962 79 588 7422","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Hijazi Medical Supplies (HMS)","relevance":"⭐ Catheters + vascular/interventional products","specialty":null,"institution":null,"contact":"☎️ +962 6 515 4826 · ✉️ info@hijazibros.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"RAMANA Medical Supplies","relevance":"⭐ Vascular + interventional radiology; distributor for international companies","specialty":null,"institution":null,"contact":"Contact via website","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"NAJD Medical","relevance":"⭐ Interventional products; supplies major public/private hospitals","specialty":null,"institution":null,"contact":"☎️ +962 79 621 7161 · ✉️ elayan@najdmed.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"World Medical Supplies (WMS)","relevance":"⭐ Supplies Jordan MOH + Royal Medical Services","specialty":null,"institution":null,"contact":"☎️ +962 79 914 0755","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"United for Marketing","relevance":"⭐ Works directly with Jordan MOH and public/private hospitals","specialty":null,"institution":null,"contact":"Website contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Al-Ahlia Company","relevance":"Medical-device distributor since 1987; strong local infrastructure","specialty":null,"institution":null,"contact":"☎️ +962 6 465 0951 · +962 77 736 8181 · ✉️ info@ahliamed.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Surur Medical","relevance":"Medical equipment + surgical consumables; hospital/medical-center distribution","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Osoul Medical","relevance":"Medical equipment + healthcare consumables + procurement support","specialty":null,"institution":null,"contact":"☎️ +962 79 203 3336 · ✉️ info@osoulhealth.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Mahmoud Moghrabi Medical Supplies","relevance":"Medical consumables/devices; private + selected public sector","specialty":null,"institution":null,"contact":"☎️ +962 6 552 0954 · ✉️ info@immc-jo.com","extra":"🟠 4/5","extra_label":"Priority"}],"lb":[{"num":1,"name":"MedTrust Solutions","relevance":"⭐ Vascular access + hemodialysis + endovascular","specialty":null,"institution":null,"contact":"☎️ +961 3 293 893 · ✉️ contact via website","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Allied Medical Group (AMG)","relevance":"⭐ Vascular/peripheral intervention + medical devices","specialty":null,"institution":null,"contact":"☎️/email via website","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Promedz Lebanon","relevance":"⭐ Interventional radiology + peripheral vascular + venous therapy","specialty":null,"institution":null,"contact":"☎️ +961 70 827 807 · +961 1 364 659/60 · ✉️ promedz@promedz.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Intelmed S.A.R.L.","relevance":"⭐ Vascular + interventional radiology + cardiothoracic surgery","specialty":null,"institution":null,"contact":"☎️ +961 1 425 724","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Biofield Medical","relevance":"Specialized medical consumables for interventional fields","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":6,"name":"Hayek Investment / HayekInv Medical","relevance":"⭐ Disposable devices for IR + vascular surgery","specialty":null,"institution":null,"contact":"☎️ +961 1 87 33 81 · +961 3 66 22 72","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"CryoLebanon & Medical Devices","relevance":"Medical devices + university hospitals + interventional-radiology network","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Medical Value","relevance":"Medical equipment / hospital supplies","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Medica Group Lebanon","relevance":"Medical devices + hospital/clinical supply","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Medical Line","relevance":"Medical equipment + consumables / hospital distribution","specialty":null,"institution":null,"contact":"Website contact","extra":"🟡 3/5","extra_label":"Priority"}],"iq":[{"num":1,"name":"Jadarah Scientific Bureau","relevance":"⭐ Medical devices/consumables + MOH tenders + nationwide distribution","specialty":null,"institution":null,"contact":"☎️ +964 770 456 4216 · ✉️ info@jadarah-iq.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Ashur Scientific Bureau / Iraqi Medical Co.","relevance":"⭐ Medical equipment & supplies; dialysis equipment; MOH/KIMADIA experience","specialty":null,"institution":null,"contact":"☎️ +964 771 393 1032 · ✉️ info@iraqimedco.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Pro Mena","relevance":"⭐ Explicitly carries Central Venous Catheters + Dialysis products","specialty":null,"institution":null,"contact":"Website contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Saaeda / Al-Saeeda","relevance":"⭐ Medical-device distributor; strong dialysis ecosystem; Baghdad + Kurdistan","specialty":null,"institution":null,"contact":"☎️ +964 770 700 7727 / +964 770 700 7737 · ✉️ info@saaeda.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"DiaErbil Medical","relevance":"⭐ Interventional radiology + interventional devices; Kurdistan coverage","specialty":null,"institution":null,"contact":"Website contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Nova Scientific Bureau","relevance":"Nationwide medical-device + surgical-supply distribution; 18+ governorates","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"PlusPharma","relevance":"Medical devices, supplies & diagnostics; Baghdad + Erbil","specialty":null,"institution":null,"contact":"☎️ +964 780 121 0339 / +964 770 423 0565 · ✉️ info@pluspharma-me.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Al-Hokamaa Group","relevance":"Long-established Iraqi pharmaceutical/medical-supply distribution network","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Faraj Med / Al-Faraj Al-Markazi","relevance":"Medical supplies distribution across Baghdad, Kurdistan, Basrah and other areas","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Wadi Alnahrayn","relevance":"Medical equipment/supplies importer; nationwide distribution + MOH registration support","specialty":null,"institution":null,"contact":"☎️ +964 771 666 2808 / +964 770 242 0214 · ✉️ info@wadi-alnahrayn.com.iq","extra":"🟠 4/5","extra_label":"Priority"}],"bh":[{"num":1,"name":"Wael Pharmacy Co. W.L.L.","relevance":"⭐ Dialysis filters/bloodlines + vascular access devices + hospital consumables","specialty":null,"institution":null,"contact":"☎️ +973 1737 7000 · ✉️ sales@waelpharmacy.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Trilink","relevance":"⭐ Medical devices, cardiovascular devices, disposables; established 1997","specialty":null,"institution":null,"contact":"Website contact","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Gulf Corporation for Technology (GCT)","relevance":"⭐ Major Bahrain medical distributor; medical equipment + hospital supplies","specialty":null,"institution":null,"contact":"☎️ +973 17 239 399 · ✉️ office@gctbahrain.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Medica Healthcare Supply","relevance":"Medical/surgical/biomedical equipment + consumables","specialty":null,"institution":null,"contact":"☎️ +973 1756 4788 / 1791 0765 · ✉️ info@medica-healthcare.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":5,"name":"Better Medical Solutions","relevance":"⭐ Medical consumables + clinical sales + distribution","specialty":null,"institution":null,"contact":"☎️ +973 1753 2010 · ✉️ sales@bettermedicals.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":6,"name":"Gulf House Medical System","relevance":"Medical equipment + hospital solutions + scientific products","specialty":null,"institution":null,"contact":"☎️ +973 1741 1037 · ✉️ info@gulfhousemedical.com","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"Innova Medical Technologies","relevance":"Authorized medical-equipment/surgical supplier; government + private healthcare","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Sahha Tech Medical","relevance":"Medical-equipment distribution + clinical support; Bahrain/Saudi network","specialty":null,"institution":null,"contact":"Website contact","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Medline Medical Equipment","relevance":"Medical equipment/device distribution + maintenance","specialty":null,"institution":null,"contact":"☎️ +973 1782 5581 · ✉️ sales@medlinemedicalbh.com","extra":"🟡 3/5","extra_label":"Priority"},{"num":10,"name":"Mohammed Fakhroo & Bros. W.L.L.","relevance":"⭐ Established medical-equipment distributor; Philips healthcare distributor","specialty":null,"institution":null,"contact":"☎️ +973 1725 3529","extra":"🟡 3/5","extra_label":"Priority"}]},"kols":{"sa":[{"num":1,"name":"Prof. Faissal A. M. Shaheen","relevance":null,"specialty":"⭐⭐⭐⭐⭐ Nephrology / transplantation","institution":"Dr. Soliman Fakeeh Hospital / SCOT","contact":"✉️ famshaheen@gmail.com","extra":null,"extra_label":""},{"num":2,"name":"Prof. Abdullah Al-Hwiesh","relevance":null,"specialty":"⭐⭐⭐⭐⭐ Nephrology / dialysis / vascular access","institution":"King Fahd Hospital of the University / IAU","contact":"✉️ ahwiesh@iau.edu.sa","extra":null,"extra_label":""},{"num":3,"name":"Dr. Abdullah Al Sayyari","relevance":null,"specialty":"⭐⭐⭐⭐⭐ Nephrology / dialysis","institution":"MNGHA / King Abdulaziz Medical City","contact":"MNGHA Nephrology Department","extra":null,"extra_label":""},{"num":4,"name":"Dr. Ali Alharbi","relevance":null,"specialty":"⭐⭐⭐⭐⭐ Nephrology / dialysis","institution":"Diaverum Saudi Arabia","contact":"Professional profile","extra":null,"extra_label":""},{"num":5,"name":"Dr. Dujanah Hassan Mousa","relevance":null,"specialty":"⭐⭐⭐⭐ Nephrology / dialysis","institution":"Diaverum Saudi Arabia","contact":"Diaverum Saudi Arabia","extra":null,"extra_label":""},{"num":6,"name":"Dr. Mohammed Alhomrany","relevance":null,"specialty":"⭐⭐⭐⭐ Nephrology / dialysis","institution":"Diaverum Saudi Arabia","contact":"Diaverum Saudi Arabia","extra":null,"extra_label":""},{"num":7,"name":"Dr. Fayez Alhejaili","relevance":null,"specialty":"⭐⭐⭐⭐ Nephrology / dialysis","institution":"Diaverum Saudi Arabia","contact":"Diaverum Saudi Arabia","extra":null,"extra_label":""},{"num":8,"name":"Dr. Hassan Alshehri","relevance":null,"specialty":"⭐⭐⭐⭐ Interventional Radiology","institution":"Prince Sultan Military Medical City, Riyadh","contact":"Saudi Interventional Radiology Society","extra":null,"extra_label":""},{"num":9,"name":"Dr. Shaker Alshehri","relevance":null,"specialty":"⭐⭐⭐⭐ Vascular & Interventional Radiology","institution":"King Abdulaziz Medical City, Riyadh","contact":"Saudi Interventional Radiology Society","extra":null,"extra_label":""},{"num":10,"name":"Dr. Shagran Binkhamis","relevance":null,"specialty":"⭐⭐⭐⭐ Vascular & Interventional Radiology","institution":"King Faisal Specialist Hospital & Research Centre","contact":"Saudi Interventional Radiology Society","extra":null,"extra_label":""}],"ae":[{"num":1,"name":"Dr. Ayman Kamal Almadani","relevance":null,"specialty":"Nephrology / dialysis leadership","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":2,"name":"Dr. Wasim Ahmed","relevance":null,"specialty":"Nephrology / advanced HD","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":3,"name":"Dr. Salaheldin Khalil Issa","relevance":null,"specialty":"Nephrology / advanced HD","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":4,"name":"Dr. Hormaz Dara Dastoor","relevance":null,"specialty":"Nephrology / advanced HD","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":5,"name":"Dr. Mohammad Raafat Al Hakim","relevance":null,"specialty":"Nephrology / dialysis / RRT","institution":"SEHA Kidney Care – Al Ain / Tawam","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":6,"name":"Dr. Anvar Hussain Hamid Khan","relevance":null,"specialty":"Nephrology / vascular disease / HD","institution":"SEHA Kidney Care","contact":"☎️ 80050 / SEHA appointment","extra":null,"extra_label":""},{"num":7,"name":"Dr. Mohamed Hassan","relevance":null,"specialty":"Nephrology / HD / PD / transplant","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":8,"name":"Dr. Abraham George","relevance":null,"specialty":"Nephrology / HD / vascular disease","institution":"SEHA Kidney Care – Al Ain","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":9,"name":"Dr. Hefsa Al Shamsi","relevance":null,"specialty":"Nephrology / HD / transplantation","institution":"SEHA Kidney Care","contact":"SEHA appointment/contact","extra":null,"extra_label":""},{"num":10,"name":"Dr. Fadi Hijazi","relevance":null,"specialty":"Nephrology","institution":"Cleveland Clinic Abu Dhabi","contact":"Cleveland Clinic Abu Dhabi appointment","extra":null,"extra_label":""}],"qa":[{"num":1,"name":"Dr. Hassan Al-Malki","relevance":null,"specialty":"⭐ Nephrology / dialysis leadership","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Dr. Omar Fituri","relevance":null,"specialty":"⭐ Nephrology / transplant / RRT","institution":"HMC + Weill Cornell Medicine-Qatar","contact":"HMC / WCM-Q","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Muhammad Asim","relevance":null,"specialty":"⭐ Senior nephrology / dialysis / CRRT","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Dr. Ihab T. M. Elmadhoun","relevance":null,"specialty":"⭐ Nephrology / CRRT / dialysis","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Dr. Abdullah Ibrahim Hamad","relevance":null,"specialty":"⭐ Nephrology / dialysis","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Muftah Othman","relevance":null,"specialty":"⭐ Senior nephrology / dialysis","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Dr. Khaled Mahmoud","relevance":null,"specialty":"⭐ Nephrology / dialysis","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🔴 5/5","extra_label":"Priority"},{"num":8,"name":"Dr. Alaedine Shurrab","relevance":null,"specialty":"⭐ Nephrology / renal replacement therapy","institution":"HMC / Al Khor Hospital","contact":"HMC +974 4439 5777","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Dr. Awais Nauman","relevance":null,"specialty":"Nephrology / renal medicine","institution":"HMC","contact":"HMC +974 4439 5777","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Dr. Ali A. Haydar","relevance":null,"specialty":"⭐ Interventional radiology / vascular intervention","institution":"Aman Hospital","contact":"☎️ +974 4400 4400 · ✉️ [email protected]","extra":"🔴 5/5","extra_label":"Priority"}],"kw":[{"num":1,"name":"Prof. Hamed Al-Essa","relevance":null,"specialty":"⭐ Nephrology / transplant / dialysis","institution":"Kuwait renal network","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":2,"name":"Dr. Hamad Behbehani","relevance":null,"specialty":"⭐ Nephrology / renal medicine","institution":"Kuwait MOH","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":3,"name":"Dr. Omar Al-Hunidi","relevance":null,"specialty":"⭐ Nephrology / renal medicine","institution":"Kuwait","contact":"Hospital / clinic","extra":null,"extra_label":"Priority"},{"num":4,"name":"Dr. Ahmed Ramadan","relevance":null,"specialty":"Nephrology / renal medicine","institution":"Amiri Hospital","contact":"MOH / Amiri","extra":null,"extra_label":"Priority"},{"num":5,"name":"Dr. Hisham Al-Sabah","relevance":null,"specialty":"Nephrology / renal medicine","institution":"Kuwait MOH","contact":"MOH","extra":null,"extra_label":"Priority"},{"num":6,"name":"Dr. Abdulaziz Al-Mousawi","relevance":null,"specialty":"Nephrology / dialysis","institution":"Kuwait MOH","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":7,"name":"Dr. Mohammed Al-Mousawi","relevance":null,"specialty":"Nephrology / renal medicine","institution":"Kuwait","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":8,"name":"Dr. Khaled Al-Sabah","relevance":null,"specialty":"Nephrology / renal medicine","institution":"Kuwait","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":9,"name":"Dr. Faisal Al-Rashidi","relevance":null,"specialty":"Nephrology / dialysis","institution":"Kuwait","contact":"MOH / hospital","extra":null,"extra_label":"Priority"},{"num":10,"name":"Dr. Ahmed Al-Sabah","relevance":null,"specialty":"Renal medicine / transplantation","institution":"Kuwait","contact":"MOH / hospital","extra":null,"extra_label":"Priority"}],"om":[{"num":1,"name":"Dr. Dawood Al-Riyami","relevance":null,"specialty":"⭐ Nephrology / dialysis","institution":"Sultan Qaboos University Hospital","contact":"✉️ dawood@squ.edu.om","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Dr. Ali Al Lawati","relevance":null,"specialty":"⭐ Nephrology / dialysis","institution":"Sultan Qaboos University Hospital","contact":"✉️ aallawati@squ.edu.om","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Sadiq Al Lawati","relevance":null,"specialty":"⭐ Senior Consultant Nephrologist","institution":"Royal Hospital","contact":"Royal Hospital / MOH","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Dr. Issa Al Salmi","relevance":null,"specialty":"⭐ Senior Consultant Nephrologist","institution":"Royal Hospital","contact":"Royal Hospital / MOH","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Dr. Alan Hola","relevance":null,"specialty":"⭐ Senior Consultant Nephrologist","institution":"Royal Hospital","contact":"Royal Hospital / MOH","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Mahmood Nasser Al Hajiry","relevance":null,"specialty":"⭐ IR / dialysis access / PermCath / PD catheter","institution":"Royal Hospital","contact":"Aster / Royal Hospital","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Dr. Tamer Sayed Fouad","relevance":null,"specialty":"⭐ Vascular & endovascular surgery / HD access","institution":"Burjeel Hospital Oman","contact":"Burjeel Hospital","extra":"🔴 5/5","extra_label":"Priority"},{"num":8,"name":"Dr. Said Al-Lamki","relevance":null,"specialty":"⭐ Interventional Radiology / central venous catheter insertion","institution":"Burjeel Hospital Muscat","contact":"Burjeel Hospital","extra":"🔴 5/5","extra_label":"Priority"},{"num":9,"name":"Dr. Faisal Al Balushi","relevance":null,"specialty":"Interventional Radiology","institution":"Royal Hospital","contact":"Oman Vascular Society / Royal Hospital","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Dr. Suliman Al Shamsi","relevance":null,"specialty":"⭐ Senior Consultant Vascular Surgeon","institution":"Royal Hospital","contact":"Royal Hospital / MOH","extra":"🔴 5/5","extra_label":"Priority"}],"jo":[{"num":1,"name":"Prof. Riyad Abdel Raouf Saeed","relevance":null,"specialty":"⭐ Nephrology / kidney transplantation","institution":"Jordan Hospital","contact":"☎️ +962 6 560 8080","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Dr. Fouad Riad Saeed","relevance":null,"specialty":"⭐ Nephrology / transplantation","institution":"Jordan Hospital","contact":"☎️ +962 6 560 8080 · ✉️ info@jordan-hospital.com","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Bisher Kawar","relevance":null,"specialty":"⭐ Nephrology / dialysis / transplantation","institution":"Abdali Hospital","contact":"☎️ +962 6 510 9999","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Dr. Hiba Barghouthi","relevance":null,"specialty":"⭐ Nephrology","institution":"Abdali Hospital","contact":"☎️ +962 6 510 9999","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Dr. Jawad Syouri","relevance":null,"specialty":"⭐ Nephrology / kidney transplant","institution":"Ibn Al-Haytham Hospital","contact":"Hospital: +962 6 569 4420","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Ahmed Rashid","relevance":null,"specialty":"⭐ Nephrology / internal medicine","institution":"Al Khalidi Hospital","contact":"☎️ +962 6 464 4281","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Dr. Bashar Zuhair Ghosheh","relevance":null,"specialty":"⭐ Vascular Surgery","institution":"Jordan Hospital","contact":"☎️ +962 6 560 8080","extra":"🔴 5/5","extra_label":"Priority"},{"num":8,"name":"Dr. Omar Nader Hamdallah","relevance":null,"specialty":"⭐ Vascular surgery + catheterization + kidney transplant","institution":"Jordan Hospital / Jordan Vascular Clinic","contact":"☎️ Hospital +962 6 560 8080","extra":"🔴 5/5","extra_label":"Priority"},{"num":9,"name":"Dr. Sizeph Haddad","relevance":null,"specialty":"⭐ Vascular & Interventional Radiology","institution":"Abdali Hospital","contact":"☎️ +962 6 510 9999","extra":"🔴 5/5","extra_label":"Priority"},{"num":10,"name":"Dr. Farid Al-Adham","relevance":null,"specialty":"⭐ Interventional radiology / vascular catheter procedures","institution":"Amman","contact":"Vezeeta / clinic","extra":"🟠 4/5","extra_label":"Priority"}],"lb":[{"num":1,"name":"Dr. Hicham Cheikh Hassan","relevance":null,"specialty":"⭐ Nephrology / dialysis / renal vascular services","institution":"LAU Medical Center","contact":"LAU Medicine","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Prof. Dania Chelala","relevance":null,"specialty":"⭐ Nephrology / HD / transplantation","institution":"Hôtel-Dieu de France","contact":"HDF","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Hiba Azar","relevance":null,"specialty":"Nephrology / dialysis","institution":"Hôtel-Dieu de France","contact":"HDF","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Dr. Kassem Bdeiri","relevance":null,"specialty":"Nephrology / dialysis","institution":"Hôtel-Dieu de France","contact":"HDF","extra":"🟠 4/5","extra_label":"Priority"},{"num":5,"name":"Dr. Majdi Hamedeh","relevance":null,"specialty":"⭐ Nephrology + dialysis","institution":"Al Zahraa Hospital UMC","contact":"✉️ majdi.hmedeh@zhumc.org.lb · ☎️ +961 1 851040","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Lynn Bou Khalil","relevance":null,"specialty":"⭐ Nephrology & Hypertension","institution":"Mount Lebanon Hospital UMC","contact":"☎️ +961 25 957 000","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Prof. Jamal Hoballah","relevance":null,"specialty":"⭐ Vascular surgery","institution":"AUB Medical Center","contact":"AUB","extra":"🔴 5/5","extra_label":"Priority"},{"num":8,"name":"Dr. Fady Haddad","relevance":null,"specialty":"⭐ Vascular Surgery","institution":"Mount Lebanon Hospital UMC","contact":"☎️ +961 25 957 000","extra":"🔴 5/5","extra_label":"Priority"},{"num":9,"name":"Dr. Abdallah Noufaily","relevance":null,"specialty":"⭐ Interventional vascular/nonvascular radiology","institution":"LAU Medical Center","contact":"☎️ +961 1 200800 ext. 6979","extra":"🔴 5/5","extra_label":"Priority"},{"num":10,"name":"Dr. Hadi Khoury","relevance":null,"specialty":"⭐ Interventional Radiology / vascular intervention","institution":"Khoury Vascular Clinic","contact":"KVC","extra":"🟠 4/5","extra_label":"Priority"}],"iq":[{"num":1,"name":"Prof. Arif Sami Malik","relevance":null,"specialty":"⭐ Nephrology / HD + PD","institution":"Al-Nahrain University / Iraq","contact":"✉️ dr.arifsami@nahrainuniv.edu.iq","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Dr. Zaid Ali","relevance":null,"specialty":"⭐ Vascular surgery / angiography / angioplasty","institution":"Ministry of Health, Al-Muthanna","contact":"PAIRS physician directory","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Fadhil Al-Ammar","relevance":null,"specialty":"Medical/academic leadership","institution":"Founder, Nova Scientific Bureau","contact":"Nova Scientific Bureau","extra":"🟠 4/5","extra_label":"Priority"},{"num":4,"name":"Dr. Abdul-Hadi Al-Hassan","relevance":null,"specialty":"Nephrology / renal medicine","institution":"Iraqi nephrology network","contact":"Hospital/professional route","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Dr. Ahmed Al-Jubouri","relevance":null,"specialty":"Nephrology / dialysis","institution":"Iraqi renal-care network","contact":"Hospital/professional route","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Ali Al-Mashhadani","relevance":null,"specialty":"Nephrology / dialysis","institution":"Baghdad","contact":"Hospital/professional route","extra":"🟠 4/5","extra_label":"Priority"},{"num":7,"name":"Dr. Raad Al-Khafaji","relevance":null,"specialty":"Vascular surgery","institution":"Baghdad / MOH","contact":"Hospital/professional route","extra":"🔴 5/5","extra_label":"Priority"},{"num":8,"name":"Dr. Haider Al-Saadi","relevance":null,"specialty":"Interventional radiology","institution":"Baghdad","contact":"Hospital/professional route","extra":"🔴 5/5","extra_label":"Priority"},{"num":9,"name":"Dr. Mohammed Al-Taie","relevance":null,"specialty":"Interventional radiology / vascular intervention","institution":"Baghdad","contact":"Hospital/professional route","extra":"🔴 5/5","extra_label":"Priority"},{"num":10,"name":"Dr. Ahmed Al-Bayati","relevance":null,"specialty":"Vascular / endovascular surgery","institution":"Iraq","contact":"Hospital/professional route","extra":"🟠 4/5","extra_label":"Priority"}],"bh":[{"num":1,"name":"Dr. Issa Kawalit","relevance":null,"specialty":"⭐ Nephrology + dialysis + transplant","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🔴 5/5","extra_label":"Priority"},{"num":2,"name":"Dr. Abdulraqeeb Alomari","relevance":null,"specialty":"⭐ Nephrologist + kidney transplant","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🔴 5/5","extra_label":"Priority"},{"num":3,"name":"Dr. Muhand Salemah Raji Eltwal","relevance":null,"specialty":"⭐ Nephrology","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🔴 5/5","extra_label":"Priority"},{"num":4,"name":"Dr. Ahmed Mordi","relevance":null,"specialty":"⭐ Interventional Radiology + dialysis access","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800 · WhatsApp +973 3218 1810","extra":"🔴 5/5","extra_label":"Priority"},{"num":5,"name":"Dr. Wadie Yousif","relevance":null,"specialty":"⭐ Vascular & Interventional Radiology","institution":"Ibn Al-Nafees Hospital","contact":"☎️ +973 1782 8282 / 1782 8253","extra":"🔴 5/5","extra_label":"Priority"},{"num":6,"name":"Dr. Sharif Abdulsalam Hamza Khashaba","relevance":null,"specialty":"⭐ Vascular Surgery","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🔴 5/5","extra_label":"Priority"},{"num":7,"name":"Dr. Sawsan Kadhem","relevance":null,"specialty":"Interventional Radiology","institution":"Dawali Clinics / Salmaniya","contact":"Hospital/clinic route","extra":"🟠 4/5","extra_label":"Priority"},{"num":8,"name":"Dr. Jinane Khaled","relevance":null,"specialty":"Radiology","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🟠 4/5","extra_label":"Priority"},{"num":9,"name":"Dr. Suzanne Abbas","relevance":null,"specialty":"Radiology","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🟠 4/5","extra_label":"Priority"},{"num":10,"name":"Dr. Fatema Abdulrahman","relevance":null,"specialty":"Radiology","institution":"Royal Bahrain Hospital","contact":"☎️ +973 1724 6800","extra":"🟠 4/5","extra_label":"Priority"}]}}
-
-const networkCountryMeta = {
-  sa:{name:'Saudi Arabia',flag:'🇸🇦'}, ae:{name:'UAE',flag:'🇦🇪'}, qa:{name:'Qatar',flag:'🇶🇦'},
-  kw:{name:'Kuwait',flag:'🇰🇼'}, om:{name:'Oman',flag:'🇴🇲'}, bh:{name:'Bahrain',flag:'🇧🇭'},
-  jo:{name:'Jordan',flag:'🇯🇴'}, lb:{name:'Lebanon',flag:'🇱🇧'}, iq:{name:'Iraq',flag:'🇮🇶'}
-};
-
-function networkPriorityClass(v){
-  const s=String(v||'');
-  if(!s) return 'mid';
-  return (s.includes('5/5')||s.includes('5'))?'high':'mid';
-}
-
-function openNetwork(type,code){
-  const meta=networkCountryMeta[code], d=countryData[code];
-  const page=document.getElementById('page-'+type+'-'+code);
-  if(!meta||!d||!page)return;
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  page.classList.add('active');
-  page.style.setProperty('--net-primary',d.colors.primary);
-  page.style.setProperty('--net-accent',d.colors.accent);
-  page.style.setProperty('--net-secondary',d.colors.secondary);
-
-  const rows=(networkData[type]&&networkData[type][code])||[];
-  rows.forEach(r=>{r._extraLabel=r.extra_label||'';r._extra=r.extra||'';});
-  const isDist=type==='distributors';
-  const title=isDist?'Distributor Intelligence':'KOL Intelligence';
-  const subtitle=isDist?'Distribution partners, dialysis relevance & contact routes':'Key Opinion Leaders, clinical specialty & contact routes';
-  const label=isDist?'Distributors':'KOLs';
-  const icon=isDist?'🤝':'⭐';
-
-  page.innerHTML=`
-    <div class="network-shell">
-      <div class="network-hero">
-        <div class="network-hero-top">
-          <button class="network-back" onclick="openCountry('${code}')">← Country Analysis</button>
-          <img class="network-flag" src="${d.flagImg}" alt="${meta.name} flag" onerror="this.style.display='none'">
-          <div>
-            <div class="network-title">${icon} ${meta.name} — ${title}</div>
-            <div class="network-subtitle">${subtitle} · 2026 market intelligence</div>
-          </div>
-          <div class="network-theme-chip"><span class="network-theme-dot"></span> ${meta.name} Theme</div>
-        </div>
-      </div>
-
-      <div class="network-summary">
-        <div class="network-summary-card"><div class="network-summary-label">Country</div><div class="network-summary-value"><img src="${d.flagImg}" style="width:44px;height:30px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.28);vertical-align:middle" onerror="this.style.display='none'"></div><div class="network-summary-sub">${meta.name}</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">${label} Listed</div><div class="network-summary-value">${rows.length}</div><div class="network-summary-sub">From workbook</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">Priority 5/5</div><div class="network-summary-value">${rows.filter(x=>String(x._extra||'').includes('5/5')).length}</div><div class="network-summary-sub">Where priority is provided</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">Market</div><div class="network-summary-value" style="font-size:14px">${d.kpi[1]?.v||'—'}</div><div class="network-summary-sub">HD Patients 2026</div></div>
-      </div>
-
-      <div class="network-toolbar">
-        <div><div class="network-section-title">${icon} ${label} — ${meta.name}</div>
-        <div class="network-section-sub">Each country is isolated in its own detail tab. No cross-country mixing.</div></div>
-        <div style="font-size:9px;color:#607a9f">Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
-      </div>
-
-      <div class="network-grid">
-        ${rows.map(r=>{
-          const cp=networkContactParts(r.contact);
-          const priority=String(r._extra||'Not rated');
-          return `<div class="network-card">
-            <div class="network-card-head">
-              <div class="network-num">${r.num}</div>
-              <div style="flex:1;min-width:0">
-                <div class="network-name">${r.name||'—'}</div>
-                <div class="network-role">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div>
-              </div>
-              <span class="network-priority ${networkPriorityClass(r._extra)}">${r._extra||'—'}</span>
-            </div>
-            <div class="network-details">
-              <div class="network-detail-box">
-                <div class="network-detail-label">${isDist?'AMECATH Relevance':'Specialty / Relevance'}</div>
-                <div class="network-detail-value">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">${isDist?(r._extraLabel||'Website / Extra'):'Institution / Route'}</div>
-                <div class="network-detail-value">${isDist ? (r._extra||'—') : (r.institution||'—')}</div>
-              </div>
-              ${!isDist?`<div class="network-detail-box"><div class="network-detail-label">Institution</div><div class="network-detail-value">${r.institution||'—'}</div></div>`:''}
-              <div class="network-detail-box network-contact">
-                <div class="network-detail-label">Contact / Route</div>
-                <div class="network-detail-value">${r.contact||'—'}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">Phone</div>
-                <div class="network-detail-value">${cp.phones}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">Email / Route</div>
-                <div class="network-detail-value">${cp.emails!=='Not provided'?cp.emails:cp.route}</div>
-              </div>
-            </div>
-          </div>`;
-        }).join('')||'<div class="placeholder-page">No records available for this country.</div>'}
-      </div>
-
-      <div class="network-footer">Data displayed exactly from the uploaded workbook. <b>No missing contact fields were invented.</b> If a phone/email was not present, the original contact route is shown instead.</div>
-    </div>`;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-window.openNetwork=openNetwork;
-
-function openCountry(code){
-  const d = countryData[code];
-  const page = document.getElementById('page-countries');
-  if(!d || !page) return;
-
-  const old = document.getElementById('country-inline-detail');
-  if(old) old.remove();
-
-  // Apply the selected country's flag colors to the Country Analysis page.
-  page.classList.add('country-theme');
-  page.dataset.selectedCountry = code;
-  page.style.setProperty('--country-primary', d.colors.primary);
-  page.style.setProperty('--country-secondary', d.colors.secondary);
-  page.style.setProperty('--country-accent', d.colors.accent);
-
-  // Make the selected country card visibly active.
-  document.querySelectorAll('#page-countries .c-card').forEach(function(card){
-    card.classList.toggle('active', card.getAttribute('data-country') === code);
-  });
-
-  const detail = document.createElement('div');
-  detail.id = 'country-inline-detail';
-  detail.className = 'country-inline-detail';
-
-  const capitalMap = {
-    sa:'Riyadh', ae:'Abu Dhabi', kw:'Kuwait City', qa:'Doha', om:'Muscat',
-    bh:'Manama', jo:'Amman', lb:'Beirut', iq:'Baghdad'
-  };
-  const systemMap = {
-    sa:'MOH / NUPCO / SFDA', ae:'MOH / DHA / DOH', kw:'MOH Kuwait',
-    qa:'HMC / PHCC', om:'MOH Oman', bh:'MOH Bahrain',
-    jo:'MOH / RMS', lb:'MOH Lebanon', iq:'MOH / Kimadia'
-  };
-
-  const networkValue = (d.kpi[7] && d.kpi[7].v) ? d.kpi[7].v.split('/') : ['—','—'];
-  const distributors = (networkValue[0] || '—').trim();
-  const kols = (networkValue[1] || '—').trim();
-
-  detail.innerHTML = `
-    <div class="cid-hero">
-      <img class="cid-landscape" src="${d.landscape}" alt="${d.name} landscape"
-           onerror="this.style.display='none'">
-      <div class="cid-overlay"></div>
-      <button class="cid-back" onclick="closeCountry()">← Back</button>
-      <div class="cid-title">
-        <span class="cid-flag">
-          <img src="${d.flagImg}" alt="${d.name} flag" onerror="this.onerror=null;this.replaceWith(document.createTextNode('${d.flag}'))">
-        </span>
-        <div>
-          <div class="cid-name">${d.name}</div>
-          <div class="cid-sub">${d.sub}</div>
-        </div>
-      </div>
-      <div class="cid-meta">
-        <div><span>📍</span><small>Capital</small><b>${capitalMap[code] || '—'}</b></div>
-        <div><span>👥</span><small>Population</small><b>${d.kpi[0]?.v || '—'}</b></div>
-        <div><span>🏥</span><small>Healthcare System</small><b>${systemMap[code] || '—'}</b></div>
-      </div>
-    </div>
-
-    <div class="cid-body">
-      <div class="cid-kpi-grid">
-        ${d.kpi.slice(0,7).map(k=>`
-          <div class="cid-kpi">
-            <div class="cid-kpi-label">${k.l}</div>
-            <div class="cid-kpi-value">${k.v}</div>
-          </div>
-        `).join('')}
-      </div>
-
-      <div class="cid-network">
-        <div class="cid-network-card" role="button" tabindex="0"
-             onclick="openNetwork('distributors','${code}')"
-             onkeydown="if(event.key==='Enter'||event.key===' ') {event.preventDefault();openNetwork('distributors','${code}')}">
-          <div>
-            <div class="cid-network-label">🤝 Distributors</div>
-            <div class="cid-network-sub">Click to open ${d.name} distributor intelligence</div>
-          </div>
-          <div class="cid-network-value">${distributors} <span style="font-size:16px;opacity:.7">›</span></div>
-        </div>
-        <div class="cid-network-card" role="button" tabindex="0"
-             onclick="openNetwork('kols','${code}')"
-             onkeydown="if(event.key==='Enter'||event.key===' ') {event.preventDefault();openNetwork('kols','${code}')}">
-          <div>
-            <div class="cid-network-label">⭐ KOLs</div>
-            <div class="cid-network-sub">Click to open ${d.name} KOL intelligence</div>
-          </div>
-          <div class="cid-network-value">${kols} <span style="font-size:16px;opacity:.7">›</span></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const header = page.querySelector('.section-header');
-  const grid = page.querySelector('.country-grid');
-  if(header) header.insertAdjacentElement('afterend', detail);
-  else page.prepend(detail);
-
-  if(grid) grid.scrollIntoView({behavior:'smooth', block:'start'});
-  setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80);
-}
-
-function closeCountry(){
-  const page = document.getElementById('page-countries');
-  const detail = document.getElementById('country-inline-detail');
-  if(detail) detail.remove();
-  if(page){
-    page.classList.remove('country-theme');
-    delete page.dataset.selectedCountry;
-    page.style.removeProperty('--country-primary');
-    page.style.removeProperty('--country-secondary');
-    page.style.removeProperty('--country-accent');
-    page.querySelectorAll('.c-card').forEach(function(card){ card.classList.remove('active'); });
-  }
-  const cd = document.getElementById('cd-panel');
-  if(cd) cd.classList.remove('open');
-}
-
-const competitorCountries={"sa":{"flag":"🇸🇦","name":"Saudi Arabia","market":"Largest market in the workbook scope","hd":30000,"pd":2200,"facilities":360,"machines":18000,"demand":77530,"marketValue":9.3},"ae":{"flag":"🇦🇪","name":"UAE","market":"Major GCC regional hub","hd":3000,"pd":120,"facilities":60,"machines":4500,"demand":7638,"marketValue":0.99},"qa":{"flag":"🇶🇦","name":"Qatar","market":"Centralized procurement market","hd":1200,"pd":180,"facilities":18,"machines":1100,"demand":3207,"marketValue":0.42},"kw":{"flag":"🇰🇼","name":"Kuwait","market":"GCC dialysis market","hd":2156,"pd":294,"facilities":25,"machines":3000,"demand":5728,"marketValue":0.72},"om":{"flag":"🇴🇲","name":"Oman","market":"Growing GCC dialysis market","hd":2500,"pd":100,"facilities":20,"machines":2200,"demand":6365,"marketValue":0.76},"jo":{"flag":"🇯🇴","name":"Jordan","market":"Levant medical hub","hd":6400,"pd":110,"facilities":50,"machines":2500,"demand":16127,"marketValue":1.61},"lb":{"flag":"🇱🇧","name":"Lebanon","market":"Levant market under pressure","hd":4730,"pd":210,"facilities":85,"machines":3000,"demand":12067,"marketValue":1.21},"iq":{"flag":"🇮🇶","name":"Iraq","market":"High-volume expansion market","hd":10721,"pd":450,"facilities":130,"machines":9000,"demand":27320,"marketValue":2.46},"bh":{"flag":"🇧🇭","name":"Bahrain","market":"Small high-income GCC market","hd":4547,"pd":450,"facilities":14,"machines":750,"demand":11885,"marketValue":1.43}};
-const competitorData={"sa":[{"name":"Fresenius Medical Care","share":"~18–20% KSA HD catheter market businesswire+2","coverage":"⭐⭐⭐⭐⭐ (Nationwide via NUPCO + direct)","weakness":"Catheters bundled with machines/disposables; less catheter-focused innovation","advantage":"Dialysis ecosystem dominance; NUPCO framework winner","specializes":"HD catheters (tunneled/non-tunneled), dialysis machines, disposables","edge":"AMECATH: Dedicated HD catheter specialization + better pricing flexibility + faster supply"},{"name":"B. Braun Melsungen","share":"~12–14% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework + SFDA distributors)","weakness":"Large diversified portfolio; catheters secondary to dialyzers/machines","advantage":"Cost-competitive catheters + Aesculap brand; NUPCO presence","specializes":"HD catheters, dialyzers, vascular access, surgical devices","edge":"AMECATH: Agile regional supply + competitive pricing + focused HD catheter portfolio"},{"name":"Medtronic (Covidien)","share":"~10–12% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (NUPCO winner NPT0048-22, Apr 2026) scribd","weakness":"Premium pricing; peritoneal catheters stronger than HD","advantage":"Technology + clinical evidence + NUPCO tender wins","specializes":"Peritoneal/HD catheters, vascular access, cardiovascular devices","edge":"AMECATH: Specialized HD catheter company + cost advantage + regional agility (Egypt vs. US)"},{"name":"BD (Becton Dickinson)","share":"~8–10% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (SFDA-licensed, major NUPCO supplier)","weakness":"Premium pricing; vascular access broader than HD catheters","advantage":"Brand + clinical evidence + global distribution","specializes":"HD catheters, PICC, CVC, vascular access devices","edge":"AMECATH: Better value proposition + GCC manufacturing credibility + customization"},{"name":"Teleflex (Arrow)","share":"~6–8% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (NUPCO participant, SFDA-licensed)","weakness":"Premium positioning; Arrow brand vascular-focused","advantage":"Advanced HD catheter technology (Arrow brand)","specializes":"HD catheters (Arrow), vascular access, urology devices","edge":"AMECATH: Cost + product flexibility + regional proximity (Egypt vs. Ireland)"},{"name":"Baxter International","share":"~10–12% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework, SFDA-licensed)","weakness":"PD catheters stronger than HD; catheters not core focus","advantage":"Renal-care ecosystem (PD + HD catheters)","specializes":"PD/HD catheters, dialysis solutions, renal disposables","edge":"AMECATH: HD catheter specialization + competitive pricing + regional agility"},{"name":"Merit Medical","share":"~4–6% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Smaller scale vs. Fresenius/B. Braun; limited KSA distribution","advantage":"Strong HD catheter portfolio (Permcath, OptiFlow)","specializes":"HD catheters (tunneled/non-tunneled), interventional devices","edge":"AMECATH: Price + flexible supply/customization + GCC credibility"},{"name":"Nipro Corporation","share":"~5–7% KSA HD catheter market grandviewresearch+1","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Japan-based; slower supply chain; less regional presence","advantage":"Cost-competitive Japanese quality; dialysis disposables","specializes":"HD catheters, tubing sets, dialyzers","edge":"AMECATH: Regional proximity (Egypt vs. Japan) + faster supply + customization"},{"name":"AngioDynamics","share":"~2–3% KSA HD catheter market","coverage":"⭐⭐⭐ (Limited KSA distribution)","weakness":"Smaller footprint; vascular-focused, not HD-specific","advantage":"Specialty HD catheters (e.g., Groshong, Vectra)","specializes":"HD catheters, vascular access, oncology devices","edge":"AMECATH: Dedicated HD catheter focus + broader KSA distribution"},{"name":"Medcomp","share":"~1–2% KSA HD catheter market","coverage":"⭐⭐⭐ (Niche distributor presence)","weakness":"Limited brand recognition; small HD catheter portfolio","advantage":"Specialty HD catheter designs (Split-Step, Catheter Lock)","specializes":"HD catheters, vascular access locks","edge":"AMECATH: Better value + GCC manufacturing + regional support"}],"ae":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium pricing","advantage":"Brand + clinical evidence","specializes":"Vascular access / HD","edge":"Better value proposition + regional agility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization; less focused","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Specialized HD focus + competitive price"},{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Strong dialysis-access portfolio","specializes":"Dialysis access","edge":"Price + flexible supply/customization"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular-access specialization","specializes":"Vascular access","edge":"Regional proximity + value"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Large diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis / vascular access","edge":"Focused HD catheter company"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium positioning","advantage":"Advanced vascular access","specializes":"HD / vascular access","edge":"Cost + product flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐","weakness":"Cost-focused competitor","advantage":"Competitive pricing","specializes":"Dialysis catheters","edge":"AMECATH can compete on quality + GCC credibility"}],"qa":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Strong brand + evidence","specializes":"Vascular access","edge":"Price/value + responsiveness"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + infrastructure","specializes":"Vascular access","edge":"HD specialization + flexibility"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller corporate scale","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional supply"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium product positioning","advantage":"Vascular-access technology","specializes":"HD / vascular access","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional portfolio","advantage":"Interventional technology","specializes":"Vascular/interventional","edge":"HD-focused proposition"}],"kw":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong vascular-access brand","specializes":"Vascular access / HD","edge":"Value + pricing"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Global infrastructure","specializes":"Vascular access","edge":"Agility + HD focus"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller network","advantage":"Strong dialysis portfolio","specializes":"Dialysis access","edge":"Cost + regional supply"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Integrated dialysis offering","specializes":"Dialysis / vascular access","edge":"Specialization + price"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Cost-effective alternative"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Nipro","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Strong dialysis ecosystem can compete broadly","advantage":"Dialysis","specializes":"Dialysis products","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad portfolio","advantage":"Interventional","specializes":"Vascular","edge":"HD specialization"}],"om":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + clinical validation","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large corporate structure","advantage":"Technology","specializes":"Vascular access","edge":"Agility + HD specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply flexibility"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Competitive price"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price competition","advantage":"Cost-effective medical devices","specializes":"Catheters / vascular access","edge":"Quality + regional credibility"}],"jo":[{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium vs. low-cost suppliers","advantage":"Strong HD-access specialization","specializes":"Dialysis access","edge":"Price + regional manufacturing advantage"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand/clinical evidence","specializes":"Vascular access","edge":"Lower cost + flexibility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Specialized catheter proposition"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular/HD","edge":"Value pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-driven","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + Middle East positioning"},{"name":"Medcomp","share":"N/D","coverage":"⭐⭐⭐","weakness":"Less broad brand presence","advantage":"Dialysis access","specializes":"HD catheters","edge":"Regional reach + value"}],"lb":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong brand","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"Specialized HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional responsiveness"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD/vascular","edge":"Value proposition"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Scale","advantage":"Vascular access","specializes":"Vascular","edge":"Flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-oriented","advantage":"Cost","specializes":"Catheters","edge":"Quality + regional positioning"}],"iq":[{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Brand + technology","specializes":"Vascular access","edge":"Much stronger price/value argument"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Clinical reputation","specializes":"Vascular access","edge":"Lower-cost alternative"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium / diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Price + HD specialization"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional proximity"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular access","edge":"Cost advantage"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐","weakness":"Distribution dependence","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional supply flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less premium brand perception","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + regional reputation"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global brand","advantage":"Low-cost products","specializes":"Dialysis catheters","edge":"Quality + GCC/MENA positioning"},{"name":"Chinese manufacturers","share":"N/D","coverage":"⭐⭐⭐","weakness":"Variable clinical/brand perception","advantage":"Very low price","specializes":"Medical disposables/catheters","edge":"Better quality/clinical positioning at competitive price"}],"bh":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + vascular access","specializes":"Vascular access","edge":"Value + price"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Agility + specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused HD-catheter company"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow","specializes":"HD/vascular","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal care","specializes":"Renal care","edge":"HD catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional","advantage":"Interventional","specializes":"Vascular","edge":"HD focus"}]};
-let selectedCompetitorCountry='sa';
-function renderCompetitors(){const country=competitorCountries[selectedCompetitorCountry],header=document.getElementById('competitor-country-header'),grid=document.getElementById('comp-grid');if(!header||!grid)return;const list=competitorData[selectedCompetitorCountry]||[];header.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><div class="comp-country-title">${country.flag} ${country.name}</div><div class="comp-country-sub">${country.market} · Source: Competitor_Matrix</div></div><div class="comp-summary"><div class="comp-summary-pill">🏢 ${list.length} Competitors</div><div class="comp-summary-pill">👥 HD ${country.hd.toLocaleString()}</div><div class="comp-summary-pill">💉 Demand ${country.demand.toLocaleString()}</div><div class="comp-summary-pill">💰 Market $${country.marketValue}M</div></div></div>`;grid.innerHTML=list.map((c,i)=>{const id='comp-detail-'+selectedCompetitorCountry+'-'+i;return `<div class="comp-card-new"><div class="comp-card-topline" style="background:#3b82f6;"></div><div class="flex justify-between items-start gap-3"><div><div class="comp-card-company">${c.name}</div><div class="comp-card-origin">${c.coverage}</div></div><span class="comp-threat-badge" style="background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.3);">${c.share}</span></div><div class="comp-share-row"><span>Market Share*</span><span class="comp-share-value">${c.share}</span></div><div class="comp-mini-grid"><div class="comp-mini-box"><span class="comp-mini-label">Main Advantage</span><span class="comp-mini-text">${c.advantage}</span></div><div class="comp-mini-box"><span class="comp-mini-label">Weakness / Gap</span><span class="comp-mini-text">${c.weakness}</span></div></div><div class="comp-edge"><b>Specializes in:</b> ${c.specializes}</div><button class="comp-details-btn" onclick="toggleCompetitorDetails('${id}',this)">View Details ↓</button><div class="comp-details-panel" id="${id}"><div class="comp-detail-row"><span class="comp-detail-label">Company</span><span class="comp-detail-value">${c.name}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Market Share*</span><span class="comp-detail-value">${c.share}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Coverage</span><span class="comp-detail-value">${c.coverage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Main Advantage</span><span class="comp-detail-value">${c.advantage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Specializes in</span><span class="comp-detail-value">${c.specializes}</span></div><div style="margin-top:8px;color:#34d399;font-size:10px;line-height:1.45;"><b>AMECATH Competitive Advantage:</b> ${c.edge}</div></div></div>`;}).join('')||'<div class="placeholder-page">No competitor data available for this country.</div>'; }
-function setCompetitorCountry(id,btn){selectedCompetitorCountry=id;document.querySelectorAll('.country-filter-btn').forEach(b=>b.classList.remove('comp-country-active'));if(btn)btn.classList.add('comp-country-active');renderCompetitors();}
-function toggleCompetitorDetails(id,btn){const panel=document.getElementById(id);if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
-function filterCompetitors(type,btn){setCompetitorThreat(type,btn);}
-function toggleDetails(btn){const panel=btn.closest('.comp-card-new')?.querySelector('.comp-details-panel');if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
-renderCompetitors();
-
-let marketMap=null;
-const marketPoints=[
-  {country:"Saudi Arabia",city:"Riyadh",lat:24.7136,lng:46.6753,patients:18500,priority:"Critical"},
-  {country:"Saudi Arabia",city:"Jeddah",lat:21.4858,lng:39.1925,patients:9200,priority:"High"},
-  {country:"UAE",city:"Dubai",lat:25.2048,lng:55.2708,patients:6100,priority:"High"},
-  {country:"UAE",city:"Abu Dhabi",lat:24.4539,lng:54.3773,patients:4800,priority:"Medium"},
-  {country:"Qatar",city:"Doha",lat:25.2854,lng:51.531,patients:2800,priority:"Medium"},
-  {country:"Kuwait",city:"Kuwait City",lat:29.3759,lng:47.9774,patients:3500,priority:"High"},
-  {country:"Iraq",city:"Baghdad",lat:33.3152,lng:44.3661,patients:4200,priority:"High"},
-  {country:"Jordan",city:"Amman",lat:31.9539,lng:35.9106,patients:2100,priority:"Medium"},
-  {country:"Lebanon",city:"Beirut",lat:33.8938,lng:35.5018,patients:1700,priority:"Low"},
-  {country:"Oman",city:"Muscat",lat:23.588,lng:58.3829,patients:1900,priority:"Medium"},
-  {country:"Bahrain",city:"Manama",lat:26.2235,lng:50.5876,patients:1200,priority:"Low"}
-];
-const priorityColors={Critical:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#22c55e"};
-
-function createMarketMap(){
-  if(!document.getElementById("market-map"))return;
-  if(marketMap!==null){marketMap.invalidateSize();return;}
-  marketMap=L.map("market-map",{zoomControl:true,scrollWheelZoom:true});
-  marketMap.setView([27.5,46.5],5);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(marketMap);
-  marketPoints.forEach(pt=>{
-    const color=priorityColors[pt.priority]||"#60a5fa";
-    const radius=pt.priority==="Critical"?13:pt.priority==="High"?11:pt.priority==="Medium"?9:7;
-    L.circleMarker([pt.lat,pt.lng],{radius,color:"#ffffff",weight:2,fillColor:color,fillOpacity:0.9}).addTo(marketMap)
-     .bindPopup('<div class="map-popup"><div class="map-popup-title">'+pt.city+', '+pt.country+'</div><div class="map-popup-row"><b>HD Patients:</b> '+pt.patients.toLocaleString()+'</div><div class="map-popup-row"><b>Priority:</b> '+pt.priority+'</div></div>');
-  });
-  const legend=L.control({position:"bottomright"});
-  legend.onAdd=function(){const div=L.DomUtil.create("div");div.style.cssText="background:#0b1628;padding:10px 12px;border:1px solid #1e3d7a;border-radius:8px;color:#e8edf5;font-size:11px;";div.innerHTML='<div style="font-weight:700;margin-bottom:7px;color:#c8d8f0">MARKET PRIORITY</div><div>🔴 Critical</div><div>🟠 High</div><div>🟡 Medium</div><div>🟢 Low</div>';return div;};
-  legend.addTo(marketMap);
-  setTimeout(()=>marketMap.invalidateSize(),300);
-}
-
-function navigate(el,pageId){
-  const page=document.getElementById('page-'+pageId);
-  if(!page) return;
-  const overlay=document.getElementById('country-overlay');
-  if(overlay) overlay.remove();
-  if(pageId !== 'countries') closeCountry();
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(el) el.classList.add('active');
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  page.classList.add('active');
-  if(pageId==="hotareas"){setTimeout(()=>{createMarketMap();if(marketMap)marketMap.invalidateSize();},200);}
-}
-
-// ROBUST SIDEBAR NAVIGATION
-// Use delegated events + explicit pointer handling so the sidebar keeps working
-// even when other dashboard components are dynamically re-rendered.
-window.navigate = navigate;
-window.openCountry = openCountry;
-window.closeCountry = closeCountry;
-
-function initSidebarNavigation(){
-  var sidebar = document.querySelector('.sidebar');
-  if(!sidebar || sidebar.dataset.navReady === '1') return;
-  sidebar.dataset.navReady = '1';
-  sidebar.style.pointerEvents = 'auto';
-  sidebar.style.position = 'sticky';
-  sidebar.style.zIndex = '99999';
-
-  sidebar.addEventListener('click', function(e){
-    var item = e.target.closest('.nav-item[data-page]');
-    if(!item) return;
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(item, item.getAttribute('data-page'));
-  }, true);
-
-  sidebar.addEventListener('keydown', function(e){
-    var item = e.target.closest('.nav-item[data-page]');
-    if(!item) return;
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      e.stopPropagation();
-      navigate(item, item.getAttribute('data-page'));
-    }
-  }, true);
-}
-
-if(document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initSidebarNavigation);
-} else {
-  initSidebarNavigation();
-}
-
-// Also expose a simple direct handler for debugging / future buttons.
-window.sidebarGo = function(pageId){
-  var item = document.querySelector('.nav-item[data-page="'+pageId+'"]');
-  if(item) navigate(item, pageId);
-};
-/* ─── TENDERS ─── */
-(function () {
-  var tndrData = [
-    {id:1,  name:'National HD Catheter Supply 2026–2027',      country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO / SFDA',       value:'$820,000', deadline:'30 Sep 2026', status:'Open',      notes:'Active national procurement. Monitor tender clarifications, submission requirements, and award timeline via NUPCO Etimad portal.'},
-    {id:2,  name:'Hemodialysis Access Devices Framework',       country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'MOH KSA',             value:'$540,000', deadline:'15 Oct 2026', status:'Open',      notes:'Framework opportunity for HD access devices. Review commercial and technical requirements before final submission.'},
-    {id:3,  name:'Kimadia HD Catheter Bulk Order Q4 2026',      country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)',  value:'$610,000', deadline:'20 Oct 2026', status:'Open',      notes:'Q4 bulk procurement via Kimadia. Confirm product registration, delivery requirements, and quantities.'},
-    {id:4,  name:'RMS HD Catheter Annual Contract',             country:'Jordan',       display:'🇯🇴 Jordan',       authority:'Royal Medical Serv.', value:'$280,000', deadline:'05 Nov 2026', status:'Submitted', notes:'Submission completed. Pending evaluation and award decision by Royal Medical Services.'},
-    {id:5,  name:'MOH Jordan Dialysis Consumables 2027',        country:'Jordan',       display:'🇯🇴 Jordan',       authority:'MOH Jordan',          value:'$195,000', deadline:'12 Nov 2026', status:'Submitted', notes:'Submitted. Track evaluation progress and any requests for clarification from MOH Jordan.'},
-    {id:6,  name:'MOH Lebanon Hospital Catheter Supply',        country:'Lebanon',      display:'🇱🇧 Lebanon',      authority:'MOH Lebanon',         value:'$145,000', deadline:'18 Nov 2026', status:'Open',      notes:'Validate local procurement documentation and ensure technical files are complete before deadline.'},
-    {id:7,  name:'BDF / RMS Bahrain HD Catheter 2027',          country:'Bahrain',      display:'🇧🇭 Bahrain',      authority:'BDF Hospital / RMS', value:'$210,000', deadline:'25 Nov 2026', status:'Submitted', notes:'Submitted to BDF/RMS. Awaiting evaluation and award communication from Bahrain procurement team.'},
-    {id:8,  name:'MOH Oman Vascular Access Framework',          country:'Oman',         display:'🇴🇲 Oman',         authority:'MOH Oman Central',   value:'$320,000', deadline:'01 Dec 2026', status:'Submitted', notes:'Framework submission pending award. Maintain follow-up with central procurement team.'},
-    {id:9,  name:'DHA Dubai HD Catheter Framework 2027',        country:'UAE',          display:'🇦🇪 UAE',          authority:'DHA Dubai',           value:'$175,000', deadline:'10 Dec 2026', status:'Submitted', notes:'Submitted to DHA Dubai for evaluation. Monitor award status and technical clarification requests.'},
-    {id:10, name:'HMC Qatar Catheter Annual Contract',          country:'Qatar',        display:'🇶🇦 Qatar',        authority:'HMC Qatar',           value:'$130,000', deadline:'15 Dec 2026', status:'Submitted', notes:'Annual contract submitted to HMC. Follow procurement updates through evaluation and award process.'},
-    {id:11, name:'MOH Kuwait Dialysis Access 2027',             country:'Kuwait',       display:'🇰🇼 Kuwait',       authority:'MOH Kuwait Central', value:'$185,000', deadline:'20 Dec 2026', status:'Open',      notes:'Open 2027 dialysis access procurement. Prepare technical and commercial documentation before closing date.'},
-    {id:12, name:'NUPCO KSA Emergency HD Catheter Lot',         country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO',               value:'$390,000', deadline:'31 Dec 2026', status:'Won',       notes:'Awarded. Coordinate order execution, delivery planning, and post-award documentation with NUPCO.'},
-    {id:13, name:'MOH Iraq Regional HD Catheter Supply',        country:'Iraq',         display:'🇮🇶 Iraq',         authority:'MOH Iraq Regional',  value:'$165,000', deadline:'10 Jan 2027', status:'Won',       notes:'Won. Proceed with contracting, fulfillment planning, and required delivery documentation.'},
-    {id:14, name:'Kimadia Framework Extension 2027',            country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)', value:'$245,000', deadline:'28 Feb 2027', status:'Won',       notes:'Framework extension awarded. Coordinate documentation, forecasted quantities, and implementation schedule.'}
-  ];
-
-  var tndrCountryFilter = 'all';
-  var tndrStatusFilter  = 'all';
-
-  function tndrStatusClass(s) {
-    if (s === 'Open')      return 'tndr-status-open';
-    if (s === 'Submitted') return 'tndr-status-submitted';
-    if (s === 'Won')       return 'tndr-status-won';
-    return 'tndr-status-closed';
-  }
-  function tndrStatusLabel(s) { return s === 'Won' ? 'Won ✅' : s; }
-
-  function tndrRender() {
-    var tbody = document.getElementById('tndr-table-body');
-    if (!tbody) return;
-    var filtered = tndrData.filter(function(r) {
-      return (tndrCountryFilter === 'all' || r.country === tndrCountryFilter) &&
-             (tndrStatusFilter  === 'all' || r.status  === tndrStatusFilter);
-    });
-    if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="8" class="tndr-empty">No tenders match the selected filters.</td></tr>';
-      return;
-    }
-    var html = '';
-    filtered.forEach(function(r) {
-      var sc = tndrStatusClass(r.status);
-      var sl = tndrStatusLabel(r.status);
-      html += '<tr>' +
-        '<td class="tndr-number">' + r.id + '</td>' +
-        '<td class="tndr-name">' + r.name + '</td>' +
-        '<td class="tndr-country">' + r.display + '</td>' +
-        '<td class="tndr-authority" style="color:#8fa8cf;">' + r.authority + '</td>' +
-        '<td class="tndr-value">' + r.value + '</td>' +
-        '<td class="tndr-deadline" style="color:#b8c7dd;">' + r.deadline + '</td>' +
-        '<td><span class="tndr-status ' + sc + '">' + sl + '</span></td>' +
-        '<td><button class="tndr-view-btn" onclick="tndrOpenModal(' + r.id + ')">View</button></td>' +
-      '</tr>';
-    });
-    /* Total row */
-    html += '<tr>' +
-      '<td colspan="4" style="padding:13px 14px;background:#10264a;color:#6a85b0;font-size:11px;font-weight:700;text-align:right;border-top:1px solid #1e3d7a;">TOTAL PIPELINE VALUE</td>' +
-      '<td style="padding:13px 14px;background:#10264a;color:#60a5fa;font-size:14px;font-weight:800;border-top:1px solid #1e3d7a;">$4,210,000</td>' +
-      '<td colspan="3" style="background:#10264a;border-top:1px solid #1e3d7a;"></td>' +
-    '</tr>';
-    tbody.innerHTML = html;
-  }
-
-  window.tndrOpenModal = function(id) {
-    var r = tndrData.find(function(x){ return x.id === id; });
-    if (!r) return;
-    document.getElementById('tndr-modal-title').textContent = r.name;
-    document.getElementById('tndr-d-name').textContent      = r.name;
-    document.getElementById('tndr-d-country').textContent   = r.display;
-    document.getElementById('tndr-d-authority').textContent = r.authority;
-    document.getElementById('tndr-d-value').textContent     = r.value;
-    document.getElementById('tndr-d-deadline').textContent  = r.deadline;
-    document.getElementById('tndr-d-status').innerHTML =
-      '<span class="tndr-status ' + tndrStatusClass(r.status) + '">' + tndrStatusLabel(r.status) + '</span>';
-    document.getElementById('tndr-d-notes').textContent = r.notes;
-    document.getElementById('tndr-modal').classList.add('show');
-  };
-
-  function tndrCloseModal() {
-    var m = document.getElementById('tndr-modal');
-    if (m) m.classList.remove('show');
-  }
-
-  function tndrSetCountry(val) {
-    tndrCountryFilter = val;
-    document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-tndr-country') === val);
-    });
-    tndrRender();
-  }
-
-  function tndrSetStatus(val) {
-    tndrStatusFilter = val;
-    document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-tndr-status') === val);
-    });
-    tndrRender();
-  }
-
-  document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
-    b.addEventListener('click', function() { tndrSetCountry(b.getAttribute('data-tndr-country')); });
-  });
-  document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
-    b.addEventListener('click', function() { tndrSetStatus(b.getAttribute('data-tndr-status')); });
-  });
-
-  var mx = document.getElementById('tndr-modal-x');
-  var mc = document.getElementById('tndr-modal-close');
-  var mo = document.getElementById('tndr-modal');
-  if (mx) mx.addEventListener('click', tndrCloseModal);
-  if (mc) mc.addEventListener('click', tndrCloseModal);
-  if (mo) mo.addEventListener('click', function(e) { if (e.target === mo) tndrCloseModal(); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tndrCloseModal(); });
-
-      tndrRender();
-
-  /* ─── TAB SWITCHER ─── */
-  window.tndrSwitchTab = function(tab) {
-    var isActive = tab === 'active';
-    var sa = document.getElementById('tndr-section-active');
-    var sp = document.getElementById('tndr-section-pipeline');
-    var ta = document.getElementById('tndr-tab-active');
-    var tp = document.getElementById('tndr-tab-pipeline');
-    if (sa) sa.style.display = isActive ? '' : 'none';
-    if (sp) sp.style.display = isActive ? 'none' : '';
-    if (ta) { ta.style.background = isActive ? '#2563eb' : 'transparent'; ta.style.color = isActive ? '#fff' : '#6a85b0'; }
-    if (tp) { tp.style.background = isActive ? 'transparent' : '#2563eb'; tp.style.color = isActive ? '#6a85b0' : '#fff'; }
-  };
-
-})();
-/* ─── END TENDERS ─── */
-
-/* ─── PIPELINE FORECAST ─── */
-(function() {
-  var pipeData = [
-    {id:1,  country:'🇸🇦 Saudi Arabia', name:'Open Framework – Dialysis & Artificial Kidney Supplies (Re-tender / Phase 2)', ref:'NPT0043/26-1 (est.)', entity:'NUPCO',                     launch:'Oct–Dec 2026',        closing:'Jan–Mar 2027',      value:'$3M–$8M',     priority:'Critical', notes:'NUPCO dialysis framework expired Aug 2026; re-tender expected Q4 2026. Localization (MiS) scoring critical.'},
-    {id:2,  country:'🇸🇦 Saudi Arabia', name:'General Medical Supplies – INUPCO Platform',                                    ref:'NDP0807/26 series',   entity:'NUPCO (INUPCO)',             launch:'Rolling Sep–Dec 2026', closing:'Rolling',           value:'$50K–$200K',  priority:'High',     notes:'INUPCO e-marketplace tenders published weekly; catheters included in general medical supplies.'},
-    {id:3,  country:'🇸🇦 Saudi Arabia', name:'Medical Devices – Direct Purchase (Health Clusters)',                           ref:'NDP series',          entity:'NUPCO / Health Clusters',    launch:'Rolling',             closing:'Rolling',           value:'$100K–$500K', priority:'High',     notes:'Cluster-specific tenders (Riyadh, Jazan, Makkah); catheters possible.'},
-    {id:4,  country:'🇶🇦 Qatar',        name:'Medical Consumables – HMC Annual Framework',                                    ref:'HMC/TCS/9XXX/2027',   entity:'Hamad Medical Corp',         launch:'Jan–Mar 2027',        closing:'Mar–May 2027',      value:'$1M–$3M',     priority:'Critical', notes:'HMC issues annual consumables frameworks; dialysis catheters typically included.'},
-    {id:5,  country:'🇶🇦 Qatar',        name:'Medical Supplies – MOH Qatar (Monaqasat)',                                      ref:'Various',             entity:'MOH Qatar',                  launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$800K', priority:'High',     notes:'MOH Qatar tenders via Monaqasat portal; dialysis items periodic.'},
-    {id:6,  country:'🇦🇪 UAE',          name:'Medical Consumables – DAHC 5-Year Blanket Renewal',                            ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Q1–Q2 2027',          closing:'Q2–Q3 2027',        value:'$2M–$5M',     priority:'Critical', notes:'DAHC renews 5-year blankets annually; dialysis catheters in medical consumables category.'},
-    {id:7,  country:'🇦🇪 UAE',          name:'Hemodialysis Machines & Consumables – SEHA',                                   ref:'Various',             entity:'SEHA / Abu Dhabi Health',    launch:'Q2 2027',             closing:'Q3 2027',           value:'$800K–$2M',   priority:'High',     notes:'SEHA tenders for HD machines + consumables; catheters included.'},
-    {id:8,  country:'🇴🇲 Oman',         name:'Renal Dialysis Consumables – MOH Oman (Annual)',                               ref:'Various',             entity:'MOH Oman',                   launch:'Q1 2027',             closing:'Q2 2027',           value:'$600K–$1.5M', priority:'Critical', notes:'Oman MOH issues annual dialysis consumables tenders; re-tender common.'},
-    {id:9,  country:'🇴🇲 Oman',         name:'Medical Equipment for Dialysis Centers – MOH Oman',                            ref:'Various',             entity:'MOH Oman',                   launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$1M',   priority:'High',     notes:'New dialysis center equipment + consumables.'},
-    {id:10, country:'🇰🇼 Kuwait',       name:'Dialysis Consumables & Equipment – MOH Kuwait (Annual)',                       ref:'Various',             entity:'MOH Kuwait',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$500K–$1.5M', priority:'Critical', notes:'Kuwait MOH annual dialysis tender; listed on GCC aggregators.'},
-    {id:11, country:'🇯🇴 Jordan',       name:'Peritoneal Dialysis Consumables & Solutions (Annual)',                         ref:'Various',             entity:'MOH Jordan',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$200K–$500K', priority:'High',     notes:'Annual PD consumables tender; solutions + catheters.'},
-    {id:12, country:'🇯🇴 Jordan',       name:'Dialysis Machines & Consumables – Public Hospitals',                           ref:'Various',             entity:'MOH Jordan',                 launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$900K', priority:'High',     notes:'HD machines + consumables for public hospitals.'},
-    {id:13, country:'🇱🇧 Lebanon',      name:'Permanent & Single-Use Catheters (Annual)',                                    ref:'Various',             entity:'MOH / Public Hospitals',     launch:'Q1 2027',             closing:'Q2 2027',           value:'$150K–$400K', priority:'Critical', notes:'Annual catheter tender; permanent + single-use.'},
-    {id:14, country:'🇮🇶 Iraq',         name:'CVC & Dialysis Catheters – Kimadia Framework',                                 ref:'Various',             entity:'Kimadia / MOH Iraq',         launch:'Rolling Q4 2026',     closing:'Rolling',           value:'$1M–$3M',     priority:'Critical', notes:'Kimadia issues rolling CVC/dialysis catheter tenders; high-volume public procurement.'},
-    {id:15, country:'🇧🇭 Bahrain',      name:'Supply of Dialysis Items (AKU & PDU) – Renewal',                              ref:'MOH/XXX/2027',        entity:'MOH Bahrain',                launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$700K', priority:'Critical', notes:'Annual dialysis consumables for government centers.'},
-    {id:16, country:'🇸🇦 Saudi Arabia', name:'NUPCO – Specialized Surgery Supplies (incl. catheters)',                       ref:'NPT0016/26 series',   entity:'NUPCO',                      launch:'Oct 2026',            closing:'06 Oct 2026',       value:'$500K–$1.5M', priority:'Medium',   notes:'Open framework for surgical sutures, laparoscopy; central venous catheters may be included.'},
-    {id:17, country:'🇸🇦 Saudi Arabia', name:'NUPCO – General Nursing & Wound Care Supplies',                                ref:'NPT series',          entity:'NUPCO',                      launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$300K–$800K', priority:'Medium',   notes:'General nursing/wound care; dialysis catheters possible but not primary.'},
-    {id:18, country:'🇶🇦 Qatar',        name:'Medical Consumables – Quotation Invited (HMC)',                                ref:'HMC/TCS/9XXX/2026',   entity:'Hamad Medical Corp',         launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$200K–$600K', priority:'High',     notes:'HMC issues periodic quotation invites for consumables; catheters likely.'},
-    {id:19, country:'🇦🇪 UAE',          name:'Pharmaceutical & Medical Items – DAHC (Rolling RFQ)',                          ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Rolling',             closing:'Rolling',           value:'$100K–$400K', priority:'Medium',   notes:'DAHC issues rolling RFQs for pharmaceutical/medical items; catheters possible.'},
-    {id:20, country:'🇴🇲 Oman',         name:'Medical Devices – Governorate-Specific Medical Store',                         ref:'Various',             entity:'MOH Oman',                   launch:'Q4 2026',             closing:'Q1 2027',           value:'$200K–$600K', priority:'Medium',   notes:'Governorate-specific medical device tenders; dialysis items periodic.'}
-  ];
-
-  var pipeCountryFilter  = 'all';
-  var pipePriorityFilter = 'all';
-
-  var pipeStyles = {
-    'Critical': {dot:'#ef4444', bg:'rgba(239,68,68,0.12)',  border:'rgba(239,68,68,0.35)',  icon:'🔴'},
-    'High':     {dot:'#f97316', bg:'rgba(249,115,22,0.12)', border:'rgba(249,115,22,0.35)', icon:'🟠'},
-    'Medium':   {dot:'#eab308', bg:'rgba(234,179,8,0.12)',  border:'rgba(234,179,8,0.35)',  icon:'🟡'}
-  };
-
-  function pipeRender() {
-    var tbody = document.getElementById('pipe-table-body');
-    if (!tbody) return;
-    var filtered = pipeData.filter(function(r) {
-      return (pipeCountryFilter  === 'all' || r.country  === pipeCountryFilter) &&
-             (pipePriorityFilter === 'all' || r.priority === pipePriorityFilter);
-    });
-    if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="9" class="tndr-empty">No pipeline tenders match the selected filters.</td></tr>';
-      return;
-    }
-    var html = '';
-    filtered.forEach(function(r) {
-      var ps = pipeStyles[r.priority] || pipeStyles['Medium'];
-      html += '<tr>' +
-        '<td class="tndr-number">' + r.id + '</td>' +
-        '<td class="tndr-name" style="min-width:260px;" title="' + r.notes + '">' + r.name + '</td>' +
-        '<td class="tndr-country">' + r.country + '</td>' +
-        '<td style="color:#8fa8cf;font-size:11px;min-width:160px;">' + r.entity + '</td>' +
-        '<td style="color:#6a85b0;font-size:10px;white-space:nowrap;">' + r.ref + '</td>' +
-        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.launch + '</td>' +
-        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.closing + '</td>' +
-        '<td style="color:#60a5fa;font-weight:700;white-space:nowrap;">' + r.value + '</td>' +
-        '<td><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;background:' + ps.bg + ';color:' + ps.dot + ';border:1px solid ' + ps.border + ';">' + ps.icon + ' ' + r.priority + '</span></td>' +
-      '</tr>';
-    });
-    tbody.innerHTML = html;
-  }
-
-  document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
-    b.addEventListener('click', function() {
-      pipeCountryFilter = b.getAttribute('data-pipe-country');
-      document.querySelectorAll('[data-pipe-country]').forEach(function(x) { x.classList.toggle('active', x === b); });
-      pipeRender();
-    });
-  });
-
-  document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
-    b.addEventListener('click', function() {
-      pipePriorityFilter = b.getAttribute('data-pipe-priority');
-      document.querySelectorAll('[data-pipe-priority]').forEach(function(x) { x.classList.toggle('active', x === b); });
-      pipeRender();
-    });
-  });
-
-  pipeRender();
-})();
-/* ─── END PIPELINE ─── */
-/* ─── SOURCES PAGE ─── */
-(function(){
-  var officialRows=[
-    {country:'🇸🇦 Saudi Arabia', authority:'Ministry of Health (MOH) KSA + SFDA',              data:'HD patient count, facility numbers, HD machines, market authorization', portal:'moh.gov.sa / sfda.gov.sa'},
-    {country:'🇸🇦 Saudi Arabia', authority:'NUPCO (National Unified Procurement Company)',       data:'Tender framework data, procurement volumes, tender pipeline',             portal:'nupco.com / etimad.sa'},
-    {country:'🇦🇪 UAE',          authority:'MOHAP + DHA + DOH Abu Dhabi',                        data:'HD facility count, patient registry, Rafed GPO procurement data',        portal:'mohap.gov.ae / dha.gov.ae'},
-    {country:'🇶🇦 Qatar',        authority:'Hamad Medical Corporation (HMC) + MOH Qatar',        data:'Patient volumes, dialysis capacity, HMC annual report 2024–2025',        portal:'hamad.qa / moph.gov.qa'},
-    {country:'🇰🇼 Kuwait',       authority:'MOH Kuwait — Central Procurement',                   data:'Dialysis facility count, patient estimates, tender data',                 portal:'moh.gov.kw'},
-    {country:'🇴🇲 Oman',         authority:'MOH Oman (Medical Store — Central)',                  data:'HD patient registry, dialysis centers, annual consumables procurement',   portal:'moh.gov.om'},
-    {country:'🇧🇭 Bahrain',       authority:'NHRA (National Health Regulatory Authority) + MOH', data:'Medical device registration, HD facility data, BDF hospital data',        portal:'nhra.bh / moh.gov.bh'},
-    {country:'🇯🇴 Jordan',        authority:'MOH Jordan + Royal Medical Services (RMS)',          data:'HD patient count, dialysis centers, public procurement',                  portal:'moh.gov.jo / rms.gov.jo'},
-    {country:'🇱🇧 Lebanon',       authority:'MOH Lebanon',                                        data:'Hospital catheter supply, public dialysis network data',                  portal:'moph.gov.lb'},
-    {country:'🇮🇶 Iraq',          authority:'Kimadia (MOH Iraq) + Regional Health Directorates',  data:'Bulk catheter demand, dialysis center count, tender volumes',             portal:'kimadia.gov.iq'},
-  ];
-
-  var marketRows=[
-    {source:'Grand View Research',          report:'Hemodialysis Catheter Market — GCC & Middle East',         applied:'Market size, competitor share estimates, CAGR projections', year:'2024–2025'},
-    {source:'BusinessWire / PR Newswire',   report:'Fresenius, B. Braun, Baxter GCC market announcements',     applied:'Competitor market share cross-validation (KSA)',              year:'2024–2026'},
-    {source:'USRDS (US Renal Data System)', report:'International Comparisons of ESRD Care',                   applied:'HD patient prevalence benchmarking per 1M population',        year:'2023–2024'},
-    {source:'ERA-EDTA Registry',            report:'European & Global Dialysis Report',                        applied:'PD/HD patient ratio benchmarks; facility utilization rates',  year:'2023'},
-    {source:'GlobalTenders / TenderImpulse',report:'GCC & MENA dialysis tender database',                     applied:'Pipeline tender discovery (Qatar, Oman, Jordan)',             year:'2025–2026'},
-    {source:'Scribd / NUPCO Portal',        report:'NPT0048-22 Medtronic NUPCO tender award documentation',   applied:'KSA competitor tender win intelligence',                      year:'2026'},
-    {source:'Saudi Healthcare Consulting',  report:'SEHA dialysis market analysis',                            applied:'UAE HD machines + consumables market sizing',                 year:'2024'},
-    {source:'Diaverum Annual Report',       report:'Diaverum GCC Dialysis Network 2025',                       applied:'KSA HD patient count cross-validation (30,000)',              year:'2025'},
-    {source:'IDA (International Dialysis)', report:'Global Dialysis Market Outlook — Middle East',             applied:'Country-level growth rates, new center projections',           year:'2024'},
-    {source:'World Bank / UN Data',         report:'Population projections 2026 — MENA region',               applied:'Population 2026 figures for all 9 markets',                   year:'2026'},
-    {source:'AMECATH Internal Research',    report:'Field Survey — Distributor & KOL Mapping 2026',           applied:'Distributor lists, KOL profiles, contact data',               year:'2026'},
-    {source:'AMECATH Internal Research',    report:'Competitor Intelligence Matrix 2026',                      applied:'Competitor strengths, weaknesses, market share estimates',    year:'2026'},
-  ];
-
-  var portalRows=[
-    {platform:'NUPCO Etimad Portal',           country:'🇸🇦 Saudi Arabia', use:'Active tender monitoring, framework awards, emergency lots',                       url:'etimad.sa'},
-    {platform:'INUPCO e-Marketplace',          country:'🇸🇦 Saudi Arabia', use:'Rolling general medical supplies tenders (weekly updates)',                        url:'nupco.com/inupco'},
-    {platform:'HMC Procurement Portal',        country:'🇶🇦 Qatar',        use:'Annual consumables framework, quotation invitations, award notices',              url:'hamad.qa/procurement'},
-    {platform:'DAHC / Dubai Academic Health',  country:'🇦🇪 UAE',          use:'5-year blanket renewal tracking, rolling RFQ monitoring',                         url:'dahc.ae'},
-    {platform:'Monaqasat (MOH Qatar)',         country:'🇶🇦 Qatar',        use:'MOH Qatar periodic medical supply tenders',                                        url:'monaqasat.moph.gov.qa'},
-    {platform:'Kimadia MOH Iraq',              country:'🇮🇶 Iraq',         use:'Bulk CVC/dialysis catheter procurement; rolling framework tenders',               url:'kimadia.gov.iq'},
-  ];
-
-  function srcRow(cells, alt){
-    var tr=document.createElement('tr');
-    tr.style.cssText='border-bottom:1px solid #14284b;transition:background .15s;';
-    tr.onmouseenter=function(){tr.style.background='#13274c';};
-    tr.onmouseleave=function(){tr.style.background='';};
-    tr.innerHTML=cells.map(function(c,i){
-      return '<td style="padding:11px 16px;color:'+(i===0?'#e8edf5':'#94a8c4')+';font-size:11px;'+(i===0?'font-weight:600;':'')+'">' + c + '</td>';
-    }).join('');
-    return tr;
-  }
-
-  var ob=document.getElementById('src-official-body');
-  if(ob) officialRows.forEach(function(r){
-    ob.appendChild(srcRow([r.country, r.authority, r.data,
-      '<span style="color:#60a5fa;font-size:10px;">'+r.portal+'</span>']));
-  });
-
-  var mb=document.getElementById('src-market-body');
-  if(mb) marketRows.forEach(function(r){
-    mb.appendChild(srcRow([r.source, r.report, r.applied,
-      '<span style="color:#a78bfa;font-size:10px;">'+r.year+'</span>']));
-  });
-
-  var pb=document.getElementById('src-portal-body');
-  if(pb) portalRows.forEach(function(r){
-    pb.appendChild(srcRow([r.platform, r.country, r.use,
-      '<span style="color:#34d399;font-size:10px;">'+r.url+'</span>']));
-  });
-})();
-/* ─── END SOURCES ─── */
-</script>
-
-
-<!-- ===== ENHANCED COUNTRY ANALYSIS MODULE ===== -->
-<script>
-/* ═══════════════════════════════════════════════
-   DATA — all from Amecath_Dash.xlsx
-═══════════════════════════════════════════════ */
 const COUNTRIES = [
   {
     code:'sa', label:'KSA', name:'Saudi Arabia', sub:'GCC — Largest Market',
@@ -2528,6 +1802,392 @@ function filterKol() {
 buildCountryCards();
 buildDistributors();
 buildKols();
+const competitorData={"sa":[{"name":"Fresenius Medical Care","share":"~18–20% KSA HD catheter market businesswire+2","coverage":"⭐⭐⭐⭐⭐ (Nationwide via NUPCO + direct)","weakness":"Catheters bundled with machines/disposables; less catheter-focused innovation","advantage":"Dialysis ecosystem dominance; NUPCO framework winner","specializes":"HD catheters (tunneled/non-tunneled), dialysis machines, disposables","edge":"AMECATH: Dedicated HD catheter specialization + better pricing flexibility + faster supply"},{"name":"B. Braun Melsungen","share":"~12–14% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework + SFDA distributors)","weakness":"Large diversified portfolio; catheters secondary to dialyzers/machines","advantage":"Cost-competitive catheters + Aesculap brand; NUPCO presence","specializes":"HD catheters, dialyzers, vascular access, surgical devices","edge":"AMECATH: Agile regional supply + competitive pricing + focused HD catheter portfolio"},{"name":"Medtronic (Covidien)","share":"~10–12% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (NUPCO winner NPT0048-22, Apr 2026) scribd","weakness":"Premium pricing; peritoneal catheters stronger than HD","advantage":"Technology + clinical evidence + NUPCO tender wins","specializes":"Peritoneal/HD catheters, vascular access, cardiovascular devices","edge":"AMECATH: Specialized HD catheter company + cost advantage + regional agility (Egypt vs. US)"},{"name":"BD (Becton Dickinson)","share":"~8–10% KSA HD catheter market grandviewresearch","coverage":"⭐⭐⭐⭐⭐ (SFDA-licensed, major NUPCO supplier)","weakness":"Premium pricing; vascular access broader than HD catheters","advantage":"Brand + clinical evidence + global distribution","specializes":"HD catheters, PICC, CVC, vascular access devices","edge":"AMECATH: Better value proposition + GCC manufacturing credibility + customization"},{"name":"Teleflex (Arrow)","share":"~6–8% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (NUPCO participant, SFDA-licensed)","weakness":"Premium positioning; Arrow brand vascular-focused","advantage":"Advanced HD catheter technology (Arrow brand)","specializes":"HD catheters (Arrow), vascular access, urology devices","edge":"AMECATH: Cost + product flexibility + regional proximity (Egypt vs. Ireland)"},{"name":"Baxter International","share":"~10–12% KSA HD catheter market businesswire+1","coverage":"⭐⭐⭐⭐⭐ (NUPCO framework, SFDA-licensed)","weakness":"PD catheters stronger than HD; catheters not core focus","advantage":"Renal-care ecosystem (PD + HD catheters)","specializes":"PD/HD catheters, dialysis solutions, renal disposables","edge":"AMECATH: HD catheter specialization + competitive pricing + regional agility"},{"name":"Merit Medical","share":"~4–6% KSA HD catheter market","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Smaller scale vs. Fresenius/B. Braun; limited KSA distribution","advantage":"Strong HD catheter portfolio (Permcath, OptiFlow)","specializes":"HD catheters (tunneled/non-tunneled), interventional devices","edge":"AMECATH: Price + flexible supply/customization + GCC credibility"},{"name":"Nipro Corporation","share":"~5–7% KSA HD catheter market grandviewresearch+1","coverage":"⭐⭐⭐⭐ (SFDA-licensed distributors)","weakness":"Japan-based; slower supply chain; less regional presence","advantage":"Cost-competitive Japanese quality; dialysis disposables","specializes":"HD catheters, tubing sets, dialyzers","edge":"AMECATH: Regional proximity (Egypt vs. Japan) + faster supply + customization"},{"name":"AngioDynamics","share":"~2–3% KSA HD catheter market","coverage":"⭐⭐⭐ (Limited KSA distribution)","weakness":"Smaller footprint; vascular-focused, not HD-specific","advantage":"Specialty HD catheters (e.g., Groshong, Vectra)","specializes":"HD catheters, vascular access, oncology devices","edge":"AMECATH: Dedicated HD catheter focus + broader KSA distribution"},{"name":"Medcomp","share":"~1–2% KSA HD catheter market","coverage":"⭐⭐⭐ (Niche distributor presence)","weakness":"Limited brand recognition; small HD catheter portfolio","advantage":"Specialty HD catheter designs (Split-Step, Catheter Lock)","specializes":"HD catheters, vascular access locks","edge":"AMECATH: Better value + GCC manufacturing + regional support"}],"ae":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium pricing","advantage":"Brand + clinical evidence","specializes":"Vascular access / HD","edge":"Better value proposition + regional agility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization; less focused","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Specialized HD focus + competitive price"},{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Strong dialysis-access portfolio","specializes":"Dialysis access","edge":"Price + flexible supply/customization"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular-access specialization","specializes":"Vascular access","edge":"Regional proximity + value"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Large diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis / vascular access","edge":"Focused HD catheter company"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium positioning","advantage":"Advanced vascular access","specializes":"HD / vascular access","edge":"Cost + product flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐","weakness":"Cost-focused competitor","advantage":"Competitive pricing","specializes":"Dialysis catheters","edge":"AMECATH can compete on quality + GCC credibility"}],"qa":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Strong brand + evidence","specializes":"Vascular access","edge":"Price/value + responsiveness"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + infrastructure","specializes":"Vascular access","edge":"HD specialization + flexibility"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller corporate scale","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional supply"},{"name":"Teleflex/Arrow","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium product positioning","advantage":"Vascular-access technology","specializes":"HD / vascular access","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional portfolio","advantage":"Interventional technology","specializes":"Vascular/interventional","edge":"HD-focused proposition"}],"kw":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong vascular-access brand","specializes":"Vascular access / HD","edge":"Value + pricing"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Global infrastructure","specializes":"Vascular access","edge":"Agility + HD focus"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller network","advantage":"Strong dialysis portfolio","specializes":"Dialysis access","edge":"Cost + regional supply"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Integrated dialysis offering","specializes":"Dialysis / vascular access","edge":"Specialization + price"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Cost-effective alternative"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global footprint","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Nipro","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Strong dialysis ecosystem can compete broadly","advantage":"Dialysis","specializes":"Dialysis products","edge":"Catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad portfolio","advantage":"Interventional","specializes":"Vascular","edge":"HD specialization"}],"om":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + clinical validation","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large corporate structure","advantage":"Technology","specializes":"Vascular access","edge":"Agility + HD specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Broad portfolio","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused catheter portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply flexibility"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD access","edge":"Competitive price"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional responsiveness"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price competition","advantage":"Cost-effective medical devices","specializes":"Catheters / vascular access","edge":"Quality + regional credibility"}],"jo":[{"name":"Merit Medical","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium vs. low-cost suppliers","advantage":"Strong HD-access specialization","specializes":"Dialysis access","edge":"Price + regional manufacturing advantage"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand/clinical evidence","specializes":"Vascular access","edge":"Lower cost + flexibility"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Specialized catheter proposition"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular/HD","edge":"Value pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-driven","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + Middle East positioning"},{"name":"Medcomp","share":"N/D","coverage":"⭐⭐⭐","weakness":"Less broad brand presence","advantage":"Dialysis access","specializes":"HD catheters","edge":"Regional reach + value"}],"lb":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Strong brand","specializes":"Vascular access","edge":"Price/value"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology","specializes":"Vascular access","edge":"Specialized HD focus"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused portfolio"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional responsiveness"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"HD/vascular","edge":"Value proposition"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Scale","advantage":"Vascular access","specializes":"Vascular","edge":"Flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐","weakness":"Price-oriented","advantage":"Cost","specializes":"Catheters","edge":"Quality + regional positioning"}],"iq":[{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐","weakness":"Premium cost","advantage":"Brand + technology","specializes":"Vascular access","edge":"Much stronger price/value argument"},{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Clinical reputation","specializes":"Vascular access","edge":"Lower-cost alternative"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium / diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Price + HD specialization"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Diversified","advantage":"Renal-care ecosystem","specializes":"Renal care","edge":"Catheter specialization"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Dialysis access","specializes":"HD access","edge":"Price + regional proximity"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐","weakness":"Premium","advantage":"Arrow technology","specializes":"Vascular access","edge":"Cost advantage"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐","weakness":"Distribution dependence","advantage":"Vascular access","specializes":"Vascular access","edge":"Regional supply flexibility"},{"name":"Polymedicure","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Less premium brand perception","advantage":"Cost competitiveness","specializes":"Catheters","edge":"Quality + regional reputation"},{"name":"Advin","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller global brand","advantage":"Low-cost products","specializes":"Dialysis catheters","edge":"Quality + GCC/MENA positioning"},{"name":"Chinese manufacturers","share":"N/D","coverage":"⭐⭐⭐","weakness":"Variable clinical/brand perception","advantage":"Very low price","specializes":"Medical disposables/catheters","edge":"Better quality/clinical positioning at competitive price"}],"bh":[{"name":"BD","share":"~13.9% global","coverage":"⭐⭐⭐⭐⭐","weakness":"Premium","advantage":"Brand + vascular access","specializes":"Vascular access","edge":"Value + price"},{"name":"Medtronic","share":"~15–16% global estimates","coverage":"⭐⭐⭐⭐⭐","weakness":"Large organization","advantage":"Technology + distribution","specializes":"Vascular access","edge":"Agility + specialization"},{"name":"B. Braun","share":"N/D","coverage":"⭐⭐⭐⭐⭐","weakness":"Diversified","advantage":"Dialysis ecosystem","specializes":"Dialysis","edge":"Focused HD-catheter company"},{"name":"Merit","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Dialysis access","specializes":"HD access","edge":"Cost + supply"},{"name":"Teleflex","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Premium","advantage":"Arrow","specializes":"HD/vascular","edge":"Competitive pricing"},{"name":"Vygon","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Smaller scale","advantage":"Vascular access","specializes":"Vascular","edge":"Regional flexibility"},{"name":"Baxter","share":"N/D","coverage":"⭐⭐⭐⭐","weakness":"Broad renal portfolio","advantage":"Renal care","specializes":"Renal care","edge":"HD catheter specialization"},{"name":"Cook","share":"N/D","coverage":"⭐⭐⭐","weakness":"Broad interventional","advantage":"Interventional","specializes":"Vascular","edge":"HD focus"}]};
+let selectedCompetitorCountry='sa';
+function renderCompetitors(){const country=competitorCountries[selectedCompetitorCountry],header=document.getElementById('competitor-country-header'),grid=document.getElementById('comp-grid');if(!header||!grid)return;const list=competitorData[selectedCompetitorCountry]||[];header.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><div class="comp-country-title">${country.flag} ${country.name}</div><div class="comp-country-sub">${country.market} · Source: Competitor_Matrix</div></div><div class="comp-summary"><div class="comp-summary-pill">🏢 ${list.length} Competitors</div><div class="comp-summary-pill">👥 HD ${country.hd.toLocaleString()}</div><div class="comp-summary-pill">💉 Demand ${country.demand.toLocaleString()}</div><div class="comp-summary-pill">💰 Market $${country.marketValue}M</div></div></div>`;grid.innerHTML=list.map((c,i)=>{const id='comp-detail-'+selectedCompetitorCountry+'-'+i;return `<div class="comp-card-new"><div class="comp-card-topline" style="background:#3b82f6;"></div><div class="flex justify-between items-start gap-3"><div><div class="comp-card-company">${c.name}</div><div class="comp-card-origin">${c.coverage}</div></div><span class="comp-threat-badge" style="background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.3);">${c.share}</span></div><div class="comp-share-row"><span>Market Share*</span><span class="comp-share-value">${c.share}</span></div><div class="comp-mini-grid"><div class="comp-mini-box"><span class="comp-mini-label">Main Advantage</span><span class="comp-mini-text">${c.advantage}</span></div><div class="comp-mini-box"><span class="comp-mini-label">Weakness / Gap</span><span class="comp-mini-text">${c.weakness}</span></div></div><div class="comp-edge"><b>Specializes in:</b> ${c.specializes}</div><button class="comp-details-btn" onclick="toggleCompetitorDetails('${id}',this)">View Details ↓</button><div class="comp-details-panel" id="${id}"><div class="comp-detail-row"><span class="comp-detail-label">Company</span><span class="comp-detail-value">${c.name}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Market Share*</span><span class="comp-detail-value">${c.share}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Coverage</span><span class="comp-detail-value">${c.coverage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Main Advantage</span><span class="comp-detail-value">${c.advantage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Specializes in</span><span class="comp-detail-value">${c.specializes}</span></div><div style="margin-top:8px;color:#34d399;font-size:10px;line-height:1.45;"><b>AMECATH Competitive Advantage:</b> ${c.edge}</div></div></div>`;}).join('')||'<div class="placeholder-page">No competitor data available for this country.</div>'; }
+function setCompetitorCountry(id,btn){selectedCompetitorCountry=id;document.querySelectorAll('.country-filter-btn').forEach(b=>b.classList.remove('comp-country-active'));if(btn)btn.classList.add('comp-country-active');renderCompetitors();}
+function toggleCompetitorDetails(id,btn){const panel=document.getElementById(id);if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
+function filterCompetitors(type,btn){setCompetitorThreat(type,btn);}
+function toggleDetails(btn){const panel=btn.closest('.comp-card-new')?.querySelector('.comp-details-panel');if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
+renderCompetitors();
+
+let marketMap=null;
+const marketPoints=[
+  {country:"Saudi Arabia",city:"Riyadh",lat:24.7136,lng:46.6753,patients:18500,priority:"Critical"},
+  {country:"Saudi Arabia",city:"Jeddah",lat:21.4858,lng:39.1925,patients:9200,priority:"High"},
+  {country:"UAE",city:"Dubai",lat:25.2048,lng:55.2708,patients:6100,priority:"High"},
+  {country:"UAE",city:"Abu Dhabi",lat:24.4539,lng:54.3773,patients:4800,priority:"Medium"},
+  {country:"Qatar",city:"Doha",lat:25.2854,lng:51.531,patients:2800,priority:"Medium"},
+  {country:"Kuwait",city:"Kuwait City",lat:29.3759,lng:47.9774,patients:3500,priority:"High"},
+  {country:"Iraq",city:"Baghdad",lat:33.3152,lng:44.3661,patients:4200,priority:"High"},
+  {country:"Jordan",city:"Amman",lat:31.9539,lng:35.9106,patients:2100,priority:"Medium"},
+  {country:"Lebanon",city:"Beirut",lat:33.8938,lng:35.5018,patients:1700,priority:"Low"},
+  {country:"Oman",city:"Muscat",lat:23.588,lng:58.3829,patients:1900,priority:"Medium"},
+  {country:"Bahrain",city:"Manama",lat:26.2235,lng:50.5876,patients:1200,priority:"Low"}
+];
+const priorityColors={Critical:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#22c55e"};
+
+function createMarketMap(){
+  if(!document.getElementById("market-map"))return;
+  if(marketMap!==null){marketMap.invalidateSize();return;}
+  marketMap=L.map("market-map",{zoomControl:true,scrollWheelZoom:true});
+  marketMap.setView([27.5,46.5],5);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(marketMap);
+  marketPoints.forEach(pt=>{
+    const color=priorityColors[pt.priority]||"#60a5fa";
+    const radius=pt.priority==="Critical"?13:pt.priority==="High"?11:pt.priority==="Medium"?9:7;
+    L.circleMarker([pt.lat,pt.lng],{radius,color:"#ffffff",weight:2,fillColor:color,fillOpacity:0.9}).addTo(marketMap)
+     .bindPopup('<div class="map-popup"><div class="map-popup-title">'+pt.city+', '+pt.country+'</div><div class="map-popup-row"><b>HD Patients:</b> '+pt.patients.toLocaleString()+'</div><div class="map-popup-row"><b>Priority:</b> '+pt.priority+'</div></div>');
+  });
+  const legend=L.control({position:"bottomright"});
+  legend.onAdd=function(){const div=L.DomUtil.create("div");div.style.cssText="background:#0b1628;padding:10px 12px;border:1px solid #1e3d7a;border-radius:8px;color:#e8edf5;font-size:11px;";div.innerHTML='<div style="font-weight:700;margin-bottom:7px;color:#c8d8f0">MARKET PRIORITY</div><div>🔴 Critical</div><div>🟠 High</div><div>🟡 Medium</div><div>🟢 Low</div>';return div;};
+  legend.addTo(marketMap);
+  setTimeout(()=>marketMap.invalidateSize(),300);
+}
+
+function navigate(el,pageId){
+  const page=document.getElementById('page-'+pageId);
+  if(!page) return;
+  const overlay=document.getElementById('country-overlay');
+  if(overlay) overlay.remove();
+  if(pageId !== 'countries') closeCountry();
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  page.classList.add('active');
+  if(pageId==="hotareas"){setTimeout(()=>{createMarketMap();if(marketMap)marketMap.invalidateSize();},200);}
+}
+
+// ROBUST SIDEBAR NAVIGATION
+// Use delegated events + explicit pointer handling so the sidebar keeps working
+// even when other dashboard components are dynamically re-rendered.
+window.navigate = navigate;
+window.openCountry = openCountry;
+window.closeCountry = closeCountry;
+
+function initSidebarNavigation(){
+  var sidebar = document.querySelector('.sidebar');
+  if(!sidebar || sidebar.dataset.navReady === '1') return;
+  sidebar.dataset.navReady = '1';
+  sidebar.style.pointerEvents = 'auto';
+  sidebar.style.position = 'sticky';
+  sidebar.style.zIndex = '99999';
+
+  sidebar.addEventListener('click', function(e){
+    var item = e.target.closest('.nav-item[data-page]');
+    if(!item) return;
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(item, item.getAttribute('data-page'));
+  }, true);
+
+  sidebar.addEventListener('keydown', function(e){
+    var item = e.target.closest('.nav-item[data-page]');
+    if(!item) return;
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      e.stopPropagation();
+      navigate(item, item.getAttribute('data-page'));
+    }
+  }, true);
+}
+
+if(document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSidebarNavigation);
+} else {
+  initSidebarNavigation();
+}
+
+// Also expose a simple direct handler for debugging / future buttons.
+window.sidebarGo = function(pageId){
+  var item = document.querySelector('.nav-item[data-page="'+pageId+'"]');
+  if(item) navigate(item, pageId);
+};
+/* ─── TENDERS ─── */
+(function () {
+  var tndrData = [
+    {id:1,  name:'National HD Catheter Supply 2026–2027',      country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO / SFDA',       value:'$820,000', deadline:'30 Sep 2026', status:'Open',      notes:'Active national procurement. Monitor tender clarifications, submission requirements, and award timeline via NUPCO Etimad portal.'},
+    {id:2,  name:'Hemodialysis Access Devices Framework',       country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'MOH KSA',             value:'$540,000', deadline:'15 Oct 2026', status:'Open',      notes:'Framework opportunity for HD access devices. Review commercial and technical requirements before final submission.'},
+    {id:3,  name:'Kimadia HD Catheter Bulk Order Q4 2026',      country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)',  value:'$610,000', deadline:'20 Oct 2026', status:'Open',      notes:'Q4 bulk procurement via Kimadia. Confirm product registration, delivery requirements, and quantities.'},
+    {id:4,  name:'RMS HD Catheter Annual Contract',             country:'Jordan',       display:'🇯🇴 Jordan',       authority:'Royal Medical Serv.', value:'$280,000', deadline:'05 Nov 2026', status:'Submitted', notes:'Submission completed. Pending evaluation and award decision by Royal Medical Services.'},
+    {id:5,  name:'MOH Jordan Dialysis Consumables 2027',        country:'Jordan',       display:'🇯🇴 Jordan',       authority:'MOH Jordan',          value:'$195,000', deadline:'12 Nov 2026', status:'Submitted', notes:'Submitted. Track evaluation progress and any requests for clarification from MOH Jordan.'},
+    {id:6,  name:'MOH Lebanon Hospital Catheter Supply',        country:'Lebanon',      display:'🇱🇧 Lebanon',      authority:'MOH Lebanon',         value:'$145,000', deadline:'18 Nov 2026', status:'Open',      notes:'Validate local procurement documentation and ensure technical files are complete before deadline.'},
+    {id:7,  name:'BDF / RMS Bahrain HD Catheter 2027',          country:'Bahrain',      display:'🇧🇭 Bahrain',      authority:'BDF Hospital / RMS', value:'$210,000', deadline:'25 Nov 2026', status:'Submitted', notes:'Submitted to BDF/RMS. Awaiting evaluation and award communication from Bahrain procurement team.'},
+    {id:8,  name:'MOH Oman Vascular Access Framework',          country:'Oman',         display:'🇴🇲 Oman',         authority:'MOH Oman Central',   value:'$320,000', deadline:'01 Dec 2026', status:'Submitted', notes:'Framework submission pending award. Maintain follow-up with central procurement team.'},
+    {id:9,  name:'DHA Dubai HD Catheter Framework 2027',        country:'UAE',          display:'🇦🇪 UAE',          authority:'DHA Dubai',           value:'$175,000', deadline:'10 Dec 2026', status:'Submitted', notes:'Submitted to DHA Dubai for evaluation. Monitor award status and technical clarification requests.'},
+    {id:10, name:'HMC Qatar Catheter Annual Contract',          country:'Qatar',        display:'🇶🇦 Qatar',        authority:'HMC Qatar',           value:'$130,000', deadline:'15 Dec 2026', status:'Submitted', notes:'Annual contract submitted to HMC. Follow procurement updates through evaluation and award process.'},
+    {id:11, name:'MOH Kuwait Dialysis Access 2027',             country:'Kuwait',       display:'🇰🇼 Kuwait',       authority:'MOH Kuwait Central', value:'$185,000', deadline:'20 Dec 2026', status:'Open',      notes:'Open 2027 dialysis access procurement. Prepare technical and commercial documentation before closing date.'},
+    {id:12, name:'NUPCO KSA Emergency HD Catheter Lot',         country:'Saudi Arabia', display:'🇸🇦 Saudi Arabia', authority:'NUPCO',               value:'$390,000', deadline:'31 Dec 2026', status:'Won',       notes:'Awarded. Coordinate order execution, delivery planning, and post-award documentation with NUPCO.'},
+    {id:13, name:'MOH Iraq Regional HD Catheter Supply',        country:'Iraq',         display:'🇮🇶 Iraq',         authority:'MOH Iraq Regional',  value:'$165,000', deadline:'10 Jan 2027', status:'Won',       notes:'Won. Proceed with contracting, fulfillment planning, and required delivery documentation.'},
+    {id:14, name:'Kimadia Framework Extension 2027',            country:'Iraq',         display:'🇮🇶 Iraq',         authority:'Kimadia (MOH Iraq)', value:'$245,000', deadline:'28 Feb 2027', status:'Won',       notes:'Framework extension awarded. Coordinate documentation, forecasted quantities, and implementation schedule.'}
+  ];
+
+  var tndrCountryFilter = 'all';
+  var tndrStatusFilter  = 'all';
+
+  function tndrStatusClass(s) {
+    if (s === 'Open')      return 'tndr-status-open';
+    if (s === 'Submitted') return 'tndr-status-submitted';
+    if (s === 'Won')       return 'tndr-status-won';
+    return 'tndr-status-closed';
+  }
+  function tndrStatusLabel(s) { return s === 'Won' ? 'Won ✅' : s; }
+
+  function tndrRender() {
+    var tbody = document.getElementById('tndr-table-body');
+    if (!tbody) return;
+    var filtered = tndrData.filter(function(r) {
+      return (tndrCountryFilter === 'all' || r.country === tndrCountryFilter) &&
+             (tndrStatusFilter  === 'all' || r.status  === tndrStatusFilter);
+    });
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="tndr-empty">No tenders match the selected filters.</td></tr>';
+      return;
+    }
+    var html = '';
+    filtered.forEach(function(r) {
+      var sc = tndrStatusClass(r.status);
+      var sl = tndrStatusLabel(r.status);
+      html += '<tr>' +
+        '<td class="tndr-number">' + r.id + '</td>' +
+        '<td class="tndr-name">' + r.name + '</td>' +
+        '<td class="tndr-country">' + r.display + '</td>' +
+        '<td class="tndr-authority" style="color:#8fa8cf;">' + r.authority + '</td>' +
+        '<td class="tndr-value">' + r.value + '</td>' +
+        '<td class="tndr-deadline" style="color:#b8c7dd;">' + r.deadline + '</td>' +
+        '<td><span class="tndr-status ' + sc + '">' + sl + '</span></td>' +
+        '<td><button class="tndr-view-btn" onclick="tndrOpenModal(' + r.id + ')">View</button></td>' +
+      '</tr>';
+    });
+    /* Total row */
+    html += '<tr>' +
+      '<td colspan="4" style="padding:13px 14px;background:#10264a;color:#6a85b0;font-size:11px;font-weight:700;text-align:right;border-top:1px solid #1e3d7a;">TOTAL PIPELINE VALUE</td>' +
+      '<td style="padding:13px 14px;background:#10264a;color:#60a5fa;font-size:14px;font-weight:800;border-top:1px solid #1e3d7a;">$4,210,000</td>' +
+      '<td colspan="3" style="background:#10264a;border-top:1px solid #1e3d7a;"></td>' +
+    '</tr>';
+    tbody.innerHTML = html;
+  }
+
+  window.tndrOpenModal = function(id) {
+    var r = tndrData.find(function(x){ return x.id === id; });
+    if (!r) return;
+    document.getElementById('tndr-modal-title').textContent = r.name;
+    document.getElementById('tndr-d-name').textContent      = r.name;
+    document.getElementById('tndr-d-country').textContent   = r.display;
+    document.getElementById('tndr-d-authority').textContent = r.authority;
+    document.getElementById('tndr-d-value').textContent     = r.value;
+    document.getElementById('tndr-d-deadline').textContent  = r.deadline;
+    document.getElementById('tndr-d-status').innerHTML =
+      '<span class="tndr-status ' + tndrStatusClass(r.status) + '">' + tndrStatusLabel(r.status) + '</span>';
+    document.getElementById('tndr-d-notes').textContent = r.notes;
+    document.getElementById('tndr-modal').classList.add('show');
+  };
+
+  function tndrCloseModal() {
+    var m = document.getElementById('tndr-modal');
+    if (m) m.classList.remove('show');
+  }
+
+  function tndrSetCountry(val) {
+    tndrCountryFilter = val;
+    document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-tndr-country') === val);
+    });
+    tndrRender();
+  }
+
+  function tndrSetStatus(val) {
+    tndrStatusFilter = val;
+    document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-tndr-status') === val);
+    });
+    tndrRender();
+  }
+
+  document.querySelectorAll('[data-tndr-country]').forEach(function(b) {
+    b.addEventListener('click', function() { tndrSetCountry(b.getAttribute('data-tndr-country')); });
+  });
+  document.querySelectorAll('[data-tndr-status]').forEach(function(b) {
+    b.addEventListener('click', function() { tndrSetStatus(b.getAttribute('data-tndr-status')); });
+  });
+
+  var mx = document.getElementById('tndr-modal-x');
+  var mc = document.getElementById('tndr-modal-close');
+  var mo = document.getElementById('tndr-modal');
+  if (mx) mx.addEventListener('click', tndrCloseModal);
+  if (mc) mc.addEventListener('click', tndrCloseModal);
+  if (mo) mo.addEventListener('click', function(e) { if (e.target === mo) tndrCloseModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') tndrCloseModal(); });
+
+      tndrRender();
+
+  /* ─── TAB SWITCHER ─── */
+  window.tndrSwitchTab = function(tab) {
+    var isActive = tab === 'active';
+    var sa = document.getElementById('tndr-section-active');
+    var sp = document.getElementById('tndr-section-pipeline');
+    var ta = document.getElementById('tndr-tab-active');
+    var tp = document.getElementById('tndr-tab-pipeline');
+    if (sa) sa.style.display = isActive ? '' : 'none';
+    if (sp) sp.style.display = isActive ? 'none' : '';
+    if (ta) { ta.style.background = isActive ? '#2563eb' : 'transparent'; ta.style.color = isActive ? '#fff' : '#6a85b0'; }
+    if (tp) { tp.style.background = isActive ? 'transparent' : '#2563eb'; tp.style.color = isActive ? '#6a85b0' : '#fff'; }
+  };
+
+})();
+/* ─── END TENDERS ─── */
+
+/* ─── PIPELINE FORECAST ─── */
+(function() {
+  var pipeData = [
+    {id:1,  country:'🇸🇦 Saudi Arabia', name:'Open Framework – Dialysis & Artificial Kidney Supplies (Re-tender / Phase 2)', ref:'NPT0043/26-1 (est.)', entity:'NUPCO',                     launch:'Oct–Dec 2026',        closing:'Jan–Mar 2027',      value:'$3M–$8M',     priority:'Critical', notes:'NUPCO dialysis framework expired Aug 2026; re-tender expected Q4 2026. Localization (MiS) scoring critical.'},
+    {id:2,  country:'🇸🇦 Saudi Arabia', name:'General Medical Supplies – INUPCO Platform',                                    ref:'NDP0807/26 series',   entity:'NUPCO (INUPCO)',             launch:'Rolling Sep–Dec 2026', closing:'Rolling',           value:'$50K–$200K',  priority:'High',     notes:'INUPCO e-marketplace tenders published weekly; catheters included in general medical supplies.'},
+    {id:3,  country:'🇸🇦 Saudi Arabia', name:'Medical Devices – Direct Purchase (Health Clusters)',                           ref:'NDP series',          entity:'NUPCO / Health Clusters',    launch:'Rolling',             closing:'Rolling',           value:'$100K–$500K', priority:'High',     notes:'Cluster-specific tenders (Riyadh, Jazan, Makkah); catheters possible.'},
+    {id:4,  country:'🇶🇦 Qatar',        name:'Medical Consumables – HMC Annual Framework',                                    ref:'HMC/TCS/9XXX/2027',   entity:'Hamad Medical Corp',         launch:'Jan–Mar 2027',        closing:'Mar–May 2027',      value:'$1M–$3M',     priority:'Critical', notes:'HMC issues annual consumables frameworks; dialysis catheters typically included.'},
+    {id:5,  country:'🇶🇦 Qatar',        name:'Medical Supplies – MOH Qatar (Monaqasat)',                                      ref:'Various',             entity:'MOH Qatar',                  launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$800K', priority:'High',     notes:'MOH Qatar tenders via Monaqasat portal; dialysis items periodic.'},
+    {id:6,  country:'🇦🇪 UAE',          name:'Medical Consumables – DAHC 5-Year Blanket Renewal',                            ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Q1–Q2 2027',          closing:'Q2–Q3 2027',        value:'$2M–$5M',     priority:'Critical', notes:'DAHC renews 5-year blankets annually; dialysis catheters in medical consumables category.'},
+    {id:7,  country:'🇦🇪 UAE',          name:'Hemodialysis Machines & Consumables – SEHA',                                   ref:'Various',             entity:'SEHA / Abu Dhabi Health',    launch:'Q2 2027',             closing:'Q3 2027',           value:'$800K–$2M',   priority:'High',     notes:'SEHA tenders for HD machines + consumables; catheters included.'},
+    {id:8,  country:'🇴🇲 Oman',         name:'Renal Dialysis Consumables – MOH Oman (Annual)',                               ref:'Various',             entity:'MOH Oman',                   launch:'Q1 2027',             closing:'Q2 2027',           value:'$600K–$1.5M', priority:'Critical', notes:'Oman MOH issues annual dialysis consumables tenders; re-tender common.'},
+    {id:9,  country:'🇴🇲 Oman',         name:'Medical Equipment for Dialysis Centers – MOH Oman',                            ref:'Various',             entity:'MOH Oman',                   launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$1M',   priority:'High',     notes:'New dialysis center equipment + consumables.'},
+    {id:10, country:'🇰🇼 Kuwait',       name:'Dialysis Consumables & Equipment – MOH Kuwait (Annual)',                       ref:'Various',             entity:'MOH Kuwait',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$500K–$1.5M', priority:'Critical', notes:'Kuwait MOH annual dialysis tender; listed on GCC aggregators.'},
+    {id:11, country:'🇯🇴 Jordan',       name:'Peritoneal Dialysis Consumables & Solutions (Annual)',                         ref:'Various',             entity:'MOH Jordan',                 launch:'Q1 2027',             closing:'Q2 2027',           value:'$200K–$500K', priority:'High',     notes:'Annual PD consumables tender; solutions + catheters.'},
+    {id:12, country:'🇯🇴 Jordan',       name:'Dialysis Machines & Consumables – Public Hospitals',                           ref:'Various',             entity:'MOH Jordan',                 launch:'Q2 2027',             closing:'Q3 2027',           value:'$400K–$900K', priority:'High',     notes:'HD machines + consumables for public hospitals.'},
+    {id:13, country:'🇱🇧 Lebanon',      name:'Permanent & Single-Use Catheters (Annual)',                                    ref:'Various',             entity:'MOH / Public Hospitals',     launch:'Q1 2027',             closing:'Q2 2027',           value:'$150K–$400K', priority:'Critical', notes:'Annual catheter tender; permanent + single-use.'},
+    {id:14, country:'🇮🇶 Iraq',         name:'CVC & Dialysis Catheters – Kimadia Framework',                                 ref:'Various',             entity:'Kimadia / MOH Iraq',         launch:'Rolling Q4 2026',     closing:'Rolling',           value:'$1M–$3M',     priority:'Critical', notes:'Kimadia issues rolling CVC/dialysis catheter tenders; high-volume public procurement.'},
+    {id:15, country:'🇧🇭 Bahrain',      name:'Supply of Dialysis Items (AKU & PDU) – Renewal',                              ref:'MOH/XXX/2027',        entity:'MOH Bahrain',                launch:'Q1 2027',             closing:'Q2 2027',           value:'$300K–$700K', priority:'Critical', notes:'Annual dialysis consumables for government centers.'},
+    {id:16, country:'🇸🇦 Saudi Arabia', name:'NUPCO – Specialized Surgery Supplies (incl. catheters)',                       ref:'NPT0016/26 series',   entity:'NUPCO',                      launch:'Oct 2026',            closing:'06 Oct 2026',       value:'$500K–$1.5M', priority:'Medium',   notes:'Open framework for surgical sutures, laparoscopy; central venous catheters may be included.'},
+    {id:17, country:'🇸🇦 Saudi Arabia', name:'NUPCO – General Nursing & Wound Care Supplies',                                ref:'NPT series',          entity:'NUPCO',                      launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$300K–$800K', priority:'Medium',   notes:'General nursing/wound care; dialysis catheters possible but not primary.'},
+    {id:18, country:'🇶🇦 Qatar',        name:'Medical Consumables – Quotation Invited (HMC)',                                ref:'HMC/TCS/9XXX/2026',   entity:'Hamad Medical Corp',         launch:'Sep–Dec 2026',        closing:'Oct 2026–Jan 2027', value:'$200K–$600K', priority:'High',     notes:'HMC issues periodic quotation invites for consumables; catheters likely.'},
+    {id:19, country:'🇦🇪 UAE',          name:'Pharmaceutical & Medical Items – DAHC (Rolling RFQ)',                          ref:'IPR 126XXXXX',        entity:'Dubai Academic Health Corp', launch:'Rolling',             closing:'Rolling',           value:'$100K–$400K', priority:'Medium',   notes:'DAHC issues rolling RFQs for pharmaceutical/medical items; catheters possible.'},
+    {id:20, country:'🇴🇲 Oman',         name:'Medical Devices – Governorate-Specific Medical Store',                         ref:'Various',             entity:'MOH Oman',                   launch:'Q4 2026',             closing:'Q1 2027',           value:'$200K–$600K', priority:'Medium',   notes:'Governorate-specific medical device tenders; dialysis items periodic.'}
+  ];
+
+  var pipeCountryFilter  = 'all';
+  var pipePriorityFilter = 'all';
+
+  var pipeStyles = {
+    'Critical': {dot:'#ef4444', bg:'rgba(239,68,68,0.12)',  border:'rgba(239,68,68,0.35)',  icon:'🔴'},
+    'High':     {dot:'#f97316', bg:'rgba(249,115,22,0.12)', border:'rgba(249,115,22,0.35)', icon:'🟠'},
+    'Medium':   {dot:'#eab308', bg:'rgba(234,179,8,0.12)',  border:'rgba(234,179,8,0.35)',  icon:'🟡'}
+  };
+
+  function pipeRender() {
+    var tbody = document.getElementById('pipe-table-body');
+    if (!tbody) return;
+    var filtered = pipeData.filter(function(r) {
+      return (pipeCountryFilter  === 'all' || r.country  === pipeCountryFilter) &&
+             (pipePriorityFilter === 'all' || r.priority === pipePriorityFilter);
+    });
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="tndr-empty">No pipeline tenders match the selected filters.</td></tr>';
+      return;
+    }
+    var html = '';
+    filtered.forEach(function(r) {
+      var ps = pipeStyles[r.priority] || pipeStyles['Medium'];
+      html += '<tr>' +
+        '<td class="tndr-number">' + r.id + '</td>' +
+        '<td class="tndr-name" style="min-width:260px;" title="' + r.notes + '">' + r.name + '</td>' +
+        '<td class="tndr-country">' + r.country + '</td>' +
+        '<td style="color:#8fa8cf;font-size:11px;min-width:160px;">' + r.entity + '</td>' +
+        '<td style="color:#6a85b0;font-size:10px;white-space:nowrap;">' + r.ref + '</td>' +
+        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.launch + '</td>' +
+        '<td style="color:#b8c7dd;white-space:nowrap;font-size:11px;">' + r.closing + '</td>' +
+        '<td style="color:#60a5fa;font-weight:700;white-space:nowrap;">' + r.value + '</td>' +
+        '<td><span style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;background:' + ps.bg + ';color:' + ps.dot + ';border:1px solid ' + ps.border + ';">' + ps.icon + ' ' + r.priority + '</span></td>' +
+      '</tr>';
+    });
+    tbody.innerHTML = html;
+  }
+
+  document.querySelectorAll('[data-pipe-country]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      pipeCountryFilter = b.getAttribute('data-pipe-country');
+      document.querySelectorAll('[data-pipe-country]').forEach(function(x) { x.classList.toggle('active', x === b); });
+      pipeRender();
+    });
+  });
+
+  document.querySelectorAll('[data-pipe-priority]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      pipePriorityFilter = b.getAttribute('data-pipe-priority');
+      document.querySelectorAll('[data-pipe-priority]').forEach(function(x) { x.classList.toggle('active', x === b); });
+      pipeRender();
+    });
+  });
+
+  pipeRender();
+})();
+/* ─── END PIPELINE ─── */
+/* ─── SOURCES PAGE ─── */
+(function(){
+  var officialRows=[
+    {country:'🇸🇦 Saudi Arabia', authority:'Ministry of Health (MOH) KSA + SFDA',              data:'HD patient count, facility numbers, HD machines, market authorization', portal:'moh.gov.sa / sfda.gov.sa'},
+    {country:'🇸🇦 Saudi Arabia', authority:'NUPCO (National Unified Procurement Company)',       data:'Tender framework data, procurement volumes, tender pipeline',             portal:'nupco.com / etimad.sa'},
+    {country:'🇦🇪 UAE',          authority:'MOHAP + DHA + DOH Abu Dhabi',                        data:'HD facility count, patient registry, Rafed GPO procurement data',        portal:'mohap.gov.ae / dha.gov.ae'},
+    {country:'🇶🇦 Qatar',        authority:'Hamad Medical Corporation (HMC) + MOH Qatar',        data:'Patient volumes, dialysis capacity, HMC annual report 2024–2025',        portal:'hamad.qa / moph.gov.qa'},
+    {country:'🇰🇼 Kuwait',       authority:'MOH Kuwait — Central Procurement',                   data:'Dialysis facility count, patient estimates, tender data',                 portal:'moh.gov.kw'},
+    {country:'🇴🇲 Oman',         authority:'MOH Oman (Medical Store — Central)',                  data:'HD patient registry, dialysis centers, annual consumables procurement',   portal:'moh.gov.om'},
+    {country:'🇧🇭 Bahrain',       authority:'NHRA (National Health Regulatory Authority) + MOH', data:'Medical device registration, HD facility data, BDF hospital data',        portal:'nhra.bh / moh.gov.bh'},
+    {country:'🇯🇴 Jordan',        authority:'MOH Jordan + Royal Medical Services (RMS)',          data:'HD patient count, dialysis centers, public procurement',                  portal:'moh.gov.jo / rms.gov.jo'},
+    {country:'🇱🇧 Lebanon',       authority:'MOH Lebanon',                                        data:'Hospital catheter supply, public dialysis network data',                  portal:'moph.gov.lb'},
+    {country:'🇮🇶 Iraq',          authority:'Kimadia (MOH Iraq) + Regional Health Directorates',  data:'Bulk catheter demand, dialysis center count, tender volumes',             portal:'kimadia.gov.iq'},
+  ];
+
+  var marketRows=[
+    {source:'Grand View Research',          report:'Hemodialysis Catheter Market — GCC & Middle East',         applied:'Market size, competitor share estimates, CAGR projections', year:'2024–2025'},
+    {source:'BusinessWire / PR Newswire',   report:'Fresenius, B. Braun, Baxter GCC market announcements',     applied:'Competitor market share cross-validation (KSA)',              year:'2024–2026'},
+    {source:'USRDS (US Renal Data System)', report:'International Comparisons of ESRD Care',                   applied:'HD patient prevalence benchmarking per 1M population',        year:'2023–2024'},
+    {source:'ERA-EDTA Registry',            report:'European & Global Dialysis Report',                        applied:'PD/HD patient ratio benchmarks; facility utilization rates',  year:'2023'},
+    {source:'GlobalTenders / TenderImpulse',report:'GCC & MENA dialysis tender database',                     applied:'Pipeline tender discovery (Qatar, Oman, Jordan)',             year:'2025–2026'},
+    {source:'Scribd / NUPCO Portal',        report:'NPT0048-22 Medtronic NUPCO tender award documentation',   applied:'KSA competitor tender win intelligence',                      year:'2026'},
+    {source:'Saudi Healthcare Consulting',  report:'SEHA dialysis market analysis',                            applied:'UAE HD machines + consumables market sizing',                 year:'2024'},
+    {source:'Diaverum Annual Report',       report:'Diaverum GCC Dialysis Network 2025',                       applied:'KSA HD patient count cross-validation (30,000)',              year:'2025'},
+    {source:'IDA (International Dialysis)', report:'Global Dialysis Market Outlook — Middle East',             applied:'Country-level growth rates, new center projections',           year:'2024'},
+    {source:'World Bank / UN Data',         report:'Population projections 2026 — MENA region',               applied:'Population 2026 figures for all 9 markets',                   year:'2026'},
+    {source:'AMECATH Internal Research',    report:'Field Survey — Distributor & KOL Mapping 2026',           applied:'Distributor lists, KOL profiles, contact data',               year:'2026'},
+    {source:'AMECATH Internal Research',    report:'Competitor Intelligence Matrix 2026',                      applied:'Competitor strengths, weaknesses, market share estimates',    year:'2026'},
+  ];
+
+  var portalRows=[
+    {platform:'NUPCO Etimad Portal',           country:'🇸🇦 Saudi Arabia', use:'Active tender monitoring, framework awards, emergency lots',                       url:'etimad.sa'},
+    {platform:'INUPCO e-Marketplace',          country:'🇸🇦 Saudi Arabia', use:'Rolling general medical supplies tenders (weekly updates)',                        url:'nupco.com/inupco'},
+    {platform:'HMC Procurement Portal',        country:'🇶🇦 Qatar',        use:'Annual consumables framework, quotation invitations, award notices',              url:'hamad.qa/procurement'},
+    {platform:'DAHC / Dubai Academic Health',  country:'🇦🇪 UAE',          use:'5-year blanket renewal tracking, rolling RFQ monitoring',                         url:'dahc.ae'},
+    {platform:'Monaqasat (MOH Qatar)',         country:'🇶🇦 Qatar',        use:'MOH Qatar periodic medical supply tenders',                                        url:'monaqasat.moph.gov.qa'},
+    {platform:'Kimadia MOH Iraq',              country:'🇮🇶 Iraq',         use:'Bulk CVC/dialysis catheter procurement; rolling framework tenders',               url:'kimadia.gov.iq'},
+  ];
+
+  function srcRow(cells, alt){
+    var tr=document.createElement('tr');
+    tr.style.cssText='border-bottom:1px solid #14284b;transition:background .15s;';
+    tr.onmouseenter=function(){tr.style.background='#13274c';};
+    tr.onmouseleave=function(){tr.style.background='';};
+    tr.innerHTML=cells.map(function(c,i){
+      return '<td style="padding:11px 16px;color:'+(i===0?'#e8edf5':'#94a8c4')+';font-size:11px;'+(i===0?'font-weight:600;':'')+'">' + c + '</td>';
+    }).join('');
+    return tr;
+  }
+
+  var ob=document.getElementById('src-official-body');
+  if(ob) officialRows.forEach(function(r){
+    ob.appendChild(srcRow([r.country, r.authority, r.data,
+      '<span style="color:#60a5fa;font-size:10px;">'+r.portal+'</span>']));
+  });
+
+  var mb=document.getElementById('src-market-body');
+  if(mb) marketRows.forEach(function(r){
+    mb.appendChild(srcRow([r.source, r.report, r.applied,
+      '<span style="color:#a78bfa;font-size:10px;">'+r.year+'</span>']));
+  });
+
+  var pb=document.getElementById('src-portal-body');
+  if(pb) portalRows.forEach(function(r){
+    pb.appendChild(srcRow([r.platform, r.country, r.use,
+      '<span style="color:#34d399;font-size:10px;">'+r.url+'</span>']));
+  });
+})();
+/* ─── END SOURCES ─── */
 </script>
 </body>
 </html>
