@@ -8,7 +8,7 @@ import openpyxl
 
 WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash.xlsx")
 if not WORKBOOK_PATH.exists():
-    WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash(3).xlsx")
+    WORKBOOK_PATH = Path(__file__).with_name("Amecath Dash.xlsx")
 if not WORKBOOK_PATH.exists():
     st.error(f"Workbook not found next to the app: {WORKBOOK_PATH.name}")
     st.stop()
