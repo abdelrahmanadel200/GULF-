@@ -943,10 +943,6 @@ html, body { background: #0b1628; height: 100%; }
     </div>
     <div id="competitor-country-header" class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-4"></div>
     <div id="competitor-share-chart" class="cid-comp-chart" style="margin-top:0;">
-      <div class="cid-section-head"><div><div class="cid-section-title">Market Share by Competitor</div><div class="cid-section-sub">HD catheter market · selected country · Source: Competitor_Matrix</div></div></div>
-      <div id="competitor-share-chart-body"></div>
-    </div>
-    <div id="comp-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
   </div>
 </div>
 
@@ -1425,19 +1421,6 @@ function formatMacroValue(v,type){
   if(type==='money' && typeof v==='number') return '$'+v.toLocaleString(undefined,{maximumFractionDigits:2})+'M';
   return String(v);
 }
-function renderCompetitorShareChart(){
-  const box=document.getElementById('competitor-share-chart-body');
-  if(!box)return;
-  const list=(competitorData[selectedCompetitorCountry]||[])
-    .filter(x=>typeof x.share_mid==='number')
-    .sort((a,b)=>b.share_mid-a.share_mid);
-  if(!list.length){
-    box.innerHTML='<div class="cid-chart-empty">No numeric market-share data available in Competitor_Matrix.</div>';
-    return;
-  }
-  const max=Math.max(...list.map(x=>x.share_mid),1);
-  box.innerHTML=list.map(c=>`<div class="cid-chart-row" title="${c.name}: ${c.share||'—'}">
-    <div class="cid-chart-name">${c.name}</div>
     <div class="cid-chart-track"><div class="cid-chart-bar" style="width:${Math.max(2,c.share_mid/max*100)}%"></div></div>
     <div class="cid-chart-value">${c.share_mid.toFixed(1)}%</div>
   </div>`).join('')+
