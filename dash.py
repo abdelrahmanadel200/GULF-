@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import openpyxl
 
-WORKBOOK_CANDIDATES = ["Amecath Dash.xlsx","Amecath Dash.xlsx","Amecath Dash.xlsx"]
+WORKBOOK_CANDIDATES = ["Amecath Dash - corrected.xlsx","Amecath Dash(4).xlsx","Amecath Dash(3).xlsx"]
 WORKBOOK_PATH = next((Path(__file__).with_name(name) for name in WORKBOOK_CANDIDATES if Path(__file__).with_name(name).exists()), None)
 if WORKBOOK_PATH is None:
     st.error("Workbook not found. Add the Amecath Dash Excel file next to dash.py.")
@@ -153,7 +153,7 @@ st.markdown("""
 
 
 /* Country detail: macro intelligence + competitor share chart */
-.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-group{margin:14px 0}.cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#7ea6d9;font-weight:900;margin-bottom:8px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.cid-macro-card{background:linear-gradient(145deg,rgba(17,36,65,.95),rgba(8,22,40,.96));border:1px solid rgba(95,139,198,.22);border-radius:12px;padding:11px 12px;min-height:70px}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7690b2;text-transform:uppercase;letter-spacing:.06em}.cid-macro-card .cid-kpi-value{font-size:17px;font-weight:900;color:#edf5ff;margin-top:6px;word-break:break-word}.cid-comp-chart{background:linear-gradient(145deg,rgba(17,36,65,.95),rgba(8,22,40,.96));border:1px solid rgba(95,139,198,.22);border-radius:14px;padding:14px;margin-top:18px}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:9px;min-height:64px}.cid-macro-card .cid-kpi-value{font-size:14px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
+.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-group{margin:14px 0}.cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#7ea6d9;font-weight:900;margin-bottom:8px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.cid-macro-card{position:relative;background:linear-gradient(145deg,#102443,#0b1a31);border:1px solid #254d82;border-top:3px solid var(--country-accent,#60a5fa);border-radius:12px;padding:14px 13px;min-height:82px;box-shadow:0 8px 18px rgba(0,0,0,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.cid-macro-card:hover{transform:translateY(-2px);border-color:var(--country-accent,#60a5fa);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary,#3b82f6) 20%,transparent)}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7f9cc2;text-transform:uppercase;letter-spacing:.07em;font-weight:700}.cid-macro-card .cid-kpi-value{font-size:19px;font-weight:900;color:#f2f7ff;margin-top:7px;word-break:break-word;line-height:1.15}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:11px;min-height:72px}.cid-macro-card .cid-kpi-value{font-size:15px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -285,6 +285,8 @@ html, body { background: #0b1628; height: 100%; }
 .map-popup { min-width: 180px; color: #111827; }
 .map-popup-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
 .map-popup-row { font-size: 11px; margin: 3px 0; }
+.hot-label { background:#0b1628 !important; border:1px solid #2d5a91 !important; color:#e8edf5 !important; font-size:10px; font-weight:700; padding:3px 6px !important; border-radius:6px; box-shadow:0 3px 10px rgba(0,0,0,.25); }
+.hot-label:before { border-top-color:#2d5a91 !important; }
 /* Regulatory */
 .reg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0 16px 16px; }
 .reg-table-container { margin: 0 16px 16px; background: #0f1f3d; border: 1px solid #1e3d7a; border-radius: 12px; overflow: hidden; }
@@ -933,6 +935,10 @@ html, body { background: #0b1628; height: 100%; }
       </div>
     </div>
     <div id="competitor-country-header" class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-4"></div>
+    <div id="competitor-share-chart" class="cid-comp-chart" style="margin-top:0;">
+      <div class="cid-section-head"><div><div class="cid-section-title">Market Share by Competitor</div><div class="cid-section-sub">HD catheter market · selected country · Source: Competitor_Matrix</div></div></div>
+      <div id="competitor-share-chart-body"></div>
+    </div>
     <div class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-3 text-xs text-slate-400">
       📌 Competitor data below is taken directly from the <b class="text-slate-200">Competitor_Matrix</b> sheet. Market-share figures are pulled directly from the workbook <b class="text-slate-200">Competitor_Matrix</b> by country.
     </div>
@@ -1098,24 +1104,24 @@ html, body { background: #0b1628; height: 100%; }
 <div class="page" id="page-regulatory">
   <div class="section-header"><span style="font-size:16px">📜</span><span class="section-title">Regulatory &amp; Registration Overview</span></div>
   <div class="reg-grid">
-    <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Active Registrations</div><div class="kpi-value" style="color:#34d399">7</div><div class="kpi-sub green">GCC &amp; ME Markets</div></div>
-    <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-label">Pending / Renewal</div><div class="kpi-value gold">2</div><div class="kpi-sub amber">In Progress</div></div>
+    <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Registered Markets</div><div class="kpi-value" style="color:#34d399">4</div><div class="kpi-sub green">Saudi Arabia · Jordan · Iraq · Lebanon</div></div>
+    <div class="kpi-card"><div class="kpi-icon">⛔</div><div class="kpi-label">Not Registered</div><div class="kpi-value gold">5</div><div class="kpi-sub amber">UAE · Qatar · Kuwait · Oman · Bahrain</div></div>
     <div class="kpi-card"><div class="kpi-icon">🛡️</div><div class="kpi-label">Core Compliance</div><div class="kpi-value accent">CE / ISO</div><div class="kpi-sub muted">ISO 13485 Certified</div></div>
-    <div class="kpi-card"><div class="kpi-icon">📄</div><div class="kpi-label">Key Requirement</div><div class="kpi-value">FSC</div><div class="kpi-sub muted">Free Sale Certificate</div></div>
+    <div class="kpi-card"><div class="kpi-icon">🌍</div><div class="kpi-label">Regional Coverage</div><div class="kpi-value">4 / 9</div><div class="kpi-sub muted">Markets registered</div></div>
   </div>
   <div class="reg-table-container">
     <table class="reg-table">
-      <thead><tr><th>Country / Market</th><th>Health Authority</th><th>Registration Status</th><th>Key Requirements</th></tr></thead>
+      <thead><tr><th>Country / Market</th><th>Health Authority</th><th>Registration Status</th><th>Key Requirements / Note</th></tr></thead>
       <tbody>
-        <tr><td><b>🇸🇦 Saudi Arabia</b></td><td>SFDA</td><td><span class="badge badge-approved">Approved</span></td><td>MDNR &amp; CE Mark</td></tr>
-        <tr><td><b>🇦🇪 UAE</b></td><td>MOHAP</td><td><span class="badge badge-approved">Approved</span></td><td>Classification &amp; FSC</td></tr>
-        <tr><td><b>🇰🇼 Kuwait</b></td><td>MOH Kuwait</td><td><span class="badge badge-approved">Approved</span></td><td>Local Agent + ISO 13485</td></tr>
-        <tr><td><b>🇶🇦 Qatar</b></td><td>MOPH Qatar</td><td><span class="badge badge-approved">Approved</span></td><td>MOPH Registration &amp; Dossier</td></tr>
-        <tr><td><b>🇴🇲 Oman</b></td><td>MOH Oman</td><td><span class="badge badge-approved">Approved</span></td><td>Medical Device Dept Approval</td></tr>
-        <tr><td><b>🇧🇭 Bahrain</b></td><td>NHRA</td><td><span class="badge badge-approved">Approved</span></td><td>NHRA Medical Device License</td></tr>
-        <tr><td><b>🇮🇶 Iraq</b></td><td>MOH Iraq (KIMADIA)</td><td><span class="badge badge-pending">Under Process</span></td><td>Tender Registration &amp; MOH Dossier</td></tr>
-        <tr><td><b>🇯🇴 Jordan</b></td><td>JFDA</td><td><span class="badge badge-approved">Approved</span></td><td>JFDA Medical Device Registration</td></tr>
-        <tr><td><b>🇱🇧 Lebanon</b></td><td>MOPH Lebanon</td><td><span class="badge badge-pending">Under Renewal</span></td><td>Import Permit &amp; Quality Cert</td></tr>
+        <tr><td><b>🇸🇦 Saudi Arabia</b></td><td>SFDA</td><td><span class="badge badge-approved">Registered</span></td><td>MDNR &amp; CE Mark</td></tr>
+        <tr><td><b>🇦🇪 UAE</b></td><td>MOHAP</td><td><span class="badge badge-pending">Not Registered</span></td><td>Registration required before market entry</td></tr>
+        <tr><td><b>🇰🇼 Kuwait</b></td><td>MOH Kuwait</td><td><span class="badge badge-pending">Not Registered</span></td><td>Registration required before market entry</td></tr>
+        <tr><td><b>🇶🇦 Qatar</b></td><td>MOPH Qatar</td><td><span class="badge badge-pending">Not Registered</span></td><td>Registration required before market entry</td></tr>
+        <tr><td><b>🇴🇲 Oman</b></td><td>MOH Oman</td><td><span class="badge badge-pending">Not Registered</span></td><td>Registration required before market entry</td></tr>
+        <tr><td><b>🇧🇭 Bahrain</b></td><td>NHRA</td><td><span class="badge badge-pending">Not Registered</span></td><td>Registration required before market entry</td></tr>
+        <tr><td><b>🇮🇶 Iraq</b></td><td>MOH Iraq (KIMADIA)</td><td><span class="badge badge-approved">Registered</span></td><td>Tender Registration &amp; MOH Dossier</td></tr>
+        <tr><td><b>🇯🇴 Jordan</b></td><td>JFDA</td><td><span class="badge badge-approved">Registered</span></td><td>JFDA Medical Device Registration</td></tr>
+        <tr><td><b>🇱🇧 Lebanon</b></td><td>MOPH Lebanon</td><td><span class="badge badge-approved">Registered</span></td><td>Import Permit &amp; Quality Cert</td></tr>
       </tbody>
     </table>
   </div>
@@ -1415,13 +1421,25 @@ function formatMacroValue(v,type){
   if(type==='money' && typeof v==='number') return '$'+v.toLocaleString(undefined,{maximumFractionDigits:2})+'M';
   return String(v);
 }
-function renderCountryCompetitorChart(code){
-  const box=document.getElementById('cid-comp-chart-'+code); if(!box)return;
-  const list=(workbookData.competitors[code]||[]).filter(x=>typeof x.share_mid==='number').sort((a,b)=>b.share_mid-a.share_mid);
-  if(!list.length){box.innerHTML='<div class="cid-chart-empty">No numeric market-share data available in Competitor_Matrix.</div>';return;}
+function renderCompetitorShareChart(){
+  const box=document.getElementById('competitor-share-chart-body');
+  if(!box)return;
+  const list=(competitorData[selectedCompetitorCountry]||[])
+    .filter(x=>typeof x.share_mid==='number')
+    .sort((a,b)=>b.share_mid-a.share_mid);
+  if(!list.length){
+    box.innerHTML='<div class="cid-chart-empty">No numeric market-share data available in Competitor_Matrix.</div>';
+    return;
+  }
   const max=Math.max(...list.map(x=>x.share_mid),1);
-  box.innerHTML=list.map(c=>`<div class="cid-chart-row" title="${c.name}: ${c.share||'—'}"><div class="cid-chart-name">${c.name}</div><div class="cid-chart-track"><div class="cid-chart-bar" style="width:${Math.max(2,c.share_mid/max*100)}%"></div></div><div class="cid-chart-value">${c.share_mid.toFixed(1)}%</div></div>`).join('')+'<div class="cid-chart-note">Chart value = midpoint of the workbook range for comparison (e.g. 18–20% → 19%). Hover each bar to see the original range.</div>';
+  box.innerHTML=list.map(c=>`<div class="cid-chart-row" title="${c.name}: ${c.share||'—'}">
+    <div class="cid-chart-name">${c.name}</div>
+    <div class="cid-chart-track"><div class="cid-chart-bar" style="width:${Math.max(2,c.share_mid/max*100)}%"></div></div>
+    <div class="cid-chart-value">${c.share_mid.toFixed(1)}%</div>
+  </div>`).join('')+
+  '<div class="cid-chart-note">Chart value = midpoint of the workbook range for comparison (for example, 18–20% → 19%). Hover each bar to see the original workbook range.</div>';
 }
+
 function openCountry(code){
   const d = countryData[code];
   const page = document.getElementById('page-countries');
@@ -1490,14 +1508,9 @@ function openCountry(code){
           ["Market",[["Population 2026",macro.population,"integer"],["Est. 2026 HD",macro.hd,"integer"],["Est. 2026 PD",macro.pd,"integer"],["Annual Growth",macro.annual_growth,"percent"],["Annual Catheter Demand",macro.demand,"integer"],["Market Value",macro.market_value,"money"]]],
           ["Healthcare Infrastructure",[["Dialysis Facilities",macro.facilities,"integer"],["Hospital Growth",macro.hospital_growth,"percent"],["Unit Growth",macro.unit_growth,"percent"],["HD Machines",macro.machines,"integer"]]],
           ["Clinical Network",[["Nephrologists",macro.nephrologists,"text"],["Vascular Surgeons",macro.vascular_surgeons,"text"],["Radiologists",macro.radiologists,"text"]]],
-          ["Commercial",[["Healthcare Coverage",macro.coverage,"text"],["OOP Share",macro.oop,"text"],["Distributors",macro.distributors,"integer"],["KOLs",macro.kols,"integer"]]]
+          ["Commercial",[["Healthcare Coverage",macro.coverage,"text"],["OOP Share",macro.oop,"text"]]]
         ].map(group=>`<div class="cid-macro-group"><div class="cid-macro-group-title">${group[0]}</div><div class="cid-macro-grid">${group[1].map(k=>`<div class="cid-macro-card"><div class="cid-kpi-label">${k[0]}</div><div class="cid-kpi-value">${formatMacroValue(k[1],k[2])}</div></div>`).join('')}</div></div>`).join('')}
       </div>
-      <div class="cid-comp-chart">
-        <div class="cid-section-head"><div><div class="cid-section-title">Competitor Market Share</div><div class="cid-section-sub">HD catheter market · ${d.name} · Source: Competitor_Matrix</div></div></div>
-        <div id="cid-comp-chart-${code}"></div>
-      </div>
-
       <div class="cid-network">
         <div class="cid-network-card" role="button" tabindex="0"
              onclick="openNetwork('distributors','${code}')"
@@ -1526,7 +1539,6 @@ function openCountry(code){
   if(header) header.insertAdjacentElement('afterend', detail);
   else page.prepend(detail);
 
-  renderCountryCompetitorChart(code);
   if(grid) grid.scrollIntoView({behavior:'smooth', block:'start'});
   setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),80);
 }
@@ -1556,7 +1568,7 @@ function closeCountry(){
 const competitorCountries={"sa":{"flag":"🇸🇦","name":"Saudi Arabia","market":"Largest market in the workbook scope","hd":30000,"pd":2200,"facilities":360,"machines":18000,"demand":77530,"marketValue":9.3},"ae":{"flag":"🇦🇪","name":"UAE","market":"Major GCC regional hub","hd":3000,"pd":120,"facilities":60,"machines":4500,"demand":7638,"marketValue":0.99},"qa":{"flag":"🇶🇦","name":"Qatar","market":"Centralized procurement market","hd":1200,"pd":180,"facilities":18,"machines":1100,"demand":3207,"marketValue":0.42},"kw":{"flag":"🇰🇼","name":"Kuwait","market":"GCC dialysis market","hd":2156,"pd":294,"facilities":25,"machines":3000,"demand":5728,"marketValue":0.72},"om":{"flag":"🇴🇲","name":"Oman","market":"Growing GCC dialysis market","hd":2500,"pd":100,"facilities":20,"machines":2200,"demand":6365,"marketValue":0.76},"jo":{"flag":"🇯🇴","name":"Jordan","market":"Levant medical hub","hd":6400,"pd":110,"facilities":50,"machines":2500,"demand":16127,"marketValue":1.61},"lb":{"flag":"🇱🇧","name":"Lebanon","market":"Levant market under pressure","hd":4730,"pd":210,"facilities":85,"machines":3000,"demand":12067,"marketValue":1.21},"iq":{"flag":"🇮🇶","name":"Iraq","market":"High-volume expansion market","hd":10721,"pd":450,"facilities":130,"machines":9000,"demand":27320,"marketValue":2.46},"bh":{"flag":"🇧🇭","name":"Bahrain","market":"Small high-income GCC market","hd":4547,"pd":450,"facilities":14,"machines":750,"demand":11885,"marketValue":1.43}};
 const competitorData = workbookData.competitors;
 let selectedCompetitorCountry='sa';
-function renderCompetitors(){const country=competitorCountries[selectedCompetitorCountry],header=document.getElementById('competitor-country-header'),grid=document.getElementById('comp-grid');if(!header||!grid)return;const list=competitorData[selectedCompetitorCountry]||[];header.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><div class="comp-country-title">${country.flag} ${country.name}</div><div class="comp-country-sub">${country.market} · Source: Competitor_Matrix</div></div><div class="comp-summary"><div class="comp-summary-pill">🏢 ${list.length} Competitors</div><div class="comp-summary-pill">👥 HD ${country.hd.toLocaleString()}</div><div class="comp-summary-pill">💉 Demand ${country.demand.toLocaleString()}</div><div class="comp-summary-pill">💰 Market $${country.marketValue}M</div></div></div>`;grid.innerHTML=list.map((c,i)=>{const id='comp-detail-'+selectedCompetitorCountry+'-'+i;return `<div class="comp-card-new"><div class="comp-card-topline" style="background:#3b82f6;"></div><div class="flex justify-between items-start gap-3"><div><div class="comp-card-company">${c.name}</div><div class="comp-card-origin">${c.coverage}</div></div><span class="comp-threat-badge" style="background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.3);">${c.share}</span></div><div class="comp-share-row"><span>Market Share*</span><span class="comp-share-value">${c.share}</span></div><div class="comp-mini-grid"><div class="comp-mini-box"><span class="comp-mini-label">Main Advantage</span><span class="comp-mini-text">${c.advantage}</span></div><div class="comp-mini-box"><span class="comp-mini-label">Weakness / Gap</span><span class="comp-mini-text">${c.weakness}</span></div></div><div class="comp-edge"><b>Specializes in:</b> ${c.specializes}</div><button class="comp-details-btn" onclick="toggleCompetitorDetails('${id}',this)">View Details ↓</button><div class="comp-details-panel" id="${id}"><div class="comp-detail-row"><span class="comp-detail-label">Company</span><span class="comp-detail-value">${c.name}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Market Share*</span><span class="comp-detail-value">${c.share}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Coverage</span><span class="comp-detail-value">${c.coverage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Main Advantage</span><span class="comp-detail-value">${c.advantage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Specializes in</span><span class="comp-detail-value">${c.specializes}</span></div><div style="margin-top:8px;color:#34d399;font-size:10px;line-height:1.45;"><b>AMECATH Competitive Advantage:</b> ${c.edge}</div></div></div>`;}).join('')||'<div class="placeholder-page">No competitor data available for this country.</div>'; }
+function renderCompetitors(){const country=competitorCountries[selectedCompetitorCountry],header=document.getElementById('competitor-country-header'),grid=document.getElementById('comp-grid');if(!header||!grid)return;const list=competitorData[selectedCompetitorCountry]||[];header.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><div class="comp-country-title">${country.flag} ${country.name}</div><div class="comp-country-sub">${country.market} · Source: Competitor_Matrix</div></div><div class="comp-summary"><div class="comp-summary-pill">🏢 ${list.length} Competitors</div><div class="comp-summary-pill">👥 HD ${country.hd.toLocaleString()}</div><div class="comp-summary-pill">💉 Demand ${country.demand.toLocaleString()}</div><div class="comp-summary-pill">💰 Market $${country.marketValue}M</div></div></div>`;renderCompetitorShareChart();grid.innerHTML=list.map((c,i)=>{const id='comp-detail-'+selectedCompetitorCountry+'-'+i;return `<div class="comp-card-new"><div class="comp-card-topline" style="background:#3b82f6;"></div><div class="flex justify-between items-start gap-3"><div><div class="comp-card-company">${c.name}</div><div class="comp-card-origin">${c.coverage}</div></div><span class="comp-threat-badge" style="background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.3);">${c.share}</span></div><div class="comp-share-row"><span>Market Share*</span><span class="comp-share-value">${c.share}</span></div><div class="comp-mini-grid"><div class="comp-mini-box"><span class="comp-mini-label">Main Advantage</span><span class="comp-mini-text">${c.advantage}</span></div><div class="comp-mini-box"><span class="comp-mini-label">Weakness / Gap</span><span class="comp-mini-text">${c.weakness}</span></div></div><div class="comp-edge"><b>Specializes in:</b> ${c.specializes}</div><button class="comp-details-btn" onclick="toggleCompetitorDetails('${id}',this)">View Details ↓</button><div class="comp-details-panel" id="${id}"><div class="comp-detail-row"><span class="comp-detail-label">Company</span><span class="comp-detail-value">${c.name}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Market Share*</span><span class="comp-detail-value">${c.share}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Coverage</span><span class="comp-detail-value">${c.coverage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Main Advantage</span><span class="comp-detail-value">${c.advantage}</span></div><div class="comp-detail-row"><span class="comp-detail-label">Specializes in</span><span class="comp-detail-value">${c.specializes}</span></div><div style="margin-top:8px;color:#34d399;font-size:10px;line-height:1.45;"><b>AMECATH Competitive Advantage:</b> ${c.edge}</div></div></div>`;}).join('')||'<div class="placeholder-page">No competitor data available for this country.</div>'; }
 function setCompetitorCountry(id,btn){selectedCompetitorCountry=id;document.querySelectorAll('.country-filter-btn').forEach(b=>b.classList.remove('comp-country-active'));if(btn)btn.classList.add('comp-country-active');renderCompetitors();}
 function toggleCompetitorDetails(id,btn){const panel=document.getElementById(id);if(!panel)return;const open=panel.classList.toggle('open');btn.textContent=open?'Hide Details ↑':'View Details ↓';}
 function filterCompetitors(type,btn){setCompetitorThreat(type,btn);}
@@ -1564,8 +1576,15 @@ function toggleDetails(btn){const panel=btn.closest('.comp-card-new')?.querySele
 renderCompetitors();
 
 let marketMap=null;
-const marketPoints=[{"country": "Saudi Arabia", "city": "Riyadh", "lat": 24.7136, "lng": 46.6753, "rank": 1}, {"country": "Saudi Arabia", "city": "Jeddah", "lat": 21.4858, "lng": 39.1925, "rank": 2}, {"country": "UAE", "city": "Dubai", "lat": 25.2048, "lng": 55.2708, "rank": 1}, {"country": "UAE", "city": "Abu Dhabi", "lat": 24.4539, "lng": 54.3773, "rank": 2}, {"country": "Qatar", "city": "Doha", "lat": 25.2854, "lng": 51.531, "rank": 1}, {"country": "Kuwait", "city": "Kuwait City", "lat": 29.3759, "lng": 47.9774, "rank": 1}, {"country": "Iraq", "city": "Baghdad", "lat": 33.3152, "lng": 44.3661, "rank": 1}, {"country": "Jordan", "city": "Amman", "lat": 31.9539, "lng": 35.9106, "rank": 1}, {"country": "Lebanon", "city": "Beirut", "lat": 33.8938, "lng": 35.5018, "rank": 1}, {"country": "Oman", "city": "Muscat", "lat": 23.588, "lng": 58.3829, "rank": 1}, {"country": "Bahrain", "city": "Manama", "lat": 26.2235, "lng": 50.5876, "rank": 1}];
+const marketPoints=[{"country": "🇸🇦 Saudi Arabia", "city": "Riyadh", "lat": 24.7136, "lng": 46.6753, "rank": 1, "area": "Riyadh (39 centers; ~19% of KSA centers; national dialysis PPP hub) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Dubai", "lat": 25.2048, "lng": 55.2708, "rank": 1, "area": "Dubai (~7+ centers; ~28%+ of UAE centers; largest private market) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Doha", "lat": 25.2854, "lng": 51.531, "rank": 1, "area": "Doha – Fahad Bin Jassim Kidney Center + Hamad General (majority of Qatar's ~1,300 HD patients) [Sourced: HMC, Jul‑2026] hamad"}, {"country": "🇰🇼 Kuwait", "city": "Kuwait City", "lat": 29.3759, "lng": 47.9774, "rank": 1, "area": "Kuwait City – Al‑Sabah medical area (Al‑Nafisi Dialysis Center + MOH hubs) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Muscat", "lat": 23.588, "lng": 58.3829, "rank": 1, "area": "Muscat (~4 centers; ~20% of Oman centers; Seeb, Al Amerat, Bousher) [Expert Judgment; Total: 20 centers, POI Data, Aug‑2026] poidata"}, {"country": "🇯🇴 Jordan", "city": "Amman", "lat": 31.9539, "lng": 35.9106, "rank": 1, "area": "Amman (~5 centers; ~50% of Jordan centers; Yarmouk, Al‑Basheer, King Abdullah Univ. Hospital) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Beirut", "lat": 33.8938, "lng": 35.5018, "rank": 1, "area": "Greater Beirut (majority of ~4,730 HD patients; AUBMC, Hotel Dieu, Mount Lebanon Hospital) [Expert Judgment; Total: 78 centers, WHO/EMRO, 2025]"}, {"country": "🇮🇶 Iraq", "city": "Baghdad", "lat": 33.3152, "lng": 44.3661, "rank": 1, "area": "Baghdad (~11 centers; ~37% of Iraq centers; Baghdad Medical City, Marina, Sidral network) [Expert Judgment; Total: 10,721 HD patients, Iraqi Natl J Med, Jan‑2025]"}, {"country": "🇧🇭 Bahrain", "city": "Manama", "lat": 26.2235, "lng": 50.5876, "rank": 1, "area": "Manama / Riffa (H.H. Shaikh Abdullah Center, Royal Bahrain Hospital, Bahrain Specialist Hospital) [Expert Judgment; Total: 4,547 dialysis patients, Daily Tribune Bahrain, Jan‑2026]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Jeddah", "lat": 21.4858, "lng": 39.1925, "rank": 2, "area": "Jeddah (12 centers; ~5.9%; major western hub; Diaverum + DaVita) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Abu Dhabi", "lat": 24.4539, "lng": 54.3773, "rank": 2, "area": "Abu Dhabi (~5 centers; ~20%; SEHA Kidney Care network; Cleveland Clinic) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Doha", "lat": 25.2854, "lng": 51.531, "rank": 2, "area": "Doha – Al Wakrah / Al Shamal / Al Khor (HMC satellite units) [Expert Judgment]"}, {"country": "🇰🇼 Kuwait", "city": "Ahmadi", "lat": 29.0826, "lng": 48.0839, "rank": 2, "area": "Ahmadi (new 83‑unit Jaber Al‑Ahmad Kidney Dialysis Center, opened Aug‑2026) [Expert Judgment; Total: 2,450 dialysis patients, Arab Times, Mar‑2025]"}, {"country": "🇴🇲 Oman", "city": "Salalah", "lat": 17.0194, "lng": 54.0897, "rank": 2, "area": "Salalah (secondary southern hub; regional hospitals) [Expert Judgment]"}, {"country": "🇯🇴 Jordan", "city": "Irbid", "lat": 32.5556, "lng": 35.85, "rank": 2, "area": "Irbid (Yarmouk Hospital dialysis unit; northern Jordan hub) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Tripoli", "lat": 34.4367, "lng": 35.8497, "rank": 2, "area": "Tripoli (secondary northern hub; public hospital dialysis) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Basra", "lat": 30.5085, "lng": 47.7804, "rank": 2, "area": "Basra (3+ centers; southern Iraq hub; major MOH hospitals) [Expert Judgment]"}, {"country": "🇧🇭 Bahrain", "city": "A'Ali", "lat": 26.13, "lng": 50.555, "rank": 2, "area": "A'Ali (King Hamad American Mission Hospital – large catchment) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Makkah", "lat": 21.3891, "lng": 39.8579, "rank": 3, "area": "Makkah (12 centers; ~5.9%; high seasonal patient flow) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Sharjah", "lat": 25.3463, "lng": 55.4209, "rank": 3, "area": "Sharjah (~3 centers; ~12%; public + private mix) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Doha", "lat": 25.2854, "lng": 51.531, "rank": 3, "area": "Doha – Al Shahania (HMC unit) [Expert Judgment]"}, {"country": "🇰🇼 Kuwait", "city": "Hawalli", "lat": 29.3375, "lng": 48.0281, "rank": 3, "area": "Hawalli (established MOH dialysis units) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Ibri", "lat": 23.2257, "lng": 56.5157, "rank": 3, "area": "Ibri (2 centers; ~10%; Ibri Referral Hospital PD unit) [Expert Judgment]"}, {"country": "🇯🇴 Jordan", "city": "Zarqa", "lat": 32.0728, "lng": 36.0879, "rank": 3, "area": "Zarqa (growing urban center; private hospitals) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Sidon", "lat": 33.5571, "lng": 35.3729, "rank": 3, "area": "Sidon (southern Lebanon hub; government hospital dialysis) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Erbil", "lat": 36.1911, "lng": 44.0092, "rank": 3, "area": "Erbil (Kurdistan; >3,000 dialysis patients in KRI; private + public centers) [Expert Judgment]"}, {"country": "🇧🇭 Bahrain", "city": "Muharraq", "lat": 26.2572, "lng": 50.6119, "rank": 3, "area": "Muharraq (secondary urban cluster; private hospitals) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Dammam", "lat": 26.4207, "lng": 50.0888, "rank": 4, "area": "Dammam / Khobar (6+ centers; Eastern Province industrial hub) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Al Ain", "lat": 24.2075, "lng": 55.7447, "rank": 4, "area": "Al Ain (SEHA Kidney Care – Al Ain Hospital) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Doha", "lat": 25.2854, "lng": 51.531, "rank": 4, "area": "Doha – Hamad General (central tertiary hub) [Sourced: HMC, Jul‑2026] hamad"}, {"country": "🇰🇼 Kuwait", "city": "Farwaniya", "lat": 29.2775, "lng": 47.9586, "rank": 4, "area": "Farwaniya (MOH dialysis units) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Sohar", "lat": 24.342, "lng": 56.729, "rank": 4, "area": "Sohar (2 centers; ~10%; northern Oman hub) [Expert Judgment]"}, {"country": "🇯🇴 Jordan", "city": "Salt", "lat": 32.0392, "lng": 35.7272, "rank": 4, "area": "Salt (secondary Amman metro; private hospitals) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Zahle", "lat": 33.8475, "lng": 35.902, "rank": 4, "area": "Zahle (eastern Lebanon hub; private hospitals) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Sulaymaniyah", "lat": 35.557, "lng": 45.435, "rank": 4, "area": "Sulaymaniyah (Kurdistan; major tertiary hospitals) [Expert Judgment]"}, {"country": "🇧🇭 Bahrain", "city": "Saar", "lat": 26.13, "lng": 50.555, "rank": 4, "area": "Saar (American Mission Hospital branch) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Madinah", "lat": 24.5247, "lng": 39.5692, "rank": 5, "area": "Madinah (5 centers; ~2.5%; western region hub) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Ajman", "lat": 25.4052, "lng": 55.5136, "rank": 5, "area": "Ajman (~2 centers; ~8%; growing private sector) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Lusail", "lat": 25.9053, "lng": 51.55, "rank": 5, "area": "Lusail / Al Daayen (new urban growth; future clinics) [Expert Judgment]"}, {"country": "🇰🇼 Kuwait", "city": "Jahra", "lat": 29.3375, "lng": 47.6581, "rank": 5, "area": "Jahra (new medical city with dialysis component) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Barka", "lat": 23.7077, "lng": 57.8899, "rank": 5, "area": "Barka / Seeb (new MOH units) [Expert Judgment]"}, {"country": "🇯🇴 Jordan", "city": "Karak", "lat": 31.1853, "lng": 35.7048, "rank": 5, "area": "Karak (southern Jordan; regional hospital) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Nabatieh", "lat": 33.377, "lng": 35.483, "rank": 5, "area": "Nabatieh (southern Lebanon; regional hospital) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Kirkuk", "lat": 35.4681, "lng": 44.3922, "rank": 5, "area": "Kirkuk (Al‑Amal Center – ~463 patients) [Expert Judgment]"}, {"country": "🇧🇭 Bahrain", "city": "Riffa", "lat": 26.13, "lng": 50.555, "rank": 5, "area": "Riffa (additional private clinics) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Buraydah", "lat": 26.3592, "lng": 43.9818, "rank": 6, "area": "Buraydah (7 centers; ~3.4%; Qassim region hub) [Expert Judgment]"}, {"country": "🇦🇪 UAE", "city": "Fujairah", "lat": 25.1288, "lng": 56.3265, "rank": 6, "area": "Fujairah / Ras Al Khaimah (emerging northern emirates) [Expert Judgment]"}, {"country": "🇶🇦 Qatar", "city": "Mesaieed", "lat": 24.9909, "lng": 51.55, "rank": 6, "area": "Mesaieed / Al Wukair (industrial areas; future clinics) [Expert Judgment]"}, {"country": "🇰🇼 Kuwait", "city": "Sabah Al-Ahmad", "lat": 28.9304, "lng": 48.0903, "rank": 6, "area": "Sabah Al‑Ahmad Health Center (Sector E dialysis unit) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Al Khaburah", "lat": 23.996, "lng": 57.32, "rank": 6, "area": "Al Khaburah / Al Suwayq (new MOH units) [Expert Judgment]"}, {"country": "🇯🇴 Jordan", "city": "Irbid", "lat": 32.5556, "lng": 35.85, "rank": 6, "area": "Irbid outskirts (private clinics) [Expert Judgment]"}, {"country": "🇱🇧 Lebanon", "city": "Jounieh", "lat": 34.1476, "lng": 35.6455, "rank": 6, "area": "Jounieh (coastal private hospitals) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Najaf", "lat": 32.0, "lng": 44.3333, "rank": 6, "area": "Najaf (religious tourism hub; growing private hospitals) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Hail", "lat": 27.5114, "lng": 41.7208, "rank": 7, "area": "Hail (6 centers; ~2.9%; northern region hub) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Izki", "lat": 22.9333, "lng": 57.5333, "rank": 7, "area": "Izki / Ibra / Sinaw (interior hubs) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Diwaniyah", "lat": 31.999, "lng": 44.9255, "rank": 7, "area": "Diwaniyah / Amarah (regional MOH hospitals) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Taif", "lat": 21.4373, "lng": 40.5127, "rank": 8, "area": "Taif / Al Hofuf / Samtah (4 centers each; secondary western/eastern hubs) [Expert Judgment]"}, {"country": "🇴🇲 Oman", "city": "Muladdah", "lat": 23.6833, "lng": 57.8167, "rank": 8, "area": "Muladdah / Saham / حي عاصم (smaller towns) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Tikrit", "lat": 34.616, "lng": 43.683, "rank": 8, "area": "Tikrit / Fallouja / Ramadi (Sidral network centers) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Abha", "lat": 18.2164, "lng": 42.5053, "rank": 9, "area": "Abha / Khamis Mushait / Al Jubail / Al Mubarraz / Ar Rass / Arar / Tabuk (3 centers each) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Fallujah", "lat": 33.356, "lng": 43.786, "rank": 9, "area": "Mosul / Baqubah / Hilla (regional teaching hospitals) [Expert Judgment]"}, {"country": "🇸🇦 Saudi Arabia", "city": "Dhahran", "lat": 26.2361, "lng": 50.0393, "rank": 10, "area": "Secondary cities (1–2 centers each: Dhahran, Hafar Al Batin, Khulais, etc.) [Expert Judgment]"}, {"country": "🇮🇶 Iraq", "city": "Ramadi", "lat": 33.375, "lng": 43.964, "rank": 10, "area": "Secondary governorates (Diyala, Wasit, Maysan, etc.) [Expert Judgment]"}];
 const priorityColors={Critical:"#ef4444",High:"#f97316",Medium:"#eab308",Low:"#22c55e"};
+
+function hotAreaPriority(rank){
+  if(rank===1)return "Critical";
+  if(rank===2)return "High";
+  if(rank<=5)return "Medium";
+  return "Low";
+}
 
 function renderHotAreasTable(){
   const body=document.getElementById('hotareas-table-body'); if(!body)return;
@@ -1575,25 +1594,52 @@ function renderHotAreasTable(){
     <td style="padding:10px 14px;color:#c8d8f0;line-height:1.45;">${r.area}</td>
   </tr>`).join('');
 }
-renderHotAreasTable();
 
 function createMarketMap(){
-  if(!document.getElementById("market-map"))return;
-  if(marketMap!==null){marketMap.invalidateSize();return;}
+  const el=document.getElementById("market-map");
+  if(!el || typeof L==="undefined")return;
+  if(marketMap!==null){setTimeout(()=>marketMap.invalidateSize(),80);return;}
   marketMap=L.map("market-map",{zoomControl:true,scrollWheelZoom:true});
-  marketMap.setView([27.5,46.5],5);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(marketMap);
+
+  const layers=[];
   marketPoints.forEach(pt=>{
-    const color=priorityColors[pt.priority]||"#60a5fa";
-    const radius=pt.priority==="Critical"?13:pt.priority==="High"?11:pt.priority==="Medium"?9:7;
-    L.circleMarker([pt.lat,pt.lng],{radius,color:"#ffffff",weight:2,fillColor:color,fillOpacity:0.9}).addTo(marketMap)
-     .bindPopup('<div class="map-popup"><div class="map-popup-title">'+pt.city+', '+pt.country+'</div><div class="map-popup-row"><b>Rank:</b> '+pt.rank+'</div><div class="map-popup-row"><b>Priority:</b> '+priority+'</div></div>');
+    const priority=hotAreaPriority(pt.rank);
+    const color=priorityColors[priority];
+    const radius=priority==="Critical"?13:priority==="High"?11:priority==="Medium"?9:7;
+    const marker=L.circleMarker([pt.lat,pt.lng],{
+      radius:radius,color:"#ffffff",weight:2,fillColor:color,fillOpacity:0.9
+    }).addTo(marketMap);
+    const country=String(pt.country||"").replace(/^[^A-Za-z]+/,"");
+    marker.bindPopup(`<div class="map-popup">
+      <div class="map-popup-title">${pt.city}, ${country}</div>
+      <div class="map-popup-row"><b>Rank:</b> ${pt.rank}</div>
+      <div class="map-popup-row"><b>Priority:</b> ${priority}</div>
+      <div class="map-popup-row"><b>Hot area:</b> ${pt.area}</div>
+    </div>`);
+    if(pt.rank===1) marker.bindTooltip(`${pt.city} · ${country}`,{permanent:true,direction:"top",offset:[0,-10],className:"hot-label"});
+    layers.push(marker);
   });
+
+  if(layers.length){
+    const group=L.featureGroup(layers);
+    marketMap.fitBounds(group.getBounds().pad(0.18));
+  }else{
+    marketMap.setView([27.5,46.5],5);
+  }
+
   const legend=L.control({position:"bottomright"});
-  legend.onAdd=function(){const div=L.DomUtil.create("div");div.style.cssText="background:#0b1628;padding:10px 12px;border:1px solid #1e3d7a;border-radius:8px;color:#e8edf5;font-size:11px;";div.innerHTML='<div style="font-weight:700;margin-bottom:7px;color:#c8d8f0">MARKET PRIORITY</div><div>🔴 Critical</div><div>🟠 High</div><div>🟡 Medium</div><div>🟢 Low</div>';return div;};
+  legend.onAdd=function(){
+    const div=L.DomUtil.create("div");
+    div.style.cssText="background:#0b1628;padding:10px 12px;border:1px solid #1e3d7a;border-radius:8px;color:#e8edf5;font-size:11px;";
+    div.innerHTML='<div style="font-weight:700;margin-bottom:7px;color:#c8d8f0">MARKET PRIORITY</div><div>🔴 Critical</div><div>🟠 High</div><div>🟡 Medium</div><div>🟢 Low</div>';
+    return div;
+  };
   legend.addTo(marketMap);
-  setTimeout(()=>marketMap.invalidateSize(),300);
+  setTimeout(()=>marketMap.invalidateSize(),120);
 }
+
+renderHotAreasTable();
 
 function navigate(el,pageId){
   const page=document.getElementById('page-'+pageId);
