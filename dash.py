@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import openpyxl
 
-WORKBOOK_CANDIDATES = ["Amecath Dash.xlsx","Amecath Dash.xlsx","Amecath Dash.xlsx"]
+WORKBOOK_CANDIDATES = ["Amecath Dash - corrected.xlsx","Amecath Dash(4).xlsx","Amecath Dash(3).xlsx"]
 WORKBOOK_PATH = next((Path(__file__).with_name(name) for name in WORKBOOK_CANDIDATES if Path(__file__).with_name(name).exists()), None)
 if WORKBOOK_PATH is None:
     st.error("Workbook not found. Add the Amecath Dash Excel file next to dash.py.")
@@ -90,10 +90,36 @@ st.markdown("""
 #page-countries .cid-macro-group{margin:18px 0 0}
 #page-countries .cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#72a9df;font-weight:900;margin:0 0 9px}
 #page-countries .cid-macro-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px!important;margin-top:0!important}
-#page-countries .cid-macro-card{min-height:104px!important;padding:15px!important;background:linear-gradient(145deg,#0d2341,#08172b)!important;border:1px solid color-mix(in srgb,var(--country-primary,#2563eb) 52%,#18365f)!important;border-top:3px solid var(--country-accent,#60a5fa)!important;border-radius:13px!important;display:flex;flex-direction:column;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.18)!important}
-#page-countries .cid-macro-card:hover{transform:translateY(-3px);border-color:var(--country-accent,#60a5fa)!important;box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 20px color-mix(in srgb,var(--country-primary,#2563eb) 16%,transparent)!important}
+#page-countries .cid-macro-card{
+  position:relative;min-height:112px!important;width:100%;padding:15px!important;
+  background:linear-gradient(145deg,#0d2341,#08172b)!important;
+  border:1px solid color-mix(in srgb,var(--country-primary,#2563eb) 52%,#18365f)!important;
+  border-top:3px solid var(--country-accent,#60a5fa)!important;border-radius:13px!important;
+  display:flex;flex-direction:column;justify-content:center;text-align:left;
+  box-shadow:0 8px 22px rgba(0,0,0,.18)!important;cursor:pointer;
+  color:inherit;font:inherit;appearance:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+#page-countries .cid-macro-card:hover{
+  transform:translateY(-4px);border-color:var(--country-accent,#60a5fa)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 20px color-mix(in srgb,var(--country-primary,#2563eb) 16%,transparent)!important;
+}
+#page-countries .cid-macro-card:focus-visible{
+  outline:2px solid var(--country-accent,#60a5fa);outline-offset:3px;
+}
+#page-countries .cid-macro-card.active{
+  transform:translateY(-4px);
+  border-color:var(--country-accent,#60a5fa)!important;
+  box-shadow:0 14px 32px rgba(0,0,0,.34),0 0 0 2px color-mix(in srgb,var(--country-primary,#2563eb) 34%,transparent),0 0 26px color-mix(in srgb,var(--country-primary,#2563eb) 20%,transparent)!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--country-primary,#2563eb) 18%,#0d2341),#08172b)!important;
+}
 #page-countries .cid-macro-card .cid-kpi-label{font-size:9px!important;color:#73a6d8!important;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
 #page-countries .cid-macro-card .cid-kpi-value{font-size:23px!important;color:#f5f8ff!important;font-weight:900!important;margin-top:8px!important;line-height:1.15!important}
+#page-countries .cid-macro-card .cid-kpi-sub{font-size:10px;color:#7f9ac1;margin-top:6px;line-height:1.35}
+#page-countries .cid-macro-card .cid-card-check{
+  position:absolute;top:9px;right:10px;display:none;font-size:9px;font-weight:900;
+  color:var(--country-accent,#60a5fa);letter-spacing:.04em;text-transform:uppercase;
+}
+#page-countries .cid-macro-card.active .cid-card-check{display:block}
 @media(max-width:1000px){#page-countries .cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:600px){#page-countries .cid-macro-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}#page-countries .cid-macro-card{min-height:84px!important;padding:11px!important}#page-countries .cid-macro-card .cid-kpi-value{font-size:17px!important}}
 .network-page{--net-primary:#2563eb;--net-accent:#60a5fa;--net-secondary:#ffffff;background:
@@ -1464,6 +1490,14 @@ function renderCompetitorShareChart(){
   '<div class="cid-chart-note">Chart value = midpoint of the workbook range for comparison (for example, 18–20% → 19%). Hover each bar to see the original workbook range.</div>';
 }
 
+function toggleMacroCard(card){
+  if(!card) return;
+  const active = card.classList.toggle('active');
+  card.setAttribute('aria-pressed', active ? 'true' : 'false');
+  card.dataset.selected = active ? 'true' : 'false';
+}
+window.toggleMacroCard = toggleMacroCard;
+
 function openCountry(code){
   const d = countryData[code];
   const page = document.getElementById('page-countries');
@@ -1529,22 +1563,22 @@ function openCountry(code){
       <div class="cid-macro-section">
         <div class="cid-section-head"><div><div class="cid-section-title">Macro Market Intelligence</div><div class="cid-section-sub">All available KPIs from Macro_Summary</div></div></div>
         <div class="cid-macro-grid">${[
-          ["Population 2026",macro.population,"integer","Total population"],
-          ["HD Patients",macro.hd,"integer","Estimated hemodialysis patients"],
-          ["PD Patients",macro.pd,"integer","Estimated peritoneal dialysis patients"],
-          ["Dialysis Facilities",macro.facilities,"integer","Total dialysis facilities"],
-          ["HD Machines",macro.machines,"integer","Installed HD machines"],
-          ["Annual Catheter Demand",macro.demand,"integer","Catheters / year"],
-          ["Market Value",macro.market_value,"money","Estimated market value"],
-          ["Annual Growth",macro.annual_growth,"percent","Annual market growth rate"],
-          ["Hospital Growth",macro.hospital_growth,"percent","Annual hospital growth"],
-          ["Unit Growth",macro.unit_growth,"percent","Annual unit growth"],
-          ["Nephrologists",macro.nephrologists,"text","Estimated nephrologists"],
-          ["Vascular Surgeons",macro.vascular_surgeons,"text","Estimated vascular surgeons"],
-          ["Radiologists",macro.radiologists,"text","Estimated radiologists"],
-          ["Population / Healthcare Coverage",macro.coverage,"text","Healthcare coverage · population: "+formatMacroValue(macro.population,"integer")],
-          ["OOP Share of Health Spending",macro.oop,"text","Out-of-pocket health spending"]
-        ].map(k=>`<div class="cid-macro-card"><div class="cid-kpi-label">${k[0]}</div><div class="cid-kpi-value">${formatMacroValue(k[1],k[2])}</div><div class="cid-kpi-sub">${k[1]===null||k[1]===undefined||k[1]===''?'(data not available)':k[3]}</div></div>`).join('')}</div>
+          ["population-2026","Population 2026",macro.population,"integer","Total population"],
+          ["hd-patients","HD Patients",macro.hd,"integer","Estimated hemodialysis patients"],
+          ["pd-patients","PD Patients",macro.pd,"integer","Estimated peritoneal dialysis patients"],
+          ["dialysis-facilities","Dialysis Facilities",macro.facilities,"integer","Total dialysis facilities"],
+          ["hd-machines","HD Machines",macro.machines,"integer","Installed HD machines"],
+          ["annual-catheter-demand","Annual Catheter Demand",macro.demand,"integer","Catheters / year"],
+          ["market-value","Market Value",macro.market_value,"money","Estimated market value"],
+          ["annual-growth","Annual Growth",macro.annual_growth,"percent","Annual market growth rate"],
+          ["hospital-growth","Hospital Growth",macro.hospital_growth,"percent","Annual hospital growth"],
+          ["unit-growth","Unit Growth",macro.unit_growth,"percent","Annual unit growth"],
+          ["nephrologists","Nephrologists",macro.nephrologists,"text","Estimated nephrologists"],
+          ["vascular-surgeons","Vascular Surgeons",macro.vascular_surgeons,"text","Estimated vascular surgeons"],
+          ["radiologists","Radiologists",macro.radiologists,"text","Estimated radiologists"],
+          ["healthcare-coverage","Population / Healthcare Coverage",macro.coverage,"text","Healthcare coverage · population: "+formatMacroValue(macro.population,"integer")],
+          ["oop-share","OOP Share of Health Spending",macro.oop,"text","Out-of-pocket health spending"]
+        ].map(k=>`<button type="button" class="cid-macro-card" data-card-id="${k[0]}" aria-pressed="false" title="${k[1]}" onclick="toggleMacroCard(this)"><span class="cid-card-check">Selected</span><div class="cid-kpi-label">${k[1]}</div><div class="cid-kpi-value">${formatMacroValue(k[2],k[3])}</div><div class="cid-kpi-sub">${k[2]===null||k[2]===undefined||k[2]===''?'(data not available)':k[4]}</div></button>`).join('')}</div>
       </div>
       <div class="cid-network">
         <div class="cid-network-card" role="button" tabindex="0"
