@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 import openpyxl
 
-WORKBOOK_CANDIDATES = ["Amecath Dash.xlsx","Amecath Dash.xlsx","Amecath Dash.xlsx"]
+WORKBOOK_CANDIDATES = ["Amecath Dash - corrected.xlsx","Amecath Dash(4).xlsx","Amecath Dash(3).xlsx"]
 WORKBOOK_PATH = next((Path(__file__).with_name(name) for name in WORKBOOK_CANDIDATES if Path(__file__).with_name(name).exists()), None)
 if WORKBOOK_PATH is None:
     st.error("Workbook not found. Add the Amecath Dash Excel file next to dash.py.")
