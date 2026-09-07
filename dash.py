@@ -8,7 +8,7 @@ from pathlib import Path
 import streamlit as st
 
 # Fix imports
-from config import APP_TITLE  # Add inject_theme_css here if it lives in config.py
+from config import APP_TITLE  
 from loader import get_default_data
 import executive_overview
 import pricing
