@@ -153,130 +153,14 @@ st.markdown("""
 
 
 /* Country detail: macro intelligence + competitor share chart */
-.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-group{margin:14px 0}.cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#7ea6d9;font-weight:900;margin-bottom:8px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.cid-macro-card{position:relative;background:linear-gradient(145deg,#102443,#0b1a31);border:1px solid #254d82;border-top:3px solid var(--country-accent,#60a5fa);border-radius:12px;padding:14px 13px;min-height:82px;box-shadow:0 8px 18px rgba(0,0,0,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.cid-macro-card:hover{transform:translateY(-2px);border-color:var(--country-accent,#60a5fa);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary,#3b82f6) 20%,transparent)}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7f9cc2;text-transform:uppercase;letter-spacing:.07em;font-weight:700}.cid-macro-card .cid-kpi-value{font-size:19px;font-weight:900;color:#f2f7ff;margin-top:7px;word-break:break-word;line-height:1.15}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:11px;min-height:72px}.cid-macro-card .cid-kpi-value{font-size:15px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
+.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.cid-macro-card{position:relative;background:linear-gradient(145deg,#102443,#0b1a31);border:1px solid #254d82;border-top:3px solid var(--country-accent,#60a5fa);border-radius:12px;padding:14px 13px;min-height:82px;box-shadow:0 8px 18px rgba(0,0,0,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.cid-macro-card:hover{transform:translateY(-2px);border-color:var(--country-accent,#60a5fa);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary,#3b82f6) 20%,transparent)}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7f9cc2;text-transform:uppercase;letter-spacing:.07em;font-weight:700}.cid-macro-card .cid-kpi-value{font-size:19px;font-weight:900;color:#f2f7ff;margin-top:7px;word-break:break-word;line-height:1.15}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:11px;min-height:72px}.cid-macro-card .cid-kpi-value{font-size:15px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
 
-/* =========================================
-   COUNTRY DETAIL - IMAGE STYLE KPI CARDS
-   ========================================= */
-.cid-macro-grid-standalone{
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  gap:10px!important;
-  margin-top:14px;
-}
-.cid-kpi-card{
-  display:flex!important;
-  align-items:center;
-  gap:12px;
-  min-height:96px;
-  padding:13px 14px!important;
-  background:linear-gradient(145deg,rgba(12,42,76,.96),rgba(6,24,48,.98))!important;
-  border:1px solid color-mix(in srgb,var(--country-primary,#1683ff) 72%,#214b78)!important;
-  border-top:1px solid color-mix(in srgb,var(--country-accent,#60a5fa) 80%,#214b78)!important;
-  border-radius:12px!important;
-  box-shadow:0 8px 22px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.035)!important;
-  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
-}
-.cid-kpi-card:hover{
-  transform:translateY(-2px);
-  border-color:var(--country-accent,#60a5fa)!important;
-  box-shadow:0 12px 28px rgba(0,0,0,.25),0 0 18px color-mix(in srgb,var(--country-primary,#3b82f6) 18%,transparent)!important;
-}
-.cid-kpi-icon{
-  width:48px;height:48px;min-width:48px;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;
-  font-size:23px;
-  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--country-primary,#3b82f6) 92%,#fff),color-mix(in srgb,var(--country-primary,#3b82f6) 52%,#061a34));
-  border:1px solid color-mix(in srgb,var(--country-accent,#60a5fa) 58%,transparent);
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--country-primary,#3b82f6) 10%,transparent),0 5px 14px rgba(0,0,0,.22);
-}
-.cid-kpi-content{min-width:0;flex:1}
-.cid-kpi-card .cid-kpi-label{
-  font-size:9px!important;
-  color:#6fbfff!important;
-  text-transform:uppercase;
-  letter-spacing:.055em;
-  font-weight:800!important;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.cid-kpi-card .cid-kpi-value{
-  font-size:20px!important;
-  font-weight:900!important;
-  color:#f4f8ff!important;
-  margin-top:6px!important;
-  line-height:1.05!important;
-}
-.cid-kpi-sub{
-  margin-top:5px;
-  font-size:8px;
-  color:#8ba8ca;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* =========================================
-   DISTRIBUTOR / KOL TABLE PAGE
-   ========================================= */
-.network-clean-page{padding-bottom:30px}
-.network-clean-header{
-  display:flex;align-items:center;gap:16px;
-  padding:16px 20px 14px;
-  margin-bottom:12px;
-  border-bottom:1px solid color-mix(in srgb,var(--net-primary,#1677ff) 38%,#17375e);
-  background:linear-gradient(90deg,color-mix(in srgb,var(--net-primary,#1677ff) 10%,#07172d),#07172d);
-}
-.network-clean-title{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
-.network-clean-icon{font-size:25px}
-.network-clean-header .network-title{font-size:17px;font-weight:900;color:#f2f7ff}
-.network-clean-header .network-subtitle{font-size:9px;color:#7898bd;margin-top:3px}
-.network-clean-header .network-back{margin:0}
-.network-table-wrap{
-  margin:0 20px 20px;
-  background:#0b1830;
-  border:1px solid color-mix(in srgb,var(--net-primary,#1677ff) 42%,#1b3a67);
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,.20);
-}
-.network-table-header{
-  display:flex;align-items:center;justify-content:space-between;gap:18px;
-  padding:15px 17px;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--net-primary,#1677ff) 13%,#0b1830),#0b1830);
-  border-bottom:1px solid #1b3a67;
-}
-.network-table-title{color:#f1f5f9;font-size:13px;font-weight:900}
-.network-table-subtitle{color:#6f89ad;font-size:9px;margin-top:4px}
-.network-search{
-  width:310px;max-width:42%;padding:10px 13px;border-radius:9px;
-  border:1px solid #294c7a;background:#071326;color:#e5edf8;outline:none;font-size:10px;
-}
-.network-search::placeholder{color:#587292}
-.network-search:focus{border-color:var(--net-accent,#60a5fa);box-shadow:0 0 0 2px color-mix(in srgb,var(--net-accent,#60a5fa) 15%,transparent)}
-.network-table-scroll{width:100%;overflow-x:auto}
-.network-table{width:100%;border-collapse:collapse;min-width:900px}
-.network-table thead th{
-  padding:11px 13px;background:#071326;color:#7893b9;border-bottom:1px solid #1b3a67;
-  text-align:left;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;
-}
-.network-table tbody td{padding:12px 13px;color:#dce6f4;border-bottom:1px solid #152c4d;vertical-align:middle;font-size:10px}
-.network-table tbody tr{transition:.15s ease}
-.network-table tbody tr:hover{background:color-mix(in srgb,var(--net-primary,#1677ff) 8%,#0b1830)}
-.network-table tbody tr:last-child td{border-bottom:none}
-.network-table-num{width:45px;color:var(--net-accent,#60a5fa)!important;font-weight:900;text-align:center}
-.network-table-name{color:#fff;font-size:11px;font-weight:800;min-width:150px}
-.network-table-main{color:#c7d5e8;line-height:1.45;min-width:150px}
-.network-contact-cell{color:#9eb2cc;line-height:1.45;min-width:210px;word-break:break-word}
-.network-priority{display:inline-flex;align-items:center;justify-content:center;padding:4px 9px;border-radius:7px;white-space:nowrap;font-size:9px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}
-.network-empty{text-align:center!important;padding:35px!important;color:#607a9f!important}
-.network-table-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:#071326;border-top:1px solid #152c4d;color:#536e92;font-size:9px}
-@media(max-width:1100px){.cid-macro-grid-standalone{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-@media(max-width:850px){.cid-macro-grid-standalone{grid-template-columns:repeat(2,minmax(0,1fr))!important}.network-table-header{align-items:stretch;flex-direction:column}.network-search{width:100%;max-width:none}.network-table-wrap{margin-left:12px;margin-right:12px}}
-@media(max-width:520px){.cid-macro-grid-standalone{grid-template-columns:1fr 1fr!important}.cid-kpi-card{padding:11px!important;gap:9px}.cid-kpi-icon{width:40px;height:40px;min-width:40px;font-size:18px}.cid-kpi-card .cid-kpi-value{font-size:16px!important}.network-table-footer{flex-direction:column;align-items:flex-start;gap:5px}}
-
+/* Distributors / KOLs table */
+.network-table-wrap{margin:0 20px 20px;background:#0b1830;border:1px solid #1b3a67;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.network-table-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:linear-gradient(135deg,color-mix(in srgb,var(--net-primary) 14%,#0b1830),#0b1830);border-bottom:1px solid #1b3a67}
+.network-table-title{color:#f1f5f9;font-size:14px;font-weight:800}.network-table-subtitle{color:#6f89ad;font-size:9px;margin-top:4px}
+.network-search{width:310px;max-width:42%;padding:10px 13px;border-radius:9px;border:1px solid #294c7a;background:#071326;color:#e5edf8;outline:none;font-size:10px}.network-search::placeholder{color:#587292}.network-search:focus{border-color:var(--net-accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--net-accent) 15%,transparent)}
+.network-table-scroll{width:100%;overflow-x:auto}.network-table{width:100%;border-collapse:collapse;min-width:850px}.network-table thead th{padding:11px 13px;background:#071326;color:#7893b9;border-bottom:1px solid #1b3a67;text-align:left;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap}.network-table tbody td{padding:13px;color:#dce6f4;border-bottom:1px solid #152c4d;vertical-align:middle;font-size:10px}.network-table tbody tr{transition:.15s ease}.network-table tbody tr:hover{background:color-mix(in srgb,var(--net-primary) 7%,#0b1830)}.network-table tbody tr:last-child td{border-bottom:none}.network-table-num{width:45px;color:var(--net-accent)!important;font-weight:800;text-align:center}.network-table-name{color:#fff;font-size:11px;font-weight:800;min-width:150px}.network-table-main{color:#c7d5e8;line-height:1.5;min-width:170px}.network-contact-cell{color:#9eb2cc;line-height:1.5;min-width:190px;word-break:break-word}.network-priority{display:inline-flex;align-items:center;justify-content:center;padding:4px 9px;border-radius:7px;white-space:nowrap;font-size:9px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}.network-empty{text-align:center!important;padding:35px!important;color:#607a9f!important}.network-table-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:#071326;border-top:1px solid #152c4d;color:#536e92;font-size:9px}@media(max-width:700px){.network-table-header{align-items:stretch;flex-direction:column}.network-search{width:100%;max-width:none}.network-table-wrap{margin-left:12px;margin-right:12px}.network-table-footer{flex-direction:column;align-items:flex-start;gap:5px}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -421,6 +305,20 @@ html, body { background: #0b1628; height: 100%; }
 .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
 .badge-approved { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
 .badge-pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+
+/* FINAL UI OVERRIDES */
+.cid-kpi-grid-final{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;width:100%!important;margin:0!important;padding:0!important;}
+.cid-kpi-card-final{display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;min-height:96px!important;padding:13px 14px!important;background:linear-gradient(145deg,#0d2a4d,#071a33)!important;border:1px solid color-mix(in srgb,var(--country-primary,#1683ff) 75%,#24517d)!important;border-radius:13px!important;box-shadow:0 7px 18px rgba(0,0,0,.22)!important;transition:.18s ease!important;}
+.cid-kpi-card-final:hover{transform:translateY(-2px)!important;border-color:var(--country-accent,#22d3ee)!important;}
+.cid-kpi-icon-final{width:46px!important;height:46px!important;min-width:46px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:21px!important;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--country-primary,#1683ff) 92%,#fff),color-mix(in srgb,var(--country-primary,#1683ff) 45%,#06172c))!important;border:1px solid color-mix(in srgb,var(--country-accent,#60a5fa) 60%,transparent)!important;}
+.cid-kpi-content-final{min-width:0!important;flex:1!important;}
+.cid-kpi-label-final{color:#55c7ff!important;font-size:9px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.055em!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+.cid-kpi-value-final{color:#f7fbff!important;font-size:20px!important;font-weight:900!important;line-height:1.05!important;margin-top:6px!important;white-space:nowrap!important;}
+.network-table-only{padding:18px 20px 30px!important;}
+.network-table-only .network-table-wrap{margin:0!important;width:100%!important;}
+@media(max-width:1100px){.cid-kpi-grid-final{grid-template-columns:repeat(3,minmax(0,1fr))!important;}}
+@media(max-width:780px){.cid-kpi-grid-final{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:500px){.cid-kpi-grid-final{grid-template-columns:1fr!important;}}
 </style>
 </head>
 <body>
@@ -1058,13 +956,6 @@ html, body { background: #0b1628; height: 100%; }
       </div>
     </div>
     <div id="competitor-country-header" class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-4"></div>
-    <div id="competitor-share-chart" class="cid-comp-chart" style="margin-top:0;">
-      <div class="cid-section-head"><div><div class="cid-section-title">Market Share by Competitor</div><div class="cid-section-sub">HD catheter market · selected country · Source: Competitor_Matrix</div></div></div>
-      <div id="competitor-share-chart-body"></div>
-    </div>
-    <div class="bg-[#081321] border border-[#1e3d7a] rounded-xl p-3 text-xs text-slate-400">
-      📌 Competitor data below is taken directly from the <b class="text-slate-200">Competitor_Matrix</b> sheet. Market-share figures are pulled directly from the workbook <b class="text-slate-200">Competitor_Matrix</b> by country.
-    </div>
     <div id="comp-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
   </div>
 </div>
@@ -1452,88 +1343,92 @@ function openNetwork(type,code){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   page.classList.add('active');
-
   page.style.setProperty('--net-primary',d.colors.primary);
   page.style.setProperty('--net-accent',d.colors.accent);
   page.style.setProperty('--net-secondary',d.colors.secondary);
 
   const rows=(networkData[type]&&networkData[type][code])||[];
   rows.forEach(r=>{r._extraLabel=r.extra_label||'';r._extra=r.extra||'';});
-
   const isDist=type==='distributors';
   const label=isDist?'Distributors':'KOLs';
   const icon=isDist?'🤝':'⭐';
-  const title=isDist?'Distributor Directory':'KOL Directory';
-  const subtitle=isDist?'Key distribution partners in this market':'Key opinion leaders in this market';
 
   page.innerHTML=`
-    <div class="network-shell network-clean-page">
+    <div class="network-shell network-table-only">
       <div class="network-clean-header">
         <button class="network-back" onclick="openCountry('${code}')">← Country Analysis</button>
-        <div class="network-clean-title">
-          <span class="network-clean-icon">${icon}</span>
-          <div>
-            <div class="network-title">${label} — ${meta.name}</div>
-            <div class="network-subtitle">${subtitle}</div>
-          </div>
-        </div>
-        <div class="network-theme-chip"><span class="network-theme-dot"></span>${meta.name} Theme</div>
+        <div class="network-clean-title"><span class="network-clean-icon">${icon}</span><div><div class="network-title">${label} — ${meta.name}</div><div class="network-subtitle">${isDist?'Key distribution partners in this market':'Key opinion leaders in this market'}</div></div></div>
       </div>
-
       <div class="network-table-wrap">
         <div class="network-table-header">
           <div>
-            <div class="network-table-title">${icon} ${title}</div>
+            <div class="network-table-title">${icon} ${label} — ${meta.name}</div>
             <div class="network-table-subtitle">${rows.length} ${label.toLowerCase()} listed · Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
           </div>
           <input id="network-search-${type}-${code}" class="network-search" type="text"
             placeholder="🔎 Search ${isDist?'distributor, relevance or contact':'KOL, specialty, institution or contact'}..."
             oninput="filterNetworkTable('${type}','${code}')">
         </div>
-
         <div class="network-table-scroll">
           <table class="network-table" id="network-table-${type}-${code}">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>${isDist?'Company':'Name'}</th>
-                <th>${isDist?'Type':'Specialty'}</th>
-                <th>${isDist?'Coverage':'Hospital / Institution'}</th>
-                <th>Contact</th>
-                <th>Priority</th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>#</th><th>${isDist?'Distributor':'KOL'}</th><th>${isDist?'AMECATH Relevance':'Specialty'}</th>
+              ${isDist?'<th>Priority</th><th>Contact</th>':'<th>Institution</th><th>Priority</th><th>Contact</th>'}
+            </tr></thead>
             <tbody>
               ${rows.map(r=>{
                 const priority=String(r._extra||'—');
-                const coverage=isDist?(r.relevance||'—'):(r.institution||'—');
-                const specialty=isDist?'Distributor':(r.specialty||'—');
                 const search=[r.name,r.relevance,r.specialty,r.institution,r.contact,r.extra].filter(Boolean).join(' ').toLowerCase();
-                return `<tr data-search="${search.replace(/"/g,'&quot;')}">
+                return `<tr data-search="${search}">
                   <td class="network-table-num">${r.num||'—'}</td>
                   <td><div class="network-table-name">${r.name||'—'}</div></td>
-                  <td><div class="network-table-main">${specialty}</div></td>
-                  <td><div class="network-table-main">${coverage}</div></td>
-                  <td><div class="network-contact-cell">${r.contact||'—'}</div></td>
-                  <td><span class="network-priority ${networkPriorityClass(r._extra)}">${priority}</span></td>
+                  <td><div class="network-table-main">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div></td>
+                  ${isDist
+                    ? `<td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td><td><div class="network-contact-cell">${r.contact||'—'}</div></td>`
+                    : `<td><div class="network-table-main">${r.institution||'—'}</div></td><td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td><td><div class="network-contact-cell">${r.contact||'—'}</div></td>`}
                 </tr>`;
-              }).join('') || `<tr><td colspan="6" class="network-empty">No records available for this country.</td></tr>`}
+              }).join('') || `<tr><td colspan="${isDist?5:6}" class="network-empty">No records available for this country.</td></tr>`}
             </tbody>
           </table>
         </div>
-
-        <div class="network-table-footer">
-          <span>Showing ${rows.length} ${label.toLowerCase()}</span>
-          <span>${meta.name} · ${isDist?'Distributor network':'Clinical KOL network'}</span>
-        </div>
+        <div class="network-table-footer"><span>Showing ${rows.length} ${label.toLowerCase()}</span><span>Country: ${meta.name}</span></div>
       </div>
     </div>`;
-
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 window.openNetwork=openNetwork;
+function filterNetworkTable(type, code){
 
+  const input = document.getElementById(
+    `network-search-${type}-${code}`
+  );
+
+  const table = document.getElementById(
+    `network-table-${type}-${code}`
+  );
+
+  if(!input || !table) return;
+
+  const query = input.value.trim().toLowerCase();
+
+  const rows = table.querySelectorAll('tbody tr');
+
+  rows.forEach(row => {
+
+    const searchText = (
+      row.getAttribute('data-search') || ''
+    ).toLowerCase();
+
+    row.style.display =
+      !query || searchText.includes(query)
+        ? ''
+        : 'none';
+
+  });
+}
+
+window.filterNetworkTable = filterNetworkTable;
 function formatMacroValue(v,type){
   if(v===null||v===undefined||v==='') return '—';
   if(type==='integer' && typeof v==='number') return v.toLocaleString();
@@ -1623,33 +1518,24 @@ function openCountry(code){
 
     <div class="cid-body">
       <div class="cid-macro-section">
-        <div class="cid-section-head"><div><div class="cid-section-title">Macro Market Intelligence</div><div class="cid-section-sub">All available KPIs from Macro_Summary</div></div></div>
-        <div class="cid-macro-grid cid-macro-grid-standalone">
-          ${[
-            ["👥","Population 2026",macro.population,"integer","Total population"],
-            ["❤️","HD Patients",macro.hd,"integer","Estimated hemodialysis patients"],
-            ["🩺","PD Patients",macro.pd,"integer","Peritoneal dialysis patients"],
-            ["🏥","Dialysis Facilities",macro.facilities,"integer","Total dialysis facilities"],
-            ["⚙️","HD Machines",macro.machines,"integer","Installed HD machines"],
-            ["🧪","Annual Catheter Demand",macro.demand,"integer","Catheters / year"],
-            ["💰","Market Value",macro.market_value,"money","Estimated market value"],
-            ["📈","Annual Growth",macro.annual_growth,"percent","Market growth rate"],
-            ["🏢","Hospital Growth",macro.hospital_growth,"percent","Hospital growth rate"],
-            ["📊","Unit Growth",macro.unit_growth,"percent","Unit growth rate"],
-            ["👨‍⚕️","Nephrologists",macro.nephrologists,"text","Nephrology network"],
-            ["🧑‍⚕️","Vascular Surgeons",macro.vascular_surgeons,"text","Vascular surgery network"],
-            ["🔬","Radiologists",macro.radiologists,"text","Radiology network"],
-            ["🛡️","Healthcare Coverage",macro.coverage,"text","Healthcare coverage"],
-            ["💳","OOP Share",macro.oop,"text","Out-of-pocket share"]
-          ].map(k=>`
-            <div class="cid-macro-card cid-kpi-card">
-              <div class="cid-kpi-icon">${k[0]}</div>
-              <div class="cid-kpi-content">
-                <div class="cid-kpi-label">${k[1]}</div>
-                <div class="cid-kpi-value">${formatMacroValue(k[2],k[3])}</div>
-                <div class="cid-kpi-sub">${k[4]}</div>
-              </div>
-            </div>`).join('')}
+        <div class="cid-kpi-grid-final">
+        ${[
+          ["Population 2026",macro.population,"integer"],
+          ["Est. 2026 HD",macro.hd,"integer"],
+          ["Est. 2026 PD",macro.pd,"integer"],
+          ["Annual Growth",macro.annual_growth,"percent"],
+          ["Annual Catheter Demand",macro.demand,"integer"],
+          ["Market Value",macro.market_value,"money"],
+          ["Dialysis Facilities",macro.facilities,"integer"],
+          ["Hospital Growth",macro.hospital_growth,"percent"],
+          ["Unit Growth",macro.unit_growth,"percent"],
+          ["HD Machines",macro.machines,"integer"],
+          ["Nephrologists",macro.nephrologists,"text"],
+          ["Vascular Surgeons",macro.vascular_surgeons,"text"],
+          ["Radiologists",macro.radiologists,"text"],
+          ["Healthcare Coverage",macro.coverage,"text"],
+          ["OOP Share",macro.oop,"text"]
+        ].map(k=>`<div class="cid-kpi-card-final"><div class="cid-kpi-icon-final">📊</div><div class="cid-kpi-content-final"><div class="cid-kpi-label-final">${k[0]}</div><div class="cid-kpi-value-final">${formatMacroValue(k[1],k[2])}</div></div></div>`).join('')}
         </div>
       </div>
       <div class="cid-network">
