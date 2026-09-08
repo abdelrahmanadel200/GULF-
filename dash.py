@@ -153,14 +153,37 @@ st.markdown("""
 
 
 /* Country detail: macro intelligence + competitor share chart */
-.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.cid-macro-card{position:relative;background:linear-gradient(145deg,#102443,#0b1a31);border:1px solid #254d82;border-top:3px solid var(--country-accent,#60a5fa);border-radius:12px;padding:14px 13px;min-height:82px;box-shadow:0 8px 18px rgba(0,0,0,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.cid-macro-card:hover{transform:translateY(-2px);border-color:var(--country-accent,#60a5fa);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary,#3b82f6) 20%,transparent)}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7f9cc2;text-transform:uppercase;letter-spacing:.07em;font-weight:700}.cid-macro-card .cid-kpi-value{font-size:19px;font-weight:900;color:#f2f7ff;margin-top:7px;word-break:break-word;line-height:1.15}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:11px;min-height:72px}.cid-macro-card .cid-kpi-value{font-size:15px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
+.cid-macro-section{margin-top:18px}.cid-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}.cid-section-title{font-size:14px;font-weight:900;color:#eef5ff}.cid-section-sub{font-size:10px;color:#7890b1;margin-top:3px}.cid-macro-group{margin:14px 0}.cid-macro-group-title{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#7ea6d9;font-weight:900;margin-bottom:8px}.cid-macro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.cid-macro-card{position:relative;background:linear-gradient(145deg,#102443,#0b1a31);border:1px solid #254d82;border-top:3px solid var(--country-accent,#60a5fa);border-radius:12px;padding:14px 13px;min-height:82px;box-shadow:0 8px 18px rgba(0,0,0,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.cid-macro-card:hover{transform:translateY(-2px);border-color:var(--country-accent,#60a5fa);box-shadow:0 0 22px color-mix(in srgb,var(--country-primary,#3b82f6) 20%,transparent)}.cid-macro-card .cid-kpi-label{font-size:9px;color:#7f9cc2;text-transform:uppercase;letter-spacing:.07em;font-weight:700}.cid-macro-card .cid-kpi-value{font-size:19px;font-weight:900;color:#f2f7ff;margin-top:7px;word-break:break-word;line-height:1.15}.cid-chart-row{display:grid;grid-template-columns:minmax(130px,220px) 1fr 58px;gap:10px;align-items:center;margin:9px 0}.cid-chart-name{font-size:10px;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cid-chart-track{height:9px;background:#142946;border-radius:999px;overflow:hidden}.cid-chart-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--country-primary,#3b82f6),var(--country-accent,#60a5fa));min-width:2px}.cid-chart-value{text-align:right;font-size:10px;font-weight:900;color:#8fc0ff}.cid-chart-note{font-size:9px;color:#657d9e;margin-top:10px}.cid-chart-empty{padding:18px;color:#7187a7;font-size:11px;text-align:center}@media(max-width:900px){.cid-macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cid-chart-row{grid-template-columns:105px 1fr 50px}}@media(max-width:520px){.cid-macro-grid{grid-template-columns:1fr 1fr}.cid-macro-card{padding:11px;min-height:72px}.cid-macro-card .cid-kpi-value{font-size:15px}.cid-chart-row{grid-template-columns:88px 1fr 46px;gap:6px}.cid-chart-name,.cid-chart-value{font-size:9px}}
 
-/* Distributors / KOLs table */
-.network-table-wrap{margin:0 20px 20px;background:#0b1830;border:1px solid #1b3a67;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-.network-table-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:linear-gradient(135deg,color-mix(in srgb,var(--net-primary) 14%,#0b1830),#0b1830);border-bottom:1px solid #1b3a67}
-.network-table-title{color:#f1f5f9;font-size:14px;font-weight:800}.network-table-subtitle{color:#6f89ad;font-size:9px;margin-top:4px}
-.network-search{width:310px;max-width:42%;padding:10px 13px;border-radius:9px;border:1px solid #294c7a;background:#071326;color:#e5edf8;outline:none;font-size:10px}.network-search::placeholder{color:#587292}.network-search:focus{border-color:var(--net-accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--net-accent) 15%,transparent)}
-.network-table-scroll{width:100%;overflow-x:auto}.network-table{width:100%;border-collapse:collapse;min-width:850px}.network-table thead th{padding:11px 13px;background:#071326;color:#7893b9;border-bottom:1px solid #1b3a67;text-align:left;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap}.network-table tbody td{padding:13px;color:#dce6f4;border-bottom:1px solid #152c4d;vertical-align:middle;font-size:10px}.network-table tbody tr{transition:.15s ease}.network-table tbody tr:hover{background:color-mix(in srgb,var(--net-primary) 7%,#0b1830)}.network-table tbody tr:last-child td{border-bottom:none}.network-table-num{width:45px;color:var(--net-accent)!important;font-weight:800;text-align:center}.network-table-name{color:#fff;font-size:11px;font-weight:800;min-width:150px}.network-table-main{color:#c7d5e8;line-height:1.5;min-width:170px}.network-contact-cell{color:#9eb2cc;line-height:1.5;min-width:190px;word-break:break-word}.network-priority{display:inline-flex;align-items:center;justify-content:center;padding:4px 9px;border-radius:7px;white-space:nowrap;font-size:9px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}.network-empty{text-align:center!important;padding:35px!important;color:#607a9f!important}.network-table-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:#071326;border-top:1px solid #152c4d;color:#536e92;font-size:9px}@media(max-width:700px){.network-table-header{align-items:stretch;flex-direction:column}.network-search{width:100%;max-width:none}.network-table-wrap{margin-left:12px;margin-right:12px}.network-table-footer{flex-direction:column;align-items:flex-start;gap:5px}}
+/* FINAL KPI CARD + NETWORK TABLE FIX */
+.cid-macro-grid-single{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:14px !important;margin-top:14px !important;}
+.cid-macro-grid-single .cid-macro-card{display:flex !important;flex-direction:column !important;justify-content:center !important;min-width:0 !important;min-height:96px !important;background:linear-gradient(145deg,#102443,#0a1930) !important;border:1px solid #315a8f !important;border-top:3px solid var(--country-accent,#60a5fa) !important;border-radius:14px !important;padding:16px !important;box-shadow:0 8px 22px rgba(0,0,0,.22) !important;}
+.cid-macro-grid-single .cid-macro-card:hover{transform:translateY(-3px);border-color:var(--country-accent,#60a5fa) !important;box-shadow:0 12px 28px rgba(0,0,0,.3) !important;}
+.cid-macro-grid-single .cid-kpi-label{font-size:9px !important;color:#73a9db !important;font-weight:800 !important;letter-spacing:.08em !important;}
+.cid-macro-grid-single .cid-kpi-value{margin-top:8px !important;font-size:21px !important;font-weight:900 !important;color:#fff !important;line-height:1.15 !important;}
+.network-table-only{padding:18px 0 30px;}
+.network-table-wrap{margin:0 20px;background:#0b1830;border:1px solid #254d82;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.22);}
+.network-table-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:#0d203b;border-bottom:1px solid #254d82;}
+.network-table-title{color:#f1f5f9;font-size:14px;font-weight:900;}
+.network-table-subtitle{color:#6f89ad;font-size:9px;margin-top:4px;}
+.network-search{width:310px;max-width:42%;padding:10px 13px;border-radius:9px;border:1px solid #315a8f;background:#071326;color:#e5edf8;outline:none;font-size:10px;}
+.network-search:focus{border-color:var(--net-accent);}
+.network-table-scroll{width:100%;overflow-x:auto;}
+.network-table{width:100%;border-collapse:collapse;min-width:850px;}
+.network-table thead th{padding:11px 13px;background:#071326;color:#7893b9;border-bottom:1px solid #254d82;text-align:left;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;}
+.network-table tbody td{padding:13px;color:#dce6f4;border-bottom:1px solid #172f52;vertical-align:middle;font-size:10px;}
+.network-table tbody tr:hover{background:rgba(255,255,255,.035);}
+.network-table tbody tr:last-child td{border-bottom:none;}
+.network-table-num{width:45px;color:var(--net-accent) !important;font-weight:900;text-align:center;}
+.network-table-name{color:#fff;font-size:11px;font-weight:900;min-width:170px;}
+.network-table-main{color:#c7d5e8;line-height:1.5;min-width:170px;}
+.network-contact-cell{color:#9eb2cc;line-height:1.5;min-width:190px;word-break:break-word;}
+.network-priority{display:inline-flex;align-items:center;justify-content:center;padding:4px 9px;border-radius:7px;white-space:nowrap;font-size:9px;font-weight:800;}
+.network-empty{text-align:center !important;padding:35px !important;color:#607a9f !important;}
+.network-table-footer{display:flex;justify-content:space-between;padding:10px 15px;background:#071326;border-top:1px solid #172f52;color:#536e92;font-size:9px;}
+@media(max-width:1000px){.cid-macro-grid-single{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}}
+@media(max-width:600px){.cid-macro-grid-single{grid-template-columns:1fr !important;}.network-table-header{flex-direction:column;align-items:stretch}.network-search{width:100%;max-width:none}.network-table-wrap{margin:0 12px}.network-table-footer{flex-direction:column;gap:5px;}}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1332,7 +1355,6 @@ function openNetwork(type,code){
   const meta=networkCountryMeta[code], d=countryData[code];
   const page=document.getElementById('page-'+type+'-'+code);
   if(!meta||!d||!page)return;
-
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   page.classList.add('active');
@@ -1355,69 +1377,63 @@ function openNetwork(type,code){
             <div class="network-table-subtitle">${rows.length} ${label.toLowerCase()} listed · Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
           </div>
           <input id="network-search-${type}-${code}" class="network-search" type="text"
-            placeholder="🔎 Search ${isDist?'distributor, relevance or contact':'KOL, specialty, institution or contact'}..."
-            oninput="filterNetworkTable('${type}','${code}')">
+                 placeholder="🔎 Search ${isDist?'distributor, relevance or contact':'KOL, specialty, institution or contact'}..."
+                 oninput="filterNetworkTable('${type}','${code}')">
         </div>
+
         <div class="network-table-scroll">
           <table class="network-table" id="network-table-${type}-${code}">
             <thead><tr>
-              <th>#</th><th>${isDist?'Distributor':'KOL'}</th><th>${isDist?'AMECATH Relevance':'Specialty'}</th>
-              ${isDist?'<th>Priority</th><th>Contact</th>':'<th>Institution</th><th>Priority</th><th>Contact</th>'}
+              <th>#</th>
+              <th>${isDist?'Distributor':'KOL'}</th>
+              <th>${isDist?'AMECATH Relevance':'Specialty'}</th>
+              ${isDist ? '<th>Priority</th><th>Contact</th>' : '<th>Institution</th><th>Priority</th><th>Contact</th>'}
             </tr></thead>
             <tbody>
               ${rows.map(r=>{
                 const priority=String(r._extra||'—');
-                const search=[r.name,r.relevance,r.specialty,r.institution,r.contact,r.extra].filter(Boolean).join(' ').toLowerCase();
-                return `<tr data-search="${search}">
+                const search=[r.name,r.relevance,r.specialty,r.institution,r.contact,r.extra,r.extra_label].filter(Boolean).join(' ').toLowerCase();
+                return `<tr data-search="${search.replace(/\"/g,'&quot;')}">
                   <td class="network-table-num">${r.num||'—'}</td>
                   <td><div class="network-table-name">${r.name||'—'}</div></td>
                   <td><div class="network-table-main">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div></td>
-                  ${isDist
-                    ? `<td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td><td><div class="network-contact-cell">${r.contact||'—'}</div></td>`
-                    : `<td><div class="network-table-main">${r.institution||'—'}</div></td><td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td><td><div class="network-contact-cell">${r.contact||'—'}</div></td>`}
+                  ${isDist ? `
+                    <td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td>
+                    <td><div class="network-contact-cell">${r.contact||'—'}</div></td>
+                  ` : `
+                    <td><div class="network-table-main">${r.institution||'—'}</div></td>
+                    <td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td>
+                    <td><div class="network-contact-cell">${r.contact||'—'}</div></td>
+                  `}
                 </tr>`;
               }).join('') || `<tr><td colspan="${isDist?5:6}" class="network-empty">No records available for this country.</td></tr>`}
             </tbody>
           </table>
         </div>
-        <div class="network-table-footer"><span>Showing ${rows.length} ${label.toLowerCase()}</span><span>Country: ${meta.name}</span></div>
+
+        <div class="network-table-footer">
+          <span>Showing ${rows.length} ${label.toLowerCase()}</span>
+          <span>Country: ${meta.name}</span>
+        </div>
       </div>
     </div>`;
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 window.openNetwork=openNetwork;
-function filterNetworkTable(type, code){
 
-  const input = document.getElementById(
-    `network-search-${type}-${code}`
-  );
-
-  const table = document.getElementById(
-    `network-table-${type}-${code}`
-  );
-
-  if(!input || !table) return;
-
-  const query = input.value.trim().toLowerCase();
-
-  const rows = table.querySelectorAll('tbody tr');
-
-  rows.forEach(row => {
-
-    const searchText = (
-      row.getAttribute('data-search') || ''
-    ).toLowerCase();
-
-    row.style.display =
-      !query || searchText.includes(query)
-        ? ''
-        : 'none';
-
+function filterNetworkTable(type,code){
+  const input=document.getElementById(`network-search-${type}-${code}`);
+  const table=document.getElementById(`network-table-${type}-${code}`);
+  if(!input||!table)return;
+  const q=input.value.trim().toLowerCase();
+  table.querySelectorAll('tbody tr').forEach(row=>{
+    const text=(row.getAttribute('data-search')||'').toLowerCase();
+    row.style.display=(!q||text.includes(q))?'':'none';
   });
 }
+window.filterNetworkTable=filterNetworkTable;
 
-window.filterNetworkTable = filterNetworkTable;
 function formatMacroValue(v,type){
   if(v===null||v===undefined||v==='') return '—';
   if(type==='integer' && typeof v==='number') return v.toLocaleString();
@@ -1508,7 +1524,7 @@ function openCountry(code){
     <div class="cid-body">
       <div class="cid-macro-section">
         <div class="cid-section-head"><div><div class="cid-section-title">Macro Market Intelligence</div><div class="cid-section-sub">All available KPIs from Macro_Summary</div></div></div>
-        <div class="cid-macro-grid">
+        <div class="cid-macro-grid cid-macro-grid-single">
         ${[
           ["Population 2026",macro.population,"integer"],
           ["Est. 2026 HD",macro.hd,"integer"],
