@@ -92,16 +92,17 @@ def _num(x):
 
 _forecast_base_case = {}
 if "Forecast_Data" in _wb.sheetnames:
-    # Expected columns: Country | 2026 Base Case | 2027 Base Case | 2028 Base Case
-    # (first matching numeric-looking row per country wins; adjust the column
-    # indices below if the sheet's layout differs).
-    for row in _wb["Forecast_Data"].iter_rows(min_row=2, values_only=True):
-        if not row or not row[0]:
+    # Sheet layout (confirmed from the actual workbook): the country bottom-up
+    # table has "Country" in column A and "2026/2027/2028 Revenue ($)" in
+    # columns N/O/P (0-indexed 13,14,15) — NOT columns B/C/D, which hold HD
+    # patients / PD patients / unit growth instead.
+    for row in _wb["Forecast_Data"].iter_rows(min_row=1, values_only=True):
+        if not row or not row[0] or len(row) < 16:
             continue
         name = str(row[0]).strip()
         if name not in _forecast_fallback:
             continue
-        vals = tuple(_num(v) for v in row[1:4])
+        vals = tuple(_num(v) for v in row[13:16])
         if any(vals):
             _forecast_base_case[name] = vals
 
