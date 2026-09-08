@@ -302,6 +302,8 @@ html, body { background: #0b1628; height: 100%; }
 /* ================================
    DISTRIBUTORS / KOLS TABLE
    ================================ */
+.network-table-only{margin:0;padding:0;}
+.network-table-only .network-table-wrap{margin:0;border-radius:0;border-left:0;border-right:0;}
 .network-table-wrap{margin:0 20px 20px;background:#0b1830;border:1px solid #1b3a67;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .network-table-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:linear-gradient(135deg,color-mix(in srgb,var(--net-primary) 14%,#0b1830),#0b1830);border-bottom:1px solid #1b3a67}
 .network-table-title{color:#f1f5f9;font-size:14px;font-weight:800}
@@ -1368,65 +1370,16 @@ function openNetwork(type,code){
   });
 
   const isDist=type==='distributors';
-  const title=isDist?'Distributor Intelligence':'KOL Intelligence';
-  const subtitle=isDist
-    ?'Distribution partners, dialysis relevance & contact routes'
-    :'Key Opinion Leaders, clinical specialty & contact routes';
   const label=isDist?'Distributors':'KOLs';
   const icon=isDist?'🤝':'⭐';
 
   page.innerHTML=`
-    <div class="network-shell">
-      <div class="network-hero">
-        <div class="network-hero-top">
-          <button class="network-back" onclick="openCountry('${code}')">← Country Analysis</button>
-          <img class="network-flag" src="${d.flagImg}" alt="${meta.name} flag" onerror="this.style.display='none'">
-          <div>
-            <div class="network-title">${icon} ${meta.name} — ${title}</div>
-            <div class="network-subtitle">${subtitle} · 2026 market intelligence</div>
-          </div>
-          <div class="network-theme-chip"><span class="network-theme-dot"></span> ${meta.name} Theme</div>
-        </div>
-      </div>
-
-      <div class="network-summary">
-        <div class="network-summary-card">
-          <div class="network-summary-label">Country</div>
-          <div class="network-summary-value">
-            <img src="${d.flagImg}" style="width:44px;height:30px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.28);vertical-align:middle" onerror="this.style.display='none'">
-          </div>
-          <div class="network-summary-sub">${meta.name}</div>
-        </div>
-        <div class="network-summary-card">
-          <div class="network-summary-label">${label} Listed</div>
-          <div class="network-summary-value">${rows.length}</div>
-          <div class="network-summary-sub">From workbook</div>
-        </div>
-        <div class="network-summary-card">
-          <div class="network-summary-label">Priority 5/5</div>
-          <div class="network-summary-value">${rows.filter(x=>String(x._extra||'').includes('5/5')).length}</div>
-          <div class="network-summary-sub">Where priority is provided</div>
-        </div>
-        <div class="network-summary-card">
-          <div class="network-summary-label">Market</div>
-          <div class="network-summary-value" style="font-size:14px">${d.kpi[1]?.v||'—'}</div>
-          <div class="network-summary-sub">HD Patients 2026</div>
-        </div>
-      </div>
-
-      <div class="network-toolbar">
-        <div>
-          <div class="network-section-title">${icon} ${label} — ${meta.name}</div>
-          <div class="network-section-sub">Each country is isolated in its own detail tab. No cross-country mixing.</div>
-        </div>
-        <div style="font-size:9px;color:#607a9f">Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
-      </div>
-
+    <div class="network-shell network-table-only">
       <div class="network-table-wrap">
         <div class="network-table-header">
           <div>
-            <div class="network-table-title">${icon} ${label} Directory</div>
-            <div class="network-table-subtitle">${rows.length} ${label.toLowerCase()} listed for ${meta.name}</div>
+            <div class="network-table-title">${icon} ${label} — ${meta.name}</div>
+            <div class="network-table-subtitle">${rows.length} ${label.toLowerCase()} listed · Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
           </div>
 
           <input
@@ -1481,8 +1434,6 @@ function openNetwork(type,code){
           <span>Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</span>
         </div>
       </div>
-
-      <div class="network-footer">Data displayed exactly from the uploaded workbook. <b>No missing contact fields were invented.</b> If a phone/email was not present, the original contact route is shown instead.</div>
     </div>`;
 
   window.scrollTo({top:0,behavior:'smooth'});
