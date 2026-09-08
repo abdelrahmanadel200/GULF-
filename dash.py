@@ -1704,7 +1704,7 @@ window.sidebarGo = function(pageId){
   function initCountryForecastChart(){
     var sel=document.getElementById("forecast-country-chart-filter");
     var box=document.getElementById("forecast-country-chart");
-    if(!sel || !box || !window.workbookData || !workbookData.forecast) return;
+    if(!sel || !box || typeof workbookData === "undefined" || !workbookData.forecast) return;
     var countries=workbookData.forecast.countries||[];
     if(!countries.length){
       box.innerHTML='<div style="padding:30px;text-align:center;color:#607a9f;font-size:11px;">No country forecast data available.</div>';
