@@ -67,8 +67,28 @@ for row in _wb["our ASP"].iter_rows(min_row=2,max_row=10,values_only=True):
 _comp_asp=[]
 for row in _wb["Competitor_Aspiration"].iter_rows(min_row=2,values_only=True):
     if row[0]: _comp_asp.append({"company":row[0],"region":row[1],"short":row[2],"long":row[3],"notes":row[4]})
+# Forecast data from Forecast_Data sheet (country-level Base Case revenue).
+# The country rows in the workbook provide the 2026/2027/2028 Base Case revenue
+# used by the filterable chart below.
+_forecast_base_case = {
+    "Saudi Arabia": (85361, 149466, 219841),
+    "Iraq": (26801, 47612, 71049),
+    "Jordan": (16788, 29395, 43236),
+    "Lebanon": (12380, 21573, 31576),
+    "Bahrain": (13085, 23024, 34029),
+    "Oman": (6903, 12146, 17951),
+    "UAE": (8914, 15759, 23404),
+    "Kuwait": (6470, 11329, 16663),
+    "Qatar": (3743, 6617, 9827),
+}
+_forecast_countries = [
+    {"country":_name, "code":_country_code(_name),
+     "revenue_2026":_vals[0], "revenue_2027":_vals[1], "revenue_2028":_vals[2]}
+    for _name,_vals in _forecast_base_case.items()
+]
+
 WORKBOOK_DATA={"macro":_macro,"competitors":_comp,"tenders":_tenders,"hotAreas":_hot,
-               "ourASP":_our_asp,"competitorASP":_comp_asp}
+               "ourASP":_our_asp,"competitorASP":_comp_asp,"forecast":{"countries":_forecast_countries}}
 
 
 st.set_page_config(
@@ -573,65 +593,18 @@ html, body { background: #0b1628; height: 100%; }
     </div>
   </div>
 
-  <!-- SVG Bar Chart -->
+  <!-- Country Forecast Chart -->
   <div style="background:#0f1f3d;border:1px solid #1e3d7a;border-radius:14px;padding:20px;margin-bottom:18px;">
-    <div style="font-size:13px;font-weight:600;color:#c8d8f0;margin-bottom:4px;">📊 Scenario Comparison by Year</div>
-    <div style="font-size:10px;color:#3a5278;margin-bottom:16px;">Revenue in USD — Grouped by year</div>
-    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
-      <!-- Grid lines -->
-      <line x1="60" y1="20" x2="60" y2="210" stroke="#1e3d7a" stroke-width="1"/>
-      <line x1="60" y1="210" x2="740" y2="210" stroke="#1e3d7a" stroke-width="1"/>
-      <line x1="60" y1="160" x2="740" y2="160" stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
-      <line x1="60" y1="110" x2="740" y2="110" stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
-      <line x1="60" y1="60"  x2="740" y2="60"  stroke="#1e3d7a" stroke-width="0.5" stroke-dasharray="4,4"/>
-      <!-- Y labels -->
-      <text x="55" y="214" fill="#6a85b0" font-size="9" text-anchor="end">$0</text>
-      <text x="55" y="164" fill="#6a85b0" font-size="9" text-anchor="end">$200K</text>
-      <text x="55" y="114" fill="#6a85b0" font-size="9" text-anchor="end">$400K</text>
-      <text x="55" y="64"  fill="#6a85b0" font-size="9" text-anchor="end">$600K</text>
-      <!-- X labels -->
-      <text x="200" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2026</text>
-      <text x="420" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2027</text>
-      <text x="640" y="230" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">2028</text>
-
-      <!-- Scale: max ~$802K → 190px usable height (210→20). $802K=190px → 1px=$4221 -->
-      <!-- 2026: Conservative=120296→28.5px, Base=180444→42.7px, Upside=300739→71.2px -->
-      <!-- 2027: Conservative=253536→60px,  Base=316920→75px,   Upside=507072→120px  -->
-      <!-- 2028: Conservative=400779→94.9px, Base=467575→110.7px, Upside=801557→189.9px -->
-
-      <!-- 2026 bars -->
-      <rect x="130" y="181.5" width="42" height="28.5"  fill="#3b82f6" rx="3"/>
-      <rect x="178" y="167.3" width="42" height="42.7"  fill="#34d399" rx="3"/>
-      <rect x="226" y="138.8" width="42" height="71.2"  fill="#f59e0b" rx="3"/>
-      <!-- value labels 2026 -->
-      <text x="151" y="178" fill="#60a5fa" font-size="8" text-anchor="middle">$120K</text>
-      <text x="199" y="163" fill="#34d399" font-size="8" text-anchor="middle">$180K</text>
-      <text x="247" y="135" fill="#f59e0b" font-size="8" text-anchor="middle">$301K</text>
-
-      <!-- 2027 bars -->
-      <rect x="348" y="150" width="42" height="60"   fill="#3b82f6" rx="3"/>
-      <rect x="396" y="135" width="42" height="75"   fill="#34d399" rx="3"/>
-      <rect x="444" y="90"  width="42" height="120"  fill="#f59e0b" rx="3"/>
-      <!-- value labels 2027 -->
-      <text x="369" y="146" fill="#60a5fa" font-size="8" text-anchor="middle">$254K</text>
-      <text x="417" y="131" fill="#34d399" font-size="8" text-anchor="middle">$317K</text>
-      <text x="465" y="86"  fill="#f59e0b" font-size="8" text-anchor="middle">$507K</text>
-
-      <!-- 2028 bars -->
-      <rect x="568" y="115.1" width="42" height="94.9"  fill="#3b82f6" rx="3"/>
-      <rect x="616" y="99.3"  width="42" height="110.7" fill="#34d399" rx="3"/>
-      <rect x="664" y="20.1"  width="42" height="189.9" fill="#f59e0b" rx="3"/>
-      <!-- value labels 2028 -->
-      <text x="589" y="111" fill="#60a5fa" font-size="8" text-anchor="middle">$401K</text>
-      <text x="637" y="95"  fill="#34d399" font-size="8" text-anchor="middle">$468K</text>
-      <text x="685" y="16"  fill="#f59e0b" font-size="8" text-anchor="middle">$802K</text>
-    </svg>
-    <!-- Legend -->
-    <div style="display:flex;gap:20px;justify-content:center;margin-top:10px;">
-      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#3b82f6;border-radius:3px;"></span>Conservative</div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#34d399;border-radius:3px;"></span>Base Case</div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#f59e0b;border-radius:3px;"></span>Upside</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:5px;">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#c8d8f0;">📊 Scenario Comparison by Year</div>
+        <div style="font-size:10px;color:#3a5278;margin-top:3px;">Base Case revenue forecast in USD — select a country to view its 2026–2028 forecast</div>
+      </div>
+      <select id="forecast-country-chart-filter" style="min-width:190px;padding:9px 12px;border-radius:9px;border:1px solid #2563eb;background:#081321;color:#e8edf5;font-size:11px;font-weight:600;outline:none;cursor:pointer;">
+        <option value="">Select country</option>
+      </select>
     </div>
+    <div id="forecast-country-chart" style="margin-top:10px;"></div>
   </div>
 
   <!-- Bottom-Up Country Table -->
@@ -1726,6 +1699,56 @@ window.sidebarGo = function(pageId){
   var item = document.querySelector('.nav-item[data-page="'+pageId+'"]');
   if(item) navigate(item, pageId);
 };
+/* ─── COUNTRY FORECAST CHART ─── */
+(function(){
+  function initCountryForecastChart(){
+    var sel=document.getElementById("forecast-country-chart-filter");
+    var box=document.getElementById("forecast-country-chart");
+    if(!sel || !box || !window.workbookData || !workbookData.forecast) return;
+    var countries=workbookData.forecast.countries||[];
+    if(!countries.length){
+      box.innerHTML='<div style="padding:30px;text-align:center;color:#607a9f;font-size:11px;">No country forecast data available.</div>';
+      return;
+    }
+    sel.innerHTML=countries.map(function(c){
+      return '<option value="'+String(c.code||"").replace(/"/g,'&quot;')+'">'+String(c.country||"")+'</option>';
+    }).join("");
+    function fmt(v){
+      return "$"+Number(v||0).toLocaleString("en-US",{maximumFractionDigits:0});
+    }
+    function render(){
+      var c=countries.find(function(x){return String(x.code)===String(sel.value);})||countries[0];
+      if(!sel.value) sel.value=c.code;
+      var vals=[Number(c.revenue_2026||0),Number(c.revenue_2027||0),Number(c.revenue_2028||0)];
+      var years=["2026","2027","2028"], max=Math.max.apply(null,vals)||1;
+      var W=760,H=285,left=70,right=25,top=25,bottom=58,chartH=H-top-bottom,chartW=W-left-right;
+      var step=chartW/3, barW=Math.min(110,step*0.48);
+      var grid="";
+      [0,.25,.5,.75,1].forEach(function(t){
+        var y=top+chartH-(chartH*t);
+        var v=max*t;
+        grid+='<line x1="'+left+'" y1="'+y+'" x2="'+(W-right)+'" y2="'+y+'" stroke="#1e3d7a" stroke-width="1"'+(t===0?'':' stroke-dasharray="4,4"')+'/>';
+        grid+='<text x="'+(left-9)+'" y="'+(y+4)+'" fill="#6a85b0" font-size="9" text-anchor="end">'+(v>=1000000?"$"+(v/1000000).toFixed(1)+"M":v>=1000?"$"+Math.round(v/1000)+"K":"$"+Math.round(v))+'</text>';
+      });
+      var bars="";
+      vals.forEach(function(v,i){
+        var h=chartH*(v/max), x=left+step*i+(step-barW)/2, y=top+chartH-h;
+        bars+='<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+h+'" fill="#60a5fa" rx="6"/>';
+        bars+='<text x="'+(x+barW/2)+'" y="'+Math.max(y-8,14)+'" fill="#e8edf5" font-size="10" text-anchor="middle" font-weight="700">'+fmt(v)+'</text>';
+        bars+='<text x="'+(x+barW/2)+'" y="'+(H-25)+'" fill="#c8d8f0" font-size="11" text-anchor="middle" font-weight="600">'+years[i]+'</text>';
+      });
+      var total=vals.reduce(function(a,b){return a+b;},0);
+      box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">'+grid+bars+'</svg>'+
+        '<div style="display:flex;justify-content:center;gap:28px;align-items:center;margin-top:8px;flex-wrap:wrap;">'+
+        '<div style="font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#60a5fa;border-radius:3px;margin-right:7px;vertical-align:-2px;"></span>'+String(c.country||"")+' — Base Case</div>'+
+        '<div style="font-size:11px;color:#f59e0b;font-weight:700;">3-Year Total: '+fmt(total)+'</div></div>';
+    }
+    sel.addEventListener("change",render);
+    render();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initCountryForecastChart);
+  else initCountryForecastChart();
+})();
 /* ─── TENDERS ─── */
 (function () {
   var tndrData = [{"id": 1, "country": "🇸🇦 Saudi Arabia", "name": "Medical Supplies – Direct Purchase", "ref": "NDP0802/26", "authority": "NUPCO (MOH)", "published": "01-Sep-2026", "deadline": "06‑Sep‑2026", "status": "Closed", "value": "$50K–$200K (est.)", "notes": "General medical supplies; may include catheters via INUPCO platform nupco+1", "priority": "Medium"}, {"id": 2, "country": "🇸🇦 Saudi Arabia", "name": "Respiratory Therapy & Anesthesia Supplies", "ref": "NDP0803/26", "authority": "NUPCO (SRM)", "published": "01-Sep-2026", "deadline": "07‑Sep‑2026", "status": "Closed", "value": "$100K–$300K (est.)", "notes": "Respiratory/anesthesia consumables; dialysis catheters not primary focus nupco", "priority": "Low"}, {"id": 3, "country": "🇸🇦 Saudi Arabia", "name": "General Medical Supplies", "ref": "NDP0801/26", "authority": "NUPCO", "published": "01-Sep-2026", "deadline": "03‑Sep‑2026", "status": "Closed", "value": "$50K–$150K (est.)", "notes": "General consumables; catheters possible but not specified nupco", "priority": "Medium"}, {"id": 4, "country": "🇸🇦 Saudi Arabia", "name": "Medical Supplies – Jazan Health Cluster", "ref": "NDP0798/26", "authority": "NUPCO (Jazan)", "published": "01-Sep-2026", "deadline": "10‑Sep‑2026", "status": "Open", "value": "$100K–$400K (est.)", "notes": "Medical devices & supplies; potential catheter inclusion nupco", "priority": "High"}, {"id": 5, "country": "🇸🇦 Saudi Arabia", "name": "Open Framework – Dialysis & Artificial Kidney Supplies", "ref": "NPT0043/26 (est.)", "authority": "NUPCO", "published": "01-Aug-2026", "deadline": "04‑Aug‑2026", "status": "Closed", "value": "$2M–$5M (est.)", "notes": "Direct dialysis consumables tender; framework agreement for HD/PD supplies nupco+1", "priority": "Critical"}, {"id": 6, "country": "🇶🇦 Qatar", "name": "Medical Supplies – HMC/MTCS/9120/2026", "ref": "133503238", "authority": "Hamad Medical Corp", "published": "01-Jan-2026", "deadline": "10‑Feb‑2026", "status": "Closed", "value": "$200K–$600K", "notes": "General medical supplies; dialysis items likely included hamad+1", "priority": "Medium"}, {"id": 7, "country": "🇶🇦 Qatar", "name": "Medical Consumables – HMC/TCS/9464/2026", "ref": "135633622", "authority": "Hamad Medical Corp", "published": "01-Feb-2026", "deadline": "16‑Mar‑2026", "status": "Closed", "value": "$300K–$800K", "notes": "Consumables blanket; catheters probable tendersontime", "priority": "High"}, {"id": 8, "country": "🇶🇦 Qatar", "name": "Medical Supplies – HMC/MTCS/9140/2026", "ref": "135634706", "authority": "Hamad Medical Corp", "published": "01-Feb-2026", "deadline": "02‑Mar‑2026", "status": "Closed", "value": "$200K–$500K", "notes": "General medical supplies tendersontime", "priority": "Medium"}, {"id": 9, "country": "🇴🇲 Oman", "name": "Medical Accessories 00047 (Re-tender)", "ref": "2026/2358/و ص/م ع م س م -212", "authority": "MOH Oman", "published": "10‑Aug‑2026", "deadline": "29‑Aug‑2026", "status": "Closed", "value": "$100K–$300K", "notes": "Medical accessories; may include catheters qatarrfp", "priority": "High"}, {"id": 10, "country": "🇴🇲 Oman", "name": "Supply of Renal Dialysis Consumables", "ref": "105094963", "authority": "MOH Oman", "published": "2024", "deadline": "14‑Aug‑2024", "status": "Closed", "value": "$500K–$1.5M", "notes": "Direct dialysis consumables; catheters included", "priority": "Critical"}, {"id": 11, "country": "🇴🇲 Oman", "name": "Medical Equipment for Dialysis Center (Re-tender)", "ref": "13733280", "authority": "MOH Oman", "published": "08‑Jul‑2026", "deadline": "22‑Jul‑2026", "status": "Closed", "value": "$300K–$800K", "notes": "Dialysis center equipment & consumables", "priority": "High"}, {"id": 12, "country": "🇦🇪 UAE", "name": "Medical Consumables – AJCH (5-Year Blanket)", "ref": "Various (TOT Ref.)", "authority": "Dubai Academic Health Corp", "published": "2026", "deadline": "Rolling", "status": "Active", "value": "$1M–$3M/year", "notes": "5-year blanket agreement; catheters included", "priority": "Critical"}, {"id": 13, "country": "🇦🇪 UAE", "name": "Hemodialysis Machine & Consumables", "ref": "112579009", "authority": "Health Entity (SEHA/DAHC)", "published": "2026", "deadline": "07‑May‑2026", "status": "Closed", "value": "$500K–$1.5M", "notes": "HD machines + consumables; catheters implied", "priority": "High"}, {"id": 14, "country": "🇧🇭 Bahrain", "name": "Supply of Dialysis Items (AKU & PDU)", "ref": "281/2024/BTB", "authority": "MOH Bahrain", "published": "27‑Mar‑2024", "deadline": "22‑May‑2024", "status": "Closed", "value": "$200K–$600K", "notes": "Dialysis consumables for government centers", "priority": "High"}, {"id": 15, "country": "🇯🇴 Jordan", "name": "Peritoneal Dialysis Consumables & Solutions", "ref": "103874338", "authority": "MOH Jordan", "published": "2025", "deadline": "18‑Nov‑2025", "status": "Closed", "value": "$150K–$400K", "notes": "PD consumables & solutions", "priority": "Medium"}, {"id": 16, "country": "🇯🇴 Jordan", "name": "Dialysis Machines – Yarmouk Hospital", "ref": "2026002412‑01", "authority": "MOH Jordan", "published": "06‑Aug‑2026", "deadline": "See notice", "status": "Open", "value": "$300K–$700K", "notes": "HD machines for Yarmouk Hospital", "priority": "High"}, {"id": 17, "country": "🇱🇧 Lebanon", "name": "Permanent & Single-Use Catheters (Re-Offer)", "ref": "133538485", "authority": "MOH / Public Hospitals", "published": "2026", "deadline": "16‑Jan‑2026", "status": "Closed", "value": "$100K–$300K", "notes": "Direct catheter tender; permanent + single-use", "priority": "Critical"}, {"id": 18, "country": "🇱🇧 Lebanon", "name": "Life-Saving Materials incl. Catheters", "ref": "132476287", "authority": "MOH / Public Hospitals", "published": "2025", "deadline": "09‑Jan‑2026", "status": "Closed", "value": "$200K–$500K", "notes": "Permanent + single-use catheters, urine bags, gauze", "priority": "High"}, {"id": 19, "country": "🇮🇶 Iraq", "name": "CVC & Other Catheters (Tender List)", "ref": "Various", "authority": "Kimadia / MOH Iraq", "published": "2025–2026", "deadline": "Rolling", "status": "Active", "value": "$500K–$2M/year", "notes": "Direct CVC/dialysis catheter tenders; Kimadia platform", "priority": "Critical"}, {"id": 20, "country": "🇰🇼 Kuwait", "name": "Dialysis Consumables & Equipment", "ref": "Various", "authority": "MOH Kuwait", "published": "2025–2026", "deadline": "Rolling", "status": "Active", "value": "$400K–$1.2M/year", "notes": "Dialysis consumables; listed on GCC aggregators", "priority": "High"}];
