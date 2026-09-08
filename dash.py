@@ -1508,6 +1508,7 @@ function openCountry(code){
     <div class="cid-body">
       <div class="cid-macro-section">
         <div class="cid-section-head"><div><div class="cid-section-title">Macro Market Intelligence</div><div class="cid-section-sub">All available KPIs from Macro_Summary</div></div></div>
+        <div class="cid-macro-grid">
         ${[
           ["Population 2026",macro.population,"integer"],
           ["Est. 2026 HD",macro.hd,"integer"],
@@ -1525,6 +1526,7 @@ function openCountry(code){
           ["Healthcare Coverage",macro.coverage,"text"],
           ["OOP Share",macro.oop,"text"]
         ].map(k=>`<div class="cid-macro-card"><div class="cid-kpi-label">${k[0]}</div><div class="cid-kpi-value">${formatMacroValue(k[1],k[2])}</div></div>`).join('')}
+        </div>
       </div>
       <div class="cid-network">
         <div class="cid-network-card" role="button" tabindex="0"
