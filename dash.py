@@ -298,6 +298,33 @@ html, body { background: #0b1628; height: 100%; }
 .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
 .badge-approved { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
 .badge-pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+
+/* ================================
+   DISTRIBUTORS / KOLS TABLE
+   ================================ */
+.network-table-wrap{margin:0 20px 20px;background:#0b1830;border:1px solid #1b3a67;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.network-table-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 18px;background:linear-gradient(135deg,color-mix(in srgb,var(--net-primary) 14%,#0b1830),#0b1830);border-bottom:1px solid #1b3a67}
+.network-table-title{color:#f1f5f9;font-size:14px;font-weight:800}
+.network-table-subtitle{color:#6f89ad;font-size:9px;margin-top:4px}
+.network-search{width:310px;max-width:42%;padding:10px 13px;border-radius:9px;border:1px solid #294c7a;background:#071326;color:#e5edf8;outline:none;font-size:10px}
+.network-search::placeholder{color:#587292}
+.network-search:focus{border-color:var(--net-accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--net-accent) 15%,transparent)}
+.network-table-scroll{width:100%;overflow-x:auto}
+.network-table{width:100%;border-collapse:collapse;min-width:850px}
+.network-table thead th{padding:11px 13px;background:#071326;color:#7893b9;border-bottom:1px solid #1b3a67;text-align:left;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap}
+.network-table tbody td{padding:13px;color:#dce6f4;border-bottom:1px solid #152c4d;vertical-align:middle;font-size:10px}
+.network-table tbody tr{transition:.15s ease}
+.network-table tbody tr:hover{background:color-mix(in srgb,var(--net-primary) 7%,#0b1830)}
+.network-table tbody tr:last-child td{border-bottom:none}
+.network-table-num{width:45px;color:var(--net-accent)!important;font-weight:800;text-align:center}
+.network-table-name{color:#fff;font-size:11px;font-weight:800;min-width:150px}
+.network-table-main{color:#c7d5e8;line-height:1.5;min-width:170px}
+.network-contact-cell{color:#9eb2cc;line-height:1.5;min-width:190px;word-break:break-word}
+.network-priority{display:inline-flex;align-items:center;justify-content:center;padding:4px 9px;border-radius:7px;white-space:nowrap;font-size:9px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}
+.network-empty{text-align:center!important;padding:35px!important;color:#607a9f!important}
+.network-table-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:#071326;border-top:1px solid #152c4d;color:#536e92;font-size:9px}
+@media(max-width:700px){.network-table-header{align-items:stretch;flex-direction:column}.network-search{width:100%;max-width:none}.network-table-wrap{margin-left:12px;margin-right:12px}.network-table-footer{flex-direction:column;align-items:flex-start;gap:5px}}
+
 </style>
 </head>
 <body>
@@ -1325,18 +1352,26 @@ function openNetwork(type,code){
   const meta=networkCountryMeta[code], d=countryData[code];
   const page=document.getElementById('page-'+type+'-'+code);
   if(!meta||!d||!page)return;
+
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   page.classList.add('active');
+
   page.style.setProperty('--net-primary',d.colors.primary);
   page.style.setProperty('--net-accent',d.colors.accent);
   page.style.setProperty('--net-secondary',d.colors.secondary);
 
   const rows=(networkData[type]&&networkData[type][code])||[];
-  rows.forEach(r=>{r._extraLabel=r.extra_label||'';r._extra=r.extra||'';});
+  rows.forEach(r=>{
+    r._extraLabel=r.extra_label||'';
+    r._extra=r.extra||'';
+  });
+
   const isDist=type==='distributors';
   const title=isDist?'Distributor Intelligence':'KOL Intelligence';
-  const subtitle=isDist?'Distribution partners, dialysis relevance & contact routes':'Key Opinion Leaders, clinical specialty & contact routes';
+  const subtitle=isDist
+    ?'Distribution partners, dialysis relevance & contact routes'
+    :'Key Opinion Leaders, clinical specialty & contact routes';
   const label=isDist?'Distributors':'KOLs';
   const icon=isDist?'🤝':'⭐';
 
@@ -1355,27 +1390,43 @@ function openNetwork(type,code){
       </div>
 
       <div class="network-summary">
-        <div class="network-summary-card"><div class="network-summary-label">Country</div><div class="network-summary-value"><img src="${d.flagImg}" style="width:44px;height:30px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.28);vertical-align:middle" onerror="this.style.display='none'"></div><div class="network-summary-sub">${meta.name}</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">${label} Listed</div><div class="network-summary-value">${rows.length}</div><div class="network-summary-sub">From workbook</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">Priority 5/5</div><div class="network-summary-value">${rows.filter(x=>String(x._extra||'').includes('5/5')).length}</div><div class="network-summary-sub">Where priority is provided</div></div>
-        <div class="network-summary-card"><div class="network-summary-label">Market</div><div class="network-summary-value" style="font-size:14px">${d.kpi[1]?.v||'—'}</div><div class="network-summary-sub">HD Patients 2026</div></div>
+        <div class="network-summary-card">
+          <div class="network-summary-label">Country</div>
+          <div class="network-summary-value">
+            <img src="${d.flagImg}" style="width:44px;height:30px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.28);vertical-align:middle" onerror="this.style.display='none'">
+          </div>
+          <div class="network-summary-sub">${meta.name}</div>
+        </div>
+        <div class="network-summary-card">
+          <div class="network-summary-label">${label} Listed</div>
+          <div class="network-summary-value">${rows.length}</div>
+          <div class="network-summary-sub">From workbook</div>
+        </div>
+        <div class="network-summary-card">
+          <div class="network-summary-label">Priority 5/5</div>
+          <div class="network-summary-value">${rows.filter(x=>String(x._extra||'').includes('5/5')).length}</div>
+          <div class="network-summary-sub">Where priority is provided</div>
+        </div>
+        <div class="network-summary-card">
+          <div class="network-summary-label">Market</div>
+          <div class="network-summary-value" style="font-size:14px">${d.kpi[1]?.v||'—'}</div>
+          <div class="network-summary-sub">HD Patients 2026</div>
+        </div>
       </div>
 
       <div class="network-toolbar">
-        <div><div class="network-section-title">${icon} ${label} — ${meta.name}</div>
-        <div class="network-section-sub">Each country is isolated in its own detail tab. No cross-country mixing.</div></div>
+        <div>
+          <div class="network-section-title">${icon} ${label} — ${meta.name}</div>
+          <div class="network-section-sub">Each country is isolated in its own detail tab. No cross-country mixing.</div>
+        </div>
         <div style="font-size:9px;color:#607a9f">Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</div>
       </div>
 
-            <div class="network-table-wrap">
+      <div class="network-table-wrap">
         <div class="network-table-header">
           <div>
-            <div class="network-table-title">
-              ${icon} ${label} Directory
-            </div>
-            <div class="network-table-subtitle">
-              ${rows.length} ${label.toLowerCase()} listed for ${meta.name}
-            </div>
+            <div class="network-table-title">${icon} ${label} Directory</div>
+            <div class="network-table-subtitle">${rows.length} ${label.toLowerCase()} listed for ${meta.name}</div>
           </div>
 
           <input
@@ -1394,327 +1445,46 @@ function openNetwork(type,code){
                 <th>#</th>
                 <th>${isDist ? 'Distributor' : 'KOL'}</th>
                 <th>${isDist ? 'AMECATH Relevance' : 'Specialty'}</th>
-                <th>${isDist ? 'Priority' : 'Institution'}</th>
-                ${isDist ? '<th>Contact</th>' : '<th>Priority</th><th>Contact</th>'}
+                ${isDist ? '<th>Priority</th><th>Contact</th>' : '<th>Institution</th><th>Priority</th><th>Contact</th>'}
               </tr>
             </thead>
-
             <tbody>
-              ${
-                rows.map(r => {
-                  const cp = networkContactParts(r.contact);
-                  const priority = String(r._extra || '—');
-
-                  return `
-                    <tr
-                      data-search="${[
-                        r.name,
-                        r.relevance,
-                        r.specialty,
-                        r.institution,
-                        r.contact,
-                        r.extra
-                      ].filter(Boolean).join(' ').toLowerCase()}"
-                    >
-                      <td class="network-table-num">${r.num || '—'}</td>
-
-                      <td>
-                        <div class="network-table-name">
-                          ${r.name || '—'}
-                        </div>
-                      </td>
-
-                      <td>
-                        <div class="network-table-main">
-                          ${isDist
-                            ? (r.relevance || '—')
-                            : (r.specialty || '—')}
-                        </div>
-                      </td>
-
-                      ${
-                        isDist
-                        ? `
-                          <td>
-                            <span class="network-priority ${networkPriorityClass(priority)}">
-                              ${priority}
-                            </span>
-                          </td>
-
-                          <td>
-                            <div class="network-contact-cell">
-                              ${r.contact || '—'}
-                            </div>
-                          </td>
-                        `
-                        : `
-                          <td>
-                            <div class="network-table-main">
-                              ${r.institution || '—'}
-                            </div>
-                          </td>
-
-                          <td>
-                            <span class="network-priority ${networkPriorityClass(priority)}">
-                              ${priority}
-                            </span>
-                          </td>
-
-                          <td>
-                            <div class="network-contact-cell">
-                              ${r.contact || '—'}
-                            </div>
-                          </td>
-                        `
-                      }
-                    </tr>
-                  `;
-                }).join('')
-                ||
-                `
-                  <tr>
-                    <td colspan="${isDist ? 5 : 6}" class="network-empty">
-                      No records available for this country.
-                    </td>
-                  </tr>
-                `
-              }
+              ${rows.map(r=>{
+                const priority=String(r._extra||'—');
+                const searchText=[r.name,r.relevance,r.specialty,r.institution,r.contact,r.extra].filter(Boolean).join(' ').toLowerCase();
+                return `
+                  <tr data-search="${searchText.replace(/"/g,'&quot;')}">
+                    <td class="network-table-num">${r.num||'—'}</td>
+                    <td><div class="network-table-name">${r.name||'—'}</div></td>
+                    <td><div class="network-table-main">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div></td>
+                    ${isDist
+                      ? `
+                        <td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td>
+                        <td><div class="network-contact-cell">${r.contact||'—'}</div></td>
+                      `
+                      : `
+                        <td><div class="network-table-main">${r.institution||'—'}</div></td>
+                        <td><span class="network-priority ${networkPriorityClass(priority)}">${priority}</span></td>
+                        <td><div class="network-contact-cell">${r.contact||'—'}</div></td>
+                      `}
+                  </tr>`;
+              }).join('') || `
+                <tr>
+                  <td colspan="${isDist?5:6}" class="network-empty">No records available for this country.</td>
+                </tr>`}
             </tbody>
           </table>
         </div>
 
         <div class="network-table-footer">
-          <span>
-            Showing ${rows.length} ${label.toLowerCase()}
-          </span>
-          <span>
-            Source: ${isDist ? 'Distributors' : 'KOL_Catalog'} sheet
-          </span>
+          <span>Showing ${rows.length} ${label.toLowerCase()}</span>
+          <span>Source: ${isDist?'Distributors':'KOL_Catalog'} sheet</span>
         </div>
-      </div>
-      /* ================================
-   DISTRIBUTORS / KOLS TABLE
-   ================================ */
-
-.network-table-wrap{
-  margin:0 20px 20px;
-  background:#0b1830;
-  border:1px solid #1b3a67;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,.18);
-}
-
-.network-table-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  padding:16px 18px;
-  background:linear-gradient(
-    135deg,
-    color-mix(in srgb,var(--net-primary) 14%,#0b1830),
-    #0b1830
-  );
-  border-bottom:1px solid #1b3a67;
-}
-
-.network-table-title{
-  color:#f1f5f9;
-  font-size:14px;
-  font-weight:800;
-}
-
-.network-table-subtitle{
-  color:#6f89ad;
-  font-size:9px;
-  margin-top:4px;
-}
-
-.network-search{
-  width:310px;
-  max-width:42%;
-  padding:10px 13px;
-  border-radius:9px;
-  border:1px solid #294c7a;
-  background:#071326;
-  color:#e5edf8;
-  outline:none;
-  font-size:10px;
-}
-
-.network-search::placeholder{
-  color:#587292;
-}
-
-.network-search:focus{
-  border-color:var(--net-accent);
-  box-shadow:0 0 0 2px color-mix(
-    in srgb,
-    var(--net-accent) 15%,
-    transparent
-  );
-}
-
-.network-table-scroll{
-  width:100%;
-  overflow-x:auto;
-}
-
-.network-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:850px;
-}
-
-.network-table thead th{
-  padding:11px 13px;
-  background:#071326;
-  color:#7893b9;
-  border-bottom:1px solid #1b3a67;
-  text-align:left;
-  font-size:9px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.7px;
-  white-space:nowrap;
-}
-
-.network-table tbody td{
-  padding:13px;
-  color:#dce6f4;
-  border-bottom:1px solid #152c4d;
-  vertical-align:middle;
-  font-size:10px;
-}
-
-.network-table tbody tr{
-  transition:.15s ease;
-}
-
-.network-table tbody tr:hover{
-  background:color-mix(
-    in srgb,
-    var(--net-primary) 7%,
-    #0b1830
-  );
-}
-
-.network-table tbody tr:last-child td{
-  border-bottom:none;
-}
-
-.network-table-num{
-  width:45px;
-  color:var(--net-accent)!important;
-  font-weight:800;
-  text-align:center;
-}
-
-.network-table-name{
-  color:#ffffff;
-  font-size:11px;
-  font-weight:800;
-  min-width:150px;
-}
-
-.network-table-main{
-  color:#c7d5e8;
-  line-height:1.5;
-  min-width:170px;
-}
-
-.network-contact-cell{
-  color:#9eb2cc;
-  line-height:1.5;
-  min-width:190px;
-  word-break:break-word;
-}
-
-.network-priority{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:4px 9px;
-  border-radius:7px;
-  white-space:nowrap;
-  font-size:9px;
-  font-weight:800;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.10);
-}
-
-.network-empty{
-  text-align:center!important;
-  padding:35px!important;
-  color:#607a9f!important;
-}
-
-.network-table-footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 15px;
-  background:#071326;
-  border-top:1px solid #152c4d;
-  color:#536e92;
-  font-size:9px;
-}
-
-@media(max-width:700px){
-
-  .network-table-header{
-    align-items:stretch;
-    flex-direction:column;
-  }
-
-  .network-search{
-    width:100%;
-    max-width:none;
-  }
-
-  .network-table-wrap{
-    margin-left:12px;
-    margin-right:12px;
-  }
-
-  .network-table-footer{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:5px;
-  }
-}
-              <span class="network-priority ${networkPriorityClass(r._extra)}">${r._extra||'—'}</span>
-            </div>
-            <div class="network-details">
-              <div class="network-detail-box">
-                <div class="network-detail-label">${isDist?'AMECATH Relevance':'Specialty / Relevance'}</div>
-                <div class="network-detail-value">${isDist?(r.relevance||'—'):(r.specialty||'—')}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">${isDist?(r._extraLabel||'Website / Extra'):'Institution / Route'}</div>
-                <div class="network-detail-value">${isDist ? (r._extra||'—') : (r.institution||'—')}</div>
-              </div>
-              ${!isDist?`<div class="network-detail-box"><div class="network-detail-label">Institution</div><div class="network-detail-value">${r.institution||'—'}</div></div>`:''}
-              <div class="network-detail-box network-contact">
-                <div class="network-detail-label">Contact / Route</div>
-                <div class="network-detail-value">${r.contact||'—'}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">Phone</div>
-                <div class="network-detail-value">${cp.phones}</div>
-              </div>
-              <div class="network-detail-box">
-                <div class="network-detail-label">Email / Route</div>
-                <div class="network-detail-value">${cp.emails!=='Not provided'?cp.emails:cp.route}</div>
-              </div>
-            </div>
-          </div>`;
-        }).join('')||'<div class="placeholder-page">No records available for this country.</div>'}
       </div>
 
       <div class="network-footer">Data displayed exactly from the uploaded workbook. <b>No missing contact fields were invented.</b> If a phone/email was not present, the original contact route is shown instead.</div>
     </div>`;
+
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
