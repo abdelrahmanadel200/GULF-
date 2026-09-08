@@ -67,10 +67,12 @@ for row in _wb["our ASP"].iter_rows(min_row=2,max_row=10,values_only=True):
 _comp_asp=[]
 for row in _wb["Competitor_Aspiration"].iter_rows(min_row=2,values_only=True):
     if row[0]: _comp_asp.append({"company":row[0],"region":row[1],"short":row[2],"long":row[3],"notes":row[4]})
-# Forecast data from Forecast_Data sheet (country-level Base Case revenue).
-# The country rows in the workbook provide the 2026/2027/2028 Base Case revenue
-# used by the filterable chart below.
-_forecast_base_case = {
+# Forecast data — read live from the "Forecast_Data" sheet in the workbook
+# (country-level Base Case revenue for 2026/2027/2028) so the chart always
+# reflects the numbers in the Excel file instead of stale hardcoded values.
+# Fallback values (used only if the sheet is missing / a country isn't found)
+# keep the dashboard from breaking if the workbook changes shape.
+_forecast_fallback = {
     "Saudi Arabia": (85361, 149466, 219841),
     "Iraq": (26801, 47612, 71049),
     "Jordan": (16788, 29395, 43236),
@@ -81,6 +83,32 @@ _forecast_base_case = {
     "Kuwait": (6470, 11329, 16663),
     "Qatar": (3743, 6617, 9827),
 }
+
+def _num(x):
+    try:
+        return float(x) if x is not None else 0
+    except (TypeError, ValueError):
+        return 0
+
+_forecast_base_case = {}
+if "Forecast_Data" in _wb.sheetnames:
+    # Expected columns: Country | 2026 Base Case | 2027 Base Case | 2028 Base Case
+    # (first matching numeric-looking row per country wins; adjust the column
+    # indices below if the sheet's layout differs).
+    for row in _wb["Forecast_Data"].iter_rows(min_row=2, values_only=True):
+        if not row or not row[0]:
+            continue
+        name = str(row[0]).strip()
+        if name not in _forecast_fallback:
+            continue
+        vals = tuple(_num(v) for v in row[1:4])
+        if any(vals):
+            _forecast_base_case[name] = vals
+
+# Fill in anything the sheet didn't provide with the fallback figures.
+for _name, _vals in _forecast_fallback.items():
+    _forecast_base_case.setdefault(_name, _vals)
+
 _forecast_countries = [
     {"country":_name, "code":_country_code(_name),
      "revenue_2026":_vals[0], "revenue_2027":_vals[1], "revenue_2028":_vals[2]}
@@ -598,12 +626,10 @@ html, body { background: #0b1628; height: 100%; }
     <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:5px;">
       <div>
         <div style="font-size:13px;font-weight:600;color:#c8d8f0;">📊 Scenario Comparison by Year</div>
-        <div style="font-size:10px;color:#3a5278;margin-top:3px;">Base Case revenue forecast in USD — select a country to view its 2026–2028 forecast</div>
+        <div style="font-size:10px;color:#3a5278;margin-top:3px;">Base Case revenue forecast in USD — click a country to view its 2026–2028 forecast</div>
       </div>
-      <select id="forecast-country-chart-filter" style="min-width:190px;padding:9px 12px;border-radius:9px;border:1px solid #2563eb;background:#081321;color:#e8edf5;font-size:11px;font-weight:600;outline:none;cursor:pointer;">
-        <option value="">Select country</option>
-      </select>
     </div>
+    <div id="forecast-country-chart-buttons" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;"></div>
     <div id="forecast-country-chart" style="margin-top:10px;"></div>
   </div>
 
@@ -810,15 +836,15 @@ html, body { background: #0b1628; height: 100%; }
         <div class="tndr-filter-group">
           <span class="tndr-filter-label">Country</span>
           <button class="tndr-filter-btn active" data-tndr-country="all">All</button>
-          <button class="tndr-filter-btn" data-tndr-country="Saudi Arabia">🇸🇦 KSA</button>
-          <button class="tndr-filter-btn" data-tndr-country="Iraq">🇮🇶 Iraq</button>
-          <button class="tndr-filter-btn" data-tndr-country="Jordan">🇯🇴 Jordan</button>
-          <button class="tndr-filter-btn" data-tndr-country="Lebanon">🇱🇧 Lebanon</button>
-          <button class="tndr-filter-btn" data-tndr-country="Bahrain">🇧🇭 Bahrain</button>
-          <button class="tndr-filter-btn" data-tndr-country="Oman">🇴🇲 Oman</button>
-          <button class="tndr-filter-btn" data-tndr-country="UAE">🇦🇪 UAE</button>
-          <button class="tndr-filter-btn" data-tndr-country="Qatar">🇶🇦 Qatar</button>
-          <button class="tndr-filter-btn" data-tndr-country="Kuwait">🇰🇼 Kuwait</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇸🇦 Saudi Arabia">🇸🇦 KSA</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇮🇶 Iraq">🇮🇶 Iraq</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇯🇴 Jordan">🇯🇴 Jordan</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇱🇧 Lebanon">🇱🇧 Lebanon</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇧🇭 Bahrain">🇧🇭 Bahrain</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇴🇲 Oman">🇴🇲 Oman</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇦🇪 UAE">🇦🇪 UAE</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇶🇦 Qatar">🇶🇦 Qatar</button>
+          <button class="tndr-filter-btn" data-tndr-country="🇰🇼 Kuwait">🇰🇼 Kuwait</button>
         </div>
         <div class="tndr-filter-group">
           <span class="tndr-filter-label">Status</span>
@@ -1702,9 +1728,9 @@ window.sidebarGo = function(pageId){
 /* ─── COUNTRY FORECAST CHART ─── */
 (function(){
   function initCountryForecastChart(){
-    var sel=document.getElementById("forecast-country-chart-filter");
+    var btnBox=document.getElementById("forecast-country-chart-buttons");
     var box=document.getElementById("forecast-country-chart");
-    if(!sel || !box) return;
+    if(!btnBox || !box) return;
     var countries=[];
     if(typeof workbookData !== "undefined" && workbookData.forecast && workbookData.forecast.countries){
       countries=workbookData.forecast.countries||[];
@@ -1729,15 +1755,29 @@ window.sidebarGo = function(pageId){
       box.innerHTML='<div style="padding:30px;text-align:center;color:#607a9f;font-size:11px;">No country forecast data available.</div>';
       return;
     }
-    sel.innerHTML=countries.map(function(c){
-      return '<option value="'+String(c.code||"").replace(/"/g,'&quot;')+'">'+String(c.country||"")+'</option>';
-    }).join("");
+    var activeCode=countries[0].code;
+    function paintButtons(){
+      btnBox.innerHTML=countries.map(function(c){
+        var active=String(c.code)===String(activeCode);
+        return '<button type="button" data-fc-code="'+String(c.code||"").replace(/"/g,'&quot;')+'" '+
+          'style="border:1px solid '+(active?'#2563eb':'#1e3d7a')+';background:'+(active?'rgba(37,99,235,.22)':'#081321')+';'+
+          'color:'+(active?'#e8edf5':'#8fa8cf')+';border-radius:9px;padding:7px 13px;font-family:inherit;font-size:11px;'+
+          'font-weight:700;cursor:pointer;transition:all .15s;">'+String(c.country||"")+'</button>';
+      }).join("");
+      btnBox.querySelectorAll("[data-fc-code]").forEach(function(b){
+        b.addEventListener("click",function(){
+          activeCode=b.getAttribute("data-fc-code");
+          paintButtons();
+          render();
+        });
+      });
+    }
     function fmt(v){
       return "$"+Number(v||0).toLocaleString("en-US",{maximumFractionDigits:0});
     }
     function render(){
-      var c=countries.find(function(x){return String(x.code)===String(sel.value);})||countries[0];
-      if(!sel.value) sel.value=c.code;
+      var c=countries.find(function(x){return String(x.code)===String(activeCode);})||countries[0];
+      activeCode=c.code;
       var vals=[Number(c.revenue_2026||0),Number(c.revenue_2027||0),Number(c.revenue_2028||0)];
       var years=["2026","2027","2028"], max=Math.max.apply(null,vals)||1;
       var W=760,H=320,left=70,right=25,top=30,bottom=62,chartH=H-top-bottom,chartW=W-left-right;
@@ -1762,7 +1802,7 @@ window.sidebarGo = function(pageId){
         '<div style="font-size:11px;color:#c8d8f0;"><span style="display:inline-block;width:12px;height:12px;background:#60a5fa;border-radius:3px;margin-right:7px;vertical-align:-2px;"></span>'+String(c.country||"")+' — Base Case</div>'+
         '<div style="font-size:11px;color:#f59e0b;font-weight:700;">3-Year Total: '+fmt(total)+'</div></div>';
     }
-    sel.addEventListener("change",render);
+    paintButtons();
     render();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initCountryForecastChart);
